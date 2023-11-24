@@ -1,5 +1,0 @@
-if(EXISTS "/home/markus/BachelorPraktikum/PSEMolDyn-GroupE/cmake-build-debug/ParticleContainerTest[1]_tests.cmake")
-  include("/home/markus/BachelorPraktikum/PSEMolDyn-GroupE/cmake-build-debug/ParticleContainerTest[1]_tests.cmake")
-else()
-  add_test(ParticleContainerTest_NOT_BUILT ParticleContainerTest_NOT_BUILT)
-endif()

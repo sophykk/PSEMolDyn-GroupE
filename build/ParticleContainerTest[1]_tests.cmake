@@ -1,7 +1,0 @@
-add_test( ParticleContainerTest.DefaultConstructor /home/markus/BachelorPraktikum/PSEMolDyn-GroupE/build/ParticleContainerTest [==[--gtest_filter=ParticleContainerTest.DefaultConstructor]==] --gtest_also_run_disabled_tests)
-set_tests_properties( ParticleContainerTest.DefaultConstructor PROPERTIES WORKING_DIRECTORY /home/markus/BachelorPraktikum/PSEMolDyn-GroupE/build)
-add_test( ParticleContainerTest.ConstructorWithList /home/markus/BachelorPraktikum/PSEMolDyn-GroupE/build/ParticleContainerTest [==[--gtest_filter=ParticleContainerTest.ConstructorWithList]==] --gtest_also_run_disabled_tests)
-set_tests_properties( ParticleContainerTest.ConstructorWithList PROPERTIES WORKING_DIRECTORY /home/markus/BachelorPraktikum/PSEMolDyn-GroupE/build)
-add_test( ParticleContainerTest.AddParticle /home/markus/BachelorPraktikum/PSEMolDyn-GroupE/build/ParticleContainerTest [==[--gtest_filter=ParticleContainerTest.AddParticle]==] --gtest_also_run_disabled_tests)
-set_tests_properties( ParticleContainerTest.AddParticle PROPERTIES WORKING_DIRECTORY /home/markus/BachelorPraktikum/PSEMolDyn-GroupE/build)
-set( ParticleContainerTest_TESTS ParticleContainerTest.DefaultConstructor ParticleContainerTest.ConstructorWithList ParticleContainerTest.AddParticle)

@@ -1,1 +1,0 @@
-/usr/bin/c++ -g CMakeFiles/ParticleContainerTest.dir/UnitTests/ParticleContainerTest.cpp.o CMakeFiles/ParticleContainerTest.dir/src/Particle.cpp.o CMakeFiles/ParticleContainerTest.dir/src/ParticleContainer.cpp.o CMakeFiles/ParticleContainerTest.dir/src/Formulas.cpp.o -o ParticleContainerTest  lib/libgtest_main.a _deps/spdlog-build/libspdlogd.a lib/libgtest.a -lpthread 
