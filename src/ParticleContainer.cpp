@@ -9,29 +9,20 @@
 #include <algorithm>
 #include <cstddef>
 
-
-std::vector <Particle> particleList;
-std::vector <std::pair<Particle, Particle>> particlePairs;
-
 ParticleContainer::ParticleContainer() {
-    particleList = std::vector<Particle>();
-    particlePairs = std::vector <std::pair<Particle, Particle>>();
     createParticlePairs();
 }
 
-ParticleContainer::ParticleContainer(std::vector <Particle> pVector) {
-    particleList = pVector;
-    particlePairs = std::vector <std::pair<Particle, Particle>>();
+ParticleContainer::ParticleContainer(std::vector <Particle> pVector) : particleList(pVector){
     createParticlePairs();
 }
 
-
-std::vector <Particle> ParticleContainer::getParticles() {
+std::vector<Particle>& ParticleContainer::getParticles() {
     return particleList;
 }
 
 
-std::vector <std::pair<Particle, Particle>> ParticleContainer::getParticlePairs() {
+std::vector<std::pair<Particle&, Particle&>>& ParticleContainer::getParticlePairs() {
     return particlePairs;
 }
 
@@ -41,16 +32,14 @@ void ParticleContainer::addParticle(Particle &particle) {
 
 
 void ParticleContainer::createParticlePairs() {
-    for (auto &p1: particleList) {
-        for (auto &p2: particleList) {
+    for (auto& p1 : particleList) {
+        for (auto& p2 : particleList) {
             if (&p1 != &p2) {
-                std::pair <Particle, Particle> currentPair = std::make_pair(p1, p2);
-                std::pair <Particle, Particle> reversePair = std::make_pair(p2, p1);
+                std::pair<Particle&, Particle&> currentPair = std::make_pair(std::ref(p1), std::ref(p2));
+                std::pair<Particle&, Particle&> reversePair = std::make_pair(std::ref(p2), std::ref(p1));
 
-                // Check if the current pair or its reverse is already in particlePairs
                 if (std::find(particlePairs.begin(), particlePairs.end(), currentPair) == particlePairs.end() &&
                     std::find(particlePairs.begin(), particlePairs.end(), reversePair) == particlePairs.end()) {
-                    // Neither the current pair nor its reverse is in particlePairs, so add the current pair
                     particlePairs.push_back(currentPair);
                 }
             }

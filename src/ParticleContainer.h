@@ -27,7 +27,7 @@ private:
   * Pairs of all particles
   * a.e. for 4 particles p1,p2,p3,p4, there are 6 particle pairs: (p1,p2),(p1,p3),(p1,p4),(p2,p3),(p2,p4),(p3,p4).
   */
-    std::vector <std::pair<Particle, Particle>> particlePairs;
+    std::vector <std::pair<Particle&, Particle&>> particlePairs;
 
 public:
 
@@ -37,9 +37,9 @@ public:
 
     void addParticle(Particle &particle);
 
-    std::vector <Particle> getParticles();
+    std::vector<Particle>& getParticles();
 
-    std::vector <std::pair<Particle, Particle>> getParticlePairs();
+    std::vector<std::pair<Particle&, Particle&>>& getParticlePairs();
 
     std::size_t size() const;
 

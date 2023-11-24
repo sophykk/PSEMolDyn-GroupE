@@ -7,6 +7,8 @@
 #include <cmath>
 #include <array>
 #include "ParticleContainer.h"
+#include <iostream>
+#include "utils/MaxwellBoltzmannDistribution.h"
 
 
 //TODO: refactoring of the MolSim class to extract the formulas?
@@ -28,7 +30,7 @@ double Formulas::secondNorm(const std::array<double, 3> &arr1) {
    * Lennard-Jones potential
    */
 
-[[maybe_unused]] double Formulas::calculatePotential(std::array<double, 3> &xi, std::array<double, 3> &xj, double sigma, double eps) {
+double Formulas::calculatePotential(std::array<double, 3> &xi, std::array<double, 3> &xj, double sigma, double eps) {
     //U(xi, xj) = 4*eps((sigma/L2_norm(xi,xj))^12 - (sigma/L2_norm(xi,xj))^6)
     auto potential = 4 * eps * (pow((sigma / Formulas::secondNorm(xi - xj)), 12.0) -
                                 pow((sigma / Formulas::secondNorm(xi -xj)), 6.0));
@@ -39,7 +41,7 @@ double Formulas::secondNorm(const std::array<double, 3> &arr1) {
    * Lennard-Jones force
    */
 
-[[maybe_unused]] std::array<double, 3> Formulas::calculateLJForce(std::array<double, 3> &xi, std::array<double, 3> &xj, double sigma, double eps) {
+std::array<double, 3> Formulas::calculateLJForce(std::array<double, 3> &xi, std::array<double, 3> &xj, double sigma, double eps) {
     //
 
     auto force = (-24 * eps / pow(Formulas::secondNorm(xi - xj), 2.0)) *
@@ -49,7 +51,7 @@ double Formulas::secondNorm(const std::array<double, 3> &arr1) {
 
 }
 
-void Formulas::calcF(ParticleContainer cont,double sigma, double eps){
+void Formulas::calcF(ParticleContainer& cont,double sigma, double eps){
     for (auto &p: cont.getParticles()) {
         //std::array<double, 3> F_i{0., 0., 0.};
         for (auto &p2: cont.getParticles()) {
@@ -59,12 +61,21 @@ void Formulas::calcF(ParticleContainer cont,double sigma, double eps){
                 auto force = (-24 * eps / pow(Formulas::secondNorm(p.getX() - p2.getX()), 2.0)) *
                              (pow((sigma / Formulas::secondNorm(p.getX() - p2.getX())), 6.0) -
                               2 * pow((sigma / Formulas::secondNorm(p.getX() - p2.getX())), 12.0)) * (p.getX() - p2.getX());
+                //std::cout<<"force:"<<force;
                 p.setF(force);
+                //std::cout<<p;
                 }
             }
 
         }
 
     }
+
+void Formulas::calculateBM(ParticleContainer& pc) {
+    for (auto &p: pc.getParticles()) {
+        auto bm = maxwellBoltzmannDistributedVelocity(0.1, 3);
+        p.setV(p.getV() + bm);
+    }
+}
 
 

@@ -21,17 +21,17 @@ void calculateF(ParticleContainer cont);
 /**
  * calculate the position for all particles
  */
-void calculateX(double delta_t, ParticleContainer cont);
+void calculateX(double delta_t, ParticleContainer& cont);
 
 /**
  * calculate the position for all particles
  */
-void calculateV(double delta_t, ParticleContainer cont);
+void calculateV(double delta_t, ParticleContainer& cont);
 
 /**
  * plot the particles to a xyz-file
  */
-void plotParticles(int iteration, ParticleContainer cont);
+void plotParticles(int iteration, ParticleContainer& cont);
 
 constexpr double start_time = 0;
 
@@ -138,8 +138,6 @@ int main(int argc, char *argsv[]) {
 
     std::vector<Particle> particles = p1.getParticles();
 
-    calculateX(delta_t, p1);
-
     /*spdlog::info("before createParticlePairs");
     p1.createParticlePairs();
     spdlog::info("after creating particlePairs");*/
@@ -151,26 +149,30 @@ int main(int argc, char *argsv[]) {
                                                   const_cast<std::array<double, 3> &>(p.second.getX()), 1, 5));
     }*/
 
-    //Formulas::calcF(p1, 1,5);
-    calculateF(p1);
+    Formulas::calcF(p1, 1,5);
+    //calculateF(p1);
 
     calculateV(delta_t, p1);
 
-    std::cout<< p1.getParticles()[0]<<std::endl;
-    std::cout<<p1.getParticles()[1]<<std::endl;
+    Formulas::calculateBM(p1);
+
+    calculateX(delta_t, p1);
 
     if (iteration % 10 == 0) {
         plotParticles(iteration, p1);
     }
 
-    /*while (current_time < end_time) {
+    while (current_time < end_time) {
         // calculate new x
+        Formulas::calcF(p1, 1.0 ,5.0);
         //spdlog::info("im while rein");
+        calculateV(delta_t, p1);
+
         calculateX(delta_t,p1);
         // calculate new f
-        Formulas::calcF(p1, 1.0 ,5.0);
+
         // calculate new v
-        calculateV(delta_t, p1);
+
 
         iteration++;
         if (iteration % 10 == 0) {
@@ -180,7 +182,7 @@ int main(int argc, char *argsv[]) {
 
         current_time += delta_t;
 
-    }*/
+    }
 
     spdlog::info("output written. Terminating...");
 
@@ -225,7 +227,7 @@ void calculateF(ParticleContainer cont) {
     }
 }
 
-void calculateX(double delta_t, ParticleContainer cont) {
+void calculateX(double delta_t, ParticleContainer& cont) {
     for (auto &p: cont.getParticles()) {
         // formula: xi(tn+1) = xi(tn) + ∆t · vi(tn) + (∆t)^2 * (Fi(tn)/2mi)
         // Calculate xi(tn+1)
@@ -236,7 +238,7 @@ void calculateX(double delta_t, ParticleContainer cont) {
     }
 }
 
-void calculateV(double delta_t, ParticleContainer cont) {
+void calculateV(double delta_t, ParticleContainer& cont) {
     for (auto &p: cont.getParticles()) {
         // formula: vi(tn+1) = vi(tn) + ∆t * ((Fi(tn) + Fi(tn+1))/ 2mi)
         // Calculate the velocity at time tn+1
@@ -246,7 +248,7 @@ void calculateV(double delta_t, ParticleContainer cont) {
     }
 }
 
-void plotParticles(int iteration, ParticleContainer cont) {
+void plotParticles(int iteration, ParticleContainer& cont) {
 
     std::string out_name("MD_vtk");
 
