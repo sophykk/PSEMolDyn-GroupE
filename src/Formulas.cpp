@@ -41,19 +41,22 @@ double Formulas::calculatePotential(std::array<double, 3> &xi, std::array<double
    * Lennard-Jones force
    */
 
-std::array<double, 3> Formulas::calculateLJForce(std::array<double, 3> &xi, std::array<double, 3> &xj, double sigma, double eps) {
-    //
-
-    auto force = (-24 * eps / pow(Formulas::secondNorm(xi - xj), 2.0)) *
-                 (pow((sigma / Formulas::secondNorm(xi - xj)), 6.0) -
-                  2 * pow((sigma / Formulas::secondNorm(xi - xj)), 12.0)) * (xi - xj);
-    return force;
-
+void Formulas::calculateLJForce(std::vector<std::pair<Particle*, Particle*>>& pairVector, double sigma, double eps) {
+    for (auto &p: pairVector) {
+        auto force =
+                (-24 * eps / pow(Formulas::secondNorm(p.first->Particle::getX() - p.second->Particle::getX()), 2.0))
+                * (pow((sigma / Formulas::secondNorm(p.first->Particle::getX() - p.second->Particle::getX())), 6.0)
+                   - 2 * pow((sigma / Formulas::secondNorm(p.first->Particle::getX() - p.second->getX())), 12.0))
+                * (p.first->Particle::getX() - p.second->Particle::getX());
+        p.first->setF(force);
+        p.second->setF(-1*force);
+    }
 }
 
 void Formulas::calcF(ParticleContainer& cont,double sigma, double eps){
     for (auto &p: cont.getParticles()) {
         //std::array<double, 3> F_i{0., 0., 0.};
+        std::array<double, 3> sum{0., 0., 0.};
         for (auto &p2: cont.getParticles()) {
             // formula: Fij = ((mi * mj) / ||xi −xj||^3) * (xj − xi)
             //std::array<double, 3> F_ij{};
@@ -62,10 +65,12 @@ void Formulas::calcF(ParticleContainer& cont,double sigma, double eps){
                              (pow((sigma / Formulas::secondNorm(p.getX() - p2.getX())), 6.0) -
                               2 * pow((sigma / Formulas::secondNorm(p.getX() - p2.getX())), 12.0)) * (p.getX() - p2.getX());
                 //std::cout<<"force:"<<force;
-                p.setF(force);
+                sum = sum + force;
                 //std::cout<<p;
                 }
             }
+
+            p.setF(sum);
 
         }
 

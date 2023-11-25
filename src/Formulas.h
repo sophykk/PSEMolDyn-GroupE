@@ -25,7 +25,7 @@ public:
     /**
   * Lennard-Jones force
   */
-    [[maybe_unused]] static std::array<double, 3> calculateLJForce(std::array<double, 3> &xi, std::array<double, 3> &xj, double sigma, double eps);
+    static void calculateLJForce(std::vector<std::pair<Particle*, Particle*>>& pairVector, double sigma, double eps);
 
     static void calcF(ParticleContainer& cont, double sigma, double eps);
 

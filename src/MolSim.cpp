@@ -130,13 +130,14 @@ int main(int argc, char *argsv[]) {
 
     // Get the ParticleContainer from ParticleGenerator
     ParticleContainer p1 = particleGenerator1.getParticleContainer();
-    ParticleContainer p2 = particleGenerator2.getParticleContainer();
+    //ParticleContainer p2 = particleGenerator2.getParticleContainer();
 
-    for(auto &p : p2.getParticles()){
+    //std::cout<<"Particles"<<p1.getParticles().size()<<std::endl;
+    /*for(auto &p : p2.getParticles()){
         p1.addParticle(p);
-    }
+    }*/
 
-    std::vector<Particle> particles = p1.getParticles();
+    p1.createParticlePairs();
 
     /*spdlog::info("before createParticlePairs");
     p1.createParticlePairs();
@@ -149,30 +150,36 @@ int main(int argc, char *argsv[]) {
                                                   const_cast<std::array<double, 3> &>(p.second.getX()), 1, 5));
     }*/
 
-    Formulas::calcF(p1, 1,5);
+    calculateX(delta_t, p1);
+
+    //Formulas::calcF(p1, 1,5);
     //calculateF(p1);
 
-    calculateV(delta_t, p1);
+    Formulas::calculateLJForce(p1.getParticlePairs(), 1, 5);
+
+    /*for(auto &p : p1.getParticles())
+        std::cout<<p<<std::endl;
+
+    for (const auto &particlePair : p1.getParticlePairs()) {
+        std::cout << "Particle 1: " << *(particlePair.first) << std::endl;
+        std::cout << "Particle 2: " << *(particlePair.second) << std::endl;
+    }*/
 
     Formulas::calculateBM(p1);
 
-    calculateX(delta_t, p1);
+    calculateV(delta_t, p1);
 
     if (iteration % 10 == 0) {
         plotParticles(iteration, p1);
     }
 
     while (current_time < end_time) {
-        // calculate new x
-        Formulas::calcF(p1, 1.0 ,5.0);
-        //spdlog::info("im while rein");
+
+        Formulas::calculateLJForce(p1.getParticlePairs(), 1, 5);
+
         calculateV(delta_t, p1);
 
         calculateX(delta_t,p1);
-        // calculate new f
-
-        // calculate new v
-
 
         iteration++;
         if (iteration % 10 == 0) {
