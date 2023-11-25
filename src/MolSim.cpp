@@ -1,5 +1,4 @@
-
-#include "FileReader.h"
+#include "inputOutput/inputReader/FileReader.h"
 #include "utils/ArrayUtils.h"
 #include "ParticleContainer.h"
 #include "ParticleGenerator.h"
@@ -7,37 +6,30 @@
 
 #include <iostream>
 #include <vector>
-#include "outputWriter/VTKWriter.h"
+#include "inputOutput/outputWriter/VTKWriter.h"
 #include <spdlog/spdlog.h>
 
 
 int main(int argc, char *argsv[]) {
 
-    spdlog::info("Application started");
-    spdlog::info("Hello from MolSim for PSE!");
-
-    int N1 = 3, N2 = 3, N3 = 1;
-    double h = 1.0, m = 1.0;
-    std::array<double, 3> v = {0.0, 0.0, 0.0};
-    std::array<double, 3> v2 = {0.0, -10.0, 0.0};
-    double x = 0.0, y = 0.0, z = 0.0;
-    int type = 1;
     double end_time = 5;
     double delta_t = 0.0002;
     double current_time = 0;
 
-    ParticleGenerator particleGenerator1(40, 8, 1, 1.1225, 1.0, v, 0.0, 0.0, 0.0, type);
-    ParticleGenerator particleGenerator2(8, 8, 1, 1.1225, 1.0, v2, 15.0, 15.0, 0.0, type);
+
+    FileReader cuboidReader;
+    auto generators = cuboidReader.readFile(argsv[1]);
+
+    spdlog::info("Application started");
+    spdlog::info("Hello from MolSim for PSE!");
+
+    ParticleContainer p1;
+
+    for (auto& gen : generators) {
+        gen.generateParticles(p1);
+    }
 
     int iteration = 0;
-
-    // Get the ParticleContainer from ParticleGenerator
-    ParticleContainer p1 = particleGenerator1.getParticleContainer();
-    ParticleContainer p2 = particleGenerator2.getParticleContainer();
-
-    for(auto &p : p2.getParticles()){
-        p1.addParticle(p);
-    }
 
     std::vector<Particle> particles = p1.getParticles();
 

@@ -29,7 +29,6 @@ private:
     double z;
     int type;
 
-
 public:
     /**
      * create a N1xN2xN3 grid of particles with mass m, initial velocity v, left corner coordinate (x,y,z)
@@ -38,7 +37,7 @@ public:
     ParticleGenerator(int n1, int n2, int n3, double h1, double m1, std::array<double, 3> v1,
                       double x1, double y1, double z1, int type1);
 
-    ParticleContainer& getParticleContainer();
+    void generateParticles(ParticleContainer& particleContainer);
 };
 
 

@@ -13,7 +13,7 @@
 #include <utility>
 #include <cstddef> // for std::size_t
 #include "utils/ArrayUtils.h"
-#include "outputWriter/VTKWriter.h"
+#include "inputOutput/outputWriter/VTKWriter.h"
 
 
 class ParticleContainer {

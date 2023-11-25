@@ -20,5 +20,5 @@ public:
   FileReader();
   virtual ~FileReader();
 
-  void readFile(std::vector<ParticleGenerator> &gen, char *filename);
+  std::vector<ParticleGenerator> readFile(char *filename);
 };

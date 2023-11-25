@@ -18,7 +18,8 @@ FileReader::FileReader() = default;
 
 FileReader::~FileReader() = default;
 
-void FileReader::readFile(std::vector<ParticleGenerator> &gen, char *filename) {
+std::vector<ParticleGenerator> FileReader::readFile(char *filename) {
+    std::vector<ParticleGenerator> generators;
     std::array<double, 3> x;
     std::array<double, 3> v;
     double m;
@@ -73,10 +74,11 @@ void FileReader::readFile(std::vector<ParticleGenerator> &gen, char *filename) {
             //particles.emplace_back(x, v, m);
 
             //TODO: what to do with N-s?
-            gen.emplace_back(N[0], N[1], N[2], 1.1225, m, v, x[0], x[1], x[2], 0); // here?
+            generators.emplace_back(N[0], N[1], N[2], 1.1225, m, v, x[0], x[1], x[2], 0); // here?
             getline(input_file, tmp_string);
             std::cout << "Read line: " << tmp_string << std::endl;
         }
+        return generators;
     } else {
         std::cout << "Error: could not open file " << filename << std::endl;
         exit(-1);
