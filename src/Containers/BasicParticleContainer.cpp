@@ -6,6 +6,7 @@
 #include <vector>
 #include "Formulas.h"
 #include "utils/ArrayUtils.h"
+#include "inputOutput/outputWriter/VTKWriter.h"
 
 std::vector<Particle>& BasicParticleContainer::getParticles() {
     return particleList;
