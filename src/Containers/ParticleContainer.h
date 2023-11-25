@@ -14,10 +14,10 @@
 #include <cstddef> // for std::size_t
 #include "utils/ArrayUtils.h"
 #include "inputOutput/outputWriter/VTKWriter.h"
+#include "ParticleContainerBase.h"
 
 
-class ParticleContainer {
-
+class ParticleContainer : public ParticleContainerBase {
 private:
 
     /**
@@ -25,31 +25,19 @@ private:
    */
     std::vector <Particle> particleList;
 
-    /**
-  * Pairs of all particles
-  * a.e. for 4 particles p1,p2,p3,p4, there are 6 particle pairs: (p1,p2),(p1,p3),(p1,p4),(p2,p3),(p2,p4),(p3,p4).
-  */
-    std::vector <std::pair<Particle&, Particle&>> particlePairs;
-
 public:
 
-    ParticleContainer();
-
-    ParticleContainer(std::vector <Particle> pVector);
+    ParticleContainer(ForceBase& model) : ParticleContainerBase(model){};
 
     void addParticle(Particle &particle);
 
     std::vector<Particle>& getParticles();
 
-    std::vector<std::pair<Particle&, Particle&>>& getParticlePairs();
-
     std::size_t size() const;
-
-    void createParticlePairs();
 
     void resetF();
 
-    void calculateF(double sigma, double eps);
+    void calculateF();
 
     void calculateX(double delta_t);
 

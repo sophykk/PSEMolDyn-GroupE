@@ -2,7 +2,7 @@
 // Created by markus on 11/7/23.
 //
 #include <gtest/gtest.h>
-#include "../src/ParticleContainer.h"
+#include "../src/Containers/ParticleContainer.h"
 
 // testing the default constructor of the ParticleContainer
 TEST(ParticleContainerTest, DefaultConstructor) {
