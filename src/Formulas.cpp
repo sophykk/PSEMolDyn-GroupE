@@ -51,26 +51,6 @@ std::array<double, 3> Formulas::calculateLJForce(std::array<double, 3> &xi, std:
 
 }
 
-void Formulas::calcF(ParticleContainer& cont,double sigma, double eps){
-    for (auto &p: cont.getParticles()) {
-        //std::array<double, 3> F_i{0., 0., 0.};
-        for (auto &p2: cont.getParticles()) {
-            // formula: Fij = ((mi * mj) / ||xi −xj||^3) * (xj − xi)
-            //std::array<double, 3> F_ij{};
-            if (&p != &p2) {
-                auto force = (-24 * eps / pow(Formulas::secondNorm(p.getX() - p2.getX()), 2.0)) *
-                             (pow((sigma / Formulas::secondNorm(p.getX() - p2.getX())), 6.0) -
-                              2 * pow((sigma / Formulas::secondNorm(p.getX() - p2.getX())), 12.0)) * (p.getX() - p2.getX());
-                //std::cout<<"force:"<<force;
-                p.setF(force);
-                //std::cout<<p;
-                }
-            }
-
-        }
-
-    }
-
 void Formulas::calculateBM(ParticleContainer& pc) {
     for (auto &p: pc.getParticles()) {
         auto bm = maxwellBoltzmannDistributedVelocity(0.1, 3);

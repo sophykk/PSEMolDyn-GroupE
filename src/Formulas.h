@@ -27,8 +27,6 @@ public:
   */
     [[maybe_unused]] static std::array<double, 3> calculateLJForce(std::array<double, 3> &xi, std::array<double, 3> &xj, double sigma, double eps);
 
-    static void calcF(ParticleContainer& cont, double sigma, double eps);
-
     static void calculateBM(ParticleContainer& pc);
 };
 

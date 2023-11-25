@@ -12,6 +12,8 @@
 #include <vector>
 #include <utility>
 #include <cstddef> // for std::size_t
+#include "utils/ArrayUtils.h"
+#include "outputWriter/VTKWriter.h"
 
 
 class ParticleContainer {
@@ -44,6 +46,14 @@ public:
     std::size_t size() const;
 
     void createParticlePairs();
+
+    void calculateF(double sigma, double eps);
+
+    void calculateX(double delta_t);
+
+    void calculateV(double delta_t);
+
+    void plotParticles(int iteration);
 };
 
 #endif //PSEMOLDYN_GROUPE_PARTICLECONTAINER_H
