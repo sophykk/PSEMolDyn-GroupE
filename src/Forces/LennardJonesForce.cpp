@@ -4,6 +4,7 @@
 
 #include "LennardJonesForce.h"
 #include "Formulas.h"
+#include "utils/ArrayUtils.h"
 
 LennardJonesForce::LennardJonesForce(double sigma, double eps) : sigma(sigma), eps(eps) {}
 

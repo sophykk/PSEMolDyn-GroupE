@@ -6,7 +6,7 @@
 #define PSEMOLDYN_GROUPE_FORMULAS_H
 
 #include <array>
-#include "Containers/ParticleContainer.h"
+#include "Containers/BasicParticleContainer.h"
 
 namespace Formulas {
 

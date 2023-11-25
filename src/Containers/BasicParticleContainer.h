@@ -2,22 +2,19 @@
 // Created by sophy on 02.11.2023.
 //
 
-#ifndef PSEMOLDYN_GROUPE_PARTICLECONTAINER_H
-#define PSEMOLDYN_GROUPE_PARTICLECONTAINER_H
+#ifndef PSEMOLDYN_GROUPE_BASICPARTICLECONTAINER_H
+#define PSEMOLDYN_GROUPE_BASICPARTICLECONTAINER_H
 
 #pragma once
 
-#include <list>
 #include "Particle.h"
 #include <vector>
-#include <utility>
 #include <cstddef> // for std::size_t
-#include "utils/ArrayUtils.h"
 #include "inputOutput/outputWriter/VTKWriter.h"
 #include "ParticleContainerBase.h"
 
 
-class ParticleContainer : public ParticleContainerBase {
+class BasicParticleContainer : public ParticleContainerBase {
 private:
 
     /**
@@ -27,7 +24,7 @@ private:
 
 public:
 
-    ParticleContainer(ForceBase& model) : ParticleContainerBase(model){};
+    BasicParticleContainer(ForceBase& model) : ParticleContainerBase(model){};
 
     void addParticle(Particle &particle);
 
@@ -46,4 +43,4 @@ public:
     void plotParticles(int iteration);
 };
 
-#endif //PSEMOLDYN_GROUPE_PARTICLECONTAINER_H
+#endif //PSEMOLDYN_GROUPE_BASICPARTICLECONTAINER_H

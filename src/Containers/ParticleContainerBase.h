@@ -5,40 +5,70 @@
 #ifndef PSEMOLDYN_GROUPE_PARTICLECONTAINERBASE_H
 #define PSEMOLDYN_GROUPE_PARTICLECONTAINERBASE_H
 
-#pragma once
-
-#include <list>
-#include "Particle.h"
 #include <vector>
-#include <utility>
 #include <cstddef> // for std::size_t
-#include "utils/ArrayUtils.h"
-#include "inputOutput/outputWriter/VTKWriter.h"
-#include "Formulas.h"
 #include "Forces/ForceBase.h"
+#include "Particle.h"
 
+/**
+ * Base class for particle containers
+ * All particle containers should inherit from this class
+ */
 class ParticleContainerBase {
 
 protected:
+    /**
+     * Reference to the used force model, e.g. gravitation or lennard-jones
+     */
     ForceBase& forceModel;
 
 public:
     ParticleContainerBase(ForceBase& model) : forceModel(model) {}
 
+    /**
+     * Add a particle to the container.
+     * @param particle reference to the particle to add
+     */
     virtual void addParticle(Particle &particle) = 0;
 
+    /**
+     * Get a flat vector of all particles
+     * @return Vector of all particles
+     */
     std::vector<Particle>& getParticles();
 
+    /**
+     * @return Number of particles in the container.
+     */
     virtual std::size_t size() const = 0;
 
+    /**
+     * Swap current particle forces to old particle forces.
+     * Set current particle forces to zero.
+     */
     virtual void resetF() = 0;
 
+    /**
+     * Calculate particle forces.
+     */
     virtual void calculateF() = 0;
 
+    /**
+     * Calculate new particle positions.
+     * @param delta_t
+     */
     virtual void calculateX(double delta_t) = 0;
 
+    /**
+     * Calculate new particle velocities.
+     * @param delta_t
+     */
     virtual void calculateV(double delta_t) = 0;
 
+    /**
+     * Write a VTK file with current particle information.
+     * @param iteration Current simulation iteration
+     */
     virtual void plotParticles(int iteration) = 0;
 };
 

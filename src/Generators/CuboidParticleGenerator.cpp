@@ -1,11 +1,12 @@
 //
 // Created by Layla Zadina on 09.11.2023.
 //
-#include "ParticleGenerator.h"
+#include "CuboidParticleGenerator.h"
 #include "Particle.h"
+#include "Formulas.h"
 
-ParticleGenerator::ParticleGenerator(std::array<int, 3> N1, double h1, double m1, std::array<double, 3> v1,
-                                     std::array<double, 3> x1, int type1)
+CuboidParticleGenerator::CuboidParticleGenerator(std::array<int, 3> N1, double h1, double m1, std::array<double, 3> v1,
+                                                 std::array<double, 3> x1, int type1)
         : N(N1), h(h1), m(m1), v(v1), x(x1), type(type1) {
 /** Number of particles per dimension: N1 × N2 × N3
 // Distance h of the particles (mesh width of the grid)
@@ -15,7 +16,7 @@ ParticleGenerator::ParticleGenerator(std::array<int, 3> N1, double h1, double m1
  */
 }
 
-void ParticleGenerator::generateParticles(ParticleContainer& particleContainer) {
+void CuboidParticleGenerator::generateParticles(ParticleContainerBase& particleContainer) {
     /**
     * create a N1xN2xN3 grid of particles with mass m, initial velocity v, left corner coordinate (x,y,z)
    */

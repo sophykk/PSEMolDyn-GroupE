@@ -1,30 +1,31 @@
 //
 // Created by sophy on 02.11.2023.
 //
-#include "ParticleContainer.h"
+#include "BasicParticleContainer.h"
 #include <list>
 #include <vector>
 #include "Formulas.h"
+#include "utils/ArrayUtils.h"
 
-std::vector<Particle>& ParticleContainer::getParticles() {
+std::vector<Particle>& BasicParticleContainer::getParticles() {
     return particleList;
 }
 
-void ParticleContainer::addParticle(Particle &particle) {
+void BasicParticleContainer::addParticle(Particle &particle) {
     particleList.push_back(particle);
 }
 
-std::size_t ParticleContainer::size() const {
+std::size_t BasicParticleContainer::size() const {
     return particleList.size();
 }
 
-void ParticleContainer::resetF() {
+void BasicParticleContainer::resetF() {
     for (auto &p: getParticles()) {
         p.resetF();
     }
 }
 
-void ParticleContainer::calculateF(){
+void BasicParticleContainer::calculateF(){
     for (auto p1 = getParticles().begin(); p1 < getParticles().end(); p1++) {
         for (auto p2 = p1 + 1; p2 < getParticles().end(); p2++) {
             auto force = forceModel.calculateForce(*p1, *p2);
@@ -34,7 +35,7 @@ void ParticleContainer::calculateF(){
     }
 }
 
-void ParticleContainer::calculateX(double delta_t) {
+void BasicParticleContainer::calculateX(double delta_t) {
     for (auto &p: getParticles()) {
         // formula: xi(tn+1) = xi(tn) + ∆t · vi(tn) + (∆t)^2 * (Fi(tn)/2mi)
         // Calculate xi(tn+1)
@@ -43,7 +44,7 @@ void ParticleContainer::calculateX(double delta_t) {
     }
 }
 
-void ParticleContainer::calculateV(double delta_t) {
+void BasicParticleContainer::calculateV(double delta_t) {
     for (auto &p: getParticles()) {
         // formula: vi(tn+1) = vi(tn) + ∆t * ((Fi(tn) + Fi(tn+1))/ 2mi)
         // Calculate the velocity at time tn+1
@@ -52,7 +53,7 @@ void ParticleContainer::calculateV(double delta_t) {
     }
 }
 
-void ParticleContainer::plotParticles(int iteration) {
+void BasicParticleContainer::plotParticles(int iteration) {
 
     std::string out_name("MD_vtk");
 
