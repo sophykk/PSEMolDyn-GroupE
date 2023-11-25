@@ -1,28 +1,32 @@
 /*
- * FileReader.cpp
+ * CuboidFileReader.cpp
  *
  *  Created on: 23.02.2010
  *      Author: eckhardw
  */
 
-#include "FileReader.h"
-#include "ParticleGenerator.h"
+#include "CuboidFileReader.h"
+#include "Generators/CuboidParticleGenerator.h"
 
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include "spdlog/spdlog.h"
 
 
-FileReader::FileReader() = default;
+CuboidFileReader::CuboidFileReader() = default;
 
-FileReader::~FileReader() = default;
+CuboidFileReader::~CuboidFileReader() = default;
 
-void FileReader::readFile(std::vector<ParticleGenerator> &gen, char *filename) {
+std::vector<CuboidParticleGenerator> CuboidFileReader::readFile(char *filename) {
+    std::vector<CuboidParticleGenerator> generators;
     std::array<double, 3> x;
     std::array<double, 3> v;
     double m;
-    int num_particles = 0;
+    double spacing;
+    int type;
+    int num_cuboids = 0;
 
     std::ifstream input_file(filename);
     std::string tmp_string;
@@ -30,23 +34,23 @@ void FileReader::readFile(std::vector<ParticleGenerator> &gen, char *filename) {
     if (input_file.is_open()) {
 
         getline(input_file, tmp_string);
-        std::cout << "Read line: " << tmp_string << std::endl;
+        spdlog::debug("Read line: {}", tmp_string);
 
         while (tmp_string.empty() or tmp_string[0] == '#') {
             getline(input_file, tmp_string);
-            std::cout << "Read line: " << tmp_string << std::endl;
+            spdlog::debug("Read line: {}", tmp_string);
         }
 
         std::istringstream numstream(tmp_string);
-        numstream >> num_particles;
-        std::cout << "Reading " << num_particles << "." << std::endl;
+        numstream >> num_cuboids;
+        spdlog::debug("Reading {}", num_cuboids);
         /**
        * start reading dispositions, velocities and mass of particles
        */
         getline(input_file, tmp_string);
-        std::cout << "Read line: " << tmp_string << std::endl; // here
+        spdlog::debug("Read line: {}", tmp_string);
 
-        for (int i = 0; i < num_particles; i++) {
+        for (int i = 0; i < num_cuboids; i++) {
             std::istringstream datastream(tmp_string);
 
             for (auto &xj : x) {
@@ -57,9 +61,7 @@ void FileReader::readFile(std::vector<ParticleGenerator> &gen, char *filename) {
             }
 
             if (datastream.eof()) {
-                std::cout
-                        << "Error reading file: eof reached unexpectedly reading from line "
-                        << i << std::endl;
+                spdlog::error("Error reading file: eof reached unexpectedly reading from line {}", i);
                 exit(-1);
             }
 
@@ -70,15 +72,18 @@ void FileReader::readFile(std::vector<ParticleGenerator> &gen, char *filename) {
             for (auto &Nj : N) {
                 datastream >> Nj;
             }
-            //particles.emplace_back(x, v, m);
 
-            //TODO: what to do with N-s?
-            gen.emplace_back(N[0], N[1], N[2], 1.1225, m, v, x[0], x[1], x[2], 0); // here?
+            datastream >> spacing;
+            datastream >> type;
+
+            generators.emplace_back(N, spacing, m, v, x, type);
+
             getline(input_file, tmp_string);
-            std::cout << "Read line: " << tmp_string << std::endl;
+            spdlog::debug("Read line: {}", tmp_string);
         }
+        return generators;
     } else {
-        std::cout << "Error: could not open file " << filename << std::endl;
+        spdlog::error("Error: could not open file {}", filename);
         exit(-1);
     }
 }

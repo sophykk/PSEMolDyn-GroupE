@@ -70,12 +70,8 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 # include the necessary source files in the ParticleContainerTest
-add_executable(
-        ParticleContainerTest
+add_executable(ParticleContainerTest
         UnitTests/ParticleContainerTest.cpp
-        src/Particle.cpp
-        src/ParticleContainer.cpp
-        src/Formulas.cpp
 )
 
 # link the googletest and spdlog to the ParticleContainerTest
