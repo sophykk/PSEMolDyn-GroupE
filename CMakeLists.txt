@@ -47,6 +47,8 @@ set(LOG_LEVEL "info" CACHE STRING "Set log level (default: info)")
 
 enable_testing()
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
 # Go over CMakeLists.txt in src and UnitTests folder
 add_subdirectory(src)
 add_subdirectory(UnitTests)
