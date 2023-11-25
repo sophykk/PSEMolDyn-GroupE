@@ -52,6 +52,12 @@ std::size_t ParticleContainer::size() const {
     return particleList.size();
 }
 
+void ParticleContainer::resetF() {
+    for (auto &p: getParticles()) {
+        p.resetF();
+    }
+}
+
 void ParticleContainer::calculateF(double sigma, double eps){
     for (auto &p: getParticles()) {
         //std::array<double, 3> F_i{0., 0., 0.};
@@ -63,7 +69,7 @@ void ParticleContainer::calculateF(double sigma, double eps){
                              (pow((sigma / Formulas::secondNorm(p.getX() - p2.getX())), 6.0) -
                               2 * pow((sigma / Formulas::secondNorm(p.getX() - p2.getX())), 12.0)) * (p.getX() - p2.getX());
                 //std::cout<<"force:"<<force;
-                p.setF(force);
+                p.addF(force);
                 //std::cout<<p;
             }
         }

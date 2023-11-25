@@ -53,7 +53,7 @@ std::array<double, 3> Formulas::calculateLJForce(std::array<double, 3> &xi, std:
 
 void Formulas::calculateBM(ParticleContainer& pc) {
     for (auto &p: pc.getParticles()) {
-        auto bm = maxwellBoltzmannDistributedVelocity(0.1, 3);
+        auto bm = maxwellBoltzmannDistributedVelocity(0.1, 2);
         p.setV(p.getV() + bm);
     }
 }

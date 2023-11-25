@@ -53,17 +53,21 @@ const std::array<double, 3> &Particle::getOldF() const { return old_f; }
 
 double Particle::getM() const { return m; }
 
-void Particle::setX(const std::array<double, 3> &x) {
-    Particle::x = x;
+void Particle::setX(const std::array<double, 3> &x_new) {
+    x = x_new;
 }
 
-void Particle::setV(const std::array<double, 3> &v) {
-    Particle::v = v;
+void Particle::setV(const std::array<double, 3> &v_new) {
+    v = v_new;
 }
 
-void Particle::setF(const std::array<double, 3> &f) {
-    old_f = Particle::f;
-    Particle::f = f;
+void Particle::addF(const std::array<double, 3> &f_add) {
+    f = f + f_add;
+}
+
+void Particle::resetF() {
+    old_f = f;
+    f = {0.0, 0.0, 0.0};
 }
 
 int Particle::getType() const { return type; }

@@ -33,33 +33,22 @@ int main(int argc, char *argsv[]) {
 
     std::vector<Particle> particles = p1.getParticles();
 
-    /*spdlog::info("before createParticlePairs");
-    p1.createParticlePairs();
-    spdlog::info("after creating particlePairs");*/
-
-    /*for (auto &p:  p1.getParticlePairs()) {
-        p.first.setF(Formulas::calculateLJForce(const_cast<std::array<double, 3> &>(p.first.getX()),
-                                                 const_cast<std::array<double, 3> &>(p.second.getX()), 1, 5));
-        p.second.setF(Formulas::calculateLJForce(const_cast<std::array<double, 3> &>(p.second.getX()),
-                                                  const_cast<std::array<double, 3> &>(p.second.getX()), 1, 5));
-    }*/
-
-    p1.calculateF(1,5);
-    //calculateF(p1);
-
     Formulas::calculateBM(p1);
+    p1.calculateF(1,5);
 
     while (current_time < end_time) {
-        // calculate new x
-        p1.calculateF(1.0 ,5.0);
-        //spdlog::info("im while rein");
-        p1.calculateV(delta_t);
 
+        // reset forces
+        p1.resetF();
+
+        // calculate new x
         p1.calculateX(delta_t);
+
         // calculate new f
+        p1.calculateF(1.0 ,5.0);
 
         // calculate new v
-
+        p1.calculateV(delta_t);
 
         iteration++;
         if (iteration % 10 == 0) {
@@ -68,28 +57,9 @@ int main(int argc, char *argsv[]) {
         spdlog::info("Iteration {} finished.", iteration);
 
         current_time += delta_t;
-
     }
 
     spdlog::info("output written. Terminating...");
-
-     //Logger::getLogger()->info("output written. Terminating...");
-
-    // Get the particles from ParticleContainer
-    //std::vector<Particle> particles1 = p1.getParticles();
-    //std::vector<Particle> particles2 = p2.getParticles();
-
-    // Output information about each particle
-    /*for (auto &particle : particles1) {
-        std::cout << particle << std::endl;
-    }
-    for (auto &particle : particles2) {
-        std::cout << particle << std::endl;
-    }*/
-
-    //plotParticles(1, p1);
-    //plotParticles(1,p2);
-
     return 0;
 }
 
@@ -110,6 +80,6 @@ void calculateF(ParticleContainer cont) {
                 }
             }
         }
-        p.setF(F_i);
+        p.addF(F_i);
     }
 }

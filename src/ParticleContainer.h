@@ -47,6 +47,8 @@ public:
 
     void createParticlePairs();
 
+    void resetF();
+
     void calculateF(double sigma, double eps);
 
     void calculateX(double delta_t);
