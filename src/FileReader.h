@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "Particle.h"
-#include "ParticleGenerator.h"
+#include "particle/Particle.h"
+#include "particle/ParticleGenerator.h"
 
 #include <list>
 #include <vector>

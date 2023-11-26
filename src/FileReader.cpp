@@ -6,7 +6,7 @@
  */
 
 #include "FileReader.h"
-#include "ParticleGenerator.h"
+#include "particle/ParticleGenerator.h"
 
 #include <cstdlib>
 #include <fstream>

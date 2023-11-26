@@ -57,7 +57,7 @@ public:
 
   virtual ~Particle();
 
-  const std::array<double, 3> &getX() const;
+  const std::array<double, 3> getX() const;
 
   const std::array<double, 3> &getV() const;
 
