@@ -10,7 +10,6 @@
 #include "Particle.h"
 #include <vector>
 #include <cstddef> // for std::size_t
-#include "inputOutput/outputWriter/VTKWriter.h"
 #include "ParticleContainerBase.h"
 
 
@@ -25,6 +24,9 @@ private:
 public:
 
     BasicParticleContainer(ForceBase& model) : ParticleContainerBase(model){};
+
+    BasicParticleContainer(ForceBase& model, std::vector<Particle>& particles) : particleList(particles),
+                                                                                 ParticleContainerBase(model) {};
 
     void addParticle(Particle &particle);
 
