@@ -23,7 +23,16 @@ protected:
     ForceBase& forceModel;
 
 public:
+    /**
+     * Abstract base class for all particle containers.
+     * @param model Force model to be used for calculating forces on all particles.
+     */
     ParticleContainerBase(ForceBase& model) : forceModel(model) {}
+
+    /**
+     * Default Destructor
+     */
+    virtual ~ParticleContainerBase() = default;
 
     /**
      * Add a particle to the container.

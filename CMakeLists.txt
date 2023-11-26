@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 3.10)
 # define project name, version
 project(PSEMolDyn_GroupE VERSION 0.0.1)
 
+# set c++ standard for the whole project
+set(CMAKE_CXX_STANDARD 14)
+
 # let ccmake and cmake-gui offer the default build type options
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug;Release;RelWithDebInfo;MinSizeRel")
 
@@ -44,6 +47,8 @@ FetchContent_MakeAvailable(spdlog)
 # default log level is info, but the user can override it
 set(LOG_LEVEL "info" CACHE STRING "Set log level (default: info)")
 
+# Find xerces as a package
+find_package(XercesC REQUIRED)
 
 enable_testing()
 
