@@ -27,12 +27,6 @@ target_link_libraries(MolSimLib
 # create make target
 add_executable(MolSim MolSim.cpp)
 
-# set cxx standard. You may raise this if you want.
-target_compile_features(MolSim
-        PRIVATE
-        cxx_std_17
-)
-
 target_include_directories(MolSim
         PUBLIC
         ${CMAKE_SOURCE_DIR}/libs/libxsd
