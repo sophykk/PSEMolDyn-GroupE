@@ -4,7 +4,6 @@
 
 #include "XMLCuboidReader.h"
 #include "xsd/Simulation.hxx"
-#include "iostream"
 
 XMLCuboidReader::XMLCuboidReader() = default;
 
@@ -20,11 +19,7 @@ std::vector<CuboidParticleGenerator> XMLCuboidReader::readFile(const char *filen
     double spacing;
     int type;
 
-    //std::cout << "Trying to parse with: " + filename << std::endl;
-
     std::unique_ptr<simulation> parameters = simulation_(filename);
-
-    //std::cout << "End reached\n" << std::endl;
 
     auto cuboids = parameters->cuboid();
 
