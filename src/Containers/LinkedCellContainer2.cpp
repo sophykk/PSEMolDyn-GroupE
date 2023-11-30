@@ -8,6 +8,8 @@
 #include "Formulas.h"
 #include "utils/ArrayUtils.h"
 #include "inputOutput/outputWriter/VTKWriter.h"
+#include <spdlog/spdlog.h>
+
 
 LinkedCellContainer2::LinkedCellContainer2(ForceBase &model, std::vector<int> &dSize, double &cRadius, int &cSize) :
         ParticleContainerBase(model), domainSize(dSize), cutoffRadius(cRadius), cellSize(cSize) {
@@ -162,21 +164,33 @@ void LinkedCellContainer2::plotParticles(int iteration) {
  */
 
 void LinkedCellContainer2::initGrid() {
-    int x = 0;
-    for (int i = 0; i < domainSize[0] / cellSize; ++i) {
+
+    int lowery = 0;
+    int uppery = cellSize;
+    //y --> 0,1 --> 1,1
+    for (int i = 0; i < domainSize[1] / cellSize; ++i) {
         //2. dimension
-        int y = 0;
-        for (int j = 0; j < domainSize[1] / cellSize; ++j) {
+        int lowerx = 0;
+        int upperx = cellSize;
+        //x, --> 0,0 --> 1,0 --> 2,0 --> 3,0
+        for (int j = 0; j < domainSize[0] / cellSize; ++j) {
             //only for 2D domains {_, _, 1}, otherwise need other implementation (extra loop)
             //3. dimension
             for (auto p1 = getParticles().begin(); p1 < getParticles().end(); p1++) {
-                if (p1->getX()[0] <= x + cellSize && p1->getX()[0] >= x && p1->getX()[1] <= y + cellSize &&
-                    p1->getX()[1] >= y) {
-                    grid[i][j][0] = *p1;
+                spdlog::debug("x cellSize now {} - {}", lowerx, upperx);
+                spdlog::debug("y cellSize now {} - {}", lowery, uppery);
+                if (p1->getX()[0] <= upperx && p1->getX()[0] >= lowerx &&
+                    p1->getX()[1] <= uppery && p1->getX()[1] >= lowery) {
+                    spdlog::debug("we are in grid {}, {}", j, i);
+                    spdlog::info("this is the particle before {}", p1->toString());
+                    grid[j][i][0] = *p1;
+                    spdlog::info("this is p1 after set to grid {}", grid[j][i][0].toString());
                 }
             }
-            y += cellSize + 1;
+            lowerx = upperx + 1;
+            upperx += cellSize;
         }
-        x += cellSize + 1;
+        lowery = uppery + 1;
+        uppery += cellSize;
     }
 }
