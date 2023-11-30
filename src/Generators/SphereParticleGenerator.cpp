@@ -19,15 +19,17 @@ SphereParticleGenerator::SphereParticleGenerator(std::array<int, 3> x1, double h
 
 void SphereParticleGenerator::generateParticles(ParticleContainerBase& particleContainer) {
     /**
-    * create a N1xN2xN3 grid of particles with mass m, initial velocity v, left corner coordinate (x,y,z)
-     * create a grid of particles with mass m, initial velocity v within a sphere
+     * create a grid of particles with mass m, initial velocity v within a sphere of radius r and position of the center x
    */
+
+    // Define the number of Particles in the grid
     int numParticlesX = static_cast<int>(std::ceil(2.0 * r / h));
     int numParticlesY = static_cast<int>(std::ceil(2.0 * r / h));
 
+    // Iterate through each particle
     for (int i = 0; i < numParticlesX; ++i) {
         for (int j = 0; j < numParticlesY; ++j) {
-            // Calculate the position of the current particle within the rectangle
+            // Calculate the position of the current particle within the grid
             double x1 = x[0] - r + i * h;
             double y1 = x[1] - r + j * h;
 
