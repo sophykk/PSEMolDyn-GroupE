@@ -2,6 +2,7 @@
 #include "Containers/BasicParticleContainer.h"
 #include "Forces/GravitationalForce.h"
 #include "Forces/LennardJonesForce.h"
+#include "inputOutput/inputReader/XMLCuboidReader.h"
 
 #include <spdlog/spdlog.h>
 
@@ -21,7 +22,7 @@ int main(int argc, char *argsv[]) {
     spdlog::info("Application started");
     spdlog::info("Hello from MolSim for PSE!");
 
-    CuboidFileReader cuboidReader;
+    XMLCuboidReader cuboidReader;
     auto generators = cuboidReader.readFile(argsv[1]);
 
     // Select to chosen force model
@@ -84,5 +85,6 @@ int main(int argc, char *argsv[]) {
     }
 
     spdlog::info("output written. Terminating...");
+
     return 0;
 }

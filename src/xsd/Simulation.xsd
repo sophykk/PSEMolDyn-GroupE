@@ -1,0 +1,46 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="simulation">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="cuboid" type="cuboidType" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="cuboidType">
+        <xs:sequence>
+            <xs:element name="position" type="positionType"/>
+            <xs:element name="velocity" type="velocityType"/>
+            <xs:element name="mass" type="xs:double"/>
+            <xs:element name="grid" type="gridParam"/>
+            <xs:element name="spacing" type="xs:double"/>
+            <xs:element name="type" type="xs:int"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="positionType">
+        <xs:sequence>
+            <xs:element name="x" type="xs:double"/>
+            <xs:element name="y" type="xs:double"/>
+            <xs:element name="z" type="xs:double"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="velocityType">
+        <xs:sequence>
+            <xs:element name="v" type="xs:double"/>
+            <xs:element name="w" type="xs:double"/>
+            <xs:element name="z" type="xs:double"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="gridParam">
+        <xs:sequence>
+            <xs:element name="Nx" type="xs:int"/>
+            <xs:element name="Ny" type="xs:int"/>
+            <xs:element name="Nz" type="xs:int"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
