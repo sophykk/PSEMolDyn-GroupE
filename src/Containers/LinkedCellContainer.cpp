@@ -190,6 +190,7 @@ std::vector<int> &LinkedCellContainer::getParticlesInNeighborCells(const std::ar
 
 /**
  * calculates interaction forces between particles in the same or neighboring cells
+ * done in calculateF now
  * */
 void LinkedCellContainer::calculateInteractions() {
 // Constants for Lennard-Jones potential (could be parameters or class members)
