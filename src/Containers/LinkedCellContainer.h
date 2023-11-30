@@ -108,7 +108,7 @@ public:
     /**
      * update the cell associations of all particles in the simulation at each time step
      * */
-    void updateCells();
+    void updateCells(double delta_t);
 };
 
 #endif //PSEMOLDYN_GROUPE_LINKEDCELLCONTAINER_H

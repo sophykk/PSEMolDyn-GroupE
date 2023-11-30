@@ -34,13 +34,37 @@ void LinkedCellContainer::resetF() {
 }
 
 void LinkedCellContainer::calculateF() {
+    // Iterate over all cells
+    for (const auto &cell: cells) {
+        const auto &cellIndex = cell.first;
+        const std::vector<int> &particlesInCell = cell.second;
+
+        // Get neighboring particles
+        std::vector<int> neighboringParticles = getParticlesInNeighborCells(cellIndex);
+
+        // Iterate over all particles in the current cell
+        for (int particleIndex: particlesInCell) {
+            // Calculate force with neighboring particles
+            for (int neighborIndex: neighboringParticles) {
+                // Avoid double calculation and self-interaction
+                if (neighborIndex <= particleIndex) continue;
+                // Calculate force
+                std::array<double, 3> force = forceModel.calculateForce(getParticles()[particleIndex],
+                                                                        getParticles()[neighborIndex]);
+                getParticles()[particleIndex].addF(force);
+                getParticles()[neighborIndex].addF(-1.0 * force);
+                //set/add force to the particles done in calculateF? but do here, so it doesn't calculate for whole list
+            }
+        }
+    }
+    /*
     for (auto p1 = getParticles().begin(); p1 < getParticles().end(); p1++) {
         for (auto p2 = p1 + 1; p2 < getParticles().end(); p2++) {
             auto force = forceModel.calculateForce(*p1, *p2);
             p1->addF(force);
             p2->addF(-1.0 * force);
         }
-    }
+    }*/
 }
 
 void LinkedCellContainer::calculateX(double delta_t) {
@@ -101,14 +125,14 @@ std::array<int, 3> &LinkedCellContainer::calculateCellIndex(const Particle &part
         auto x = pos[i] / cutoffRadius;
         index[i] = static_cast<int>(pos[i]);
     }
-    //Todo: isWithinDomain
-    return index;
-}
-
-/**
-  * update the cell associations of all particles in the simulation at each time step
-* */
-void updateCells() {
+    if (isWithinDomain(index)) {
+        return index;
+    }
+    else{
+        //if particle in outside cell
+        std::array<int, 3> null{-1, -1, -1};
+        return null;
+    }
 
 }
 
@@ -193,4 +217,21 @@ void LinkedCellContainer::calculateInteractions() {
             }
         }
     }
+}
+
+/**
+  * update the cell associations of all particles in the simulation at each time step
+  * actually done in MolSim by many steps like shown, but doesn't work yet, in MolSim better
+* */
+void updateCells(double delta_t) {
+    /* calculateX(delta_t);
+
+    // reset forces
+    resetF();
+
+    // calculate new f
+    calculateF();
+
+    // calculate new v
+    calculateV(delta_t); */
 }
