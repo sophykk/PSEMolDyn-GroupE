@@ -3,10 +3,32 @@
     <xs:element name="simulation">
         <xs:complexType>
             <xs:sequence>
+                <xs:element name="simulationParams" type="simulationParamsType"/>
+                <xs:element name="lennardJonesForceParams" type="lennardJonesForceParamsType" minOccurs="0"/>
                 <xs:element name="cuboid" type="cuboidType" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="sphere" type="sphereType" minOccurs="0" maxOccurs="unbounded"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
+
+    <xs:complexType name="simulationParamsType">
+        <xs:sequence>
+            <xs:element name="endTime" type="xs:double"/>
+            <xs:element name="deltaT" type="xs:double"/>
+            <xs:element name="modelType" type="xs:string"/>
+            <xs:element name="containerType" type="xs:string"/>
+            <xs:element name="plotInterval" type="xs:int"/>
+            <xs:element name="domainSize" type="domainParam" minOccurs="0"/>
+            <xs:element name="rCutoff" type="xs:double" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="lennardJonesForceParamsType">
+        <xs:sequence>
+            <xs:element name="sigma" type="xs:double"/>
+            <xs:element name="epsilon" type="xs:double"/>
+        </xs:sequence>
+    </xs:complexType>
 
     <xs:complexType name="cuboidType">
         <xs:sequence>
@@ -15,6 +37,17 @@
             <xs:element name="mass" type="xs:double"/>
             <xs:element name="grid" type="gridParam"/>
             <xs:element name="spacing" type="xs:double"/>
+            <xs:element name="type" type="xs:int"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="sphereType">
+        <xs:sequence>
+            <xs:element name="position" type="positionType"/>
+            <xs:element name="velocity" type="velocityType"/>
+            <xs:element name="mass" type="xs:double"/>
+            <xs:element name="spacing" type="xs:double"/>
+            <xs:element name="radius" type="xs:double"/>
             <xs:element name="type" type="xs:int"/>
         </xs:sequence>
     </xs:complexType>
@@ -40,6 +73,14 @@
             <xs:element name="Nx" type="xs:int"/>
             <xs:element name="Ny" type="xs:int"/>
             <xs:element name="Nz" type="xs:int"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="domainParam">
+        <xs:sequence>
+            <xs:element name="Lx" type="xs:int"/>
+            <xs:element name="Ly" type="xs:int"/>
+            <xs:element name="Lz" type="xs:int" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 

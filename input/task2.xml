@@ -1,6 +1,18 @@
 <?xml version="1.0"?>
 <simulation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="../src/xsd/Simulation.xsd">
+    <simulationParams>
+        <endTime>5</endTime>
+        <deltaT>0.0002</deltaT>
+        <modelType>lennardJones</modelType>
+        <containerType>basic</containerType>
+        <plotInterval>10</plotInterval>
+    </simulationParams>
+
+    <lennardJonesForceParams>
+        <sigma>1.0</sigma>
+        <epsilon>5.0</epsilon>
+    </lennardJonesForceParams>
 
     <cuboid>
         <position>
