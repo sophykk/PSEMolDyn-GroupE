@@ -7,11 +7,11 @@
 
 #include <spdlog/spdlog.h>
 
-//, char *argsv[]
-int main(int argc) {
+//
+int main(int argc, char *argsv[]) {
 
-    double end_time = 5;
-    double delta_t = 0.0002;
+    double end_time = 20;
+    double delta_t = 0.0005;
     std::string modelType = "lennardJones";
     std::string containerType = "linkedCells";
     spdlog::level::level_enum log_level = spdlog::level::debug;
@@ -24,8 +24,8 @@ int main(int argc) {
     spdlog::info("Application started");
     spdlog::info("Hello from MolSim for PSE!");
 
-  //  XMLCuboidReader cuboidReader;
-  //  auto generators = cuboidReader.readFile(argsv[1]);
+    XMLCuboidReader cuboidReader;
+    auto generators = cuboidReader.readFile(argsv[1]);
 
     // Select to chosen force model
     std::unique_ptr<ForceBase> forceModel;
@@ -43,7 +43,7 @@ int main(int argc) {
     if (containerType == "basic") {
         particleContainer = std::make_unique<BasicParticleContainer>(*forceModel);
     } else if (containerType == "linkedCells") {
-
+/*
         std::vector<Particle> particles = {Particle({0.0, 0.0, 0.0}, {1.0, 1.0, 1.0},1.0, 0),
                                            Particle({1.0, 1.0, 0.0}, {1.0, 1.0, 1.0},1.0, 0),
                                            Particle({5.0, 3.0, 0.0}, {1.0, 1.0, 1.0},1.0, 0),
@@ -58,10 +58,10 @@ int main(int argc) {
                                            Particle({19.0, 7.0, 0.0}, {1.0, 1.0, 1.0},1.0, 0),
                                            Particle({20.0, 10.0, 0.0}, {1.0, 1.0, 1.0},1.0, 0)
         };
-
-        std::vector<double> d{20.0, 10.0, 1.0};
-        double c = 5.0;
-        particleContainer = std::make_unique<LinkedCellContainer2>(*forceModel, particles, d, c);
+*/
+        std::vector<double> d{180.0, 90.0, 1.0};
+        double c = 3.0;
+        particleContainer = std::make_unique<LinkedCellContainer2>(*forceModel, d, c);
 
 
         // spdlog::error("Linked Cells container is not yet implemented!");
@@ -70,22 +70,18 @@ int main(int argc) {
         spdlog::error("Unknown container type selected: {}", containerType);
         exit(-1);
     }
-/*
+
     // Loop over all generators and let them create particles in the container
     for (auto &gen: generators) {
         gen.generateParticles(*particleContainer);
     }
-*/
+
     // Calculate initial forces
 
     spdlog::debug("This is before calculate F");
 
     particleContainer->calculateF();
 
-    spdlog::debug("This is before calculate X");
-
-    particleContainer->calculateX(delta_t);
-/*
     // Main simulation loop
     int iteration = 0;
     double current_time = 0;
@@ -111,7 +107,7 @@ int main(int argc) {
 
         current_time += delta_t;
     }
-*/
+
     spdlog::info("output written. Terminating...");
 
     return 0;

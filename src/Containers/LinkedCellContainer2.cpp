@@ -23,8 +23,8 @@ LinkedCellContainer2::LinkedCellContainer2(ForceBase &model, std::vector<double>
 
     grid.resize(x, std::vector<std::vector<Particle>>(y, std::vector<Particle>()));
     initGrid();
-   // spdlog::info("x is {}", getGrid().size());
-   // spdlog::info("y is {}", getGrid()[0].size());
+    // spdlog::info("x is {}", getGrid().size());
+    // spdlog::info("y is {}", getGrid()[0].size());
 }
 
 LinkedCellContainer2::LinkedCellContainer2(ForceBase &model, std::vector<Particle> &particles,
@@ -39,8 +39,8 @@ LinkedCellContainer2::LinkedCellContainer2(ForceBase &model, std::vector<Particl
 
     grid.resize(x, std::vector<std::vector<Particle>>(y, std::vector<Particle>()));
     initGrid();
-  //  spdlog::info("x is {}", getGrid().size());
-  //  spdlog::info("y is {}", getGrid()[0].size());
+    //  spdlog::info("x is {}", getGrid().size());
+    //  spdlog::info("y is {}", getGrid()[0].size());
 }
 
 std::vector<Particle> &LinkedCellContainer2::getParticles() {
@@ -87,7 +87,14 @@ void LinkedCellContainer2::calculateF() {
         //    spdlog::info("first for loop");
         //left to right
         for (int x = 0; x < getGrid().size(); ++x) {
-            //      spdlog::info("second for loop");
+            for (auto p1 = grid[x][y].begin(); p1 < grid[x][y].end(); p1++) {
+                for (auto p2 = p1 + 1; p2 < grid[x][y].end(); p2++) {
+                    auto force = forceModel.calculateForce(*p1, *p2);
+                    p1->addF(force);
+                    p2->addF(-1.0 * force);
+                }
+            }
+            //spdlog::info("second for loop");
             //if above neigbour exists
             if (y + 1 >= 0 && y + 1 < getGrid()[x].size()) {
                 //     spdlog::info("first if stmt");
@@ -160,12 +167,14 @@ void LinkedCellContainer2::calculateF() {
             }
         }
     }
-    spdlog::info("plist has {} particles", particleList.size());
-    for (auto x : getGrid()) {
-        for (auto y : x) {
-            for (auto z : y) {
+    //   spdlog::info("plist has {} particles", particleList.size());
+    for (auto x: getGrid()) {
+        for (auto y: x) {
+            for (auto z: y) {
                 spdlog::info("This is {}", z.toString());
-            }}}
+            }
+        }
+    }
 }
 
 /*
@@ -190,6 +199,7 @@ void LinkedCellContainer2::calculateX(double delta_t) {
         auto xi_tn1 = Formulas::verletXStep(p.getX(), p.getV(), p.getF(), p.getM(), delta_t);
         p.setX(xi_tn1);  // Update the position
     }
+    /*
     spdlog::info("We are now in calcX");
     initGrid();
     spdlog::info("in cell 0, 0 are {} p", getGrid()[0][0].size());
@@ -204,6 +214,7 @@ void LinkedCellContainer2::calculateX(double delta_t) {
     for (auto x : getParticles()) {
         spdlog::info("This is {}", x.toString());
     }
+     */
 }
 
 void LinkedCellContainer2::calculateV(double delta_t) {
@@ -234,31 +245,31 @@ void LinkedCellContainer2::plotParticles(int iteration) {
 
 void LinkedCellContainer2::initGrid() {
 
-    spdlog::info("We are now in initGrid");
+    //   spdlog::info("We are now in initGrid");
 
-    double minDouble = 1.0;
-            //std::numeric_limits<double>::min();
+    double minDouble = std::numeric_limits<double>::min();
     double lowery = 0.0;
     double uppery = cutoffRadius;
     //y --> 0,1 --> 1,1
-    for (int i = 0; i < std::ceil(domainSize[1] / cutoffRadius); ++i) {
+    for (int y = 0; y < std::ceil(domainSize[1] / cutoffRadius); ++y) {
         //2. dimension
         double lowerx = 0.0;
         double upperx = cutoffRadius;
         //x, --> 0,0 --> 1,0 --> 2,0 --> 3,0
-        for (int j = 0; j < std::ceil(domainSize[0] / cutoffRadius); ++j) {
+        for (int x = 0; x < std::ceil(domainSize[0] / cutoffRadius); ++x) {
+            grid[x][y].clear();
             //only for 2D domains {_, _, 1}, otherwise need other implementation (extra loop)
             //3. dimension
             int u = 0;
             for (auto &p1: getParticles()) {
-                spdlog::debug("x cellSize now {} - {}", lowerx, upperx);
-                spdlog::debug("y cellSize now {} - {}", lowery, uppery);
+                //     spdlog::debug("x cellSize now {} - {}", lowerx, upperx);
+                //     spdlog::debug("y cellSize now {} - {}", lowery, uppery);
                 if (p1.getX()[0] <= upperx && p1.getX()[0] >= lowerx &&
                     p1.getX()[1] <= uppery && p1.getX()[1] >= lowery) {
-                    spdlog::debug("we are in grid {}, {}", j, i);
-                    spdlog::info("this is the particle before {}", p1.toString());
-                    grid[j][i].push_back(p1);
-                    spdlog::info("this is p1 after set to grid {}", grid[j][i][u].toString());
+                    //        spdlog::debug("we are in grid {}, {}", x, y);
+                    //        spdlog::info("this is the particle before {}", p1.toString());
+                    grid[x][y].push_back(p1);
+                    //        spdlog::info("this is p1 after set to grid {}", grid[x][y][u].toString());
                     u++;
                 }
             }
@@ -276,6 +287,7 @@ void LinkedCellContainer2::initGrid() {
             uppery += cutoffRadius;
         }
     }
+/*
     spdlog::info("in cell 0, 0 are {} p", getGrid()[0][0].size());
     spdlog::info("in cell 1, 0 are {} p", getGrid()[1][0].size());
     spdlog::info("in cell 2, 0 are {} p", getGrid()[2][0].size());
@@ -290,4 +302,5 @@ void LinkedCellContainer2::initGrid() {
             for (auto z : y) {
             spdlog::info("This is {}", z.toString());
     }}}
+*/
 }

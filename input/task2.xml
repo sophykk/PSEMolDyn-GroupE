@@ -4,8 +4,8 @@
 
     <cuboid>
         <position>
-            <x>0.0</x>
-            <y>0.0</y>
+            <x>20.0</x>
+            <y>20.0</y>
             <z>0.0</z>
         </position>
         <velocity>
@@ -15,8 +15,8 @@
         </velocity>
         <mass>1.0</mass>
         <grid>
-            <Nx>40</Nx>
-            <Ny>8</Ny>
+            <Nx>100</Nx>
+            <Ny>20</Ny>
             <Nz>1</Nz>
         </grid>
         <spacing>1.1225</spacing>
@@ -25,8 +25,8 @@
 
     <cuboid>
         <position>
-            <x>15.0</x>
-            <y>15.0</y>
+            <x>70.0</x>
+            <y>60.0</y>
             <z>0.0</z>
         </position>
         <velocity>
@@ -36,8 +36,8 @@
         </velocity>
         <mass>1.0</mass>
         <grid>
-            <Nx>8</Nx>
-            <Ny>8</Ny>
+            <Nx>20</Nx>
+            <Ny>20</Ny>
             <Nz>1</Nz>
         </grid>
         <spacing>1.1225</spacing>
