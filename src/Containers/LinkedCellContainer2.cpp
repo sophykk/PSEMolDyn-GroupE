@@ -9,26 +9,34 @@
 #include "utils/ArrayUtils.h"
 #include "inputOutput/outputWriter/VTKWriter.h"
 #include <spdlog/spdlog.h>
+#include <cmath>
 
 
-LinkedCellContainer2::LinkedCellContainer2(ForceBase &model, std::vector<int> &dSize, double &cRadius, int &cSize) :
-        ParticleContainerBase(model), domainSize(dSize), cutoffRadius(cRadius), cellSize(cSize) {
-    int x = domainSize[0] / cellSize;
-    int y = domainSize[1] / cellSize;
-    grid.resize(x, std::vector<std::vector<Particle>>(y, std::vector<Particle>(1)));
+LinkedCellContainer2::LinkedCellContainer2(ForceBase &model, std::vector<double> &dSize, double &cRadius) :
+        ParticleContainerBase(model), domainSize(dSize), cutoffRadius(cRadius) {
+    int x;
+    int y;
+    std::fmod(domainSize[0], cutoffRadius) == 0 ? x = domainSize[0] / cutoffRadius : x = std::ceil(domainSize[0] / cutoffRadius);
+    std::fmod(domainSize[1], cutoffRadius) == 0 ? y = domainSize[1] / cutoffRadius : y = std::ceil(domainSize[1] / cutoffRadius);
+
+    grid.resize(x, std::vector<std::vector<Particle>>(y, std::vector<Particle>()));
     initGrid();
+    spdlog::info("x is {}", getGrid().size());
+    spdlog::info("y is {}", getGrid()[0].size());
 }
 
-LinkedCellContainer2::LinkedCellContainer2(ForceBase &model, std::vector<Particle> &particles, std::vector<int> &dSize,
-                                           double &cRadius, int &cSize) :
-        ParticleContainerBase(model), particleList(particles), domainSize(dSize), cutoffRadius(cRadius),
-        cellSize(cSize) {
+LinkedCellContainer2::LinkedCellContainer2(ForceBase &model, std::vector<Particle> &particles,
+                                           std::vector<double> &dSize, double &cRadius) :
+        ParticleContainerBase(model), particleList(particles), domainSize(dSize), cutoffRadius(cRadius) {
+    int x;
+    int y;
+    std::fmod(domainSize[0], cutoffRadius) == 0 ? x = domainSize[0] / cutoffRadius : x = std::ceil(domainSize[0] / cutoffRadius);
+    std::fmod(domainSize[1], cutoffRadius) == 0 ? y = domainSize[1] / cutoffRadius : y = std::ceil(domainSize[1] / cutoffRadius);
 
-    int x = domainSize[0] / cellSize;
-    int y = domainSize[1] / cellSize;
-
-    grid.resize(x, std::vector<std::vector<Particle>>(y, std::vector<Particle>(1)));
+    grid.resize(x, std::vector<std::vector<Particle>>(y, std::vector<Particle>()));
     initGrid();
+    spdlog::info("x is {}", getGrid().size());
+    spdlog::info("y is {}", getGrid()[0].size());
 }
 
 std::vector<Particle> &LinkedCellContainer2::getParticles() {
@@ -37,6 +45,11 @@ std::vector<Particle> &LinkedCellContainer2::getParticles() {
 
 std::vector<std::vector<std::vector<Particle>>> &LinkedCellContainer2::getGrid() {
     return grid;
+}
+
+//just 2D first
+std::vector<Particle> &LinkedCellContainer2::getParticlesFromCell(int x, int y) {
+    return getGrid()[x][y];
 }
 
 void LinkedCellContainer2::addParticle(Particle &particle) {
@@ -62,46 +75,106 @@ void LinkedCellContainer2::resetF() {
  * now just calc for above, right and right diagonal if exists
  */
 void LinkedCellContainer2::calculateF() {
-    for (int i = 0; i < getGrid().size(); ++i) {
-        for (int j = 0; j < getGrid()[i].size(); ++j) {
+    /*
+    spdlog::info("in cell 0, 0 are {} p", getGrid()[0][0].size());
+    spdlog::info("in cell 1, 0 are {} p", getGrid()[1][0].size());
+    spdlog::info("in cell 2, 0 are {} p", getGrid()[2][0].size());
+    spdlog::info("in cell 3, 0 are {} p", getGrid()[3][0].size());
+    spdlog::info("in cell 0, 1 are {} p", getGrid()[0][1].size());
+    spdlog::info("in cell 1, 1 are {} p", getGrid()[1][1].size());
+    spdlog::info("in cell 2, 1 are {} p", getGrid()[2][1].size());
+    spdlog::info("in cell 3, 1 are {} p", getGrid()[3][1].size());
+    spdlog::info("plist has {} particles", particleList.size());
+*/
+    //down to up
+    for (int y = 0; y < getGrid()[0].size(); ++y) {
+    //    spdlog::info("first for loop");
+        //left to right
+        for (int x = 0; x < getGrid().size(); ++x) {
+      //      spdlog::info("second for loop");
+
             //if above neigbour exists
-            if (j + 1 < getGrid()[i].size()) {
+            if (y + 1 >= 0 && y + 1 < getGrid()[x].size()) {
+           //     spdlog::info("first if stmt");
                 //calculate force between this and above cell for all particles
-                for (auto p1 = getGrid()[i][j].begin(); p1 < getGrid()[i][j].end(); p1++) {
-                    for (auto p2 = getGrid()[i][j + 1].begin(); p2 < getGrid()[i][j + 1].end(); p2++) {
-                        if (withinCutoff(*p1, *p2)) {
-                            auto force = forceModel.calculateForce(*p1, *p2);
-                            p1->addF(force);
-                            p2->addF(-1.0 * force);
-                        }
+                for (auto &p1: getGrid()[x][y]) {
+             //       spdlog::info("first for loop in first if");
+
+                    for (auto &p2: getGrid()[x][y + 1]) {
+               //         spdlog::info("second for loop in first if");
+
+                        //    if (withinCutoff(p1, p2)) {
+                        auto force = forceModel.calculateForce(p1, p2);
+                        p1.addF(force);
+                        p2.addF(-1.0 * force);
+                 //       spdlog::debug("above force for Particle {} is {}, {}, {}", p1.toString(), p1.getF()[0],
+                   //                   p1.getF()[1], p1.getF()[2]);
+                        //    }
                     }
                 }
             }
             //if right hand neighbour exists
-            if (i + 1 < getGrid().size()) {
-                for (auto p1 = getGrid()[i][j].begin(); p1 < getGrid()[i][j].end(); p1++) {
-                    for (auto p2 = getGrid()[i + 1][j].begin(); p2 < getGrid()[i + 1][j].end(); p2++) {
-                        if (withinCutoff(*p1, *p2)) {
-                            auto force = forceModel.calculateForce(*p1, *p2);
-                            p1->addF(force);
-                            p2->addF(-1.0 * force);
-                        }
+            if (x + 1 >= 0 && x + 1 < getGrid().size()) {
+           //     spdlog::info("second if stmt");
+
+                for (auto &p1: getGrid()[x][y]) {
+             //       spdlog::info("first for loop in second if");
+
+                    for (auto &p2: getGrid()[x + 1][y]) {
+               //         spdlog::info("second for loop in second if");
+
+                        //    if (withinCutoff(p1, p2)) {
+                        auto force = forceModel.calculateForce(p1, p2);
+                        p1.addF(force);
+                        p2.addF(-1.0 * force);
+                //        spdlog::debug("right force for Particle {} is {}, {}, {}", p1.toString(), p1.getF()[0],
+                //                      p1.getF()[1], p1.getF()[2]);
+                        //    }
                     }
                 }
             }
-            //if right diagonal neighbour exists
-            if (i + 1 < getGrid().size() && j + 1 < getGrid()[i].size()) {
-                for (auto p1 = getGrid()[i][j].begin(); p1 < getGrid()[i][j].end(); p1++) {
-                    for (auto p2 = getGrid()[i + 1][j + 1].begin(); p2 < getGrid()[i + 1][j + 1].end(); p2++) {
-                        if (withinCutoff(*p1, *p2)) {
-                            auto force = forceModel.calculateForce(*p1, *p2);
-                            p1->addF(force);
-                            p2->addF(-1.0 * force);
-                        }
+            //if upper right diagonal neighbour exists
+            if (y + 1 >= 0 && y + 1 < getGrid()[x].size() && x + 1 >= 0 && x + 1 < getGrid().size()) {
+            //    spdlog::info("third if stmt");
+
+                for (auto &p1: getGrid()[x][y]) {
+                //    spdlog::info("first for loop in third if");
+
+                    for (auto &p2: getGrid()[x + 1][y + 1]) {
+                //        spdlog::info("second for loop in third if");
+
+                        //    if (withinCutoff(p1, p2)) {
+                        auto force = forceModel.calculateForce(p1, p2);
+                        p1.addF(force);
+                        p2.addF(-1.0 * force);
+                //        spdlog::debug("diagonal force for Particle {} is {}, {}, {}", p1.toString(), p1.getF()[0],
+                //                      p1.getF()[1], p1.getF()[2]);
+                        //    }
+                    }
+                }
+            }
+            //if upper left diagonal neighbour exists
+            if (y + 1 >= 0 && y + 1 < getGrid()[x].size() && x - 1 >= 0 && x - 1 < getGrid().size()) {
+            //    spdlog::info("fourth if stmt");
+
+                for (auto &p1: getGrid()[x][y]) {
+                //    spdlog::info("first for loop in fourth if");
+
+                    for (auto &p2: getGrid()[x - 1][y]) {
+                    //    spdlog::info("second for loop in fourth if");
+
+                        //    if (withinCutoff(p1, p2)) {
+                        auto force = forceModel.calculateForce(p1, p2);
+                        p1.addF(force);
+                        p2.addF(-1.0 * force);
+                    //    spdlog::debug("diagonal force for Particle {} is {}, {}, {}", p1.toString(), p1.getF()[0],
+                   //                   p1.getF()[1], p1.getF()[2]);
+                        //    }
                     }
                 }
             }
         }
+
     }
 
 /* og calc F
@@ -115,10 +188,11 @@ for (auto p1 = getParticles().begin(); p1 < getParticles().end(); p1++) {
 */
 }
 
+/*
 bool LinkedCellContainer2::withinCutoff(Particle &p1, Particle &p2) const {
     std::array<double, 3> distance{};
     if (p1.getX() < p2.getX()) {
-        distance = p1.getX() - p2.getX();
+        distance = p2.getX() - p1.getX();
     } else {
         distance = p1.getX() - p2.getX();
     }
@@ -127,6 +201,7 @@ bool LinkedCellContainer2::withinCutoff(Particle &p1, Particle &p2) const {
     }
     return true;
 }
+*/
 
 void LinkedCellContainer2::calculateX(double delta_t) {
     for (auto &p: getParticles()) {
@@ -134,6 +209,7 @@ void LinkedCellContainer2::calculateX(double delta_t) {
         // Calculate xi(tn+1)
         auto xi_tn1 = Formulas::verletXStep(p.getX(), p.getV(), p.getF(), p.getM(), delta_t);
         p.setX(xi_tn1);  // Update the position
+        initGrid();
     }
 }
 
@@ -165,32 +241,49 @@ void LinkedCellContainer2::plotParticles(int iteration) {
 
 void LinkedCellContainer2::initGrid() {
 
-    int lowery = 0;
-    int uppery = cellSize;
+    double lowery = 0.0;
+    double uppery = cutoffRadius;
     //y --> 0,1 --> 1,1
-    for (int i = 0; i < domainSize[1] / cellSize; ++i) {
+    for (int i = 0; i < domainSize[1] / cutoffRadius; ++i) {
         //2. dimension
-        int lowerx = 0;
-        int upperx = cellSize;
+        double lowerx = 0.0;
+        double upperx = cutoffRadius;
         //x, --> 0,0 --> 1,0 --> 2,0 --> 3,0
-        for (int j = 0; j < domainSize[0] / cellSize; ++j) {
+        for (int j = 0; j < std::ceil(domainSize[0] / cutoffRadius); ++j) {
             //only for 2D domains {_, _, 1}, otherwise need other implementation (extra loop)
             //3. dimension
-            for (auto p1 = getParticles().begin(); p1 < getParticles().end(); p1++) {
-                spdlog::debug("x cellSize now {} - {}", lowerx, upperx);
-                spdlog::debug("y cellSize now {} - {}", lowery, uppery);
-                if (p1->getX()[0] <= upperx && p1->getX()[0] >= lowerx &&
-                    p1->getX()[1] <= uppery && p1->getX()[1] >= lowery) {
-                    spdlog::debug("we are in grid {}, {}", j, i);
-                    spdlog::info("this is the particle before {}", p1->toString());
-                    grid[j][i][0] = *p1;
-                    spdlog::info("this is p1 after set to grid {}", grid[j][i][0].toString());
+            int u = 0;
+            for (auto &p1 : getParticles()) {
+            //    spdlog::debug("x cellSize now {} - {}", lowerx, upperx);
+            //    spdlog::debug("y cellSize now {} - {}", lowery, uppery);
+                if (p1.getX()[0] <= upperx && p1.getX()[0] >= lowerx &&
+                    p1.getX()[1] <= uppery && p1.getX()[1] >= lowery) {
+            //        spdlog::debug("we are in grid {}, {}", j, i);
+            //        spdlog::info("this is the particle before {}", p1.toString());
+                    grid[j][i].push_back(p1);
+            //        spdlog::info("this is p1 after set to grid {}", grid[j][i][u].toString());
+                    u++;
                 }
             }
-            lowerx = upperx + 1;
-            upperx += cellSize;
+            lowerx = upperx + 1.0;
+            if (upperx + cutoffRadius <= domainSize[1]){
+                upperx += cutoffRadius;
+            }
+            upperx += cutoffRadius;
         }
-        lowery = uppery + 1;
-        uppery += cellSize;
+        lowery = uppery + 1.0;
+        uppery += cutoffRadius;
     }
+    /*
+    spdlog::info("in cell 0, 0 are {} p", getGrid()[0][0].size());
+    spdlog::info("in cell 1, 0 are {} p", getGrid()[1][0].size());
+    spdlog::info("in cell 2, 0 are {} p", getGrid()[2][0].size());
+    spdlog::info("in cell 3, 0 are {} p", getGrid()[3][0].size());
+    spdlog::info("in cell 0, 1 are {} p", getGrid()[0][1].size());
+    spdlog::info("in cell 1, 1 are {} p", getGrid()[1][1].size());
+    spdlog::info("in cell 2, 1 are {} p", getGrid()[2][1].size());
+    spdlog::info("in cell 3, 1 are {} p", getGrid()[3][1].size());
+    spdlog::info("plist has {} particles", particleList.size());
+
+     */
 }
