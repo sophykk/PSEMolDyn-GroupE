@@ -6,7 +6,7 @@
 #include "Formulas.h"
 #include <cmath>
 
-SphereParticleGenerator::SphereParticleGenerator(std::array<int, 3> x1, double h1, double m1, std::array<double, 3> v1,
+SphereParticleGenerator::SphereParticleGenerator(std::array<double, 3> x1, double h1, double m1, std::array<double, 3> v1,
                                                  double r1, int type1)
         : x(x1), h(h1), m(m1), v(v1), r(r1), type(type1) {
     /** Coordinates of the center: x1 × x2 × x3

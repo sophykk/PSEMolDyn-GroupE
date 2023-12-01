@@ -40,6 +40,206 @@
 
 #include "Simulation.hxx"
 
+// simulationParamsType
+// 
+
+const simulationParamsType::endTime_type& simulationParamsType::
+endTime () const
+{
+  return this->endTime_.get ();
+}
+
+simulationParamsType::endTime_type& simulationParamsType::
+endTime ()
+{
+  return this->endTime_.get ();
+}
+
+void simulationParamsType::
+endTime (const endTime_type& x)
+{
+  this->endTime_.set (x);
+}
+
+const simulationParamsType::deltaT_type& simulationParamsType::
+deltaT () const
+{
+  return this->deltaT_.get ();
+}
+
+simulationParamsType::deltaT_type& simulationParamsType::
+deltaT ()
+{
+  return this->deltaT_.get ();
+}
+
+void simulationParamsType::
+deltaT (const deltaT_type& x)
+{
+  this->deltaT_.set (x);
+}
+
+const simulationParamsType::modelType_type& simulationParamsType::
+modelType () const
+{
+  return this->modelType_.get ();
+}
+
+simulationParamsType::modelType_type& simulationParamsType::
+modelType ()
+{
+  return this->modelType_.get ();
+}
+
+void simulationParamsType::
+modelType (const modelType_type& x)
+{
+  this->modelType_.set (x);
+}
+
+void simulationParamsType::
+modelType (::std::auto_ptr< modelType_type > x)
+{
+  this->modelType_.set (x);
+}
+
+const simulationParamsType::containerType_type& simulationParamsType::
+containerType () const
+{
+  return this->containerType_.get ();
+}
+
+simulationParamsType::containerType_type& simulationParamsType::
+containerType ()
+{
+  return this->containerType_.get ();
+}
+
+void simulationParamsType::
+containerType (const containerType_type& x)
+{
+  this->containerType_.set (x);
+}
+
+void simulationParamsType::
+containerType (::std::auto_ptr< containerType_type > x)
+{
+  this->containerType_.set (x);
+}
+
+const simulationParamsType::plotInterval_type& simulationParamsType::
+plotInterval () const
+{
+  return this->plotInterval_.get ();
+}
+
+simulationParamsType::plotInterval_type& simulationParamsType::
+plotInterval ()
+{
+  return this->plotInterval_.get ();
+}
+
+void simulationParamsType::
+plotInterval (const plotInterval_type& x)
+{
+  this->plotInterval_.set (x);
+}
+
+const simulationParamsType::domainSize_optional& simulationParamsType::
+domainSize () const
+{
+  return this->domainSize_;
+}
+
+simulationParamsType::domainSize_optional& simulationParamsType::
+domainSize ()
+{
+  return this->domainSize_;
+}
+
+void simulationParamsType::
+domainSize (const domainSize_type& x)
+{
+  this->domainSize_.set (x);
+}
+
+void simulationParamsType::
+domainSize (const domainSize_optional& x)
+{
+  this->domainSize_ = x;
+}
+
+void simulationParamsType::
+domainSize (::std::auto_ptr< domainSize_type > x)
+{
+  this->domainSize_.set (x);
+}
+
+const simulationParamsType::rCutoff_optional& simulationParamsType::
+rCutoff () const
+{
+  return this->rCutoff_;
+}
+
+simulationParamsType::rCutoff_optional& simulationParamsType::
+rCutoff ()
+{
+  return this->rCutoff_;
+}
+
+void simulationParamsType::
+rCutoff (const rCutoff_type& x)
+{
+  this->rCutoff_.set (x);
+}
+
+void simulationParamsType::
+rCutoff (const rCutoff_optional& x)
+{
+  this->rCutoff_ = x;
+}
+
+
+// lennardJonesForceParamsType
+// 
+
+const lennardJonesForceParamsType::sigma_type& lennardJonesForceParamsType::
+sigma () const
+{
+  return this->sigma_.get ();
+}
+
+lennardJonesForceParamsType::sigma_type& lennardJonesForceParamsType::
+sigma ()
+{
+  return this->sigma_.get ();
+}
+
+void lennardJonesForceParamsType::
+sigma (const sigma_type& x)
+{
+  this->sigma_.set (x);
+}
+
+const lennardJonesForceParamsType::epsilon_type& lennardJonesForceParamsType::
+epsilon () const
+{
+  return this->epsilon_.get ();
+}
+
+lennardJonesForceParamsType::epsilon_type& lennardJonesForceParamsType::
+epsilon ()
+{
+  return this->epsilon_.get ();
+}
+
+void lennardJonesForceParamsType::
+epsilon (const epsilon_type& x)
+{
+  this->epsilon_.set (x);
+}
+
+
 // cuboidType
 // 
 
@@ -164,6 +364,130 @@ type ()
 }
 
 void cuboidType::
+type (const type_type& x)
+{
+  this->type_.set (x);
+}
+
+
+// sphereType
+// 
+
+const sphereType::position_type& sphereType::
+position () const
+{
+  return this->position_.get ();
+}
+
+sphereType::position_type& sphereType::
+position ()
+{
+  return this->position_.get ();
+}
+
+void sphereType::
+position (const position_type& x)
+{
+  this->position_.set (x);
+}
+
+void sphereType::
+position (::std::auto_ptr< position_type > x)
+{
+  this->position_.set (x);
+}
+
+const sphereType::velocity_type& sphereType::
+velocity () const
+{
+  return this->velocity_.get ();
+}
+
+sphereType::velocity_type& sphereType::
+velocity ()
+{
+  return this->velocity_.get ();
+}
+
+void sphereType::
+velocity (const velocity_type& x)
+{
+  this->velocity_.set (x);
+}
+
+void sphereType::
+velocity (::std::auto_ptr< velocity_type > x)
+{
+  this->velocity_.set (x);
+}
+
+const sphereType::mass_type& sphereType::
+mass () const
+{
+  return this->mass_.get ();
+}
+
+sphereType::mass_type& sphereType::
+mass ()
+{
+  return this->mass_.get ();
+}
+
+void sphereType::
+mass (const mass_type& x)
+{
+  this->mass_.set (x);
+}
+
+const sphereType::spacing_type& sphereType::
+spacing () const
+{
+  return this->spacing_.get ();
+}
+
+sphereType::spacing_type& sphereType::
+spacing ()
+{
+  return this->spacing_.get ();
+}
+
+void sphereType::
+spacing (const spacing_type& x)
+{
+  this->spacing_.set (x);
+}
+
+const sphereType::radius_type& sphereType::
+radius () const
+{
+  return this->radius_.get ();
+}
+
+sphereType::radius_type& sphereType::
+radius ()
+{
+  return this->radius_.get ();
+}
+
+void sphereType::
+radius (const radius_type& x)
+{
+  this->radius_.set (x);
+}
+
+const sphereType::type_type& sphereType::
+type () const
+{
+  return this->type_.get ();
+}
+
+sphereType::type_type& sphereType::
+type ()
+{
+  return this->type_.get ();
+}
+
+void sphereType::
 type (const type_type& x)
 {
   this->type_.set (x);
@@ -344,8 +668,126 @@ Nz (const Nz_type& x)
 }
 
 
+// domainParam
+// 
+
+const domainParam::Lx_type& domainParam::
+Lx () const
+{
+  return this->Lx_.get ();
+}
+
+domainParam::Lx_type& domainParam::
+Lx ()
+{
+  return this->Lx_.get ();
+}
+
+void domainParam::
+Lx (const Lx_type& x)
+{
+  this->Lx_.set (x);
+}
+
+const domainParam::Ly_type& domainParam::
+Ly () const
+{
+  return this->Ly_.get ();
+}
+
+domainParam::Ly_type& domainParam::
+Ly ()
+{
+  return this->Ly_.get ();
+}
+
+void domainParam::
+Ly (const Ly_type& x)
+{
+  this->Ly_.set (x);
+}
+
+const domainParam::Lz_optional& domainParam::
+Lz () const
+{
+  return this->Lz_;
+}
+
+domainParam::Lz_optional& domainParam::
+Lz ()
+{
+  return this->Lz_;
+}
+
+void domainParam::
+Lz (const Lz_type& x)
+{
+  this->Lz_.set (x);
+}
+
+void domainParam::
+Lz (const Lz_optional& x)
+{
+  this->Lz_ = x;
+}
+
+
 // simulation
 // 
+
+const simulation::simulationParams_type& simulation::
+simulationParams () const
+{
+  return this->simulationParams_.get ();
+}
+
+simulation::simulationParams_type& simulation::
+simulationParams ()
+{
+  return this->simulationParams_.get ();
+}
+
+void simulation::
+simulationParams (const simulationParams_type& x)
+{
+  this->simulationParams_.set (x);
+}
+
+void simulation::
+simulationParams (::std::auto_ptr< simulationParams_type > x)
+{
+  this->simulationParams_.set (x);
+}
+
+const simulation::lennardJonesForceParams_optional& simulation::
+lennardJonesForceParams () const
+{
+  return this->lennardJonesForceParams_;
+}
+
+simulation::lennardJonesForceParams_optional& simulation::
+lennardJonesForceParams ()
+{
+  return this->lennardJonesForceParams_;
+}
+
+void simulation::
+lennardJonesForceParams (const lennardJonesForceParams_type& x)
+{
+  this->lennardJonesForceParams_.set (x);
+}
+
+void simulation::
+lennardJonesForceParams (const lennardJonesForceParams_optional& x)
+{
+  this->lennardJonesForceParams_ = x;
+}
+
+void simulation::
+lennardJonesForceParams (::std::auto_ptr< lennardJonesForceParams_type > x)
+{
+  this->lennardJonesForceParams_.set (x);
+}
 
 const simulation::cuboid_sequence& simulation::
 cuboid () const
@@ -365,8 +807,358 @@ cuboid (const cuboid_sequence& s)
   this->cuboid_ = s;
 }
 
+const simulation::sphere_sequence& simulation::
+sphere () const
+{
+  return this->sphere_;
+}
+
+simulation::sphere_sequence& simulation::
+sphere ()
+{
+  return this->sphere_;
+}
+
+void simulation::
+sphere (const sphere_sequence& s)
+{
+  this->sphere_ = s;
+}
+
 
 #include <xsd/cxx/xml/dom/parsing-source.hxx>
+
+// simulationParamsType
+//
+
+simulationParamsType::
+simulationParamsType (const endTime_type& endTime,
+                      const deltaT_type& deltaT,
+                      const modelType_type& modelType,
+                      const containerType_type& containerType,
+                      const plotInterval_type& plotInterval)
+: ::xml_schema::type (),
+  endTime_ (endTime, this),
+  deltaT_ (deltaT, this),
+  modelType_ (modelType, this),
+  containerType_ (containerType, this),
+  plotInterval_ (plotInterval, this),
+  domainSize_ (this),
+  rCutoff_ (this)
+{
+}
+
+simulationParamsType::
+simulationParamsType (const simulationParamsType& x,
+                      ::xml_schema::flags f,
+                      ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  endTime_ (x.endTime_, f, this),
+  deltaT_ (x.deltaT_, f, this),
+  modelType_ (x.modelType_, f, this),
+  containerType_ (x.containerType_, f, this),
+  plotInterval_ (x.plotInterval_, f, this),
+  domainSize_ (x.domainSize_, f, this),
+  rCutoff_ (x.rCutoff_, f, this)
+{
+}
+
+simulationParamsType::
+simulationParamsType (const ::xercesc::DOMElement& e,
+                      ::xml_schema::flags f,
+                      ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  endTime_ (this),
+  deltaT_ (this),
+  modelType_ (this),
+  containerType_ (this),
+  plotInterval_ (this),
+  domainSize_ (this),
+  rCutoff_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
+}
+
+void simulationParamsType::
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
+
+    // endTime
+    //
+    if (n.name () == "endTime" && n.namespace_ ().empty ())
+    {
+      if (!endTime_.present ())
+      {
+        this->endTime_.set (endTime_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // deltaT
+    //
+    if (n.name () == "deltaT" && n.namespace_ ().empty ())
+    {
+      if (!deltaT_.present ())
+      {
+        this->deltaT_.set (deltaT_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // modelType
+    //
+    if (n.name () == "modelType" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< modelType_type > r (
+        modelType_traits::create (i, f, this));
+
+      if (!modelType_.present ())
+      {
+        this->modelType_.set (r);
+        continue;
+      }
+    }
+
+    // containerType
+    //
+    if (n.name () == "containerType" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< containerType_type > r (
+        containerType_traits::create (i, f, this));
+
+      if (!containerType_.present ())
+      {
+        this->containerType_.set (r);
+        continue;
+      }
+    }
+
+    // plotInterval
+    //
+    if (n.name () == "plotInterval" && n.namespace_ ().empty ())
+    {
+      if (!plotInterval_.present ())
+      {
+        this->plotInterval_.set (plotInterval_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // domainSize
+    //
+    if (n.name () == "domainSize" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< domainSize_type > r (
+        domainSize_traits::create (i, f, this));
+
+      if (!this->domainSize_)
+      {
+        this->domainSize_.set (r);
+        continue;
+      }
+    }
+
+    // rCutoff
+    //
+    if (n.name () == "rCutoff" && n.namespace_ ().empty ())
+    {
+      if (!this->rCutoff_)
+      {
+        this->rCutoff_.set (rCutoff_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    break;
+  }
+
+  if (!endTime_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "endTime",
+      "");
+  }
+
+  if (!deltaT_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "deltaT",
+      "");
+  }
+
+  if (!modelType_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "modelType",
+      "");
+  }
+
+  if (!containerType_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "containerType",
+      "");
+  }
+
+  if (!plotInterval_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "plotInterval",
+      "");
+  }
+}
+
+simulationParamsType* simulationParamsType::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class simulationParamsType (*this, f, c);
+}
+
+simulationParamsType& simulationParamsType::
+operator= (const simulationParamsType& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->endTime_ = x.endTime_;
+    this->deltaT_ = x.deltaT_;
+    this->modelType_ = x.modelType_;
+    this->containerType_ = x.containerType_;
+    this->plotInterval_ = x.plotInterval_;
+    this->domainSize_ = x.domainSize_;
+    this->rCutoff_ = x.rCutoff_;
+  }
+
+  return *this;
+}
+
+simulationParamsType::
+~simulationParamsType ()
+{
+}
+
+// lennardJonesForceParamsType
+//
+
+lennardJonesForceParamsType::
+lennardJonesForceParamsType (const sigma_type& sigma,
+                             const epsilon_type& epsilon)
+: ::xml_schema::type (),
+  sigma_ (sigma, this),
+  epsilon_ (epsilon, this)
+{
+}
+
+lennardJonesForceParamsType::
+lennardJonesForceParamsType (const lennardJonesForceParamsType& x,
+                             ::xml_schema::flags f,
+                             ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  sigma_ (x.sigma_, f, this),
+  epsilon_ (x.epsilon_, f, this)
+{
+}
+
+lennardJonesForceParamsType::
+lennardJonesForceParamsType (const ::xercesc::DOMElement& e,
+                             ::xml_schema::flags f,
+                             ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  sigma_ (this),
+  epsilon_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
+}
+
+void lennardJonesForceParamsType::
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
+
+    // sigma
+    //
+    if (n.name () == "sigma" && n.namespace_ ().empty ())
+    {
+      if (!sigma_.present ())
+      {
+        this->sigma_.set (sigma_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // epsilon
+    //
+    if (n.name () == "epsilon" && n.namespace_ ().empty ())
+    {
+      if (!epsilon_.present ())
+      {
+        this->epsilon_.set (epsilon_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    break;
+  }
+
+  if (!sigma_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "sigma",
+      "");
+  }
+
+  if (!epsilon_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "epsilon",
+      "");
+  }
+}
+
+lennardJonesForceParamsType* lennardJonesForceParamsType::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class lennardJonesForceParamsType (*this, f, c);
+}
+
+lennardJonesForceParamsType& lennardJonesForceParamsType::
+operator= (const lennardJonesForceParamsType& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->sigma_ = x.sigma_;
+    this->epsilon_ = x.epsilon_;
+  }
+
+  return *this;
+}
+
+lennardJonesForceParamsType::
+~lennardJonesForceParamsType ()
+{
+}
 
 // cuboidType
 //
@@ -595,6 +1387,233 @@ operator= (const cuboidType& x)
 
 cuboidType::
 ~cuboidType ()
+{
+}
+
+// sphereType
+//
+
+sphereType::
+sphereType (const position_type& position,
+            const velocity_type& velocity,
+            const mass_type& mass,
+            const spacing_type& spacing,
+            const radius_type& radius,
+            const type_type& type)
+: ::xml_schema::type (),
+  position_ (position, this),
+  velocity_ (velocity, this),
+  mass_ (mass, this),
+  spacing_ (spacing, this),
+  radius_ (radius, this),
+  type_ (type, this)
+{
+}
+
+sphereType::
+sphereType (::std::auto_ptr< position_type > position,
+            ::std::auto_ptr< velocity_type > velocity,
+            const mass_type& mass,
+            const spacing_type& spacing,
+            const radius_type& radius,
+            const type_type& type)
+: ::xml_schema::type (),
+  position_ (position, this),
+  velocity_ (velocity, this),
+  mass_ (mass, this),
+  spacing_ (spacing, this),
+  radius_ (radius, this),
+  type_ (type, this)
+{
+}
+
+sphereType::
+sphereType (const sphereType& x,
+            ::xml_schema::flags f,
+            ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  position_ (x.position_, f, this),
+  velocity_ (x.velocity_, f, this),
+  mass_ (x.mass_, f, this),
+  spacing_ (x.spacing_, f, this),
+  radius_ (x.radius_, f, this),
+  type_ (x.type_, f, this)
+{
+}
+
+sphereType::
+sphereType (const ::xercesc::DOMElement& e,
+            ::xml_schema::flags f,
+            ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  position_ (this),
+  velocity_ (this),
+  mass_ (this),
+  spacing_ (this),
+  radius_ (this),
+  type_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
+}
+
+void sphereType::
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
+
+    // position
+    //
+    if (n.name () == "position" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< position_type > r (
+        position_traits::create (i, f, this));
+
+      if (!position_.present ())
+      {
+        this->position_.set (r);
+        continue;
+      }
+    }
+
+    // velocity
+    //
+    if (n.name () == "velocity" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< velocity_type > r (
+        velocity_traits::create (i, f, this));
+
+      if (!velocity_.present ())
+      {
+        this->velocity_.set (r);
+        continue;
+      }
+    }
+
+    // mass
+    //
+    if (n.name () == "mass" && n.namespace_ ().empty ())
+    {
+      if (!mass_.present ())
+      {
+        this->mass_.set (mass_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // spacing
+    //
+    if (n.name () == "spacing" && n.namespace_ ().empty ())
+    {
+      if (!spacing_.present ())
+      {
+        this->spacing_.set (spacing_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // radius
+    //
+    if (n.name () == "radius" && n.namespace_ ().empty ())
+    {
+      if (!radius_.present ())
+      {
+        this->radius_.set (radius_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // type
+    //
+    if (n.name () == "type" && n.namespace_ ().empty ())
+    {
+      if (!type_.present ())
+      {
+        this->type_.set (type_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    break;
+  }
+
+  if (!position_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "position",
+      "");
+  }
+
+  if (!velocity_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "velocity",
+      "");
+  }
+
+  if (!mass_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "mass",
+      "");
+  }
+
+  if (!spacing_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "spacing",
+      "");
+  }
+
+  if (!radius_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "radius",
+      "");
+  }
+
+  if (!type_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "type",
+      "");
+  }
+}
+
+sphereType* sphereType::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class sphereType (*this, f, c);
+}
+
+sphereType& sphereType::
+operator= (const sphereType& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->position_ = x.position_;
+    this->velocity_ = x.velocity_;
+    this->mass_ = x.mass_;
+    this->spacing_ = x.spacing_;
+    this->radius_ = x.radius_;
+    this->type_ = x.type_;
+  }
+
+  return *this;
+}
+
+sphereType::
+~sphereType ()
 {
 }
 
@@ -1003,13 +2022,153 @@ gridParam::
 {
 }
 
+// domainParam
+//
+
+domainParam::
+domainParam (const Lx_type& Lx,
+             const Ly_type& Ly)
+: ::xml_schema::type (),
+  Lx_ (Lx, this),
+  Ly_ (Ly, this),
+  Lz_ (this)
+{
+}
+
+domainParam::
+domainParam (const domainParam& x,
+             ::xml_schema::flags f,
+             ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  Lx_ (x.Lx_, f, this),
+  Ly_ (x.Ly_, f, this),
+  Lz_ (x.Lz_, f, this)
+{
+}
+
+domainParam::
+domainParam (const ::xercesc::DOMElement& e,
+             ::xml_schema::flags f,
+             ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  Lx_ (this),
+  Ly_ (this),
+  Lz_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
+}
+
+void domainParam::
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
+
+    // Lx
+    //
+    if (n.name () == "Lx" && n.namespace_ ().empty ())
+    {
+      if (!Lx_.present ())
+      {
+        this->Lx_.set (Lx_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // Ly
+    //
+    if (n.name () == "Ly" && n.namespace_ ().empty ())
+    {
+      if (!Ly_.present ())
+      {
+        this->Ly_.set (Ly_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // Lz
+    //
+    if (n.name () == "Lz" && n.namespace_ ().empty ())
+    {
+      if (!this->Lz_)
+      {
+        this->Lz_.set (Lz_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    break;
+  }
+
+  if (!Lx_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "Lx",
+      "");
+  }
+
+  if (!Ly_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "Ly",
+      "");
+  }
+}
+
+domainParam* domainParam::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class domainParam (*this, f, c);
+}
+
+domainParam& domainParam::
+operator= (const domainParam& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->Lx_ = x.Lx_;
+    this->Ly_ = x.Ly_;
+    this->Lz_ = x.Lz_;
+  }
+
+  return *this;
+}
+
+domainParam::
+~domainParam ()
+{
+}
+
 // simulation
 //
 
 simulation::
-simulation ()
+simulation (const simulationParams_type& simulationParams)
 : ::xml_schema::type (),
-  cuboid_ (this)
+  simulationParams_ (simulationParams, this),
+  lennardJonesForceParams_ (this),
+  cuboid_ (this),
+  sphere_ (this)
+{
+}
+
+simulation::
+simulation (::std::auto_ptr< simulationParams_type > simulationParams)
+: ::xml_schema::type (),
+  simulationParams_ (simulationParams, this),
+  lennardJonesForceParams_ (this),
+  cuboid_ (this),
+  sphere_ (this)
 {
 }
 
@@ -1018,7 +2177,10 @@ simulation (const simulation& x,
             ::xml_schema::flags f,
             ::xml_schema::container* c)
 : ::xml_schema::type (x, f, c),
-  cuboid_ (x.cuboid_, f, this)
+  simulationParams_ (x.simulationParams_, f, this),
+  lennardJonesForceParams_ (x.lennardJonesForceParams_, f, this),
+  cuboid_ (x.cuboid_, f, this),
+  sphere_ (x.sphere_, f, this)
 {
 }
 
@@ -1027,7 +2189,10 @@ simulation (const ::xercesc::DOMElement& e,
             ::xml_schema::flags f,
             ::xml_schema::container* c)
 : ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
-  cuboid_ (this)
+  simulationParams_ (this),
+  lennardJonesForceParams_ (this),
+  cuboid_ (this),
+  sphere_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -1046,6 +2211,34 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
     const ::xsd::cxx::xml::qualified_name< char > n (
       ::xsd::cxx::xml::dom::name< char > (i));
 
+    // simulationParams
+    //
+    if (n.name () == "simulationParams" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< simulationParams_type > r (
+        simulationParams_traits::create (i, f, this));
+
+      if (!simulationParams_.present ())
+      {
+        this->simulationParams_.set (r);
+        continue;
+      }
+    }
+
+    // lennardJonesForceParams
+    //
+    if (n.name () == "lennardJonesForceParams" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< lennardJonesForceParams_type > r (
+        lennardJonesForceParams_traits::create (i, f, this));
+
+      if (!this->lennardJonesForceParams_)
+      {
+        this->lennardJonesForceParams_.set (r);
+        continue;
+      }
+    }
+
     // cuboid
     //
     if (n.name () == "cuboid" && n.namespace_ ().empty ())
@@ -1057,7 +2250,25 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       continue;
     }
 
+    // sphere
+    //
+    if (n.name () == "sphere" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< sphere_type > r (
+        sphere_traits::create (i, f, this));
+
+      this->sphere_.push_back (r);
+      continue;
+    }
+
     break;
+  }
+
+  if (!simulationParams_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "simulationParams",
+      "");
   }
 }
 
@@ -1074,7 +2285,10 @@ operator= (const simulation& x)
   if (this != &x)
   {
     static_cast< ::xml_schema::type& > (*this) = x;
+    this->simulationParams_ = x.simulationParams_;
+    this->lennardJonesForceParams_ = x.lennardJonesForceParams_;
     this->cuboid_ = x.cuboid_;
+    this->sphere_ = x.sphere_;
   }
 
   return *this;

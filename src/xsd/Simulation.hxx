@@ -222,10 +222,14 @@ namespace xml_schema
 
 // Forward declarations.
 //
+class simulationParamsType;
+class lennardJonesForceParamsType;
 class cuboidType;
+class sphereType;
 class positionType;
 class velocityType;
 class gridParam;
+class domainParam;
 class simulation;
 
 #include <memory>    // ::std::auto_ptr
@@ -240,6 +244,233 @@ class simulation;
 #include <xsd/cxx/tree/list.hxx>
 
 #include <xsd/cxx/xml/dom/parsing-header.hxx>
+
+class simulationParamsType: public ::xml_schema::type
+{
+  public:
+  // endTime
+  //
+  typedef ::xml_schema::double_ endTime_type;
+  typedef ::xsd::cxx::tree::traits< endTime_type, char, ::xsd::cxx::tree::schema_type::double_ > endTime_traits;
+
+  const endTime_type&
+  endTime () const;
+
+  endTime_type&
+  endTime ();
+
+  void
+  endTime (const endTime_type& x);
+
+  // deltaT
+  //
+  typedef ::xml_schema::double_ deltaT_type;
+  typedef ::xsd::cxx::tree::traits< deltaT_type, char, ::xsd::cxx::tree::schema_type::double_ > deltaT_traits;
+
+  const deltaT_type&
+  deltaT () const;
+
+  deltaT_type&
+  deltaT ();
+
+  void
+  deltaT (const deltaT_type& x);
+
+  // modelType
+  //
+  typedef ::xml_schema::string modelType_type;
+  typedef ::xsd::cxx::tree::traits< modelType_type, char > modelType_traits;
+
+  const modelType_type&
+  modelType () const;
+
+  modelType_type&
+  modelType ();
+
+  void
+  modelType (const modelType_type& x);
+
+  void
+  modelType (::std::auto_ptr< modelType_type > p);
+
+  // containerType
+  //
+  typedef ::xml_schema::string containerType_type;
+  typedef ::xsd::cxx::tree::traits< containerType_type, char > containerType_traits;
+
+  const containerType_type&
+  containerType () const;
+
+  containerType_type&
+  containerType ();
+
+  void
+  containerType (const containerType_type& x);
+
+  void
+  containerType (::std::auto_ptr< containerType_type > p);
+
+  // plotInterval
+  //
+  typedef ::xml_schema::int_ plotInterval_type;
+  typedef ::xsd::cxx::tree::traits< plotInterval_type, char > plotInterval_traits;
+
+  const plotInterval_type&
+  plotInterval () const;
+
+  plotInterval_type&
+  plotInterval ();
+
+  void
+  plotInterval (const plotInterval_type& x);
+
+  // domainSize
+  //
+  typedef ::domainParam domainSize_type;
+  typedef ::xsd::cxx::tree::optional< domainSize_type > domainSize_optional;
+  typedef ::xsd::cxx::tree::traits< domainSize_type, char > domainSize_traits;
+
+  const domainSize_optional&
+  domainSize () const;
+
+  domainSize_optional&
+  domainSize ();
+
+  void
+  domainSize (const domainSize_type& x);
+
+  void
+  domainSize (const domainSize_optional& x);
+
+  void
+  domainSize (::std::auto_ptr< domainSize_type > p);
+
+  // rCutoff
+  //
+  typedef ::xml_schema::double_ rCutoff_type;
+  typedef ::xsd::cxx::tree::optional< rCutoff_type > rCutoff_optional;
+  typedef ::xsd::cxx::tree::traits< rCutoff_type, char, ::xsd::cxx::tree::schema_type::double_ > rCutoff_traits;
+
+  const rCutoff_optional&
+  rCutoff () const;
+
+  rCutoff_optional&
+  rCutoff ();
+
+  void
+  rCutoff (const rCutoff_type& x);
+
+  void
+  rCutoff (const rCutoff_optional& x);
+
+  // Constructors.
+  //
+  simulationParamsType (const endTime_type&,
+                        const deltaT_type&,
+                        const modelType_type&,
+                        const containerType_type&,
+                        const plotInterval_type&);
+
+  simulationParamsType (const ::xercesc::DOMElement& e,
+                        ::xml_schema::flags f = 0,
+                        ::xml_schema::container* c = 0);
+
+  simulationParamsType (const simulationParamsType& x,
+                        ::xml_schema::flags f = 0,
+                        ::xml_schema::container* c = 0);
+
+  virtual simulationParamsType*
+  _clone (::xml_schema::flags f = 0,
+          ::xml_schema::container* c = 0) const;
+
+  simulationParamsType&
+  operator= (const simulationParamsType& x);
+
+  virtual 
+  ~simulationParamsType ();
+
+  // Implementation.
+  //
+  protected:
+  void
+  parse (::xsd::cxx::xml::dom::parser< char >&,
+         ::xml_schema::flags);
+
+  protected:
+  ::xsd::cxx::tree::one< endTime_type > endTime_;
+  ::xsd::cxx::tree::one< deltaT_type > deltaT_;
+  ::xsd::cxx::tree::one< modelType_type > modelType_;
+  ::xsd::cxx::tree::one< containerType_type > containerType_;
+  ::xsd::cxx::tree::one< plotInterval_type > plotInterval_;
+  domainSize_optional domainSize_;
+  rCutoff_optional rCutoff_;
+};
+
+class lennardJonesForceParamsType: public ::xml_schema::type
+{
+  public:
+  // sigma
+  //
+  typedef ::xml_schema::double_ sigma_type;
+  typedef ::xsd::cxx::tree::traits< sigma_type, char, ::xsd::cxx::tree::schema_type::double_ > sigma_traits;
+
+  const sigma_type&
+  sigma () const;
+
+  sigma_type&
+  sigma ();
+
+  void
+  sigma (const sigma_type& x);
+
+  // epsilon
+  //
+  typedef ::xml_schema::double_ epsilon_type;
+  typedef ::xsd::cxx::tree::traits< epsilon_type, char, ::xsd::cxx::tree::schema_type::double_ > epsilon_traits;
+
+  const epsilon_type&
+  epsilon () const;
+
+  epsilon_type&
+  epsilon ();
+
+  void
+  epsilon (const epsilon_type& x);
+
+  // Constructors.
+  //
+  lennardJonesForceParamsType (const sigma_type&,
+                               const epsilon_type&);
+
+  lennardJonesForceParamsType (const ::xercesc::DOMElement& e,
+                               ::xml_schema::flags f = 0,
+                               ::xml_schema::container* c = 0);
+
+  lennardJonesForceParamsType (const lennardJonesForceParamsType& x,
+                               ::xml_schema::flags f = 0,
+                               ::xml_schema::container* c = 0);
+
+  virtual lennardJonesForceParamsType*
+  _clone (::xml_schema::flags f = 0,
+          ::xml_schema::container* c = 0) const;
+
+  lennardJonesForceParamsType&
+  operator= (const lennardJonesForceParamsType& x);
+
+  virtual 
+  ~lennardJonesForceParamsType ();
+
+  // Implementation.
+  //
+  protected:
+  void
+  parse (::xsd::cxx::xml::dom::parser< char >&,
+         ::xml_schema::flags);
+
+  protected:
+  ::xsd::cxx::tree::one< sigma_type > sigma_;
+  ::xsd::cxx::tree::one< epsilon_type > epsilon_;
+};
 
 class cuboidType: public ::xml_schema::type
 {
@@ -384,6 +615,149 @@ class cuboidType: public ::xml_schema::type
   ::xsd::cxx::tree::one< mass_type > mass_;
   ::xsd::cxx::tree::one< grid_type > grid_;
   ::xsd::cxx::tree::one< spacing_type > spacing_;
+  ::xsd::cxx::tree::one< type_type > type_;
+};
+
+class sphereType: public ::xml_schema::type
+{
+  public:
+  // position
+  //
+  typedef ::positionType position_type;
+  typedef ::xsd::cxx::tree::traits< position_type, char > position_traits;
+
+  const position_type&
+  position () const;
+
+  position_type&
+  position ();
+
+  void
+  position (const position_type& x);
+
+  void
+  position (::std::auto_ptr< position_type > p);
+
+  // velocity
+  //
+  typedef ::velocityType velocity_type;
+  typedef ::xsd::cxx::tree::traits< velocity_type, char > velocity_traits;
+
+  const velocity_type&
+  velocity () const;
+
+  velocity_type&
+  velocity ();
+
+  void
+  velocity (const velocity_type& x);
+
+  void
+  velocity (::std::auto_ptr< velocity_type > p);
+
+  // mass
+  //
+  typedef ::xml_schema::double_ mass_type;
+  typedef ::xsd::cxx::tree::traits< mass_type, char, ::xsd::cxx::tree::schema_type::double_ > mass_traits;
+
+  const mass_type&
+  mass () const;
+
+  mass_type&
+  mass ();
+
+  void
+  mass (const mass_type& x);
+
+  // spacing
+  //
+  typedef ::xml_schema::double_ spacing_type;
+  typedef ::xsd::cxx::tree::traits< spacing_type, char, ::xsd::cxx::tree::schema_type::double_ > spacing_traits;
+
+  const spacing_type&
+  spacing () const;
+
+  spacing_type&
+  spacing ();
+
+  void
+  spacing (const spacing_type& x);
+
+  // radius
+  //
+  typedef ::xml_schema::double_ radius_type;
+  typedef ::xsd::cxx::tree::traits< radius_type, char, ::xsd::cxx::tree::schema_type::double_ > radius_traits;
+
+  const radius_type&
+  radius () const;
+
+  radius_type&
+  radius ();
+
+  void
+  radius (const radius_type& x);
+
+  // type
+  //
+  typedef ::xml_schema::int_ type_type;
+  typedef ::xsd::cxx::tree::traits< type_type, char > type_traits;
+
+  const type_type&
+  type () const;
+
+  type_type&
+  type ();
+
+  void
+  type (const type_type& x);
+
+  // Constructors.
+  //
+  sphereType (const position_type&,
+              const velocity_type&,
+              const mass_type&,
+              const spacing_type&,
+              const radius_type&,
+              const type_type&);
+
+  sphereType (::std::auto_ptr< position_type >,
+              ::std::auto_ptr< velocity_type >,
+              const mass_type&,
+              const spacing_type&,
+              const radius_type&,
+              const type_type&);
+
+  sphereType (const ::xercesc::DOMElement& e,
+              ::xml_schema::flags f = 0,
+              ::xml_schema::container* c = 0);
+
+  sphereType (const sphereType& x,
+              ::xml_schema::flags f = 0,
+              ::xml_schema::container* c = 0);
+
+  virtual sphereType*
+  _clone (::xml_schema::flags f = 0,
+          ::xml_schema::container* c = 0) const;
+
+  sphereType&
+  operator= (const sphereType& x);
+
+  virtual 
+  ~sphereType ();
+
+  // Implementation.
+  //
+  protected:
+  void
+  parse (::xsd::cxx::xml::dom::parser< char >&,
+         ::xml_schema::flags);
+
+  protected:
+  ::xsd::cxx::tree::one< position_type > position_;
+  ::xsd::cxx::tree::one< velocity_type > velocity_;
+  ::xsd::cxx::tree::one< mass_type > mass_;
+  ::xsd::cxx::tree::one< spacing_type > spacing_;
+  ::xsd::cxx::tree::one< radius_type > radius_;
   ::xsd::cxx::tree::one< type_type > type_;
 };
 
@@ -633,9 +1007,132 @@ class gridParam: public ::xml_schema::type
   ::xsd::cxx::tree::one< Nz_type > Nz_;
 };
 
+class domainParam: public ::xml_schema::type
+{
+  public:
+  // Lx
+  //
+  typedef ::xml_schema::int_ Lx_type;
+  typedef ::xsd::cxx::tree::traits< Lx_type, char > Lx_traits;
+
+  const Lx_type&
+  Lx () const;
+
+  Lx_type&
+  Lx ();
+
+  void
+  Lx (const Lx_type& x);
+
+  // Ly
+  //
+  typedef ::xml_schema::int_ Ly_type;
+  typedef ::xsd::cxx::tree::traits< Ly_type, char > Ly_traits;
+
+  const Ly_type&
+  Ly () const;
+
+  Ly_type&
+  Ly ();
+
+  void
+  Ly (const Ly_type& x);
+
+  // Lz
+  //
+  typedef ::xml_schema::int_ Lz_type;
+  typedef ::xsd::cxx::tree::optional< Lz_type > Lz_optional;
+  typedef ::xsd::cxx::tree::traits< Lz_type, char > Lz_traits;
+
+  const Lz_optional&
+  Lz () const;
+
+  Lz_optional&
+  Lz ();
+
+  void
+  Lz (const Lz_type& x);
+
+  void
+  Lz (const Lz_optional& x);
+
+  // Constructors.
+  //
+  domainParam (const Lx_type&,
+               const Ly_type&);
+
+  domainParam (const ::xercesc::DOMElement& e,
+               ::xml_schema::flags f = 0,
+               ::xml_schema::container* c = 0);
+
+  domainParam (const domainParam& x,
+               ::xml_schema::flags f = 0,
+               ::xml_schema::container* c = 0);
+
+  virtual domainParam*
+  _clone (::xml_schema::flags f = 0,
+          ::xml_schema::container* c = 0) const;
+
+  domainParam&
+  operator= (const domainParam& x);
+
+  virtual 
+  ~domainParam ();
+
+  // Implementation.
+  //
+  protected:
+  void
+  parse (::xsd::cxx::xml::dom::parser< char >&,
+         ::xml_schema::flags);
+
+  protected:
+  ::xsd::cxx::tree::one< Lx_type > Lx_;
+  ::xsd::cxx::tree::one< Ly_type > Ly_;
+  Lz_optional Lz_;
+};
+
 class simulation: public ::xml_schema::type
 {
   public:
+  // simulationParams
+  //
+  typedef ::simulationParamsType simulationParams_type;
+  typedef ::xsd::cxx::tree::traits< simulationParams_type, char > simulationParams_traits;
+
+  const simulationParams_type&
+  simulationParams () const;
+
+  simulationParams_type&
+  simulationParams ();
+
+  void
+  simulationParams (const simulationParams_type& x);
+
+  void
+  simulationParams (::std::auto_ptr< simulationParams_type > p);
+
+  // lennardJonesForceParams
+  //
+  typedef ::lennardJonesForceParamsType lennardJonesForceParams_type;
+  typedef ::xsd::cxx::tree::optional< lennardJonesForceParams_type > lennardJonesForceParams_optional;
+  typedef ::xsd::cxx::tree::traits< lennardJonesForceParams_type, char > lennardJonesForceParams_traits;
+
+  const lennardJonesForceParams_optional&
+  lennardJonesForceParams () const;
+
+  lennardJonesForceParams_optional&
+  lennardJonesForceParams ();
+
+  void
+  lennardJonesForceParams (const lennardJonesForceParams_type& x);
+
+  void
+  lennardJonesForceParams (const lennardJonesForceParams_optional& x);
+
+  void
+  lennardJonesForceParams (::std::auto_ptr< lennardJonesForceParams_type > p);
+
   // cuboid
   //
   typedef ::cuboidType cuboid_type;
@@ -653,9 +1150,28 @@ class simulation: public ::xml_schema::type
   void
   cuboid (const cuboid_sequence& s);
 
+  // sphere
+  //
+  typedef ::sphereType sphere_type;
+  typedef ::xsd::cxx::tree::sequence< sphere_type > sphere_sequence;
+  typedef sphere_sequence::iterator sphere_iterator;
+  typedef sphere_sequence::const_iterator sphere_const_iterator;
+  typedef ::xsd::cxx::tree::traits< sphere_type, char > sphere_traits;
+
+  const sphere_sequence&
+  sphere () const;
+
+  sphere_sequence&
+  sphere ();
+
+  void
+  sphere (const sphere_sequence& s);
+
   // Constructors.
   //
-  simulation ();
+  simulation (const simulationParams_type&);
+
+  simulation (::std::auto_ptr< simulationParams_type >);
 
   simulation (const ::xercesc::DOMElement& e,
               ::xml_schema::flags f = 0,
@@ -683,7 +1199,10 @@ class simulation: public ::xml_schema::type
          ::xml_schema::flags);
 
   protected:
+  ::xsd::cxx::tree::one< simulationParams_type > simulationParams_;
+  lennardJonesForceParams_optional lennardJonesForceParams_;
   cuboid_sequence cuboid_;
+  sphere_sequence sphere_;
 };
 
 #include <iosfwd>
