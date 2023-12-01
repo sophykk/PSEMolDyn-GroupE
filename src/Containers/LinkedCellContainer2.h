@@ -38,7 +38,7 @@ public:
     std::vector<std::vector<std::vector<Particle>>> &getGrid();
 
     //just 2D first
-    std::vector<Particle> &getParticlesFromCell(int x, int y);
+  //  std::vector<Particle> &getParticlesFromCell(int x, int y);
 
     std::size_t size() const;
 
