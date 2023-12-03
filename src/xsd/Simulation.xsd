@@ -5,6 +5,7 @@
             <xs:sequence>
                 <xs:element name="simulationParams" type="simulationParamsType"/>
                 <xs:element name="lennardJonesForceParams" type="lennardJonesForceParamsType" minOccurs="0"/>
+                <xs:element name="linkedCellParams" type="linkedCellParamsType" minOccurs="0"/>
                 <xs:element name="cuboid" type="cuboidType" minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element name="sphere" type="sphereType" minOccurs="0" maxOccurs="unbounded"/>
             </xs:sequence>
@@ -27,6 +28,14 @@
         <xs:sequence>
             <xs:element name="sigma" type="xs:double"/>
             <xs:element name="epsilon" type="xs:double"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="linkedCellParamsType">
+        <xs:sequence>
+            <xs:element name="domainSize" type="domainParam"/>
+            <xs:element name="cutoffRadius" type="xs:double"/>
+            <xs:element name="boundaryCondition" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -78,9 +87,9 @@
 
     <xs:complexType name="domainParam">
         <xs:sequence>
-            <xs:element name="Lx" type="xs:int"/>
-            <xs:element name="Ly" type="xs:int"/>
-            <xs:element name="Lz" type="xs:int" minOccurs="0"/>
+            <xs:element name="Lx" type="xs:double"/>
+            <xs:element name="Ly" type="xs:double"/>
+            <xs:element name="Lz" type="xs:double"/>
         </xs:sequence>
     </xs:complexType>
 

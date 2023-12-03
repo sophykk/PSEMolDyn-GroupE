@@ -240,6 +240,76 @@ epsilon (const epsilon_type& x)
 }
 
 
+// linkedCellParamsType
+// 
+
+const linkedCellParamsType::domainSize_type& linkedCellParamsType::
+domainSize () const
+{
+  return this->domainSize_.get ();
+}
+
+linkedCellParamsType::domainSize_type& linkedCellParamsType::
+domainSize ()
+{
+  return this->domainSize_.get ();
+}
+
+void linkedCellParamsType::
+domainSize (const domainSize_type& x)
+{
+  this->domainSize_.set (x);
+}
+
+void linkedCellParamsType::
+domainSize (::std::auto_ptr< domainSize_type > x)
+{
+  this->domainSize_.set (x);
+}
+
+const linkedCellParamsType::cutoffRadius_type& linkedCellParamsType::
+cutoffRadius () const
+{
+  return this->cutoffRadius_.get ();
+}
+
+linkedCellParamsType::cutoffRadius_type& linkedCellParamsType::
+cutoffRadius ()
+{
+  return this->cutoffRadius_.get ();
+}
+
+void linkedCellParamsType::
+cutoffRadius (const cutoffRadius_type& x)
+{
+  this->cutoffRadius_.set (x);
+}
+
+const linkedCellParamsType::boundaryCondition_type& linkedCellParamsType::
+boundaryCondition () const
+{
+  return this->boundaryCondition_.get ();
+}
+
+linkedCellParamsType::boundaryCondition_type& linkedCellParamsType::
+boundaryCondition ()
+{
+  return this->boundaryCondition_.get ();
+}
+
+void linkedCellParamsType::
+boundaryCondition (const boundaryCondition_type& x)
+{
+  this->boundaryCondition_.set (x);
+}
+
+void linkedCellParamsType::
+boundaryCondition (::std::auto_ptr< boundaryCondition_type > x)
+{
+  this->boundaryCondition_.set (x);
+}
+
+
 // cuboidType
 // 
 
@@ -707,28 +777,22 @@ Ly (const Ly_type& x)
   this->Ly_.set (x);
 }
 
-const domainParam::Lz_optional& domainParam::
+const domainParam::Lz_type& domainParam::
 Lz () const
 {
-  return this->Lz_;
+  return this->Lz_.get ();
 }
 
-domainParam::Lz_optional& domainParam::
+domainParam::Lz_type& domainParam::
 Lz ()
 {
-  return this->Lz_;
+  return this->Lz_.get ();
 }
 
 void domainParam::
 Lz (const Lz_type& x)
 {
   this->Lz_.set (x);
-}
-
-void domainParam::
-Lz (const Lz_optional& x)
-{
-  this->Lz_ = x;
 }
 
 
@@ -787,6 +851,36 @@ void simulation::
 lennardJonesForceParams (::std::auto_ptr< lennardJonesForceParams_type > x)
 {
   this->lennardJonesForceParams_.set (x);
+}
+
+const simulation::linkedCellParams_optional& simulation::
+linkedCellParams () const
+{
+  return this->linkedCellParams_;
+}
+
+simulation::linkedCellParams_optional& simulation::
+linkedCellParams ()
+{
+  return this->linkedCellParams_;
+}
+
+void simulation::
+linkedCellParams (const linkedCellParams_type& x)
+{
+  this->linkedCellParams_.set (x);
+}
+
+void simulation::
+linkedCellParams (const linkedCellParams_optional& x)
+{
+  this->linkedCellParams_ = x;
+}
+
+void simulation::
+linkedCellParams (::std::auto_ptr< linkedCellParams_type > x)
+{
+  this->linkedCellParams_.set (x);
 }
 
 const simulation::cuboid_sequence& simulation::
@@ -1157,6 +1251,158 @@ operator= (const lennardJonesForceParamsType& x)
 
 lennardJonesForceParamsType::
 ~lennardJonesForceParamsType ()
+{
+}
+
+// linkedCellParamsType
+//
+
+linkedCellParamsType::
+linkedCellParamsType (const domainSize_type& domainSize,
+                      const cutoffRadius_type& cutoffRadius,
+                      const boundaryCondition_type& boundaryCondition)
+: ::xml_schema::type (),
+  domainSize_ (domainSize, this),
+  cutoffRadius_ (cutoffRadius, this),
+  boundaryCondition_ (boundaryCondition, this)
+{
+}
+
+linkedCellParamsType::
+linkedCellParamsType (::std::auto_ptr< domainSize_type > domainSize,
+                      const cutoffRadius_type& cutoffRadius,
+                      const boundaryCondition_type& boundaryCondition)
+: ::xml_schema::type (),
+  domainSize_ (domainSize, this),
+  cutoffRadius_ (cutoffRadius, this),
+  boundaryCondition_ (boundaryCondition, this)
+{
+}
+
+linkedCellParamsType::
+linkedCellParamsType (const linkedCellParamsType& x,
+                      ::xml_schema::flags f,
+                      ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  domainSize_ (x.domainSize_, f, this),
+  cutoffRadius_ (x.cutoffRadius_, f, this),
+  boundaryCondition_ (x.boundaryCondition_, f, this)
+{
+}
+
+linkedCellParamsType::
+linkedCellParamsType (const ::xercesc::DOMElement& e,
+                      ::xml_schema::flags f,
+                      ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  domainSize_ (this),
+  cutoffRadius_ (this),
+  boundaryCondition_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
+}
+
+void linkedCellParamsType::
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
+
+    // domainSize
+    //
+    if (n.name () == "domainSize" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< domainSize_type > r (
+        domainSize_traits::create (i, f, this));
+
+      if (!domainSize_.present ())
+      {
+        this->domainSize_.set (r);
+        continue;
+      }
+    }
+
+    // cutoffRadius
+    //
+    if (n.name () == "cutoffRadius" && n.namespace_ ().empty ())
+    {
+      if (!cutoffRadius_.present ())
+      {
+        this->cutoffRadius_.set (cutoffRadius_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // boundaryCondition
+    //
+    if (n.name () == "boundaryCondition" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< boundaryCondition_type > r (
+        boundaryCondition_traits::create (i, f, this));
+
+      if (!boundaryCondition_.present ())
+      {
+        this->boundaryCondition_.set (r);
+        continue;
+      }
+    }
+
+    break;
+  }
+
+  if (!domainSize_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "domainSize",
+      "");
+  }
+
+  if (!cutoffRadius_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "cutoffRadius",
+      "");
+  }
+
+  if (!boundaryCondition_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "boundaryCondition",
+      "");
+  }
+}
+
+linkedCellParamsType* linkedCellParamsType::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class linkedCellParamsType (*this, f, c);
+}
+
+linkedCellParamsType& linkedCellParamsType::
+operator= (const linkedCellParamsType& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->domainSize_ = x.domainSize_;
+    this->cutoffRadius_ = x.cutoffRadius_;
+    this->boundaryCondition_ = x.boundaryCondition_;
+  }
+
+  return *this;
+}
+
+linkedCellParamsType::
+~linkedCellParamsType ()
 {
 }
 
@@ -2027,11 +2273,12 @@ gridParam::
 
 domainParam::
 domainParam (const Lx_type& Lx,
-             const Ly_type& Ly)
+             const Ly_type& Ly,
+             const Lz_type& Lz)
 : ::xml_schema::type (),
   Lx_ (Lx, this),
   Ly_ (Ly, this),
-  Lz_ (this)
+  Lz_ (Lz, this)
 {
 }
 
@@ -2098,7 +2345,7 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
     //
     if (n.name () == "Lz" && n.namespace_ ().empty ())
     {
-      if (!this->Lz_)
+      if (!Lz_.present ())
       {
         this->Lz_.set (Lz_traits::create (i, f, this));
         continue;
@@ -2119,6 +2366,13 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
   {
     throw ::xsd::cxx::tree::expected_element< char > (
       "Ly",
+      "");
+  }
+
+  if (!Lz_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "Lz",
       "");
   }
 }
@@ -2157,6 +2411,7 @@ simulation (const simulationParams_type& simulationParams)
 : ::xml_schema::type (),
   simulationParams_ (simulationParams, this),
   lennardJonesForceParams_ (this),
+  linkedCellParams_ (this),
   cuboid_ (this),
   sphere_ (this)
 {
@@ -2167,6 +2422,7 @@ simulation (::std::auto_ptr< simulationParams_type > simulationParams)
 : ::xml_schema::type (),
   simulationParams_ (simulationParams, this),
   lennardJonesForceParams_ (this),
+  linkedCellParams_ (this),
   cuboid_ (this),
   sphere_ (this)
 {
@@ -2179,6 +2435,7 @@ simulation (const simulation& x,
 : ::xml_schema::type (x, f, c),
   simulationParams_ (x.simulationParams_, f, this),
   lennardJonesForceParams_ (x.lennardJonesForceParams_, f, this),
+  linkedCellParams_ (x.linkedCellParams_, f, this),
   cuboid_ (x.cuboid_, f, this),
   sphere_ (x.sphere_, f, this)
 {
@@ -2191,6 +2448,7 @@ simulation (const ::xercesc::DOMElement& e,
 : ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
   simulationParams_ (this),
   lennardJonesForceParams_ (this),
+  linkedCellParams_ (this),
   cuboid_ (this),
   sphere_ (this)
 {
@@ -2235,6 +2493,20 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       if (!this->lennardJonesForceParams_)
       {
         this->lennardJonesForceParams_.set (r);
+        continue;
+      }
+    }
+
+    // linkedCellParams
+    //
+    if (n.name () == "linkedCellParams" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< linkedCellParams_type > r (
+        linkedCellParams_traits::create (i, f, this));
+
+      if (!this->linkedCellParams_)
+      {
+        this->linkedCellParams_.set (r);
         continue;
       }
     }
@@ -2287,6 +2559,7 @@ operator= (const simulation& x)
     static_cast< ::xml_schema::type& > (*this) = x;
     this->simulationParams_ = x.simulationParams_;
     this->lennardJonesForceParams_ = x.lennardJonesForceParams_;
+    this->linkedCellParams_ = x.linkedCellParams_;
     this->cuboid_ = x.cuboid_;
     this->sphere_ = x.sphere_;
   }

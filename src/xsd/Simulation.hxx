@@ -224,6 +224,7 @@ namespace xml_schema
 //
 class simulationParamsType;
 class lennardJonesForceParamsType;
+class linkedCellParamsType;
 class cuboidType;
 class sphereType;
 class positionType;
@@ -470,6 +471,98 @@ class lennardJonesForceParamsType: public ::xml_schema::type
   protected:
   ::xsd::cxx::tree::one< sigma_type > sigma_;
   ::xsd::cxx::tree::one< epsilon_type > epsilon_;
+};
+
+class linkedCellParamsType: public ::xml_schema::type
+{
+  public:
+  // domainSize
+  //
+  typedef ::domainParam domainSize_type;
+  typedef ::xsd::cxx::tree::traits< domainSize_type, char > domainSize_traits;
+
+  const domainSize_type&
+  domainSize () const;
+
+  domainSize_type&
+  domainSize ();
+
+  void
+  domainSize (const domainSize_type& x);
+
+  void
+  domainSize (::std::auto_ptr< domainSize_type > p);
+
+  // cutoffRadius
+  //
+  typedef ::xml_schema::double_ cutoffRadius_type;
+  typedef ::xsd::cxx::tree::traits< cutoffRadius_type, char, ::xsd::cxx::tree::schema_type::double_ > cutoffRadius_traits;
+
+  const cutoffRadius_type&
+  cutoffRadius () const;
+
+  cutoffRadius_type&
+  cutoffRadius ();
+
+  void
+  cutoffRadius (const cutoffRadius_type& x);
+
+  // boundaryCondition
+  //
+  typedef ::xml_schema::string boundaryCondition_type;
+  typedef ::xsd::cxx::tree::traits< boundaryCondition_type, char > boundaryCondition_traits;
+
+  const boundaryCondition_type&
+  boundaryCondition () const;
+
+  boundaryCondition_type&
+  boundaryCondition ();
+
+  void
+  boundaryCondition (const boundaryCondition_type& x);
+
+  void
+  boundaryCondition (::std::auto_ptr< boundaryCondition_type > p);
+
+  // Constructors.
+  //
+  linkedCellParamsType (const domainSize_type&,
+                        const cutoffRadius_type&,
+                        const boundaryCondition_type&);
+
+  linkedCellParamsType (::std::auto_ptr< domainSize_type >,
+                        const cutoffRadius_type&,
+                        const boundaryCondition_type&);
+
+  linkedCellParamsType (const ::xercesc::DOMElement& e,
+                        ::xml_schema::flags f = 0,
+                        ::xml_schema::container* c = 0);
+
+  linkedCellParamsType (const linkedCellParamsType& x,
+                        ::xml_schema::flags f = 0,
+                        ::xml_schema::container* c = 0);
+
+  virtual linkedCellParamsType*
+  _clone (::xml_schema::flags f = 0,
+          ::xml_schema::container* c = 0) const;
+
+  linkedCellParamsType&
+  operator= (const linkedCellParamsType& x);
+
+  virtual 
+  ~linkedCellParamsType ();
+
+  // Implementation.
+  //
+  protected:
+  void
+  parse (::xsd::cxx::xml::dom::parser< char >&,
+         ::xml_schema::flags);
+
+  protected:
+  ::xsd::cxx::tree::one< domainSize_type > domainSize_;
+  ::xsd::cxx::tree::one< cutoffRadius_type > cutoffRadius_;
+  ::xsd::cxx::tree::one< boundaryCondition_type > boundaryCondition_;
 };
 
 class cuboidType: public ::xml_schema::type
@@ -1012,8 +1105,8 @@ class domainParam: public ::xml_schema::type
   public:
   // Lx
   //
-  typedef ::xml_schema::int_ Lx_type;
-  typedef ::xsd::cxx::tree::traits< Lx_type, char > Lx_traits;
+  typedef ::xml_schema::double_ Lx_type;
+  typedef ::xsd::cxx::tree::traits< Lx_type, char, ::xsd::cxx::tree::schema_type::double_ > Lx_traits;
 
   const Lx_type&
   Lx () const;
@@ -1026,8 +1119,8 @@ class domainParam: public ::xml_schema::type
 
   // Ly
   //
-  typedef ::xml_schema::int_ Ly_type;
-  typedef ::xsd::cxx::tree::traits< Ly_type, char > Ly_traits;
+  typedef ::xml_schema::double_ Ly_type;
+  typedef ::xsd::cxx::tree::traits< Ly_type, char, ::xsd::cxx::tree::schema_type::double_ > Ly_traits;
 
   const Ly_type&
   Ly () const;
@@ -1040,26 +1133,23 @@ class domainParam: public ::xml_schema::type
 
   // Lz
   //
-  typedef ::xml_schema::int_ Lz_type;
-  typedef ::xsd::cxx::tree::optional< Lz_type > Lz_optional;
-  typedef ::xsd::cxx::tree::traits< Lz_type, char > Lz_traits;
+  typedef ::xml_schema::double_ Lz_type;
+  typedef ::xsd::cxx::tree::traits< Lz_type, char, ::xsd::cxx::tree::schema_type::double_ > Lz_traits;
 
-  const Lz_optional&
+  const Lz_type&
   Lz () const;
 
-  Lz_optional&
+  Lz_type&
   Lz ();
 
   void
   Lz (const Lz_type& x);
 
-  void
-  Lz (const Lz_optional& x);
-
   // Constructors.
   //
   domainParam (const Lx_type&,
-               const Ly_type&);
+               const Ly_type&,
+               const Lz_type&);
 
   domainParam (const ::xercesc::DOMElement& e,
                ::xml_schema::flags f = 0,
@@ -1089,7 +1179,7 @@ class domainParam: public ::xml_schema::type
   protected:
   ::xsd::cxx::tree::one< Lx_type > Lx_;
   ::xsd::cxx::tree::one< Ly_type > Ly_;
-  Lz_optional Lz_;
+  ::xsd::cxx::tree::one< Lz_type > Lz_;
 };
 
 class simulation: public ::xml_schema::type
@@ -1132,6 +1222,27 @@ class simulation: public ::xml_schema::type
 
   void
   lennardJonesForceParams (::std::auto_ptr< lennardJonesForceParams_type > p);
+
+  // linkedCellParams
+  //
+  typedef ::linkedCellParamsType linkedCellParams_type;
+  typedef ::xsd::cxx::tree::optional< linkedCellParams_type > linkedCellParams_optional;
+  typedef ::xsd::cxx::tree::traits< linkedCellParams_type, char > linkedCellParams_traits;
+
+  const linkedCellParams_optional&
+  linkedCellParams () const;
+
+  linkedCellParams_optional&
+  linkedCellParams ();
+
+  void
+  linkedCellParams (const linkedCellParams_type& x);
+
+  void
+  linkedCellParams (const linkedCellParams_optional& x);
+
+  void
+  linkedCellParams (::std::auto_ptr< linkedCellParams_type > p);
 
   // cuboid
   //
@@ -1201,6 +1312,7 @@ class simulation: public ::xml_schema::type
   protected:
   ::xsd::cxx::tree::one< simulationParams_type > simulationParams_;
   lennardJonesForceParams_optional lennardJonesForceParams_;
+  linkedCellParams_optional linkedCellParams_;
   cuboid_sequence cuboid_;
   sphere_sequence sphere_;
 };

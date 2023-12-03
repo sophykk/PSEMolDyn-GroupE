@@ -2,7 +2,7 @@
 // Created by markus on 12/1/23.
 //
 #include "XMLFileReader.h"
-#include "xsd/Simulation.hxx"
+#include "../../xsd/Simulation.hxx"
 
 XMLFileReader::XMLFileReader() = default;
 
@@ -25,6 +25,15 @@ void XMLFileReader::readLennardJonesForceParams(const char *filename, double &si
 
     sigma = parameters->lennardJonesForceParams()->sigma();
     epsilon = parameters->lennardJonesForceParams()->epsilon();
+}
+
+void XMLFileReader::readLinkedCellParams(const char *filename, std::array<double, 3> &x, double &cutOffR, char &boundaryC) {
+
+    std::unique_ptr<simulation> parameters = simulation_(filename);
+
+    x = {parameters->linkedCellParams()->domainSize().Lx(), parameters->linkedCellParams()->domainSize().Ly(), parameters->linkedCellParams()->domainSize().Ly()};
+    cutOffR = parameters->linkedCellParams()->cutoffRadius();
+    boundaryC = parameters->linkedCellParams()->boundaryCondition()[0];
 }
 
 std::vector<CuboidParticleGenerator> XMLFileReader::readCuboids(const char *filename) {
