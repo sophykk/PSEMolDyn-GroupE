@@ -8,7 +8,7 @@ XMLFileReader::XMLFileReader() = default;
 
 XMLFileReader::~XMLFileReader() = default;
 
-void XMLFileReader::readSimulationParams(const char *filename, double &endTime, double &deltaT, std::string &modelType, std::string &containerType, int &plotInterval){
+void XMLFileReader::readSimulationParams(const char *filename, double &endTime, double &deltaT, std::string &modelType, std::string &containerType, std::string &objectType, int &plotInterval){
 
     std::unique_ptr<simulation> parameters = simulation_(filename);
 
@@ -16,6 +16,7 @@ void XMLFileReader::readSimulationParams(const char *filename, double &endTime, 
     deltaT = parameters->simulationParams().deltaT();
     modelType = parameters->simulationParams().modelType();
     containerType = parameters->simulationParams().containerType();
+    objectType = parameters->simulationParams().objectType();
     plotInterval = parameters->simulationParams().plotInterval();
 }
 

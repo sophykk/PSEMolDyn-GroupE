@@ -325,44 +325,22 @@ class simulationParamsType: public ::xml_schema::type
   void
   plotInterval (const plotInterval_type& x);
 
-  // domainSize
+  // objectType
   //
-  typedef ::domainParam domainSize_type;
-  typedef ::xsd::cxx::tree::optional< domainSize_type > domainSize_optional;
-  typedef ::xsd::cxx::tree::traits< domainSize_type, char > domainSize_traits;
+  typedef ::xml_schema::string objectType_type;
+  typedef ::xsd::cxx::tree::traits< objectType_type, char > objectType_traits;
 
-  const domainSize_optional&
-  domainSize () const;
+  const objectType_type&
+  objectType () const;
 
-  domainSize_optional&
-  domainSize ();
-
-  void
-  domainSize (const domainSize_type& x);
+  objectType_type&
+  objectType ();
 
   void
-  domainSize (const domainSize_optional& x);
+  objectType (const objectType_type& x);
 
   void
-  domainSize (::std::auto_ptr< domainSize_type > p);
-
-  // rCutoff
-  //
-  typedef ::xml_schema::double_ rCutoff_type;
-  typedef ::xsd::cxx::tree::optional< rCutoff_type > rCutoff_optional;
-  typedef ::xsd::cxx::tree::traits< rCutoff_type, char, ::xsd::cxx::tree::schema_type::double_ > rCutoff_traits;
-
-  const rCutoff_optional&
-  rCutoff () const;
-
-  rCutoff_optional&
-  rCutoff ();
-
-  void
-  rCutoff (const rCutoff_type& x);
-
-  void
-  rCutoff (const rCutoff_optional& x);
+  objectType (::std::auto_ptr< objectType_type > p);
 
   // Constructors.
   //
@@ -370,7 +348,8 @@ class simulationParamsType: public ::xml_schema::type
                         const deltaT_type&,
                         const modelType_type&,
                         const containerType_type&,
-                        const plotInterval_type&);
+                        const plotInterval_type&,
+                        const objectType_type&);
 
   simulationParamsType (const ::xercesc::DOMElement& e,
                         ::xml_schema::flags f = 0,
@@ -403,8 +382,7 @@ class simulationParamsType: public ::xml_schema::type
   ::xsd::cxx::tree::one< modelType_type > modelType_;
   ::xsd::cxx::tree::one< containerType_type > containerType_;
   ::xsd::cxx::tree::one< plotInterval_type > plotInterval_;
-  domainSize_optional domainSize_;
-  rCutoff_optional rCutoff_;
+  ::xsd::cxx::tree::one< objectType_type > objectType_;
 };
 
 class lennardJonesForceParamsType: public ::xml_schema::type

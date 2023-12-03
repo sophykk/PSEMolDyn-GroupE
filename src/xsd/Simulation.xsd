@@ -19,6 +19,7 @@
             <xs:element name="modelType" type="xs:string"/>
             <xs:element name="containerType" type="xs:string"/>
             <xs:element name="plotInterval" type="xs:int"/>
+            <xs:element name="objectType" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>
 

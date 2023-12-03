@@ -17,7 +17,7 @@ public:
     XMLFileReader();
     virtual ~XMLFileReader();
 
-    void readSimulationParams(const char *filename, double &endTime, double &deltaT, std::string &modelType, std::string &containerType, int &plotInterval);
+    void readSimulationParams(const char *filename, double &endTime, double &deltaT, std::string &modelType, std::string &containerType, std::string &objectType, int &plotInterval);
 
     void readLennardJonesForceParams(const char *filename, double &sigma, double &epsilon);
 

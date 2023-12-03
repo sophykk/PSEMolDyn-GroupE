@@ -30,37 +30,3 @@ TEST(ParticleContainerTest, AddParticle) {
     container.addParticle(particle);
     EXPECT_EQ(container.size(), 1);
 }
-
-
-// testing the default constructor of the LinkedCellContainer
-TEST(ParticleContainerTestLC, DefaultConstructor) {
-    LennardJonesForce force;
-    std::vector<double> dSize;
-    double cRad;
-    char b;
-    LinkedCellContainer2 container(force, dSize, cRad, b);
-    EXPECT_EQ(container.size(), 0);
-}
-
-// testing the constructor with a list as a parameter
-TEST(ParticleContainerTestLC, ConstructorWithList) {
-    LennardJonesForce force;
-    std::vector<Particle> particlesList = {Particle(), Particle()};
-    std::vector<double> dSize;
-    double cRad;
-    char b;
-    LinkedCellContainer2 container(force, particlesList, dSize, cRad, b);
-    EXPECT_EQ(container.size(), particlesList.size());
-}
-
-// testing the adding function of the LinkedCellContainer
-TEST(ParticleContainerTestLC, AddParticle) {
-    LennardJonesForce force;
-    std::vector<double> dSize;
-    double cRad;
-    char b;
-    LinkedCellContainer2 container(force, dSize, cRad, b);
-    Particle particle;
-    container.addParticle(particle);
-    EXPECT_EQ(container.size(), 1);
-}

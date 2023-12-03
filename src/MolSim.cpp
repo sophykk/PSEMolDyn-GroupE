@@ -17,6 +17,7 @@ int main(int argc, char *argsv[]) {
     double delta_t;
     std::string modelType;
     std::string containerType;
+    std::string objectType;
     int plotInterval;
     spdlog::level::level_enum log_level = spdlog::level::debug;
     bool calcRunTime = false;
@@ -26,15 +27,12 @@ int main(int argc, char *argsv[]) {
     XMLFileReader xmlReader;
 
     // Read Simulation parameters from the file
-    xmlReader.readSimulationParams(argsv[1], end_time, delta_t, modelType, containerType, plotInterval);
+    xmlReader.readSimulationParams(argsv[1], end_time, delta_t, modelType, containerType, objectType, plotInterval);
 
     spdlog::set_level(log_level);
 
     spdlog::info("Application started");
     spdlog::info("Hello from MolSim for PSE!");
-
-    // Read cuboids from the file
-    auto generators = xmlReader.readCuboids(argsv[1]);
 
     // Select to chosen force model
     std::unique_ptr<ForceBase> forceModel;
@@ -57,6 +55,7 @@ int main(int argc, char *argsv[]) {
     if (containerType == "basic") {
         particleContainer = std::make_unique<BasicParticleContainer>(*forceModel);
     } else if (containerType == "linkedCells") {
+        // Read the parameters for the LinkedCell Container from the file
         std::vector<double> d;
         double c;
         char b;
@@ -68,15 +67,26 @@ int main(int argc, char *argsv[]) {
         exit(-1);
     }
 
-    // Loop over all generators and let them create particles in the container
-    for (auto &gen: generators) {
-        gen.generateParticles(*particleContainer);
+    if(objectType == "sphere"){
+        // Read Spheres from the file
+        auto generators = xmlReader.readSpheres(argsv[1]);
+
+        // Loop over all generators and let them create particles in the container
+        for (auto &gen: generators) {
+            gen.generateParticles(*particleContainer);
+        }
+    }
+    else{
+        // Read Cuboids from the file
+        auto generators = xmlReader.readCuboids(argsv[1]);
+
+        // Loop over all generators and let them create particles in the container
+        for (auto &gen: generators) {
+            gen.generateParticles(*particleContainer);
+        }
     }
 
     // Calculate initial forces
-
-    //spdlog::debug("This is before calculate F");
-
     particleContainer->calculateF();
 
     // Main simulation loop

@@ -7,6 +7,7 @@
         <modelType>lennardJones</modelType>
         <containerType>linkedCells</containerType>
         <plotInterval>10</plotInterval>
+        <objectType>sphere</objectType>
     </simulationParams>
 
     <lennardJonesForceParams>

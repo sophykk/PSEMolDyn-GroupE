@@ -145,58 +145,28 @@ plotInterval (const plotInterval_type& x)
   this->plotInterval_.set (x);
 }
 
-const simulationParamsType::domainSize_optional& simulationParamsType::
-domainSize () const
+const simulationParamsType::objectType_type& simulationParamsType::
+objectType () const
 {
-  return this->domainSize_;
+  return this->objectType_.get ();
 }
 
-simulationParamsType::domainSize_optional& simulationParamsType::
-domainSize ()
+simulationParamsType::objectType_type& simulationParamsType::
+objectType ()
 {
-  return this->domainSize_;
-}
-
-void simulationParamsType::
-domainSize (const domainSize_type& x)
-{
-  this->domainSize_.set (x);
+  return this->objectType_.get ();
 }
 
 void simulationParamsType::
-domainSize (const domainSize_optional& x)
+objectType (const objectType_type& x)
 {
-  this->domainSize_ = x;
+  this->objectType_.set (x);
 }
 
 void simulationParamsType::
-domainSize (::std::auto_ptr< domainSize_type > x)
+objectType (::std::auto_ptr< objectType_type > x)
 {
-  this->domainSize_.set (x);
-}
-
-const simulationParamsType::rCutoff_optional& simulationParamsType::
-rCutoff () const
-{
-  return this->rCutoff_;
-}
-
-simulationParamsType::rCutoff_optional& simulationParamsType::
-rCutoff ()
-{
-  return this->rCutoff_;
-}
-
-void simulationParamsType::
-rCutoff (const rCutoff_type& x)
-{
-  this->rCutoff_.set (x);
-}
-
-void simulationParamsType::
-rCutoff (const rCutoff_optional& x)
-{
-  this->rCutoff_ = x;
+  this->objectType_.set (x);
 }
 
 
@@ -930,15 +900,15 @@ simulationParamsType (const endTime_type& endTime,
                       const deltaT_type& deltaT,
                       const modelType_type& modelType,
                       const containerType_type& containerType,
-                      const plotInterval_type& plotInterval)
+                      const plotInterval_type& plotInterval,
+                      const objectType_type& objectType)
 : ::xml_schema::type (),
   endTime_ (endTime, this),
   deltaT_ (deltaT, this),
   modelType_ (modelType, this),
   containerType_ (containerType, this),
   plotInterval_ (plotInterval, this),
-  domainSize_ (this),
-  rCutoff_ (this)
+  objectType_ (objectType, this)
 {
 }
 
@@ -952,8 +922,7 @@ simulationParamsType (const simulationParamsType& x,
   modelType_ (x.modelType_, f, this),
   containerType_ (x.containerType_, f, this),
   plotInterval_ (x.plotInterval_, f, this),
-  domainSize_ (x.domainSize_, f, this),
-  rCutoff_ (x.rCutoff_, f, this)
+  objectType_ (x.objectType_, f, this)
 {
 }
 
@@ -967,8 +936,7 @@ simulationParamsType (const ::xercesc::DOMElement& e,
   modelType_ (this),
   containerType_ (this),
   plotInterval_ (this),
-  domainSize_ (this),
-  rCutoff_ (this)
+  objectType_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -1048,27 +1016,16 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
-    // domainSize
+    // objectType
     //
-    if (n.name () == "domainSize" && n.namespace_ ().empty ())
+    if (n.name () == "objectType" && n.namespace_ ().empty ())
     {
-      ::std::auto_ptr< domainSize_type > r (
-        domainSize_traits::create (i, f, this));
+      ::std::auto_ptr< objectType_type > r (
+        objectType_traits::create (i, f, this));
 
-      if (!this->domainSize_)
+      if (!objectType_.present ())
       {
-        this->domainSize_.set (r);
-        continue;
-      }
-    }
-
-    // rCutoff
-    //
-    if (n.name () == "rCutoff" && n.namespace_ ().empty ())
-    {
-      if (!this->rCutoff_)
-      {
-        this->rCutoff_.set (rCutoff_traits::create (i, f, this));
+        this->objectType_.set (r);
         continue;
       }
     }
@@ -1110,6 +1067,13 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       "plotInterval",
       "");
   }
+
+  if (!objectType_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "objectType",
+      "");
+  }
 }
 
 simulationParamsType* simulationParamsType::
@@ -1130,8 +1094,7 @@ operator= (const simulationParamsType& x)
     this->modelType_ = x.modelType_;
     this->containerType_ = x.containerType_;
     this->plotInterval_ = x.plotInterval_;
-    this->domainSize_ = x.domainSize_;
-    this->rCutoff_ = x.rCutoff_;
+    this->objectType_ = x.objectType_;
   }
 
   return *this;
