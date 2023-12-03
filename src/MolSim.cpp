@@ -43,26 +43,10 @@ int main(int argc, char *argsv[]) {
     if (containerType == "basic") {
         particleContainer = std::make_unique<BasicParticleContainer>(*forceModel);
     } else if (containerType == "linkedCells") {
-/*
-        std::vector<Particle> particles = {Particle({0.0, 0.0, 0.0}, {1.0, 1.0, 1.0},1.0, 0),
-                                           Particle({1.0, 1.0, 0.0}, {1.0, 1.0, 1.0},1.0, 0),
-                                           Particle({5.0, 3.0, 0.0}, {1.0, 1.0, 1.0},1.0, 0),
-                                           Particle({6.0, 0.0, 0.0}, {1.0, 1.0, 1.0},1.0, 0),
-                                           Particle({8.0, 4.0, 0.0}, {1.0, 1.0, 1.0},1.0, 0),
-                                           Particle({11.0, 2.0, 0.0}, {1.0, 1.0, 1.0},1.0, 0),
-                                           Particle({15.0, 5.0, 0.0}, {1.0, 1.0, 1.0},1.0, 0),
-                                           Particle({18.0, 0.0, 0.0}, {1.0, 1.0, 1.0},1.0, 0),
-                                           Particle({0.0, 6.0, 0.0}, {1.0, 1.0, 1.0},1.0, 0),
-                                           Particle({7.0, 7.0, 0.0}, {1.0, 1.0, 1.0},1.0, 0),
-                                           Particle({13.0, 10.0, 0.0}, {1.0, 1.0, 1.0},1.0, 0),
-                                           Particle({19.0, 7.0, 0.0}, {1.0, 1.0, 1.0},1.0, 0),
-                                           Particle({20.0, 10.0, 0.0}, {1.0, 1.0, 1.0},1.0, 0)
-        };
-*/
         std::vector<double> d{180.0, 90.0, 1.0};
         double c = 3.0;
-        particleContainer = std::make_unique<LinkedCellContainer2>(*forceModel, d, c);
-
+        //boundary 'r' or 'o'
+        particleContainer = std::make_unique<LinkedCellContainer2>(*forceModel, d, c, 'r');
 
         // spdlog::error("Linked Cells container is not yet implemented!");
         // exit(-1);
@@ -78,7 +62,7 @@ int main(int argc, char *argsv[]) {
 
     // Calculate initial forces
 
-    spdlog::debug("This is before calculate F");
+    //spdlog::debug("This is before calculate F");
 
     particleContainer->calculateF();
 

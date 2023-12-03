@@ -24,12 +24,18 @@ private:
     std::vector<double> domainSize;
     //like 3.0
     double cutoffRadius;
+    char boundaryCon;
 
 public:
 
-    LinkedCellContainer2(ForceBase &model, std::vector<double> &dSize, double &cRadius);
+    LinkedCellContainer2(ForceBase &model, std::vector<double> &dSize, double &cRadius, char bCon);
 
-    LinkedCellContainer2(ForceBase &model, std::vector<Particle> &particles, std::vector<double> &dSize, double &cRadius);
+    LinkedCellContainer2(ForceBase &model, std::vector<Particle> &particles, std::vector<double> &dSize,
+                         double &cRadius, char bCon);
+
+    char &getBoundaryCon();
+
+    void setBoundaryCon(char boundary);
 
     void addParticle(Particle &particle);
 
@@ -38,7 +44,7 @@ public:
     std::vector<std::vector<std::vector<Particle>>> &getGrid();
 
     //just 2D first
-  //  std::vector<Particle> &getParticlesFromCell(int x, int y);
+    //  std::vector<Particle> &getParticlesFromCell(int x, int y);
 
     std::size_t size() const;
 
@@ -46,7 +52,7 @@ public:
 
     void calculateF();
 
-  //  bool withinCutoff(Particle &p1, Particle &p2) const;
+    //  bool withinCutoff(Particle &p1, Particle &p2) const;
 
     void calculateX(double delta_t);
 
@@ -55,6 +61,8 @@ public:
     void plotParticles(int iteration);
 
     void initGrid();
+
+    void applyReflecting(Particle &p);
 };
 
 #endif //PSEMOLDYN_GROUPE_LINKEDCELLCONTAINER2_H
