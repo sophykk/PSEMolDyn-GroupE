@@ -5,21 +5,24 @@
 #include "Particle.h"
 #include "Formulas.h"
 
+/**
+ * @param N1 Number of particles per dimension: N1 × N2 × N3
+ * @param h distance between two particle(mesh width of the grid)
+ * @param m mass of one particle
+ * @param v initial velocity v of the particles (3 Components)
+ * @param x coordinate of the lower left front-side corner (x,y,z)
+ */
+
 CuboidParticleGenerator::CuboidParticleGenerator(std::array<int, 3> N1, double h1, double m1, std::array<double, 3> v1,
                                                  std::array<double, 3> x1, int type1)
         : N(N1), h(h1), m(m1), v(v1), x(x1), type(type1) {
-/** Number of particles per dimension: N1 × N2 × N3
-// Distance h of the particles (mesh width of the grid)
-// Mass m of one particle
-// Initial velocity v of the particles (3 Components)
- The coordinate of the lower left front-side corner (x,y,z)
- */
 }
 
+/**
+ * @brief create a N1xN2xN3 grid of particles with mass m, initial velocity v, left corner coordinate (x,y,z)
+ * */
 void CuboidParticleGenerator::generateParticles(ParticleContainerBase& particleContainer) {
-    /**
-    * create a N1xN2xN3 grid of particles with mass m, initial velocity v, left corner coordinate (x,y,z)
-   */
+
     for (int i = 0; i < N[0]; ++i) {
         for (int j = 0; j < N[1]; ++j) {
             for (int k = 0; k < N[2]; ++k) {

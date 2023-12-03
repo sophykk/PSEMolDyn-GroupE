@@ -6,21 +6,23 @@
 #include "Formulas.h"
 #include <cmath>
 
+/**
+ * @param h distance between two particle(mesh width of the grid)
+ * @param m mass of one particle
+ * @param v initial velocity v of the particles (3 Components)
+ * @param x coordinate of the lower left front-side corner (x,y,z)
+ * @param r radius of the sphere
+ */
+
 SphereParticleGenerator::SphereParticleGenerator(std::array<double, 3> x1, double h1, double m1, std::array<double, 3> v1,
                                                  double r1, int type1)
         : x(x1), h(h1), m(m1), v(v1), r(r1), type(type1) {
-    /** Coordinates of the center: x1 × x2 × x3
-    // Distance h of the particles (mesh width of the grid)
-    // Mass m of one particle
-    // Initial velocity v of the particles (3 Components)
-    // Radius r of the Sphere
-    */
 }
 
+/**
+ * @brief create a grid of particles with mass m, initial velocity v within a sphere of radius r and position of the center x
+*/
 void SphereParticleGenerator::generateParticles(ParticleContainerBase& particleContainer) {
-    /**
-     * create a grid of particles with mass m, initial velocity v within a sphere of radius r and position of the center x
-   */
 
     // Define the number of Particles in the grid
     int numParticlesX = static_cast<int>(std::ceil(2.0 * r / h));
@@ -41,5 +43,4 @@ void SphereParticleGenerator::generateParticles(ParticleContainerBase& particleC
             }
         }
     }
-
 }

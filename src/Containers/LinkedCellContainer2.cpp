@@ -49,13 +49,16 @@ std::vector<std::vector<std::vector<Particle>>> &LinkedCellContainer2::getGrid()
 char &LinkedCellContainer2::getBoundaryCon() {
     return boundaryCon;
 }
-
-void LinkedCellContainer2::setBoundaryCon(char boundary) {
+/**
+ * @brief Sets the boundary
+ * @param boundary a char, should be 'o' or 'r'
+ * @throws error message invalid_argument if boundary is not 'o' or 'r'.
+ */
+void LinkedCellContainer2::setBoundaryCon(char &boundary) {
     if (boundary == 'o' || boundary == 'r') {
-        spdlog::error("This is not a valid boundary condition!");
-        exit(-1);
-    } else {
         boundaryCon = boundary;
+    } else {
+        spdlog::error("This is not a valid boundary condition!");
     }
 }
 
@@ -68,10 +71,11 @@ std::size_t LinkedCellContainer2::size() const {
 }
 
 
-/*
+/* *
+ * @brief This methods puts all the particles in a cell in the grid according to their positions
  * if cutoffRadius = 10, and dSize = {180, 90, 1}
  * then first cell from 0-10, next 11-20,
- */
+ * */
 void LinkedCellContainer2::initGrid() {
 
     double minDouble = std::numeric_limits<double>::min();
@@ -79,18 +83,15 @@ void LinkedCellContainer2::initGrid() {
     double uppery = cutoffRadius;
     //x0,y --> 0,0 --> 0,1
     for (int y = 0; y < std::ceil(domainSize[1] / cutoffRadius); ++y) {
-        //2. dimension
         double lowerx = 0.0;
         double upperx = cutoffRadius;
         //x,y0 --> 0,0 --> 1,0 --> 2,0 --> 3,0
         for (int x = 0; x < std::ceil(domainSize[0] / cutoffRadius); ++x) {
             grid[x][y].clear();
-            //3. dimension
             for (auto &p1: getParticles()) {
                 if (p1.getX()[0] <= upperx && p1.getX()[0] >= lowerx &&
                     p1.getX()[1] <= uppery && p1.getX()[1] >= lowery) {
                     grid[x][y].push_back(p1);
-
                 }
             }
             lowerx = upperx + minDouble;
@@ -116,9 +117,10 @@ void LinkedCellContainer2::resetF() {
 }
 
 /*
+ * @brief calculates force between all particles in cell with itself and its neighbours
  * start in the left corner cell, only has  3 neighbours
  * always max 4 calcs for each cell because
- * e.g u start bottom left and calc above, right and right diagonal
+ * e.g u start bottom left and calc above, right and left diagonal
  * now for right cell you don't need to calc for left neighbor anymore,
  * because it was just done before in other direction
  * now just calc for above, right and right diagonal and left diagonal if exists
@@ -148,7 +150,6 @@ void LinkedCellContainer2::calculateF() {
                         auto force = forceModel.calculateForce(p1, p2);
                         p1.addF(force);
                         p2.addF(-1.0 * force);
-
                     }
                 }
                 //if right hand neighbour exists
@@ -170,7 +171,6 @@ void LinkedCellContainer2::calculateF() {
                             p2.addF(-1.0 * force);
                         }
                     }
-
                 }
                 //if upper left diagonal neighbour exists
                 if (y + 1 >= 0 && y + 1 < getGrid()[x].size() && x - 1 >= 0 && x - 1 < getGrid().size()) {
@@ -181,7 +181,6 @@ void LinkedCellContainer2::calculateF() {
                             p2.addF(-1.0 * force);
                         }
                     }
-
                 }
             }
         }
@@ -196,36 +195,41 @@ void LinkedCellContainer2::calculateF() {
     particleList = nParticleList;
 }
 
-/*
- * if cutOffRadius is not cellSize
-bool LinkedCellContainer2::withinCutoff(Particle &p1, Particle &p2) const {
-    std::array<double, 3> distance{};
-    if (p1.getX() < p2.getX()) {
-        distance = p2.getX() - p1.getX();
-    } else {
-        distance = p1.getX() - p2.getX();
-    }
-    if (distance[0] > cutoffRadius || distance[1] > cutoffRadius || distance[1] > cutoffRadius) {
-        return false;
-    }
-    return true;
-}
-*/
+/**
+ * @brief if cutOffRadius is not cellSize, check distance then
+ * @code
+ * bool LinkedCellContainer2::withinCutoff(Particle &p1, Particle &p2) const {
+ *     std::array<double, 3> distance{};
+ *     if (p1.getX() < p2.getX()) {
+ *         distance = p2.getX() - p1.getX();
+ *     } else {
+ *         distance = p1.getX() - p2.getX();
+ *     }
+ *     if (distance[0] > cutoffRadius || distance[1] > cutoffRadius || distance[1] > cutoffRadius) {
+ *         return false;
+ *     }
+ *     return true;
+ * }
+ * @endcode
+ */
 
+/**
+ * @brief Calculate xi(tn+1)
+ * formula: xi(tn+1) = xi(tn) + ∆t · vi(tn) + (∆t)^2 * (Fi(tn)/2mi)
+ */
 void LinkedCellContainer2::calculateX(double delta_t) {
     for (auto &p: getParticles()) {
-        // formula: xi(tn+1) = xi(tn) + ∆t · vi(tn) + (∆t)^2 * (Fi(tn)/2mi)
-        // Calculate xi(tn+1)
         auto xi_tn1 = Formulas::verletXStep(p.getX(), p.getV(), p.getF(), p.getM(), delta_t);
         p.setX(xi_tn1);  // Update the position
     }
     initGrid();
 }
-
+/**
+ * @brief Calculate the velocity at time tn+1
+ * formula: vi(tn+1) = vi(tn) + ∆t * ((Fi(tn) + Fi(tn+1))/ 2mi)
+ */
 void LinkedCellContainer2::calculateV(double delta_t) {
     for (auto &p: getParticles()) {
-        // formula: vi(tn+1) = vi(tn) + ∆t * ((Fi(tn) + Fi(tn+1))/ 2mi)
-        // Calculate the velocity at time tn+1
         auto vi_tn1 = Formulas::verletVStep(p.getV(), p.getOldF(), p.getF(), p.getM(), delta_t);
         p.setV(vi_tn1);
     }
@@ -243,6 +247,12 @@ void LinkedCellContainer2::plotParticles(int iteration) {
     writer.writeFile(out_name, iteration);
 }
 
+/**
+ * @brief Apply reflecting condition on particles
+ * @param p Particle to check
+ * bounces back borderline particle from border through
+ * creating new halo particle which applies force on it
+ */
 void LinkedCellContainer2::applyReflecting(Particle &p) {
     //1.0 is sigma (not mentioned because doesn't change result)
     //divided by 2.0 because of border p____|____p
