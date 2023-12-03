@@ -19,8 +19,6 @@
             <xs:element name="modelType" type="xs:string"/>
             <xs:element name="containerType" type="xs:string"/>
             <xs:element name="plotInterval" type="xs:int"/>
-            <xs:element name="domainSize" type="domainParam" minOccurs="0"/>
-            <xs:element name="rCutoff" type="xs:double" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 

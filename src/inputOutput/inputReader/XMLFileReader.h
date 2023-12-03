@@ -21,7 +21,7 @@ public:
 
     void readLennardJonesForceParams(const char *filename, double &sigma, double &epsilon);
 
-    void readLinkedCellParams(const char *filename, std::array<double, 3> &x, double &cutOffR, char &boundaryC);
+    void readLinkedCellParams(const char *filename, std::vector<double> &x, double &cutOffR, char &boundaryC);
 
     std::vector<CuboidParticleGenerator> readCuboids(const char *filename);
 

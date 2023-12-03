@@ -7,6 +7,7 @@
 
 #include <spdlog/spdlog.h>
 #include <iostream>
+#include <chrono>
 
 //
 int main(int argc, char *argsv[]) {
@@ -17,9 +18,10 @@ int main(int argc, char *argsv[]) {
     std::string modelType;
     std::string containerType;
     int plotInterval;
-    double epsilon;
-    double sigma;
     spdlog::level::level_enum log_level = spdlog::level::debug;
+    bool calcRunTime = false;
+    std::chrono::time_point<std::chrono::high_resolution_clock> start;
+    std::chrono::time_point<std::chrono::high_resolution_clock> end;
 
     XMLFileReader xmlReader;
 
@@ -41,6 +43,8 @@ int main(int argc, char *argsv[]) {
     }
     else if (modelType == "lennardJones") {
         // Read sigma and epsilon from teh file
+        double epsilon;
+        double sigma;
         xmlReader.readLennardJonesForceParams(argsv[1], sigma,epsilon);
         forceModel = std::make_unique<LennardJonesForce>(sigma, epsilon);
     } else {
@@ -53,13 +57,12 @@ int main(int argc, char *argsv[]) {
     if (containerType == "basic") {
         particleContainer = std::make_unique<BasicParticleContainer>(*forceModel);
     } else if (containerType == "linkedCells") {
-        std::vector<double> d{180.0, 90.0, 1.0};
-        double c = 3.0;
-        //boundary 'r' or 'o'
-        particleContainer = std::make_unique<LinkedCellContainer2>(*forceModel, d, c, 'r');
+        std::vector<double> d;
+        double c;
+        char b;
+        xmlReader.readLinkedCellParams(argsv[1], d, c, b);
 
-        // spdlog::error("Linked Cells container is not yet implemented!");
-        // exit(-1);
+        particleContainer = std::make_unique<LinkedCellContainer2>(*forceModel, d, c, b);
     } else {
         spdlog::error("Unknown container type selected: {}", containerType);
         exit(-1);
@@ -81,6 +84,10 @@ int main(int argc, char *argsv[]) {
     double current_time = 0;
     while (current_time < end_time) {
 
+        if(calcRunTime){
+            start = std::chrono::high_resolution_clock::now();
+        }
+
         // calculate new x
         particleContainer->calculateX(delta_t);
 
@@ -92,6 +99,17 @@ int main(int argc, char *argsv[]) {
 
         // calculate new v
         particleContainer->calculateV(delta_t);
+
+        if(calcRunTime){
+            // Record end time
+            end = std::chrono::high_resolution_clock::now();
+
+            // Calculate duration
+            auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+
+            // Print the duration in microseconds
+            std::cout << "Runtime: " << duration.count() << " microseconds\n";
+        }
 
         iteration++;
         if (iteration % plotInterval == 0) {

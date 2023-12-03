@@ -27,11 +27,11 @@ void XMLFileReader::readLennardJonesForceParams(const char *filename, double &si
     epsilon = parameters->lennardJonesForceParams()->epsilon();
 }
 
-void XMLFileReader::readLinkedCellParams(const char *filename, std::array<double, 3> &x, double &cutOffR, char &boundaryC) {
+void XMLFileReader::readLinkedCellParams(const char *filename, std::vector<double> &x, double &cutOffR, char &boundaryC) {
 
     std::unique_ptr<simulation> parameters = simulation_(filename);
 
-    x = {parameters->linkedCellParams()->domainSize().Lx(), parameters->linkedCellParams()->domainSize().Ly(), parameters->linkedCellParams()->domainSize().Ly()};
+    x = {parameters->linkedCellParams()->domainSize().Lx(), parameters->linkedCellParams()->domainSize().Ly(), parameters->linkedCellParams()->domainSize().Lz()};
     cutOffR = parameters->linkedCellParams()->cutoffRadius();
     boundaryC = parameters->linkedCellParams()->boundaryCondition()[0];
 }
