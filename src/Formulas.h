@@ -18,16 +18,16 @@ namespace Formulas {
     /**
    * Lennard-Jones potential
    */
-    double calculatePotential(std::array<double, 3> &xi, std::array<double, 3> &xj, double mi, double mj);
+    //double calculatePotential(std::array<double, 3> &xi, std::array<double, 3> &xj, double mi, double mj);
 
     /**
   * Lennard-Jones force
   */
-    std::array<double, 3> calculateLJForce(const std::array<double, 3> &xi, const std::array<double, 3> &xj,
-                                                  double sigma, double eps);
+    //std::array<double, 3> calculateLJForce(const std::array<double, 3> &xi, const std::array<double, 3> &xj,
+    //                                              double sigma, double eps);
 
-    std::array<double, 3> calculateGravitationForce(const std::array<double, 3> &xi,
-                                                           const std::array<double, 3> &xj, double mi, double mj);
+    //std::array<double, 3> calculateGravitationForce(const std::array<double, 3> &xi,
+    //                                                       const std::array<double, 3> &xj, double mi, double mj);
 
     void calculateBM(Particle& p);
 

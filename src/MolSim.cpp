@@ -1,5 +1,6 @@
 #include "inputOutput/inputReader/CuboidFileReader.h"
 #include "Containers/BasicParticleContainer.h"
+#include "Containers/LinkedCellContainer2.h"
 #include "Forces/GravitationalForce.h"
 #include "Forces/LennardJonesForce.h"
 #include "inputOutput/inputReader/XMLFileReader.h"
@@ -7,7 +8,9 @@
 #include <spdlog/spdlog.h>
 #include <iostream>
 
+//
 int main(int argc, char *argsv[]) {
+
 
     double end_time;
     double delta_t;
@@ -49,21 +52,28 @@ int main(int argc, char *argsv[]) {
     std::unique_ptr<ParticleContainerBase> particleContainer;
     if (containerType == "basic") {
         particleContainer = std::make_unique<BasicParticleContainer>(*forceModel);
-    }
-    else if (containerType == "linkedCells") {
-        spdlog::error("Linked Cells container is not yet implemented!");
-        exit(-1);
+    } else if (containerType == "linkedCells") {
+        std::vector<double> d{180.0, 90.0, 1.0};
+        double c = 3.0;
+        //boundary 'r' or 'o'
+        particleContainer = std::make_unique<LinkedCellContainer2>(*forceModel, d, c, 'r');
+
+        // spdlog::error("Linked Cells container is not yet implemented!");
+        // exit(-1);
     } else {
         spdlog::error("Unknown container type selected: {}", containerType);
         exit(-1);
     }
 
     // Loop over all generators and let them create particles in the container
-    for (auto& gen : generators) {
+    for (auto &gen: generators) {
         gen.generateParticles(*particleContainer);
     }
 
     // Calculate initial forces
+
+    //spdlog::debug("This is before calculate F");
+
     particleContainer->calculateF();
 
     // Main simulation loop
