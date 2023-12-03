@@ -3,36 +3,46 @@
 #include "Containers/LinkedCellContainer2.h"
 #include "Forces/GravitationalForce.h"
 #include "Forces/LennardJonesForce.h"
-#include "inputOutput/inputReader/XMLCuboidReader.h"
+#include "inputOutput/inputReader/XMLFileReader.h"
 
 #include <spdlog/spdlog.h>
+#include <iostream>
 
 //
 int main(int argc, char *argsv[]) {
 
-    double end_time = 20;
-    double delta_t = 0.0005;
-    std::string modelType = "lennardJones";
-    std::string containerType = "linkedCells";
-    spdlog::level::level_enum log_level = spdlog::level::debug;
-    int plotInterval = 10;
 
-    ///////////////////////////////////////////////////
-    // Read xml file here and set parameters/options !!
+    double end_time;
+    double delta_t;
+    std::string modelType;
+    std::string containerType;
+    int plotInterval;
+    double epsilon;
+    double sigma;
+    spdlog::level::level_enum log_level = spdlog::level::debug;
+
+    XMLFileReader xmlReader;
+
+    // Read Simulation parameters from the file
+    xmlReader.readSimulationParams(argsv[1], end_time, delta_t, modelType, containerType, plotInterval);
+
     spdlog::set_level(log_level);
 
     spdlog::info("Application started");
     spdlog::info("Hello from MolSim for PSE!");
 
-    XMLCuboidReader cuboidReader;
-    auto generators = cuboidReader.readFile(argsv[1]);
+    // Read cuboids from the file
+    auto generators = xmlReader.readCuboids(argsv[1]);
 
     // Select to chosen force model
     std::unique_ptr<ForceBase> forceModel;
     if (modelType == "gravitation") {
         forceModel = std::make_unique<GravitationalForce>();
-    } else if (modelType == "lennardJones") {
-        forceModel = std::make_unique<LennardJonesForce>(1.0, 5.0);
+    }
+    else if (modelType == "lennardJones") {
+        // Read sigma and epsilon from teh file
+        xmlReader.readLennardJonesForceParams(argsv[1], sigma,epsilon);
+        forceModel = std::make_unique<LennardJonesForce>(sigma, epsilon);
     } else {
         spdlog::error("Unknown force model selected: {}", modelType);
         exit(-1);
