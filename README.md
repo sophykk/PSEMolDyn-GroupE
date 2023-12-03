@@ -10,14 +10,18 @@ Members:
 * Link:     https://github.com/sophykk/PSEMolDyn-GroupE.git
 * Branch:   master
 * Compiler: g++ 11.4.0
-* Commit ID: 4f9e1fb
+* Commit ID: last commit on the master branch
 * Build and execute instructions:
  ```
  mkdir build
  cd build
  ccmake ..
  make
- ./MolSim ../input/task2.txt <5> <0.0002> (the first argument represents the end_time and the second argument represents the delta_t)
+ ./MolSim ../input/<file_name>
+
+Files: -w3t2.xml (Task 2)
+       -w3t4.xml (Task 4)
+       -1000p.xml/2000p.xml/4000p.xml/8000p.xml (for runtime measurements)
  
  Doxygen documentation: 
  make doc_doxygen
@@ -30,26 +34,31 @@ ctest
 # Report #
 ## Task 1 ##
 
-- added the configuration for the googletest in the CmakeLists.txt file
-- implemented Unit tests, which are testing the default constructor, the constructor with a list as a parameter and the addParticle method of the ParticleContainer class.
-- Can be executed by running ctest command. 
+- implemented a general schema for the simulation
+- the files have to contain the simulationParams and optionally the lennardJonesForceParams, linkedCellParams, cuboids and/or spheres
+- the XMLReader contains functions for reading each of the above mentioned parameters out of an xml file
+- this functions are called in the main function based on the chosen modelType, containerType and objectType
+- the following parameterTypes contain the following parameters:
+  - simulationParams: endTime, deltaT, modelType, containerType, plotInterval and objectType
+  - lennardJonesForceParams: sigma and epsilon
+  - linkedCellParams: domainSize, cutoffRadius, boundaryCondition
+  - cuboids: position, velocity, mass, grid, spacing, type
+  - spheres: position, velocity, mass, spacing, radius, type
 
 ## Task 2 ##
 
-- implemented the pipeline for CI, which checks on every pull_request and push to the master branch if the programm is compiling without errors and then executing the UnitTests automatically
-
+- implemented a new particle container, which realizes the linked cell algorithm
+- generated different sizes of cuboids and calculated the runtime per iteration using the LinkedCellContainer and the BasicParticleContainer
+  
 ## Task 3 ##
 
-- added the configuration for the spdlog in the CmakeLists.txt file
-- Logging: logging different key parts of our programm
-- we decided to use spdlog functions instead of macros, because they allow for dynamic log level changes at runtime    using the 'spdlog::set_level(...)' function
-- for consistency reasons we decided to use spdlog functions through our whole project
+- implemented the boundary conditions
+- the used boundary condition is read from the input file as a char
+- set boundaryCondition to 'r' for using the reflecting condition and to 'o' for using the outflow condition in the input file
+  
 
 ## Task 4 ##
 
-- Collision of two bodies:
-- a new ParticleGenerator class, which creates a grid (N1xN2xN3) of the partciles
-- calculating LennardJones force in the Formulas class for the molecalas' intercation
-- iterating throuigh ParticlePairs instead ParticleList for the force calculation
-- new input file task2.txt with initiation values and the correspondingly updated FileReader with reading N values
-- time measurement was not possible, because we didnt manage to get the correct output files for our simulation
+- implemented a SphereGenerator, which generater the particles in form of a sphere
+- adapted the Simulation.xsd schema, so the user can generate how many spheres he wants by just defining their properties in the input files
+- conducted the experiment of a falling drop using the reflecting boundary condition
