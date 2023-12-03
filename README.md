@@ -47,7 +47,9 @@ ctest
 
 ## Task 2 ##
 
-- implemented a new particle container, which realizes the linked cell algorithm
+- implemented a new particle container, which realizes the linked cell algo
+- LinkedCellContainer2 contains a grid with cells made out of a special vector structure
+- particleList is checked and based on the position the particles is assigned a cell
 - generated different sizes of cuboids and calculated the runtime per iteration using the LinkedCellContainer and the BasicParticleContainer
   
 ## Task 3 ##
@@ -55,7 +57,7 @@ ctest
 - implemented the boundary conditions
 - the used boundary condition is read from the input file as a char
 - set boundaryCondition to 'r' for using the reflecting condition and to 'o' for using the outflow condition in the input file
-  
+- 'r' activates a function where it checks whether a particle is near the border and creates a halo particle to bounce it back if true
 
 ## Task 4 ##
 
