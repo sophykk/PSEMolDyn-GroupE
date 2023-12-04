@@ -25,6 +25,8 @@ Files: -w3t2.xml (Task 2)
  
  Doxygen documentation: 
  make doc_doxygen
+ To open documentation in the browser:
+ doxys_documentation/html/index.html
 
 UnitTests:
 ctest
@@ -53,8 +55,7 @@ ctest
 - generated different sizes of cuboids and calculated the runtime per iteration using the LinkedCellContainer and the BasicParticleContainer
 - measured the time for 1000, 2000, 4000 and 8000 particles comparing performance for Basic and Linked-Cell Containers:
 
-<img src="Basic.png" alt="Time measurements for Basic Container" title="Basic" width="200"/> 
-<img src="Linked Cell.png" alt="Time measurements for Linked Cell Container" title="Linked Cell" width="200"/>
+<img src="Basic.png" alt="Time measurements for Basic Container" title="Basic" width="200"/> <img src="Linked Cell.png" alt="Time measurements for Linked Cell Container" title="Linked Cell" width="200"/>
 
 ### Visualization Plot for the Time Measurements: ###
 <img src="./measurements_pic.png" alt="Corresponding Graph" title="Comparison graph" style="width: 70%;">
