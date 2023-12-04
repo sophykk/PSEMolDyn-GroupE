@@ -51,6 +51,14 @@ ctest
 - LinkedCellContainer2 contains a grid with cells made out of a special vector structure
 - particleList is checked and based on the position the particles is assigned a cell
 - generated different sizes of cuboids and calculated the runtime per iteration using the LinkedCellContainer and the BasicParticleContainer
+- measured the time for 1000, 2000, 4000 and 8000 particles comparing performance for Basic and Linked-Cell Containers:
+
+<img src="Basic.png" alt="Time measurements for Basic Container" title="Basic" width="200"/> 
+<img src="Linked Cell.png" alt="Time measurements for Linked Cell Container" title="Linked Cell" width="200"/>
+
+### Visualization Plot for the Time Measurements: ###
+![Corresponding Graph](measurements_pic.png "Comparison graph")
+
   
 ## Task 3 ##
 
