@@ -57,7 +57,8 @@ ctest
 <img src="Linked Cell.png" alt="Time measurements for Linked Cell Container" title="Linked Cell" width="200"/>
 
 ### Visualization Plot for the Time Measurements: ###
-![Corresponding Graph](measurements_pic.png "Comparison graph")
+<img src="./measurements_pic.png" alt="Corresponding Graph" title="Comparison graph" style="width: 70%;">
+
 
   
 ## Task 3 ##
