@@ -19,25 +19,6 @@ namespace Formulas {
         return std::sqrt(norm);
     }
 
-/*
- * not important anymore, use the one in forces folder
-    * Lennard-Jones potential
-    * double calculatePotential(std::array<double, 3> &xi, std::array<double, 3> &xj, double sigma, double eps) {
-    * //U(xi, xj) = 4*eps((sigma/L2_norm(xi,xj))^12 - (sigma/L2_norm(xi,xj))^6)
-    * auto potential = 4 * eps * (pow((sigma / Formulas::secondNorm(xi - xj)), 12.0) -
-    * pow((sigma / Formulas::secondNorm(xi -xj)), 6.0));
-    * return potential;
-    * }
-
-    * Lennard-Jones force
-    * std::array<double, 3> calculateLJForce(const std::array<double, 3> &xi, const std::array<double, 3> &xj,
-    * double sigma, double eps) {
-    * auto force = (-24 * eps / pow(Formulas::secondNorm(xi - xj), 2.0)) *
-    * (pow((sigma / Formulas::secondNorm(xi - xj)), 6.0) -
-    * 2 * pow((sigma / Formulas::secondNorm(xi - xj)), 12.0)) * (xi - xj);
-    * return force;
-    * }
-    * */
 
     void calculateBM(Particle &p) {
         auto bm = maxwellBoltzmannDistributedVelocity(0.1, 2);
