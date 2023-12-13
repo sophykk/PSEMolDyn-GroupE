@@ -13,10 +13,15 @@
 
 class Thermostat {
 private:
+    static constexpr int numDimensions = 3;
+    static constexpr double kBoltzmann = 1.0;
     double Tinit;          // Initial temperature
     double Ttarget;        // Target temperature
     double deltaT;         // Max temperature change per application
     int nthermostat;       // Number of time steps for periodic application
+
+    /** useBrownianMotion = True if initial Velocities == 0, False otherwise
+     * initialize Thermostat with this flag*/
     bool useBrownianMotion;// Flag for initializing with Brownian Motion
 
 public:
@@ -27,7 +32,7 @@ public:
     void applyThermostat(LinkedCellContainer2& particleContainer, int currentStep);
 
     /** Helper method to calculate the current temperature of the system */
-    double calculateCurrentTemperature(const LinkedCellContainer2& particleContainer) const;
+    double calculateCurrentTemperature(LinkedCellContainer2& particleContainer) const;
 
     /** Function to initialize particles' velocities with Brownian motion */
     void initializeWithBrownianMotion(LinkedCellContainer2& particleContainer);
