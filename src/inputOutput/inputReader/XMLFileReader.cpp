@@ -28,13 +28,13 @@ void XMLFileReader::readLennardJonesForceParams(const char *filename, double &si
     epsilon = parameters->lennardJonesForceParams()->epsilon();
 }
 
-void XMLFileReader::readLinkedCellParams(const char *filename, std::vector<double> &x, double &cutOffR, char &boundaryC) {
+void XMLFileReader::readLinkedCellParams(const char *filename, std::vector<double> &x, double &cutOffR, std::array<char, 4> &boundaryC) {
 
     std::unique_ptr<simulation> parameters = simulation_(filename);
 
     x = {parameters->linkedCellParams()->domainSize().Lx(), parameters->linkedCellParams()->domainSize().Ly(), parameters->linkedCellParams()->domainSize().Lz()};
     cutOffR = parameters->linkedCellParams()->cutoffRadius();
-    boundaryC = parameters->linkedCellParams()->boundaryCondition()[0];
+    boundaryC = {parameters->linkedCellParams()->boundaryConditions().left()[0], parameters->linkedCellParams()->boundaryConditions().up()[0], parameters->linkedCellParams()->boundaryConditions().right()[0], parameters->linkedCellParams()->boundaryConditions().down()[0]};
 }
 
 std::vector<CuboidParticleGenerator> XMLFileReader::readCuboids(const char *filename) {

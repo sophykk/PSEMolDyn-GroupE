@@ -22,7 +22,12 @@
             <Lz>1</Lz>
         </domainSize>
         <cutoffRadius>3.0</cutoffRadius>
-        <boundaryCondition>o</boundaryCondition>
+        <boundaryConditions>
+            <left>o</left>
+            <up>o</up>
+            <right>o</right>
+            <down>o</down>
+        </boundaryConditions>
     </linkedCellParams>
 
     <cuboid>

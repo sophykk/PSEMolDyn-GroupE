@@ -10,6 +10,7 @@
 
 #include <list>
 #include <vector>
+#include <array>
 
 class XMLFileReader {
 
@@ -21,7 +22,7 @@ public:
 
     void readLennardJonesForceParams(const char *filename, double &sigma, double &epsilon);
 
-    void readLinkedCellParams(const char *filename, std::vector<double> &x, double &cutOffR, char &boundaryC);
+    void readLinkedCellParams(const char *filename, std::vector<double> &x, double &cutOffR, std::array<char, 4> &boundaryC);
 
     std::vector<CuboidParticleGenerator> readCuboids(const char *filename);
 

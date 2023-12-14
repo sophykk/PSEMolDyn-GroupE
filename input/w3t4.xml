@@ -22,7 +22,12 @@
             <Lz>1</Lz>
         </domainSize>
         <cutoffRadius>3.0</cutoffRadius>
-        <boundaryCondition>r</boundaryCondition>
+        <boundaryConditions>
+            <left>r</left>
+            <up>r</up>
+            <right>r</right>
+            <down>r</down>
+        </boundaryConditions>
     </linkedCellParams>
     
     <sphere>

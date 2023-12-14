@@ -34,7 +34,7 @@
         <xs:sequence>
             <xs:element name="domainSize" type="domainParam"/>
             <xs:element name="cutoffRadius" type="xs:double"/>
-            <xs:element name="boundaryCondition" type="xs:string"/>
+            <xs:element name="boundaryConditions" type="boundaryConditionsType"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -89,6 +89,15 @@
             <xs:element name="Lx" type="xs:double"/>
             <xs:element name="Ly" type="xs:double"/>
             <xs:element name="Lz" type="xs:double"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="boundaryConditionsType">
+        <xs:sequence>
+            <xs:element name="left" type="xs:string"/>
+            <xs:element name="up" type="xs:string"/>
+            <xs:element name="right" type="xs:string"/>
+            <xs:element name="down" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>
 

@@ -255,28 +255,28 @@ cutoffRadius (const cutoffRadius_type& x)
   this->cutoffRadius_.set (x);
 }
 
-const linkedCellParamsType::boundaryCondition_type& linkedCellParamsType::
-boundaryCondition () const
+const linkedCellParamsType::boundaryConditions_type& linkedCellParamsType::
+boundaryConditions () const
 {
-  return this->boundaryCondition_.get ();
+  return this->boundaryConditions_.get ();
 }
 
-linkedCellParamsType::boundaryCondition_type& linkedCellParamsType::
-boundaryCondition ()
+linkedCellParamsType::boundaryConditions_type& linkedCellParamsType::
+boundaryConditions ()
 {
-  return this->boundaryCondition_.get ();
-}
-
-void linkedCellParamsType::
-boundaryCondition (const boundaryCondition_type& x)
-{
-  this->boundaryCondition_.set (x);
+  return this->boundaryConditions_.get ();
 }
 
 void linkedCellParamsType::
-boundaryCondition (::std::auto_ptr< boundaryCondition_type > x)
+boundaryConditions (const boundaryConditions_type& x)
 {
-  this->boundaryCondition_.set (x);
+  this->boundaryConditions_.set (x);
+}
+
+void linkedCellParamsType::
+boundaryConditions (::std::auto_ptr< boundaryConditions_type > x)
+{
+  this->boundaryConditions_.set (x);
 }
 
 
@@ -766,6 +766,106 @@ Lz (const Lz_type& x)
 }
 
 
+// boundaryConditionsType
+// 
+
+const boundaryConditionsType::left_type& boundaryConditionsType::
+left () const
+{
+  return this->left_.get ();
+}
+
+boundaryConditionsType::left_type& boundaryConditionsType::
+left ()
+{
+  return this->left_.get ();
+}
+
+void boundaryConditionsType::
+left (const left_type& x)
+{
+  this->left_.set (x);
+}
+
+void boundaryConditionsType::
+left (::std::auto_ptr< left_type > x)
+{
+  this->left_.set (x);
+}
+
+const boundaryConditionsType::up_type& boundaryConditionsType::
+up () const
+{
+  return this->up_.get ();
+}
+
+boundaryConditionsType::up_type& boundaryConditionsType::
+up ()
+{
+  return this->up_.get ();
+}
+
+void boundaryConditionsType::
+up (const up_type& x)
+{
+  this->up_.set (x);
+}
+
+void boundaryConditionsType::
+up (::std::auto_ptr< up_type > x)
+{
+  this->up_.set (x);
+}
+
+const boundaryConditionsType::right_type& boundaryConditionsType::
+right () const
+{
+  return this->right_.get ();
+}
+
+boundaryConditionsType::right_type& boundaryConditionsType::
+right ()
+{
+  return this->right_.get ();
+}
+
+void boundaryConditionsType::
+right (const right_type& x)
+{
+  this->right_.set (x);
+}
+
+void boundaryConditionsType::
+right (::std::auto_ptr< right_type > x)
+{
+  this->right_.set (x);
+}
+
+const boundaryConditionsType::down_type& boundaryConditionsType::
+down () const
+{
+  return this->down_.get ();
+}
+
+boundaryConditionsType::down_type& boundaryConditionsType::
+down ()
+{
+  return this->down_.get ();
+}
+
+void boundaryConditionsType::
+down (const down_type& x)
+{
+  this->down_.set (x);
+}
+
+void boundaryConditionsType::
+down (::std::auto_ptr< down_type > x)
+{
+  this->down_.set (x);
+}
+
+
 // simulation
 // 
 
@@ -1223,22 +1323,22 @@ lennardJonesForceParamsType::
 linkedCellParamsType::
 linkedCellParamsType (const domainSize_type& domainSize,
                       const cutoffRadius_type& cutoffRadius,
-                      const boundaryCondition_type& boundaryCondition)
+                      const boundaryConditions_type& boundaryConditions)
 : ::xml_schema::type (),
   domainSize_ (domainSize, this),
   cutoffRadius_ (cutoffRadius, this),
-  boundaryCondition_ (boundaryCondition, this)
+  boundaryConditions_ (boundaryConditions, this)
 {
 }
 
 linkedCellParamsType::
 linkedCellParamsType (::std::auto_ptr< domainSize_type > domainSize,
                       const cutoffRadius_type& cutoffRadius,
-                      const boundaryCondition_type& boundaryCondition)
+                      ::std::auto_ptr< boundaryConditions_type > boundaryConditions)
 : ::xml_schema::type (),
   domainSize_ (domainSize, this),
   cutoffRadius_ (cutoffRadius, this),
-  boundaryCondition_ (boundaryCondition, this)
+  boundaryConditions_ (boundaryConditions, this)
 {
 }
 
@@ -1249,7 +1349,7 @@ linkedCellParamsType (const linkedCellParamsType& x,
 : ::xml_schema::type (x, f, c),
   domainSize_ (x.domainSize_, f, this),
   cutoffRadius_ (x.cutoffRadius_, f, this),
-  boundaryCondition_ (x.boundaryCondition_, f, this)
+  boundaryConditions_ (x.boundaryConditions_, f, this)
 {
 }
 
@@ -1260,7 +1360,7 @@ linkedCellParamsType (const ::xercesc::DOMElement& e,
 : ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
   domainSize_ (this),
   cutoffRadius_ (this),
-  boundaryCondition_ (this)
+  boundaryConditions_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -1304,16 +1404,16 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
-    // boundaryCondition
+    // boundaryConditions
     //
-    if (n.name () == "boundaryCondition" && n.namespace_ ().empty ())
+    if (n.name () == "boundaryConditions" && n.namespace_ ().empty ())
     {
-      ::std::auto_ptr< boundaryCondition_type > r (
-        boundaryCondition_traits::create (i, f, this));
+      ::std::auto_ptr< boundaryConditions_type > r (
+        boundaryConditions_traits::create (i, f, this));
 
-      if (!boundaryCondition_.present ())
+      if (!boundaryConditions_.present ())
       {
-        this->boundaryCondition_.set (r);
+        this->boundaryConditions_.set (r);
         continue;
       }
     }
@@ -1335,10 +1435,10 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       "");
   }
 
-  if (!boundaryCondition_.present ())
+  if (!boundaryConditions_.present ())
   {
     throw ::xsd::cxx::tree::expected_element< char > (
-      "boundaryCondition",
+      "boundaryConditions",
       "");
   }
 }
@@ -1358,7 +1458,7 @@ operator= (const linkedCellParamsType& x)
     static_cast< ::xml_schema::type& > (*this) = x;
     this->domainSize_ = x.domainSize_;
     this->cutoffRadius_ = x.cutoffRadius_;
-    this->boundaryCondition_ = x.boundaryCondition_;
+    this->boundaryConditions_ = x.boundaryConditions_;
   }
 
   return *this;
@@ -2363,6 +2463,176 @@ operator= (const domainParam& x)
 
 domainParam::
 ~domainParam ()
+{
+}
+
+// boundaryConditionsType
+//
+
+boundaryConditionsType::
+boundaryConditionsType (const left_type& left,
+                        const up_type& up,
+                        const right_type& right,
+                        const down_type& down)
+: ::xml_schema::type (),
+  left_ (left, this),
+  up_ (up, this),
+  right_ (right, this),
+  down_ (down, this)
+{
+}
+
+boundaryConditionsType::
+boundaryConditionsType (const boundaryConditionsType& x,
+                        ::xml_schema::flags f,
+                        ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  left_ (x.left_, f, this),
+  up_ (x.up_, f, this),
+  right_ (x.right_, f, this),
+  down_ (x.down_, f, this)
+{
+}
+
+boundaryConditionsType::
+boundaryConditionsType (const ::xercesc::DOMElement& e,
+                        ::xml_schema::flags f,
+                        ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  left_ (this),
+  up_ (this),
+  right_ (this),
+  down_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
+}
+
+void boundaryConditionsType::
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
+
+    // left
+    //
+    if (n.name () == "left" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< left_type > r (
+        left_traits::create (i, f, this));
+
+      if (!left_.present ())
+      {
+        this->left_.set (r);
+        continue;
+      }
+    }
+
+    // up
+    //
+    if (n.name () == "up" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< up_type > r (
+        up_traits::create (i, f, this));
+
+      if (!up_.present ())
+      {
+        this->up_.set (r);
+        continue;
+      }
+    }
+
+    // right
+    //
+    if (n.name () == "right" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< right_type > r (
+        right_traits::create (i, f, this));
+
+      if (!right_.present ())
+      {
+        this->right_.set (r);
+        continue;
+      }
+    }
+
+    // down
+    //
+    if (n.name () == "down" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< down_type > r (
+        down_traits::create (i, f, this));
+
+      if (!down_.present ())
+      {
+        this->down_.set (r);
+        continue;
+      }
+    }
+
+    break;
+  }
+
+  if (!left_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "left",
+      "");
+  }
+
+  if (!up_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "up",
+      "");
+  }
+
+  if (!right_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "right",
+      "");
+  }
+
+  if (!down_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "down",
+      "");
+  }
+}
+
+boundaryConditionsType* boundaryConditionsType::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class boundaryConditionsType (*this, f, c);
+}
+
+boundaryConditionsType& boundaryConditionsType::
+operator= (const boundaryConditionsType& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->left_ = x.left_;
+    this->up_ = x.up_;
+    this->right_ = x.right_;
+    this->down_ = x.down_;
+  }
+
+  return *this;
+}
+
+boundaryConditionsType::
+~boundaryConditionsType ()
 {
 }
 

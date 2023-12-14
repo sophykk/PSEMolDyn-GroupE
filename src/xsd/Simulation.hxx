@@ -231,6 +231,7 @@ class positionType;
 class velocityType;
 class gridParam;
 class domainParam;
+class boundaryConditionsType;
 class simulation;
 
 #include <memory>    // ::std::auto_ptr
@@ -485,32 +486,32 @@ class linkedCellParamsType: public ::xml_schema::type
   void
   cutoffRadius (const cutoffRadius_type& x);
 
-  // boundaryCondition
+  // boundaryConditions
   //
-  typedef ::xml_schema::string boundaryCondition_type;
-  typedef ::xsd::cxx::tree::traits< boundaryCondition_type, char > boundaryCondition_traits;
+  typedef ::boundaryConditionsType boundaryConditions_type;
+  typedef ::xsd::cxx::tree::traits< boundaryConditions_type, char > boundaryConditions_traits;
 
-  const boundaryCondition_type&
-  boundaryCondition () const;
+  const boundaryConditions_type&
+  boundaryConditions () const;
 
-  boundaryCondition_type&
-  boundaryCondition ();
-
-  void
-  boundaryCondition (const boundaryCondition_type& x);
+  boundaryConditions_type&
+  boundaryConditions ();
 
   void
-  boundaryCondition (::std::auto_ptr< boundaryCondition_type > p);
+  boundaryConditions (const boundaryConditions_type& x);
+
+  void
+  boundaryConditions (::std::auto_ptr< boundaryConditions_type > p);
 
   // Constructors.
   //
   linkedCellParamsType (const domainSize_type&,
                         const cutoffRadius_type&,
-                        const boundaryCondition_type&);
+                        const boundaryConditions_type&);
 
   linkedCellParamsType (::std::auto_ptr< domainSize_type >,
                         const cutoffRadius_type&,
-                        const boundaryCondition_type&);
+                        ::std::auto_ptr< boundaryConditions_type >);
 
   linkedCellParamsType (const ::xercesc::DOMElement& e,
                         ::xml_schema::flags f = 0,
@@ -540,7 +541,7 @@ class linkedCellParamsType: public ::xml_schema::type
   protected:
   ::xsd::cxx::tree::one< domainSize_type > domainSize_;
   ::xsd::cxx::tree::one< cutoffRadius_type > cutoffRadius_;
-  ::xsd::cxx::tree::one< boundaryCondition_type > boundaryCondition_;
+  ::xsd::cxx::tree::one< boundaryConditions_type > boundaryConditions_;
 };
 
 class cuboidType: public ::xml_schema::type
@@ -1158,6 +1159,116 @@ class domainParam: public ::xml_schema::type
   ::xsd::cxx::tree::one< Lx_type > Lx_;
   ::xsd::cxx::tree::one< Ly_type > Ly_;
   ::xsd::cxx::tree::one< Lz_type > Lz_;
+};
+
+class boundaryConditionsType: public ::xml_schema::type
+{
+  public:
+  // left
+  //
+  typedef ::xml_schema::string left_type;
+  typedef ::xsd::cxx::tree::traits< left_type, char > left_traits;
+
+  const left_type&
+  left () const;
+
+  left_type&
+  left ();
+
+  void
+  left (const left_type& x);
+
+  void
+  left (::std::auto_ptr< left_type > p);
+
+  // up
+  //
+  typedef ::xml_schema::string up_type;
+  typedef ::xsd::cxx::tree::traits< up_type, char > up_traits;
+
+  const up_type&
+  up () const;
+
+  up_type&
+  up ();
+
+  void
+  up (const up_type& x);
+
+  void
+  up (::std::auto_ptr< up_type > p);
+
+  // right
+  //
+  typedef ::xml_schema::string right_type;
+  typedef ::xsd::cxx::tree::traits< right_type, char > right_traits;
+
+  const right_type&
+  right () const;
+
+  right_type&
+  right ();
+
+  void
+  right (const right_type& x);
+
+  void
+  right (::std::auto_ptr< right_type > p);
+
+  // down
+  //
+  typedef ::xml_schema::string down_type;
+  typedef ::xsd::cxx::tree::traits< down_type, char > down_traits;
+
+  const down_type&
+  down () const;
+
+  down_type&
+  down ();
+
+  void
+  down (const down_type& x);
+
+  void
+  down (::std::auto_ptr< down_type > p);
+
+  // Constructors.
+  //
+  boundaryConditionsType (const left_type&,
+                          const up_type&,
+                          const right_type&,
+                          const down_type&);
+
+  boundaryConditionsType (const ::xercesc::DOMElement& e,
+                          ::xml_schema::flags f = 0,
+                          ::xml_schema::container* c = 0);
+
+  boundaryConditionsType (const boundaryConditionsType& x,
+                          ::xml_schema::flags f = 0,
+                          ::xml_schema::container* c = 0);
+
+  virtual boundaryConditionsType*
+  _clone (::xml_schema::flags f = 0,
+          ::xml_schema::container* c = 0) const;
+
+  boundaryConditionsType&
+  operator= (const boundaryConditionsType& x);
+
+  virtual 
+  ~boundaryConditionsType ();
+
+  // Implementation.
+  //
+  protected:
+  void
+  parse (::xsd::cxx::xml::dom::parser< char >&,
+         ::xml_schema::flags);
+
+  protected:
+  ::xsd::cxx::tree::one< left_type > left_;
+  ::xsd::cxx::tree::one< up_type > up_;
+  ::xsd::cxx::tree::one< right_type > right_;
+  ::xsd::cxx::tree::one< down_type > down_;
 };
 
 class simulation: public ::xml_schema::type

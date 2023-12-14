@@ -58,7 +58,7 @@ int main(int argc, char *argsv[]) {
         // Read the parameters for the LinkedCell Container from the file
         std::vector<double> d;
         double c;
-        char b;
+        std::array<char, 4> b;
         xmlReader.readLinkedCellParams(argsv[1], d, c, b);
 
         particleContainer = std::make_unique<LinkedCellContainer2>(*forceModel, d, c, b);
