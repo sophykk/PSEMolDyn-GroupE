@@ -44,7 +44,7 @@ public:
      * Get a flat vector of all particles
      * @return Vector of all particles
      */
-    std::vector<Particle>& getParticles();
+    virtual std::vector<Particle>& getParticles() = 0;
 
     /**
      * @return Number of particles in the container.

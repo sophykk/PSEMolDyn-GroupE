@@ -55,6 +55,9 @@ public:
       std::array<double, 3> x_arg, std::array<double, 3> v_arg, double m_arg,
       int type = 0);
 
+  Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg, std::array<double,
+          3> f_arg, std::array<double, 3> oldf_arg, double m_arg, int type = 0);
+
   virtual ~Particle();
 
   const std::array<double, 3> &getX() const;

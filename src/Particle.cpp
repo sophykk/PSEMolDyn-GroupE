@@ -35,6 +35,10 @@ Particle::Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg,
    // spdlog::debug("Particle generated!");
 }
 
+Particle::Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg, std::array<double, 3> f_arg, std::array<double, 3> oldf_arg,
+                   double m_arg, int type_arg) : x(x_arg), v(v_arg), f(f_arg), old_f(oldf_arg), m(m_arg), type(type_arg) {
+}
+
 Particle::~Particle() { //spdlog::debug("Particle destructed!"); }
 }
 const std::array<double, 3> &Particle::getX() const { return x; }
