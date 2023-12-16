@@ -29,16 +29,16 @@ public:
     Thermostat(double Tinit, double Ttarget = 0, double deltaT = std::numeric_limits<double>::infinity(), int nthermostat = 1, bool useBrownianMotion = false);
 
     /** Function to apply the thermostat to a LinkedCell particle container */
-    void applyThermostat(LinkedCellContainer2& particleContainer, int currentStep);
+    void applyThermostat(ParticleContainerBase& particleContainer, int currentStep);
 
     /** Helper method to calculate the current temperature of the system */
-    double calculateCurrentTemperature(LinkedCellContainer2& particleContainer) const;
+    double calculateCurrentTemperature(ParticleContainerBase& particleContainer) const;
 
     /** Function to initialize particles' velocities with Brownian motion */
-    void initializeWithBrownianMotion(LinkedCellContainer2& particleContainer);
+    void initializeWithBrownianMotion(ParticleContainerBase& particleContainer);
 
     /** Function to scale the velocities of the particles */
-    void scaleVelocities(LinkedCellContainer2& particleContainer, double scalingFactor);
+    void scaleVelocities(ParticleContainerBase& particleContainer, double scalingFactor);
 };
 
 

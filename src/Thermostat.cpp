@@ -12,7 +12,7 @@ Thermostat::Thermostat(double Tinit, double Ttarget, double deltaT, int nthermos
         : Tinit(Tinit), Ttarget(Ttarget == 0 ? Tinit : Ttarget), deltaT(deltaT), nthermostat(nthermostat), useBrownianMotion(useBrownianMotion) {}
 
 /** Apply the thermostat to a LinkedCellContainer2 */
-void Thermostat::applyThermostat(LinkedCellContainer2& particleContainer, int currentStep) {
+void Thermostat::applyThermostat(ParticleContainerBase& particleContainer, int currentStep) {
     if (currentStep % nthermostat == 0) {
         /** Systems that have no initial velocities need to be initialized
          * with Brownian Motion to have a non-zero temperature. */
@@ -30,7 +30,7 @@ void Thermostat::applyThermostat(LinkedCellContainer2& particleContainer, int cu
 
 /** Helper function
  * Calculate the current temperature of the system */
-double Thermostat::calculateCurrentTemperature(LinkedCellContainer2& particleContainer) const {
+double Thermostat::calculateCurrentTemperature(ParticleContainerBase& particleContainer) const {
     double Ekin = 0.0;
     // apply formula (2) from the worksheet to calculate the Kinetic Energy of the particles
     auto& particles = particleContainer.getParticles();
@@ -49,7 +49,7 @@ double Thermostat::calculateCurrentTemperature(LinkedCellContainer2& particleCon
 
 /** Helper function
  * Initialize particles' velocities with Brownian motion */
-void Thermostat::initializeWithBrownianMotion(LinkedCellContainer2& particleContainer) {
+void Thermostat::initializeWithBrownianMotion(ParticleContainerBase& particleContainer) {
         auto& particles = particleContainer.getParticles();
         for (auto& particle : particles) {
             auto bmVelocity = maxwellBoltzmannDistributedVelocity(std::sqrt(Tinit / particle.getM()), 3);
@@ -62,7 +62,7 @@ void Thermostat::initializeWithBrownianMotion(LinkedCellContainer2& particleCont
 
 /** Helper function
  * Scale the velocities of the particles */
-void Thermostat::scaleVelocities(LinkedCellContainer2& particleContainer, double scalingFactor) {
+void Thermostat::scaleVelocities(ParticleContainerBase& particleContainer, double scalingFactor) {
     auto& particles = particleContainer.getParticles();
     for (auto& particle : particles) {
         const auto& currentVelocity = particle.getV();
@@ -71,7 +71,7 @@ void Thermostat::scaleVelocities(LinkedCellContainer2& particleContainer, double
         for (size_t i = 0; i < currentVelocity.size(); ++i) {
             scaledVelocity[i] = currentVelocity[i] * scalingFactor;
         }
-        
+
         particle.setV(scaledVelocity);
     }
 }

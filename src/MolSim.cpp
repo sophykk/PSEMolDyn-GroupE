@@ -1,136 +1,76 @@
-#include "inputOutput/inputReader/CuboidFileReader.h"
 #include "Containers/BasicParticleContainer.h"
 #include "Containers/LinkedCellContainer2.h"
 #include "Forces/GravitationalForce.h"
 #include "Forces/LennardJonesForce.h"
-#include "inputOutput/inputReader/XMLFileReader.h"
-
+#include "Thermostat.h"
 #include <spdlog/spdlog.h>
 #include <iostream>
 #include <chrono>
+#include <memory>
+#include <vector>
 
-//
-int main(int argc, char *argsv[]) {
+int main(int argc, char *argv[]) {
+    // Hard-coded simulation parameters
+    double end_time = 100.0;   // Duration of the simulation
+    double delta_t = 0.1;      // Time step
+    int plotInterval = 10;     // Interval for plotting
 
+    // Hard-coded force model parameters (Lennard-Jones potential)
+    double epsilon = 1.0;  // Depth of the potential well
+    double sigma = 1.0;    // Finite distance at which inter-particle potential is zero
+    auto forceModel = std::make_unique<LennardJonesForce>(sigma, epsilon);
 
-    double end_time;
-    double delta_t;
-    std::string modelType;
-    std::string containerType;
-    std::string objectType;
-    int plotInterval;
-    spdlog::level::level_enum log_level = spdlog::level::debug;
-    bool calcRunTime = false;
-    std::chrono::time_point<std::chrono::high_resolution_clock> start;
-    std::chrono::time_point<std::chrono::high_resolution_clock> end;
+    // Hard-coded parameters for LinkedCellContainer2
+    std::vector<double> domainSize = {10.0, 10.0, 10.0}; // Domain size
+    double cutoffRadius = 1.0;                           // Cutoff radius
+    char boundaryCondition = 'o';
 
-    XMLFileReader xmlReader;
+    // Setup LinkedCellContainer2
+    auto particleContainer = std::make_unique<LinkedCellContainer2>(*forceModel, domainSize, cutoffRadius, boundaryCondition);
 
-    // Read Simulation parameters from the file
-    xmlReader.readSimulationParams(argsv[1], end_time, delta_t, modelType, containerType, objectType, plotInterval);
+    // Thermostat setup
+    double initialTemperature = 300; // Initial temperature
+    double targetTemperature = 300;  // Target temperature
+    double maxTempChange = 10;       // Maximum change in temperature per step
+    int thermostatInterval = 10;     // Apply thermostat every 10 iterations
+    bool initializeWithBrownianMotion = true; // Initialize with Brownian motion
 
-    spdlog::set_level(log_level);
-
-    spdlog::info("Application started");
-    spdlog::info("Hello from MolSim for PSE!");
-
-    // Select to chosen force model
-    std::unique_ptr<ForceBase> forceModel;
-    if (modelType == "gravitation") {
-        forceModel = std::make_unique<GravitationalForce>();
-    }
-    else if (modelType == "lennardJones") {
-        // Read sigma and epsilon from teh file
-        double epsilon;
-        double sigma;
-        xmlReader.readLennardJonesForceParams(argsv[1], sigma,epsilon);
-        forceModel = std::make_unique<LennardJonesForce>(sigma, epsilon);
-    } else {
-        spdlog::error("Unknown force model selected: {}", modelType);
-        exit(-1);
-    }
-
-    // Select to chosen container type
-    std::unique_ptr<ParticleContainerBase> particleContainer;
-    if (containerType == "basic") {
-        particleContainer = std::make_unique<BasicParticleContainer>(*forceModel);
-    } else if (containerType == "linkedCells") {
-        // Read the parameters for the LinkedCell Container from the file
-        std::vector<double> d;
-        double c;
-        char b;
-        xmlReader.readLinkedCellParams(argsv[1], d, c, b);
-
-        particleContainer = std::make_unique<LinkedCellContainer2>(*forceModel, d, c, b);
-    } else {
-        spdlog::error("Unknown container type selected: {}", containerType);
-        exit(-1);
-    }
-
-    if(objectType == "sphere"){
-        // Read Spheres from the file
-        auto generators = xmlReader.readSpheres(argsv[1]);
-
-        // Loop over all generators and let them create particles in the container
-        for (auto &gen: generators) {
-            gen.generateParticles(*particleContainer);
-        }
-    }
-    else{
-        // Read Cuboids from the file
-        auto generators = xmlReader.readCuboids(argsv[1]);
-
-        // Loop over all generators and let them create particles in the container
-        for (auto &gen: generators) {
-            gen.generateParticles(*particleContainer);
-        }
-    }
-
-    // Calculate initial forces
-    particleContainer->calculateF();
+    Thermostat thermostat(initialTemperature, targetTemperature, maxTempChange, thermostatInterval, initializeWithBrownianMotion);
 
     // Main simulation loop
+    spdlog::info("Starting simulation loop");
     int iteration = 0;
     double current_time = 0;
     while (current_time < end_time) {
-
-        if(calcRunTime){
-            start = std::chrono::high_resolution_clock::now();
-        }
-
-        // calculate new x
+        // Calculate new positions
         particleContainer->calculateX(delta_t);
 
-        // reset forces
+        // Reset forces
         particleContainer->resetF();
 
-        // calculate new f
+        // Calculate new forces
         particleContainer->calculateF();
 
-        // calculate new v
+        // Apply thermostat
+        thermostat.applyThermostat(*particleContainer, iteration);
+
+        // Calculate new velocities
         particleContainer->calculateV(delta_t);
 
-        if(calcRunTime){
-            // Record end time
-            end = std::chrono::high_resolution_clock::now();
+        // Log current temperature
+        double currentTemperature = thermostat.calculateCurrentTemperature(*particleContainer);
+        spdlog::info("Current Temperature at iteration {}: {}", iteration, currentTemperature);
 
-            // Calculate duration
-            auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-
-            // Print the duration in microseconds
-            std::cout << "Runtime: " << duration.count() << " microseconds\n";
-        }
-
-        iteration++;
+        // Plotting (if required)
         if (iteration % plotInterval == 0) {
             particleContainer->plotParticles(iteration);
         }
-        spdlog::info("Iteration {} finished.", iteration);
 
+        // Update iteration and time
+        iteration++;
         current_time += delta_t;
     }
 
-    spdlog::info("output written. Terminating...");
-
+    spdlog::info("Simulation completed");
     return 0;
 }
