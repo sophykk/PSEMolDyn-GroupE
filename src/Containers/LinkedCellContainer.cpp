@@ -13,6 +13,7 @@
 #include <spdlog/spdlog.h>
 
 
+//Todo: put gGav in bracket and extend xml to read gGrav
 LinkedCellContainer2::LinkedCellContainer2(ForceBase &model, std::vector<double> &dSize, double &cRadius,
                                            std::array<char, 4> bCon) :
         ParticleContainerBase(model), domainSize(dSize), cutoffRadius(cRadius), boundaryCon(bCon) {
@@ -27,6 +28,7 @@ LinkedCellContainer2::LinkedCellContainer2(ForceBase &model, std::vector<double>
     initGrid();
 }
 
+//Todo: put gGav in bracket and extend xml to read gGrav
 LinkedCellContainer2::LinkedCellContainer2(ForceBase &model, std::vector<Particle> &particles,
                                            std::vector<double> &dSize, double &cRadius, std::array<char, 4> bCon) :
         ParticleContainerBase(model), particleList(particles), domainSize(dSize), cutoffRadius(cRadius),
@@ -52,8 +54,9 @@ std::vector<std::vector<std::vector<Particle>>> &LinkedCellContainer2::getGrid()
     return grid;
 }
 
-std::vector<Particle> &LinkedCellContainer2::getCell(std::array<double, 3> &pos) {
-    return getGrid()[std::ceil(pos[0] / cutoffRadius)][std::ceil(pos[1] / cutoffRadius)];
+std::pair<int, int> &LinkedCellContainer2::getCell(const std::array<double, 3> &pos) {
+    std::pair<int, int> pair(std::ceil(pos[0] / cutoffRadius), std::ceil(pos[1] / cutoffRadius));
+    return pair;
 }
 
 char &LinkedCellContainer2::getBoundaryCon(int index) {
@@ -98,6 +101,24 @@ std::size_t LinkedCellContainer2::size() const {
  * then first cell from 0-10, next 11-20,
  * */
 void LinkedCellContainer2::initGrid() {
+
+    for (auto &p: particleList) {
+        if (boundaryCon[0] == 'p' && p.getX()[0] < 0.0) {
+            p.setX({p.getX()[0] + domainSize[0], p.getX()[1], p.getX()[2]});
+        }
+        // upper
+        if (boundaryCon[1] == 'p' && p.getX()[1] > domainSize[1]) {
+            p.setX({p.getX()[0], p.getX()[1] - domainSize[1], p.getX()[2]});
+        }
+        // right
+        if (boundaryCon[2] == 'p' && p.getX()[0] > domainSize[0]) {
+            p.setX({p.getX()[0] - domainSize[0], p.getX()[1], p.getX()[2]});
+        }
+        // floor
+        if (boundaryCon[3] == 'p' && p.getX()[1] < 0.0) {
+            p.setX({p.getX()[0], p.getX()[1] + domainSize[1], p.getX()[2]});
+        }
+    }
 
     double minDouble = std::numeric_limits<double>::min();
     double lowerY = 0.0;
@@ -157,16 +178,14 @@ void LinkedCellContainer2::calculateF() {
             for (auto p1 = grid[x][y].begin(); p1 < grid[x][y].end(); p1++) {
                 for (auto p2 = p1 + 1; p2 < grid[x][y].end(); p2++) {
                     auto force = forceModel.calculateForce(*p1, *p2);
-                    std::array<double, 3> force2 = {force[0], force[1] * p2->getM(), force[2]};
-                    force[1] += gGrav * p1->getM();
                     p1->addF(force);
-                    p2->addF(-1.0 * force2);
+                    p2->addF(-1.0 * force);
                 }
                 if (checkBoundary('r')) {
                     applyReflecting(*p1);
                 }
                 if (checkBoundary('p')) {
-                    applyPeriodic(*p1);
+                    applyPeriodic(*p1, x, y);
                 }
             }
             //if above neighbour exists
@@ -175,46 +194,38 @@ void LinkedCellContainer2::calculateF() {
                 for (auto &p1: getGrid()[x][y]) {
                     for (auto &p2: getGrid()[x][y + 1]) {
                         auto force = forceModel.calculateForce(p1, p2);
-                        std::array<double, 3> force2 = {force[0], gGrav * p2.getM(), force[2]};
-                        force[1] += gGrav * p1.getM();
                         p1.addF(force);
-                        p2.addF(-1.0 * force2);
+                        p2.addF(-1.0 * force);
                     }
                 }
-                //if right hand neighbour exists
-                if (x + 1.0 >= 0.0 && x + 1.0 < getGrid().size()) {
-                    for (auto &p1: getGrid()[x][y]) {
-                        for (auto &p2: getGrid()[x + 1][y]) {
-                            auto force = forceModel.calculateForce(p1, p2);
-                            std::array<double, 3> force2 = {force[0], gGrav * p2.getM(), force[2]};
-                            force[1] += gGrav * p1.getM();
-                            p1.addF(force);
-                            p2.addF(-1.0 * force2);
-                        }
+            }
+            //if right hand neighbour exists
+            if (x + 1.0 >= 0.0 && x + 1.0 < getGrid().size()) {
+                for (auto &p1: getGrid()[x][y]) {
+                    for (auto &p2: getGrid()[x + 1][y]) {
+                        auto force = forceModel.calculateForce(p1, p2);
+                        p1.addF(force);
+                        p2.addF(-1.0 * force);
                     }
                 }
-                //if upper right diagonal neighbour exists
-                if (y + 1 >= 0 && y + 1 < getGrid()[x].size() && x + 1 >= 0 && x + 1 < getGrid().size()) {
-                    for (auto &p1: getGrid()[x][y]) {
-                        for (auto &p2: getGrid()[x + 1][y + 1]) {
-                            auto force = forceModel.calculateForce(p1, p2);
-                            std::array<double, 3> force2 = {force[0], gGrav * p2.getM(), force[2]};
-                            force[1] += gGrav * p1.getM();
-                            p1.addF(force);
-                            p2.addF(-1.0 * force2);
-                        }
+            }
+            //if upper right diagonal neighbour exists
+            if (y + 1 >= 0 && y + 1 < getGrid()[x].size() && x + 1 >= 0 && x + 1 < getGrid().size()) {
+                for (auto &p1: getGrid()[x][y]) {
+                    for (auto &p2: getGrid()[x + 1][y + 1]) {
+                        auto force = forceModel.calculateForce(p1, p2);
+                        p1.addF(force);
+                        p2.addF(-1.0 * force);
                     }
                 }
-                //if upper left diagonal neighbour exists
-                if (y + 1 >= 0 && y + 1 < getGrid()[x].size() && x - 1 >= 0 && x - 1 < getGrid().size()) {
-                    for (auto &p1: getGrid()[x][y]) {
-                        for (auto &p2: getGrid()[x - 1][y + 1]) {
-                            auto force = forceModel.calculateForce(p1, p2);
-                            std::array<double, 3> force2 = {force[0], gGrav * p2.getM(), force[2]};
-                            force[1] += gGrav * p1.getM();
-                            p1.addF(force);
-                            p2.addF(-1.0 * force2);
-                        }
+            }
+            //if upper left diagonal neighbour exists
+            if (y + 1 >= 0 && y + 1 < getGrid()[x].size() && x - 1 >= 0 && x - 1 < getGrid().size()) {
+                for (auto &p1: getGrid()[x][y]) {
+                    for (auto &p2: getGrid()[x - 1][y + 1]) {
+                        auto force = forceModel.calculateForce(p1, p2);
+                        p1.addF(force);
+                        p2.addF(-1.0 * force);
                     }
                 }
             }
@@ -255,23 +266,26 @@ void LinkedCellContainer2::calculateF() {
 void LinkedCellContainer2::calculateX(double delta_t) {
     for (auto &p: getParticles()) {
         auto xi_tn1 = Formulas::verletXStep(p.getX(), p.getV(), p.getF(), p.getM(), delta_t);
-
-        if (p.getX()[0] < 0.0 && boundaryCon[0] == 'p') {
-            xi_tn1[0] = xi_tn1[0] + domainSize[0];
+        /* does not work in here
+        //left
+        if (boundaryCon[0] == 'p' && p.getX()[0] < 0.0) {
+            xi_tn1[0] = p.getX()[0] + domainSize[0];
         }
-        if (p.getX()[1] > domainSize[1] && boundaryCon[1] == 'p') {
-            xi_tn1[1] = xi_tn1[1] - domainSize[1];
+        // upper
+        if (boundaryCon[1] == 'p' && p.getX()[1] > domainSize[1]) {
+            xi_tn1[1] = p.getX()[1] - domainSize[1];
         }
-        if (p.getX()[0] > domainSize[0] && boundaryCon[2] == 'p') {
-            xi_tn1[0] = xi_tn1[0] - domainSize[0];
+        // right
+        if (boundaryCon[2] == 'p' && p.getX()[0] > domainSize[0]) {
+            xi_tn1[0] = p.getX()[0] - domainSize[0];
         }
-        if (p.getX()[1] < 0.0 && boundaryCon[3] == 'p') {
-            xi_tn1[1] = xi_tn1[1] + domainSize[1];
-        }
-
+        // floor
+        if (boundaryCon[3] == 'p' && p.getX()[1] < 0.0) {
+            xi_tn1[1] = p.getX()[1] + domainSize[1];
+        }*/
         p.setX(xi_tn1);  // Update the position
     }
-    initGrid();
+    //initGrid();
 }
 
 /**
@@ -339,7 +353,6 @@ void LinkedCellContainer2::applyReflecting(Particle &p) {
         if (checkDistance(p, "left")) {
             halo.setX({(-1) * p.getX()[0], p.getX()[1], p.getX()[2]});
             auto force = forceModel.calculateForce(p, halo);
-            force[1] += gGrav * p.getM();
             p.addF(force);
         }
     }
@@ -348,7 +361,6 @@ void LinkedCellContainer2::applyReflecting(Particle &p) {
         if (checkDistance(p, "right")) {
             halo.setX({domainSize[0] + (domainSize[0] - p.getX()[0]), p.getX()[1], p.getX()[2]});
             auto force = forceModel.calculateForce(p, halo);
-            force[1] += gGrav * p.getM();
             p.addF(force);
         }
     }
@@ -357,7 +369,6 @@ void LinkedCellContainer2::applyReflecting(Particle &p) {
         if (checkDistance(p, "floor")) {
             halo.setX({p.getX()[0], (-1) * p.getX()[1], p.getX()[2]});
             auto force = forceModel.calculateForce(p, halo);
-            force[1] += gGrav * p.getM();
             p.addF(force);
         }
     }
@@ -366,87 +377,138 @@ void LinkedCellContainer2::applyReflecting(Particle &p) {
         if (checkDistance(p, "upper")) {
             halo.setX({p.getX()[0], domainSize[1] + (domainSize[1] - p.getX()[1]), p.getX()[2]});
             auto force = forceModel.calculateForce(p, halo);
-            force[1] += gGrav * p.getM();
             p.addF(force);
         }
     }
 }
 
-void LinkedCellContainer2::applyPeriodic(Particle &p) {
+/**
+ * @brief just halos, no inserting on the other side here
+ * @param p particle
+ * @param x cell location x
+ * @param y cell location y
+ */
+void LinkedCellContainer2::applyPeriodic(Particle &p, int x, int y) {
     auto distance = std::pow(2, 1.0 / 6);
     Particle halo(p);
 
     // left
     if (boundaryCon[0] == 'p') {
-        if (p.getX()[0] < 0.0) {
-            //insert particle if outside boundary on the opposite side
-            p.setX({p.getX()[0] + domainSize[0], p.getX()[1], p.getX()[2]});
-        }
-        /*
         //creating halos if near border
         if (checkDistance(p, "left")) {
             halo.setX({p.getX()[0] + domainSize[0], p.getX()[1], p.getX()[2]});
-            for (auto &p1: getGrid()[getGrid().size()][std::ceil(p.getX()[1] / cutoffRadius)]) {
-                if (distance >= abs(p1.getX()[0] - halo.getX()[0])) {
+            for (auto &p1: getGrid()[getGrid().size() - 1][y]) {
+                if (abs(p1.getX()[0] - halo.getX()[0]) <= distance) {
                     auto force = forceModel.calculateForce(p1, halo);
-                    force[1] += gGrav + p.getM();
                     p1.addF(force);
                 }
             }
-        }*/
+        }
     }
-
     // upper
     if (boundaryCon[1] == 'p') {
-        if (p.getX()[1] > domainSize[1]) {
-            std::array<double, 3> x_new = {p.getX()[0], p.getX()[1] - domainSize[1], p.getX()[2]};
-            p.setX(x_new);
-        }
-        /*
         if (checkDistance(p, "upper")) {
             halo.setX({p.getX()[0], p.getX()[1] - domainSize[1], p.getX()[2]});
-            for (auto &p1: getGrid()[p.getX()[0] / cutoffRadius][std::ceil(p.getX()[1])]) {
-                if (distance >= abs(p1.getX()[1] - halo.getX()[1])) {
+            for (auto &p1: getGrid()[x][0]) {
+                if (abs(p1.getX()[1] - halo.getX()[1]) <= distance) {
                     auto force = forceModel.calculateForce(p1, halo);
-                    force[1] += gGrav + p.getM();
                     p1.addF(force);
                 }
             }
-        }*/
+            if (boundaryCon[0] == 'p' && checkDistance(p, "left")) {
+                halo.setX({p.getX()[0] + domainSize[0], p.getX()[1] - domainSize[1], p.getX()[2]});
+                for (auto &p1: getGrid()[getGrid().size() - 1][0]) {
+                    if (abs(p1.getX()[0] - halo.getX()[0]) <= distance &&
+                        abs(p1.getX()[1] - halo.getX()[1]) <= distance) {
+                        auto force = forceModel.calculateForce(p1, halo);
+                        p1.addF(force);
+                    }
+                }
+            }
+            if (boundaryCon[2] == 'p' && checkDistance(p, "right")) {
+                halo.setX({p.getX()[0] - domainSize[0], p.getX()[1] - domainSize[1], p.getX()[2]});
+                for (auto &p1: getGrid()[0][0]) {
+                    if (abs(p1.getX()[0] - halo.getX()[0]) <= distance &&
+                        abs(p1.getX()[1] - halo.getX()[1]) <= distance) {
+                        auto force = forceModel.calculateForce(p1, halo);
+                        p1.addF(force);
+                    }
+                }
+            }
+        }
     }
     // right
     if (boundaryCon[2] == 'p') {
-        if (p.getX()[0] > domainSize[0]) {
-            std::array<double, 3> x_new = {p.getX()[0] - domainSize[0], p.getX()[1], p.getX()[2]};
-            p.setX(x_new);
-        }/*
         if (checkDistance(p, "right")) {
             halo.setX({p.getX()[0] - domainSize[0], p.getX()[1], p.getX()[2]});
-            for (auto &p1: getGrid()[0][p.getX()[1] / cutoffRadius]) {
-                if (distance >= abs(p1.getX()[0] - halo.getX()[0])) {
+            for (auto &p1: getGrid()[0][y]) {
+                if (abs(p1.getX()[0] - halo.getX()[0]) <= distance) {
                     auto force = forceModel.calculateForce(p1, halo);
-                    force[1] += gGrav + p.getM();
                     p1.addF(force);
                 }
             }
-        }*/
+        }
     }
     // floor
     if (boundaryCon[3] == 'p') {
-        if (p.getX()[1] < 0.0) {
-            std::array<double, 3> x_new = {p.getX()[0], p.getX()[1] + domainSize[1], p.getX()[2]};
-            p.setX(x_new);
-        }/*
         if (checkDistance(p, "floor")) {
             halo.setX({p.getX()[0] + domainSize[0], p.getX()[1], p.getX()[2]});
-            for (auto &p1: getGrid()[p.getX()[0] / cutoffRadius][getGrid()[0].size()]) {
-                if (distance >= abs(p1.getX()[1] - halo.getX()[1])) {
+            for (auto &p1: getGrid()[x][getGrid()[0].size() - 1]) {
+                if (abs(p1.getX()[1] - halo.getX()[1]) <= distance) {
                     auto force = forceModel.calculateForce(p1, halo);
-                    force[1] += gGrav + p.getM();
                     p1.addF(force);
                 }
             }
-        }*/
+            if (boundaryCon[0] == 'p' && checkDistance(p, "left")) {
+                halo.setX({p.getX()[0] + domainSize[0], p.getX()[1] + domainSize[1], p.getX()[2]});
+                for (auto &p1: getGrid()[getGrid().size() - 1][getGrid()[0].size() - 1]) {
+                    if (abs(p1.getX()[0] - halo.getX()[0]) <= distance &&
+                        abs(p1.getX()[1] - halo.getX()[1]) <= distance) {
+                        auto force = forceModel.calculateForce(p1, halo);
+                        p1.addF(force);
+                    }
+                }
+            }
+            if (boundaryCon[2] == 'p' && checkDistance(p, "right")) {
+                halo.setX({p.getX()[0] - domainSize[0], p.getX()[1] + domainSize[1], p.getX()[2]});
+                for (auto &p1: getGrid()[0][getGrid()[0].size()]) {
+                    if (abs(p1.getX()[0] - halo.getX()[0]) <= distance &&
+                        abs(p1.getX()[1] - halo.getX()[1]) <= distance) {
+                        auto force = forceModel.calculateForce(p1, halo);
+                        p1.addF(force);
+                    }
+                }
+            }
+        }
     }
 }
+
+/* prototype
+ *  //left
+                if (boundaryCon[0] == 'p' && p1.getX()[0] < 0.0) {
+                    p1.setX({p1.getX()[0] + domainSize[0], p1.getX()[1], p1.getX()[2]});
+                    grid[grid.size() - 1][getCell(p1.getX()).second].push_back(p1);
+                }
+                // upper
+                if (boundaryCon[1] == 'p') {
+                    if (p1.getX()[1] > domainSize[1]) {
+                        p1.setX({p1.getX()[0], p1.getX()[1] - domainSize[1], p1.getX()[2]});
+                        grid[getCell(p1.getX()).first][0].push_back(p1);
+                    }
+                }
+                // right
+                if (boundaryCon[2] == 'p') {
+                    if (p1.getX()[0] > domainSize[0]) {
+                        p1.setX({p1.getX()[0] - domainSize[0], p1.getX()[1], p1.getX()[2]});
+                        grid[0][getCell(p1.getX()).second].push_back(p1);
+                    }
+                }
+                // floor
+                if (boundaryCon[3] == 'p') {
+                    if (p1.getX()[1] < 0.0) {
+                        p1.setX({p1.getX()[0], p1.getX()[1] + domainSize[1], p1.getX()[2]});
+                        grid[getCell(p1.getX()).first][grid[0].size() - 1].push_back(p1);
+                    }
+                }
+ */
 

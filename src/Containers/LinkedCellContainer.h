@@ -47,7 +47,7 @@ public:
 
     std::vector<std::vector<std::vector<Particle>>> &getGrid();
 
-    std::vector<Particle> &getCell(std::array<double, 3> &pos);
+    std::pair<int, int> &getCell(const std::array<double, 3> &pos);
 
     //just 2D first
     //std::vector<Particle> &getParticlesFromCell(int x, int y);
@@ -72,7 +72,7 @@ public:
 
     void applyReflecting(Particle &p);
 
-    void applyPeriodic(Particle &p);
+    void applyPeriodic(Particle &p, int x, int y);
 };
 
 #endif //PSEMOLDYN_GROUPE_LINKEDCELLCONTAINER2_H
