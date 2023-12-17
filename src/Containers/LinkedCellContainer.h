@@ -26,6 +26,7 @@ private:
     double cutoffRadius;
     std::array<char, 4> boundaryCon;
     std::vector<Particle> haloList;
+    double gGrav;
 
 public:
 

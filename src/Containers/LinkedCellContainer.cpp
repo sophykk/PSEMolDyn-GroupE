@@ -18,6 +18,7 @@ LinkedCellContainer2::LinkedCellContainer2(ForceBase &model, std::vector<double>
         ParticleContainerBase(model), domainSize(dSize), cutoffRadius(cRadius), boundaryCon(bCon) {
     int cellDimensionX;
     int cellDimensionY;
+    double gGrav = -12.44;
     std::fmod(domainSize[0], cutoffRadius) == 0 ? cellDimensionX = domainSize[0] / cutoffRadius
                                                 : cellDimensionX = std::ceil(domainSize[0] / cutoffRadius);
     std::fmod(domainSize[1], cutoffRadius) == 0 ? cellDimensionY = domainSize[1] / cutoffRadius
@@ -32,6 +33,7 @@ LinkedCellContainer2::LinkedCellContainer2(ForceBase &model, std::vector<Particl
         boundaryCon(bCon) {
     int cellDimensionX;
     int cellDimensionY;
+    double gGrav = -12.44;
     std::fmod(domainSize[0], cutoffRadius) == 0 ? cellDimensionX = domainSize[0] / cutoffRadius
                                                 : cellDimensionX = std::ceil(
             domainSize[0] / cutoffRadius);
@@ -145,6 +147,7 @@ void LinkedCellContainer2::resetF() {
  * now just calc for above, right and right diagonal and left diagonal if exists
  */
 void LinkedCellContainer2::calculateF() {
+
     std::vector<Particle> nParticleList;
     initGrid();
     //down to up
@@ -155,7 +158,7 @@ void LinkedCellContainer2::calculateF() {
                 for (auto p2 = p1 + 1; p2 < grid[x][y].end(); p2++) {
                     auto force = forceModel.calculateForce(*p1, *p2);
                     std::array<double, 3> force2 = {force[0], force[1] * p2->getM(), force[3]};
-                    force[1] = force[1] + p1->getM();
+                    force[1] += gGrav * p1->getM();
                     p1->addF(force);
                     p2->addF(-1.0 * force2);
                 }
@@ -172,8 +175,8 @@ void LinkedCellContainer2::calculateF() {
                 for (auto &p1: getGrid()[x][y]) {
                     for (auto &p2: getGrid()[x][y + 1]) {
                         auto force = forceModel.calculateForce(p1, p2);
-                        std::array<double, 3> force2 = {force[0], force[1] * p2.getM(), force[3]};
-                        force[1] = force[1] + p1.getM();
+                        std::array<double, 3> force2 = {force[0], gGrav * p2.getM(), force[3]};
+                        force[1] += gGrav * p1.getM();
                         p1.addF(force);
                         p2.addF(-1.0 * force2);
                     }
@@ -183,8 +186,8 @@ void LinkedCellContainer2::calculateF() {
                     for (auto &p1: getGrid()[x][y]) {
                         for (auto &p2: getGrid()[x + 1][y]) {
                             auto force = forceModel.calculateForce(p1, p2);
-                            std::array<double, 3> force2 = {force[0], force[1] * p2.getM(), force[3]};
-                            force[1] = force[1] + p1.getM();
+                            std::array<double, 3> force2 = {force[0], gGrav * p2.getM(), force[3]};
+                            force[1] += gGrav * p1.getM();
                             p1.addF(force);
                             p2.addF(-1.0 * force2);
                         }
@@ -195,8 +198,8 @@ void LinkedCellContainer2::calculateF() {
                     for (auto &p1: getGrid()[x][y]) {
                         for (auto &p2: getGrid()[x + 1][y + 1]) {
                             auto force = forceModel.calculateForce(p1, p2);
-                            std::array<double, 3> force2 = {force[0], force[1] * p2.getM(), force[3]};
-                            force[1] = force[1] + p1.getM();
+                            std::array<double, 3> force2 = {force[0], gGrav * p2.getM(), force[3]};
+                            force[1] += gGrav * p1.getM();
                             p1.addF(force);
                             p2.addF(-1.0 * force2);
                         }
@@ -207,8 +210,8 @@ void LinkedCellContainer2::calculateF() {
                     for (auto &p1: getGrid()[x][y]) {
                         for (auto &p2: getGrid()[x - 1][y + 1]) {
                             auto force = forceModel.calculateForce(p1, p2);
-                            std::array<double, 3> force2 = {force[0], force[1] * p2.getM(), force[3]};
-                            force[1] = force[1] + p1.getM();
+                            std::array<double, 3> force2 = {force[0], gGrav * p2.getM(), force[3]};
+                            force[1] += gGrav * p1.getM();
                             p1.addF(force);
                             p2.addF(-1.0 * force2);
                         }
@@ -336,7 +339,7 @@ void LinkedCellContainer2::applyReflecting(Particle &p) {
         if (checkDistance(p, "left")) {
             halo.setX({(-1) * p.getX()[0], p.getX()[1], p.getX()[2]});
             auto force = forceModel.calculateForce(p, halo);
-            force[1] = force[1] + p.getM();
+            force[1] += gGrav * p.getM();
             p.addF(force);
         }
     }
@@ -345,7 +348,7 @@ void LinkedCellContainer2::applyReflecting(Particle &p) {
         if (checkDistance(p, "right")) {
             halo.setX({domainSize[0] + (domainSize[0] - p.getX()[0]), p.getX()[1], p.getX()[2]});
             auto force = forceModel.calculateForce(p, halo);
-            force[1] = force[1] + p.getM();
+            force[1] += gGrav * p.getM();
             p.addF(force);
         }
     }
@@ -354,7 +357,7 @@ void LinkedCellContainer2::applyReflecting(Particle &p) {
         if (checkDistance(p, "floor")) {
             halo.setX({p.getX()[0], (-1) * p.getX()[1], p.getX()[2]});
             auto force = forceModel.calculateForce(p, halo);
-            force[1] = force[1] + p.getM();
+            force[1] += gGrav * p.getM();
             p.addF(force);
         }
     }
@@ -363,7 +366,7 @@ void LinkedCellContainer2::applyReflecting(Particle &p) {
         if (checkDistance(p, "upper")) {
             halo.setX({p.getX()[0], domainSize[1] + (domainSize[1] - p.getX()[1]), p.getX()[2]});
             auto force = forceModel.calculateForce(p, halo);
-            force[1] = force[1] + p.getM();
+            force[1] += gGrav * p.getM();
             p.addF(force);
         }
     }
@@ -386,6 +389,7 @@ void LinkedCellContainer2::applyPeriodic(Particle &p) {
             for (auto &p1: getGrid()[getGrid().size()][std::ceil(p.getX()[1] / cutoffRadius)]) {
                 if (distance >= abs(p1.getX()[0] - halo.getX()[0])) {
                     auto force = forceModel.calculateForce(p1, halo);
+                    force[1] += gGrav + p.getM();
                     p1.addF(force);
                 }
             }
@@ -404,6 +408,7 @@ void LinkedCellContainer2::applyPeriodic(Particle &p) {
             for (auto &p1: getGrid()[p.getX()[0] / cutoffRadius][std::ceil(p.getX()[1])]) {
                 if (distance >= abs(p1.getX()[1] - halo.getX()[1])) {
                     auto force = forceModel.calculateForce(p1, halo);
+                    force[1] += gGrav + p.getM();
                     p1.addF(force);
                 }
             }
@@ -420,6 +425,7 @@ void LinkedCellContainer2::applyPeriodic(Particle &p) {
             for (auto &p1: getGrid()[0][p.getX()[1] / cutoffRadius]) {
                 if (distance >= abs(p1.getX()[0] - halo.getX()[0])) {
                     auto force = forceModel.calculateForce(p1, halo);
+                    force[1] += gGrav + p.getM();
                     p1.addF(force);
                 }
             }
@@ -436,6 +442,7 @@ void LinkedCellContainer2::applyPeriodic(Particle &p) {
             for (auto &p1: getGrid()[p.getX()[0] / cutoffRadius][getGrid()[0].size()]) {
                 if (distance >= abs(p1.getX()[1] - halo.getX()[1])) {
                     auto force = forceModel.calculateForce(p1, halo);
+                    force[1] += gGrav + p.getM();
                     p1.addF(force);
                 }
             }
