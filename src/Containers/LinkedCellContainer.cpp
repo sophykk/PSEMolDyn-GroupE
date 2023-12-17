@@ -157,7 +157,7 @@ void LinkedCellContainer2::calculateF() {
             for (auto p1 = grid[x][y].begin(); p1 < grid[x][y].end(); p1++) {
                 for (auto p2 = p1 + 1; p2 < grid[x][y].end(); p2++) {
                     auto force = forceModel.calculateForce(*p1, *p2);
-                    std::array<double, 3> force2 = {force[0], force[1] * p2->getM(), force[3]};
+                    std::array<double, 3> force2 = {force[0], force[1] * p2->getM(), force[2]};
                     force[1] += gGrav * p1->getM();
                     p1->addF(force);
                     p2->addF(-1.0 * force2);
@@ -175,7 +175,7 @@ void LinkedCellContainer2::calculateF() {
                 for (auto &p1: getGrid()[x][y]) {
                     for (auto &p2: getGrid()[x][y + 1]) {
                         auto force = forceModel.calculateForce(p1, p2);
-                        std::array<double, 3> force2 = {force[0], gGrav * p2.getM(), force[3]};
+                        std::array<double, 3> force2 = {force[0], gGrav * p2.getM(), force[2]};
                         force[1] += gGrav * p1.getM();
                         p1.addF(force);
                         p2.addF(-1.0 * force2);
@@ -186,7 +186,7 @@ void LinkedCellContainer2::calculateF() {
                     for (auto &p1: getGrid()[x][y]) {
                         for (auto &p2: getGrid()[x + 1][y]) {
                             auto force = forceModel.calculateForce(p1, p2);
-                            std::array<double, 3> force2 = {force[0], gGrav * p2.getM(), force[3]};
+                            std::array<double, 3> force2 = {force[0], gGrav * p2.getM(), force[2]};
                             force[1] += gGrav * p1.getM();
                             p1.addF(force);
                             p2.addF(-1.0 * force2);
@@ -198,7 +198,7 @@ void LinkedCellContainer2::calculateF() {
                     for (auto &p1: getGrid()[x][y]) {
                         for (auto &p2: getGrid()[x + 1][y + 1]) {
                             auto force = forceModel.calculateForce(p1, p2);
-                            std::array<double, 3> force2 = {force[0], gGrav * p2.getM(), force[3]};
+                            std::array<double, 3> force2 = {force[0], gGrav * p2.getM(), force[2]};
                             force[1] += gGrav * p1.getM();
                             p1.addF(force);
                             p2.addF(-1.0 * force2);
@@ -210,7 +210,7 @@ void LinkedCellContainer2::calculateF() {
                     for (auto &p1: getGrid()[x][y]) {
                         for (auto &p2: getGrid()[x - 1][y + 1]) {
                             auto force = forceModel.calculateForce(p1, p2);
-                            std::array<double, 3> force2 = {force[0], gGrav * p2.getM(), force[3]};
+                            std::array<double, 3> force2 = {force[0], gGrav * p2.getM(), force[2]};
                             force[1] += gGrav * p1.getM();
                             p1.addF(force);
                             p2.addF(-1.0 * force2);
@@ -271,7 +271,7 @@ void LinkedCellContainer2::calculateX(double delta_t) {
 
         p.setX(xi_tn1);  // Update the position
     }
-    //initGrid();
+    initGrid();
 }
 
 /**
