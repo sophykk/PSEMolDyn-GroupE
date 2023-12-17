@@ -9,6 +9,10 @@
 #include <iostream>
 #include <chrono>
 
+#include "Thermostat.h"
+
+#include "utils/MaxwellBoltzmannDistribution.h"
+
 //
 int main(int argc, char *argsv[]) {
 
@@ -86,8 +90,21 @@ int main(int argc, char *argsv[]) {
         }
     }
 
+    // Thermostat setup
+    double initialTemperature = 300.0; // Example: initial temperature of 300
+    double targetTemperature = 310.0;  // Example: target temperature of 310
+    double maxTempChange = 5.0;        // Example: max temperature change of 5 per step
+    int thermostatInterval = 1;       // Example: apply thermostat every 10 iterations
+    bool useBrownianMotion = true; // Initialize with Brownian Motion if needed
+
+    Thermostat thermostat(initialTemperature, targetTemperature, maxTempChange, thermostatInterval, useBrownianMotion);
+    if (useBrownianMotion) {
+        thermostat.initializeWithBrownianMotion(*particleContainer);
+    }
+    spdlog::info("container size before F: {}\n", particleContainer->size());
     // Calculate initial forces
     particleContainer->calculateF();
+    spdlog::info("container size after F: {}\n", particleContainer->size());
 
     // Main simulation loop
     int iteration = 0;
@@ -103,9 +120,16 @@ int main(int argc, char *argsv[]) {
 
         // reset forces
         particleContainer->resetF();
-
+       // spdlog::info("container size before F: {}\n", particleContainer->size());
         // calculate new f
         particleContainer->calculateF();
+
+       // spdlog::info("container size after F: {}\n", particleContainer->size());
+
+        if (iteration % thermostatInterval == 0) {
+            thermostat.applyThermostat(*particleContainer, iteration);
+        }
+
 
         // calculate new v
         particleContainer->calculateV(delta_t);
