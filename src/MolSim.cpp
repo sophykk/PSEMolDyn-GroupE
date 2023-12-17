@@ -1,6 +1,6 @@
 #include "inputOutput/inputReader/CuboidFileReader.h"
 #include "Containers/BasicParticleContainer.h"
-#include "Containers/LinkedCellContainer2.h"
+#include "Containers/LinkedCellContainer.h"
 #include "Forces/GravitationalForce.h"
 #include "Forces/LennardJonesForce.h"
 #include "inputOutput/inputReader/XMLFileReader.h"
