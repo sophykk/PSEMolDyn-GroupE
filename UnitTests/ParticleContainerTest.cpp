@@ -7,6 +7,8 @@
 #include "../src/Particle.h"
 #include "../src/Forces/LennardJonesForce.h"
 #include "../src/Formulas.h"
+#include <array>
+#include <cmath>
 
 /** BasicParticleContainer Tests: */
 
@@ -165,6 +167,7 @@ TEST(ParticleContainerTest, LinkedCellContainer2BoundaryConditions) {
     EXPECT_EQ(openContainer.getBoundaryCon(), openBoundaryCon);
 
 }
+
 
 
 

@@ -16,20 +16,19 @@ Thermostat::Thermostat(double Tinit, double Ttarget, double deltaT, int nthermos
 void Thermostat::applyThermostat(ParticleContainerBase& particleContainer, int currentStep) {
     std::cout << "Particles size in apply Thermostat: " << particleContainer.size() << ", "
      << std::endl;
-    if (currentStep % nthermostat == 0) {
+
         /** Systems that have no initial velocities need to be initialized
          * with Brownian Motion to have a non-zero temperature. */
-        if (useBrownianMotion) {
-            initializeWithBrownianMotion(particleContainer);
-        }
+
 
         double Tcurrent = calculateCurrentTemperature(particleContainer);
         double scalingFactor = std::sqrt(Ttarget / Tcurrent);
         // Ensuring the temperature change does not exceed deltaT
+        //todo delta?
         scalingFactor = std::min(scalingFactor, std::sqrt((Tcurrent + deltaT) / Tcurrent));
         scaleVelocities(particleContainer, scalingFactor);
         std::cout << "Tcurrent: " << Tcurrent << std::endl;
-    }
+
 }
 
 /** Helper function
