@@ -12,7 +12,7 @@
 int main(int argc, char *argv[]) {
     // Hard-coded simulation parameters
     double end_time = 100.0;   // Duration of the simulation
-    double delta_t = 0.1;      // Time step
+    double delta_t = 1.0;      // Time step
     int plotInterval = 10;     // Interval for plotting
 
     // Hard-coded force model parameters (Lennard-Jones potential)
@@ -21,13 +21,25 @@ int main(int argc, char *argv[]) {
     auto forceModel = std::make_unique<LennardJonesForce>(sigma, epsilon);
 
     // Hard-coded parameters for LinkedCellContainer2
-    std::vector<double> domainSize = {10.0, 10.0, 10.0}; // Domain size
-    double cutoffRadius = 1.0;                           // Cutoff radius
-    char boundaryCondition = 'o';
+    std::vector<double> domainSize = {100.0, 200.0, 10.0}; // Domain size
+    double cutoffRadius = 5.0;                           // Cutoff radius
+    char boundaryCondition = 'o';                        // Boundary condition
 
-    // Setup LinkedCellContainer2
-    auto particleContainer = std::make_unique<LinkedCellContainer2>(*forceModel, domainSize, cutoffRadius, boundaryCondition);
 
+    // Manually add particles for testing
+    // Create a list of particles
+    std::vector<Particle> particlesList = {
+            Particle({5.0, 5.0, 0.0}, {0.0, 0.0, 0.0}, 1.0, 0), // Example particle
+            Particle({6.0, 5.0, 0.0}, {0.0, 0.0, 0.0}, 1.0, 0)  // Another example particle
+    };
+
+    // Setup LinkedCellContainer2 with pre-defined particles
+    auto particleContainer = std::make_unique<LinkedCellContainer2>(*forceModel, particlesList, domainSize, cutoffRadius, boundaryCondition);
+
+   // spdlog::info("Number of initial particles: {}", particleContainer->size());
+    spdlog::info("container size before F: {}\n", particleContainer->size());
+    particleContainer->calculateF();
+    spdlog::info("container size after F: {}\n", particleContainer->size());
     // Thermostat setup
     double initialTemperature = 300; // Initial temperature
     double targetTemperature = 300;  // Target temperature
@@ -37,11 +49,19 @@ int main(int argc, char *argv[]) {
 
     Thermostat thermostat(initialTemperature, targetTemperature, maxTempChange, thermostatInterval, initializeWithBrownianMotion);
 
+    // Calculate initial forces
+
+
     // Main simulation loop
     spdlog::info("Starting simulation loop");
     int iteration = 0;
     double current_time = 0;
-    while (current_time < end_time) {
+
+    while (current_time < 5) {
+        spdlog::info("Itaeration: {}\n", iteration);
+        spdlog::info("Number of initial particles: {}\n", particleContainer->size());
+        //spdlog::info("Pointer address: {}", static_cast<void*> (particleContainer.get()));
+
         // Calculate new positions
         particleContainer->calculateX(delta_t);
 
@@ -58,8 +78,9 @@ int main(int argc, char *argv[]) {
         particleContainer->calculateV(delta_t);
 
         // Log current temperature
-        double currentTemperature = thermostat.calculateCurrentTemperature(*particleContainer);
-        spdlog::info("Current Temperature at iteration {}: {}", iteration, currentTemperature);
+        //spdlog::info("Number of initial particles: {}", particleContainer->size());
+
+       // spdlog::info("Current Temperature at iteration {}: {}\n", iteration, currentTemperature);
 
         // Plotting (if required)
         if (iteration % plotInterval == 0) {

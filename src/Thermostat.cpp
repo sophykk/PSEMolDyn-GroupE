@@ -6,6 +6,7 @@
 #include <cmath>
 #include <array>
 #include "utils/MaxwellBoltzmannDistribution.h"
+#include <iostream>
 
 // Constructor
 Thermostat::Thermostat(double Tinit, double Ttarget, double deltaT, int nthermostat, bool useBrownianMotion)
@@ -13,6 +14,8 @@ Thermostat::Thermostat(double Tinit, double Ttarget, double deltaT, int nthermos
 
 /** Apply the thermostat to a LinkedCellContainer2 */
 void Thermostat::applyThermostat(ParticleContainerBase& particleContainer, int currentStep) {
+    std::cout << "Particles size in apply Thermostat: " << particleContainer.size() << ", "
+     << std::endl;
     if (currentStep % nthermostat == 0) {
         /** Systems that have no initial velocities need to be initialized
          * with Brownian Motion to have a non-zero temperature. */
@@ -25,6 +28,7 @@ void Thermostat::applyThermostat(ParticleContainerBase& particleContainer, int c
         // Ensuring the temperature change does not exceed deltaT
         scalingFactor = std::min(scalingFactor, std::sqrt((Tcurrent + deltaT) / Tcurrent));
         scaleVelocities(particleContainer, scalingFactor);
+        std::cout << "Tcurrent: " << Tcurrent << std::endl;
     }
 }
 
@@ -34,6 +38,8 @@ double Thermostat::calculateCurrentTemperature(ParticleContainerBase& particleCo
     double Ekin = 0.0;
     // apply formula (2) from the worksheet to calculate the Kinetic Energy of the particles
     auto& particles = particleContainer.getParticles();
+//   std::cout << "Particles size before loop: " << particles.size() << ", "
+//   << std::endl;
     for (auto& particle : particles) {
         double vSquared = 0.0;
         for (auto velocity : particle.getV()) {
@@ -43,6 +49,11 @@ double Thermostat::calculateCurrentTemperature(ParticleContainerBase& particleCo
         Ekin += particle.getM() * vSquared / 2.0;
     }
     //apply formula (1) from the worksheet to calculate T
+    std::cout << "Ekin: " << Ekin << ", "
+              << "numDimensions: " << numDimensions << ", "
+              << "kBoltzmann: " << kBoltzmann << ", "
+              << "Particles size: " << particles.size() << ", "
+              << std::endl;
     return (2 * Ekin) / (numDimensions * kBoltzmann * particles.size());
 }
 

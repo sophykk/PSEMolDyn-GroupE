@@ -9,6 +9,7 @@
 #include <cmath>
 #include "Particle.h"
 #include "Containers/LinkedCellContainer2.h"
+#include <limits>
 
 
 class Thermostat {
