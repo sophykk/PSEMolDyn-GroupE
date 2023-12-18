@@ -14,7 +14,7 @@
 
 
 //Todo: put gGav in bracket and extend xml to read gGrav
-LinkedCellContainer2::LinkedCellContainer2(ForceBase &model, std::vector<double> &dSize, double &cRadius,
+LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<double> &dSize, double &cRadius,
                                            std::array<char, 4> bCon) :
         ParticleContainerBase(model), domainSize(dSize), cutoffRadius(cRadius), boundaryCon(bCon) {
     int cellDimensionX;
@@ -29,7 +29,7 @@ LinkedCellContainer2::LinkedCellContainer2(ForceBase &model, std::vector<double>
 }
 
 //Todo: put gGav in bracket and extend xml to read gGrav
-LinkedCellContainer2::LinkedCellContainer2(ForceBase &model, std::vector<Particle> &particles,
+LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<Particle> &particles,
                                            std::vector<double> &dSize, double &cRadius, std::array<char, 4> bCon) :
         ParticleContainerBase(model), particleList(particles), domainSize(dSize), cutoffRadius(cRadius),
         boundaryCon(bCon) {
@@ -46,20 +46,20 @@ LinkedCellContainer2::LinkedCellContainer2(ForceBase &model, std::vector<Particl
     initGrid();
 }
 
-std::vector<Particle> &LinkedCellContainer2::getParticles() {
+std::vector<Particle> &LinkedCellContainer::getParticles() {
     return particleList;
 }
 
-std::vector<std::vector<std::vector<Particle>>> &LinkedCellContainer2::getGrid() {
+std::vector<std::vector<std::vector<Particle>>> &LinkedCellContainer::getGrid() {
     return grid;
 }
 
-std::pair<int, int> &LinkedCellContainer2::getCell(const std::array<double, 3> &pos) {
+std::pair<int, int> &LinkedCellContainer::getCell(const std::array<double, 3> &pos) {
     std::pair<int, int> pair(std::ceil(pos[0] / cutoffRadius), std::ceil(pos[1] / cutoffRadius));
     return pair;
 }
 
-char &LinkedCellContainer2::getBoundaryCon(int index) {
+char &LinkedCellContainer::getBoundaryCon(int index) {
     return boundaryCon[index];
 }
 
@@ -68,7 +68,7 @@ char &LinkedCellContainer2::getBoundaryCon(int index) {
  * @param boundary a char, should be 'o' or 'r'
  * @throws error message invalid_argument if boundary is not 'o' or 'r'.
  */
-void LinkedCellContainer2::setBoundaryCon(std::array<char, 4> &nBoundary) {
+void LinkedCellContainer::setBoundaryCon(std::array<char, 4> &nBoundary) {
     for (int i = 0; i < nBoundary.size(); i++) {
         if (nBoundary[i] == 'o' || nBoundary[i] == 'p' || nBoundary[i] == 'r') {
             boundaryCon[i] = nBoundary[i];
@@ -78,7 +78,7 @@ void LinkedCellContainer2::setBoundaryCon(std::array<char, 4> &nBoundary) {
     }
 }
 
-bool LinkedCellContainer2::checkBoundary(char b) {
+bool LinkedCellContainer::checkBoundary(char b) {
     for (int i = 0; i < boundaryCon.size(); ++i) {
         if (getBoundaryCon(i) == b) {
             return true;
@@ -87,11 +87,11 @@ bool LinkedCellContainer2::checkBoundary(char b) {
     return false;
 }
 
-void LinkedCellContainer2::addParticle(Particle &particle) {
+void LinkedCellContainer::addParticle(Particle &particle) {
     particleList.push_back(particle);
 }
 
-std::size_t LinkedCellContainer2::size() const {
+std::size_t LinkedCellContainer::size() const {
     return particleList.size();
 }
 
@@ -100,7 +100,7 @@ std::size_t LinkedCellContainer2::size() const {
  * if cutoffRadius = 10, and dSize = {180, 90, 1}
  * then first cell from 0-10, next 11-20,
  * */
-void LinkedCellContainer2::initGrid() {
+void LinkedCellContainer::initGrid() {
 
     for (auto &p: particleList) {
         if (boundaryCon[0] == 'p' && p.getX()[0] < 0.0) {
@@ -152,7 +152,7 @@ void LinkedCellContainer2::initGrid() {
     }
 }
 
-void LinkedCellContainer2::resetF() {
+void LinkedCellContainer::resetF() {
     for (auto &p: getParticles()) {
         p.resetF();
     }
@@ -167,7 +167,7 @@ void LinkedCellContainer2::resetF() {
  * because it was just done before in other direction
  * now just calc for above, right and right diagonal and left diagonal if exists
  */
-void LinkedCellContainer2::calculateF() {
+void LinkedCellContainer::calculateF() {
 
     std::vector<Particle> nParticleList;
     initGrid();
@@ -244,7 +244,7 @@ void LinkedCellContainer2::calculateF() {
 /**
  * @brief if cutOffRadius is not cellSize, check distance then
  * @code
- * bool LinkedCellContainer2::withinCutoff(Particle &p1, Particle &p2) const {
+ * bool LinkedCellContainer::withinCutoff(Particle &p1, Particle &p2) const {
  *     std::array<double, 3> distance{};
  *     if (p1.getX() < p2.getX()) {
  *         distance = p2.getX() - p1.getX();
@@ -263,7 +263,7 @@ void LinkedCellContainer2::calculateF() {
  * @brief Calculate xi(tn+1)
  * formula: xi(tn+1) = xi(tn) + ∆t · vi(tn) + (∆t)^2 * (Fi(tn)/2mi)
  */
-void LinkedCellContainer2::calculateX(double delta_t) {
+void LinkedCellContainer::calculateX(double delta_t) {
     for (auto &p: getParticles()) {
         auto xi_tn1 = Formulas::verletXStep(p.getX(), p.getV(), p.getF(), p.getM(), delta_t);
         /* does not work in here
@@ -292,14 +292,14 @@ void LinkedCellContainer2::calculateX(double delta_t) {
  * @brief Calculate the velocity at time tn+1
  * formula: vi(tn+1) = vi(tn) + ∆t * ((Fi(tn) + Fi(tn+1))/ 2mi)
  */
-void LinkedCellContainer2::calculateV(double delta_t) {
+void LinkedCellContainer::calculateV(double delta_t) {
     for (auto &p: getParticles()) {
         auto vi_tn1 = Formulas::verletVStep(p.getV(), p.getOldF(), p.getF(), p.getM(), delta_t);
         p.setV(vi_tn1);
     }
 }
 
-void LinkedCellContainer2::plotParticles(int iteration) {
+void LinkedCellContainer::plotParticles(int iteration) {
 
     std::string out_name("MD_vtk");
 
@@ -311,10 +311,10 @@ void LinkedCellContainer2::plotParticles(int iteration) {
     writer.writeFile(out_name, iteration);
 }
 
-bool LinkedCellContainer2::checkDistance(Particle &p, std::string border) {
+bool LinkedCellContainer::checkDistance(Particle &p, std::string border) {
     //1.0 is sigma (not mentioned because doesn't change result)
     //divided by 2.0 because of border p____|____p
-    auto disCheck = std::pow(2, 1.0 / 6) / 2.0;
+    auto disCheck = std::pow(2, 1.0 / 6) * p.getSigma() / 2.0;
 
     if (border == "left") {
         if (p.getX()[0] < disCheck && p.getX()[0] >= 0.0) {
@@ -345,7 +345,7 @@ bool LinkedCellContainer2::checkDistance(Particle &p, std::string border) {
  * bounces back borderline particle from border through
  * creating new halo particle which applies force on it
  */
-void LinkedCellContainer2::applyReflecting(Particle &p) {
+void LinkedCellContainer::applyReflecting(Particle &p) {
 
     Particle halo(p);
     //near left border
@@ -388,7 +388,7 @@ void LinkedCellContainer2::applyReflecting(Particle &p) {
  * @param x cell location x
  * @param y cell location y
  */
-void LinkedCellContainer2::applyPeriodic(Particle &p, int x, int y) {
+void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y) {
     auto distance = std::pow(2, 1.0 / 6);
     Particle halo(p);
 

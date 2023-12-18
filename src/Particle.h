@@ -46,45 +46,52 @@ private:
 
   double gGrav;
 
+    double sigma;
+
+    double epsilon;
+
 public:
-  explicit Particle(int type = 0);
+    explicit Particle(int type = 0);
 
-  Particle(const Particle &other);
+    Particle(const Particle &other);
 
-  Particle(
-      // for visualization, we need always 3 coordinates
-      // -> in case of 2d, we use only the first and the second
-      std::array<double, 3> x_arg, std::array<double, 3> v_arg, double m_arg, double gGrav_arg,
-      int type = 0);
+    Particle(
+            // for visualization, we need always 3 coordinates
+            // -> in case of 2d, we use only the first and the second
+            std::array<double, 3> x_arg, std::array<double, 3> v_arg, double m_arg, double sigma_arg,
+            double epsilon_arg, double gGrav_arg, int type = 0);
 
-  Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg, std::array<double,
-          3> f_arg, std::array<double, 3> oldf_arg, double m_arg, double gGrav_arg, int type = 0);
+    Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg, std::array<double,
+            3> f_arg, std::array<double, 3> oldf_arg, double m_arg, double gGrav_arg, double sigma_arg,
+             double epsilon_arg, int type = 0);
 
-  virtual ~Particle();
+    virtual ~Particle();
 
-  const std::array<double, 3> &getX() const;
+    const std::array<double, 3> &getX() const;
 
-  const std::array<double, 3> &getV() const;
+    const std::array<double, 3> &getV() const;
 
-  const std::array<double, 3> &getF() const;
+    const std::array<double, 3> &getF() const;
 
-  const std::array<double, 3> &getOldF() const;
+    const std::array<double, 3> &getOldF() const;
 
-  double getM() const;
+    double getM() const;
 
-  int getType() const;
+    int getType() const;
 
-  double getGGrav() const;
+    double getGGrav() const;
 
-  bool operator==(const Particle &other) const;
+    double getSigma() const;
 
-  std::string toString() const;
+    double getEps() const;
+
+    bool operator==(const Particle &other) const;
+
+    std::string toString() const;
 
     void setX(const std::array<double, 3> &x_new);
 
     void setV(const std::array<double, 3> &v_new);
-
-    double setGGrav(const double &nGGrav);
 
     void addF(const std::array<double, 3> &f_new);
 

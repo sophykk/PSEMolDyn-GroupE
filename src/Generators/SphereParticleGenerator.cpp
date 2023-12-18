@@ -37,7 +37,8 @@ void SphereParticleGenerator::generateParticles(ParticleContainerBase& particleC
 
             // Check if the particle is inside the circular boundary
             if (std::hypot(x1 - x[0], y1 - x[1]) <= r) {
-                Particle particle({x1, y1, x[2]}, v, m, type);
+                //Todo change to sigma and eps when read from xml
+                Particle particle({x1, y1, x[2]}, v, m, 1.0, 5.0, type);
                 Formulas::calculateBM(particle);
                 particleContainer.addParticle(particle);
             }

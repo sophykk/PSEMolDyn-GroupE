@@ -12,7 +12,7 @@
 #include "ParticleContainerBase.h"
 
 
-class LinkedCellContainer2 : public ParticleContainerBase {
+class LinkedCellContainer : public ParticleContainerBase {
 private:
 
     /**
@@ -30,10 +30,10 @@ private:
 
 public:
 
-    LinkedCellContainer2(ForceBase &model, std::vector<double> &dSize, double &cRadius, std::array<char, 4> bCon);
+    LinkedCellContainer(ForceBase &model, std::vector<double> &dSize, double &cRadius, std::array<char, 4> bCon);
 
-    LinkedCellContainer2(ForceBase &model, std::vector<Particle> &particles, std::vector<double> &dSize,
-                         double &cRadius, std::array<char, 4> bCon);
+    LinkedCellContainer(ForceBase &model, std::vector<Particle> &particles, std::vector<double> &dSize,
+                        double &cRadius, std::array<char, 4> bCon);
 
     char &getBoundaryCon(int index);
 
