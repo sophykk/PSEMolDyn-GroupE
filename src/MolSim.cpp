@@ -1,6 +1,6 @@
 #include "inputOutput/inputReader/CuboidFileReader.h"
 #include "Containers/BasicParticleContainer.h"
-#include "Containers/LinkedCellContainer2.h"
+#include "Containers/LinkedCellContainer.h"
 #include "Forces/GravitationalForce.h"
 #include "Forces/LennardJonesForce.h"
 #include "inputOutput/inputReader/XMLFileReader.h"
@@ -44,11 +44,11 @@ int main(int argc, char *argsv[]) {
         forceModel = std::make_unique<GravitationalForce>();
     }
     else if (modelType == "lennardJones") {
-        // Read sigma and epsilon from teh file
+        // Read sigma and epsilon from the file
         double epsilon;
         double sigma;
-        xmlReader.readLennardJonesForceParams(argsv[1], sigma,epsilon);
-        forceModel = std::make_unique<LennardJonesForce>(sigma, epsilon);
+        xmlReader.readLennardJonesForceParams(argsv[1], sigma, epsilon);
+        forceModel = std::make_unique<LennardJonesForce>();
     } else {
         spdlog::error("Unknown force model selected: {}", modelType);
         exit(-1);
@@ -65,7 +65,7 @@ int main(int argc, char *argsv[]) {
         std::array<char, 4> b;
         xmlReader.readLinkedCellParams(argsv[1], d, c, b);
 
-        particleContainer = std::make_unique<LinkedCellContainer2>(*forceModel, d, c, b);
+        particleContainer = std::make_unique<LinkedCellContainer>(*forceModel, d, c, b);
     } else {
         spdlog::error("Unknown container type selected: {}", containerType);
         exit(-1);

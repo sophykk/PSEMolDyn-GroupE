@@ -10,13 +10,17 @@
 class LennardJonesForce : public ForceBase {
 public:
 
-    LennardJonesForce(double sigma = 1.0, double eps = 5.0);
+    LennardJonesForce();
 
     std::array<double, 3> calculateForce(Particle& p1, Particle& p2) override;
 
+    void setSigma(const double nSigma);
+
+    void setEps(const double nEps);
+
 private:
-    double sigma;
-    double eps;
+    double sigma = 1.0;
+    double eps = 5.0;
 };
 
 
