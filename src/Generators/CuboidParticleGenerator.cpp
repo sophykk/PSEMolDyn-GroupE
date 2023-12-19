@@ -4,6 +4,7 @@
 #include "CuboidParticleGenerator.h"
 #include "Particle.h"
 #include "Formulas.h"
+#include <iostream>
 
 /**
  * @param N1 Number of particles per dimension: N1 × N2 × N3
@@ -14,8 +15,8 @@
  */
 
 CuboidParticleGenerator::CuboidParticleGenerator(std::array<int, 3> N1, double h1, double m1, std::array<double, 3> v1,
-                                                 std::array<double, 3> x1, int type1)
-        : N(N1), h(h1), m(m1), v(v1), x(x1), type(type1) {
+                                                 std::array<double, 3> x1, double sigma1, double epsilon1, double gGrav1, int type1)
+        : N(N1), h(h1), m(m1), v(v1), x(x1), sigma(sigma1), epsilon(epsilon1), gGrav(gGrav1), type(type1) {
 }
 
 /**
@@ -26,8 +27,7 @@ void CuboidParticleGenerator::generateParticles(ParticleContainerBase& particleC
     for (int i = 0; i < N[0]; ++i) {
         for (int j = 0; j < N[1]; ++j) {
             for (int k = 0; k < N[2]; ++k) {
-                //todo: ggrav inLCC, sigma and epsilon in P change back then
-                Particle particle({x[0] + i * h, x[1] + j * h, x[2] + k * h}, v, m, 1.0, 5.0, type);
+                Particle particle({x[0] + i * h, x[1] + j * h, x[2] + k * h}, v, m, gGrav, sigma, epsilon, type);
                 Formulas::calculateBM(particle);
                 particleContainer.addParticle(particle);
             }

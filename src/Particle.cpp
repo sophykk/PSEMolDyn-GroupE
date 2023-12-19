@@ -93,13 +93,14 @@ int Particle::getType() const { return type; }
 std::string Particle::toString() const {
     std::stringstream stream;
     stream << "Particle: X:" << x << " v: " << v << " f: " << f
-           << " old_f: " << old_f << " type: " << type;
+           << " old_f: " << old_f << " sigma: " << sigma << " epsilon: " << epsilon << " gGrav: " << gGrav << " type: " << type;
     return stream.str();
 }
 
 bool Particle::operator==(const Particle &other) const {
     return (x == other.x) and (v == other.v) and (f == other.f) and
-           (type == other.type) and (m == other.m) and (old_f == other.old_f);
+           (type == other.type) and (m == other.m) and (old_f == other.old_f) and
+            (sigma == other.sigma) and (epsilon == other.epsilon) and (gGrav == other.gGrav);
 }
 
 std::ostream &operator<<(std::ostream &stream, Particle &p) {

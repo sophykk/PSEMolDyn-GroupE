@@ -1,7 +1,6 @@
 //
 // Created by Layla Zadina on 08.12.2023.
 //
-#include "Containers/LinkedCellContainer2.h"
 #include "Thermostat.h"
 #include <cmath>
 #include <array>
@@ -14,8 +13,6 @@ Thermostat::Thermostat(double Tinit, double Ttarget, double deltaT, int nthermos
 
 /** Apply the thermostat to a LinkedCellContainer2 */
 void Thermostat::applyThermostat(ParticleContainerBase& particleContainer, int currentStep) {
-    std::cout << "Particles size in apply Thermostat: " << particleContainer.size() << ", "
-     << std::endl;
 
         /** Systems that have no initial velocities need to be initialized
          * with Brownian Motion to have a non-zero temperature. */
@@ -27,7 +24,7 @@ void Thermostat::applyThermostat(ParticleContainerBase& particleContainer, int c
         //todo delta?
         scalingFactor = std::min(scalingFactor, std::sqrt((Tcurrent + deltaT) / Tcurrent));
         scaleVelocities(particleContainer, scalingFactor);
-        std::cout << "Tcurrent: " << Tcurrent << std::endl;
+        //std::cout << "Tcurrent: " << Tcurrent << std::endl;
 
 }
 
@@ -48,11 +45,11 @@ double Thermostat::calculateCurrentTemperature(ParticleContainerBase& particleCo
         Ekin += particle.getM() * vSquared / 2.0;
     }
     //apply formula (1) from the worksheet to calculate T
-    std::cout << "Ekin: " << Ekin << ", "
+    /*std::cout << "Ekin: " << Ekin << ", "
               << "numDimensions: " << numDimensions << ", "
               << "kBoltzmann: " << kBoltzmann << ", "
               << "Particles size: " << particles.size() << ", "
-              << std::endl;
+              << std::endl;*/
     return (2 * Ekin) / (numDimensions * kBoltzmann * particles.size());
 }
 

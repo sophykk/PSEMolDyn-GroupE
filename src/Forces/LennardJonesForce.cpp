@@ -6,7 +6,7 @@
 #include "Formulas.h"
 #include "utils/ArrayUtils.h"
 
-LennardJonesForce::LennardJonesForce() {}
+LennardJonesForce::LennardJonesForce() = default;
 
 void LennardJonesForce::setSigma(const double nSigma) {
     sigma = nSigma;

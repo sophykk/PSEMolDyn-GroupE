@@ -42,9 +42,10 @@ TEST(ParticleContainerTest, LinkedCellContainerDefaultConstructor) {
     std::vector<double> domainSize = {180.0, 90.0, 1.0};
     double cutoffRadius = 3.0;
     std::array<char, 4> boundaryCon{'r', 'r', 'r', 'r'}; // Reflecting
+    double gGrav = 12;
     LennardJonesForce force;
 
-    LinkedCellContainer container(force, domainSize, cutoffRadius, boundaryCon);
+    LinkedCellContainer container(force, domainSize, cutoffRadius, boundaryCon, gGrav);
 
     EXPECT_EQ(container.size(), 0);
     EXPECT_EQ(container.getBoundaryCon(1), boundaryCon[1]);
@@ -56,11 +57,11 @@ TEST(ParticleContainerTest, LinkedCellContainer2ConstructorWithParticles) {
     std::vector<double> domainSize = {180.0, 90.0, 1.0};
     double cutoffRadius = 3.0;
     std::array<char, 4> boundaryCon{'r', 'r', 'r', 'r'}; // Reflecting
-
+    double gGrav = 12;
     LennardJonesForce force;
     std::vector<Particle> particlesList = {Particle(), Particle()};
 
-    LinkedCellContainer container(force, particlesList, domainSize, cutoffRadius, boundaryCon);
+    LinkedCellContainer container(force, particlesList, domainSize, cutoffRadius, boundaryCon, gGrav);
 
     EXPECT_EQ(container.size(), particlesList.size());
 }
@@ -70,10 +71,11 @@ TEST(ParticleContainerTest, LinkedCellContainer2AddParticle) {
     std::vector<double> domainSize = {180.0, 90.0, 1.0};
     double cutoffRadius = 3.0;
     std::array<char, 4> boundaryCon{'r', 'r', 'r', 'r'}; // Reflecting
+    double gGrav = 12;
 
     LennardJonesForce force;
 
-    LinkedCellContainer container(force, domainSize, cutoffRadius, boundaryCon);
+    LinkedCellContainer container(force, domainSize, cutoffRadius, boundaryCon, gGrav);
 
     Particle particle;
     container.addParticle(particle);
@@ -88,11 +90,12 @@ TEST(ParticleContainerTest, LinkedCellContainer2InitGrid) {
     double cutoffRadius = 10.0;
     std::array<char, 4> boundaryCon{'r', 'r', 'r', 'r'}; // Reflecting
     std::vector<Particle> particlesList = {
-            Particle({5.0, 5.0, 0.0}, {0.0, 0.0, 0.0}, 1.0, 1.0, 5.0, 1),
-            Particle({15.0, 5.0, 0.0}, {0.0, 0.0, 0.0}, 1.0, 1.0, 5.0, 1)
+            Particle({5.0, 5.0, 0.0}, {0.0, 0.0, 0.0}, 1.0 ,12.0, 1.0, 5.0, 1),
+            Particle({15.0, 5.0, 0.0}, {0.0, 0.0, 0.0}, 1.0, 12.0, 1.0,5.0, 1)
     };
+    double gGrav = 12.0;
 
-    LinkedCellContainer container(force, particlesList, domainSize, cutoffRadius, boundaryCon);
+    LinkedCellContainer container(force, particlesList, domainSize, cutoffRadius, boundaryCon, gGrav);
     container.initGrid();
 
     auto grid = container.getGrid();
@@ -109,11 +112,12 @@ TEST(ParticleContainerTest, LinkedCellContainer2CalculateForce) {
     double cutoffRadius = 10.0;
     std::array<char, 4> boundaryCon{'r', 'r', 'r', 'r'}; // Reflecting
     std::vector<Particle> particlesList = {
-            Particle({5.0, 5.0, 0.0}, {0.0, 0.0, 0.0}, 1.0, 1.0, 5.0, 1),
-            Particle({15.0, 5.0, 0.0}, {0.0, 0.0, 0.0}, 1.0, 1.0, 5.0, 1)
+            Particle({5.0, 5.0, 0.0}, {0.0, 0.0, 0.0}, 1.0, 12.0, 1.0, 5.0, 1),
+            Particle({15.0, 5.0, 0.0}, {0.0, 0.0, 0.0}, 1.0, 12.0, 1.0, 5.0, 1)
     };
+    double gGrav = 12.0;
 
-    LinkedCellContainer container(force, particlesList, domainSize, cutoffRadius, boundaryCon);
+    LinkedCellContainer container(force, particlesList, domainSize, cutoffRadius, boundaryCon, gGrav);
     container.calculateF();
 
     auto particles = container.getParticles();
@@ -138,8 +142,9 @@ TEST(ParticleContainerTest, LinkedCellContainer2ResetForces) {
     double cutoffRadius = 5.0;
     std::array<char, 4> boundaryCon{'r', 'r', 'r', 'r'}; // Reflecting
     std::vector<Particle> particlesList = {/* Initialize some particles */};
+    double gGrav = 12.0;
 
-    LinkedCellContainer container(force, particlesList, domainSize, cutoffRadius, boundaryCon);
+    LinkedCellContainer container(force, particlesList, domainSize, cutoffRadius, boundaryCon, gGrav);
 
     // Simulate a step to ensure some forces are calculated
     container.calculateF();
@@ -161,11 +166,12 @@ TEST(ParticleContainerTest, LinkedCellContainer2BoundaryConditions) {
     double cutoffRadius = 5.0;
     std::array<char, 4> reflectingBoundaryCon{'r', 'r', 'r', 'r'}; // Reflecting
     std::array<char, 4> openBoundaryCon{'o', 'o', 'o', 'o'}; // Outflow
+    double gGrav;
 
-    LinkedCellContainer reflectingContainer(force, domainSize, cutoffRadius, reflectingBoundaryCon);
+    LinkedCellContainer reflectingContainer(force, domainSize, cutoffRadius, reflectingBoundaryCon, gGrav);
     EXPECT_EQ(reflectingContainer.getBoundaryCon(0), reflectingBoundaryCon[0]);
 
-    LinkedCellContainer openContainer(force, domainSize, cutoffRadius, openBoundaryCon);
+    LinkedCellContainer openContainer(force, domainSize, cutoffRadius, openBoundaryCon, gGrav);
     EXPECT_EQ(openContainer.getBoundaryCon(2), openBoundaryCon[2]);
 
 }

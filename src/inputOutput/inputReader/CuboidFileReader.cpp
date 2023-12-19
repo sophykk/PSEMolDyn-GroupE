@@ -25,6 +25,9 @@ std::vector<CuboidParticleGenerator> CuboidFileReader::readFile(char *filename) 
     std::array<double, 3> v;
     double m;
     double spacing;
+    double sigma;
+    double epsilon;
+    double gGrav;
     int type;
     int num_cuboids = 0;
 
@@ -74,9 +77,12 @@ std::vector<CuboidParticleGenerator> CuboidFileReader::readFile(char *filename) 
             }
 
             datastream >> spacing;
+            datastream >> sigma;
+            datastream >> epsilon;
+            datastream >> gGrav;
             datastream >> type;
 
-            generators.emplace_back(N, spacing, m, v, x, type);
+            generators.emplace_back(N, spacing, m, v, x, sigma, epsilon, gGrav,type);
 
             getline(input_file, tmp_string);
             spdlog::debug("Read line: {}", tmp_string);

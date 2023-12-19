@@ -4,8 +4,8 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="simulationParams" type="simulationParamsType"/>
-                <xs:element name="lennardJonesForceParams" type="lennardJonesForceParamsType" minOccurs="0"/>
                 <xs:element name="linkedCellParams" type="linkedCellParamsType" minOccurs="0"/>
+                <xs:element name="thermostat" type="thermostatType" minOccurs="0"/>
                 <xs:element name="cuboid" type="cuboidType" minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element name="sphere" type="sphereType" minOccurs="0" maxOccurs="unbounded"/>
             </xs:sequence>
@@ -20,13 +20,7 @@
             <xs:element name="containerType" type="xs:string"/>
             <xs:element name="plotInterval" type="xs:int"/>
             <xs:element name="objectType" type="xs:string"/>
-        </xs:sequence>
-    </xs:complexType>
-
-    <xs:complexType name="lennardJonesForceParamsType">
-        <xs:sequence>
-            <xs:element name="sigma" type="xs:double"/>
-            <xs:element name="epsilon" type="xs:double"/>
+            <xs:element name="checkpointing" type="xs:boolean"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -35,6 +29,7 @@
             <xs:element name="domainSize" type="domainParam"/>
             <xs:element name="cutoffRadius" type="xs:double"/>
             <xs:element name="boundaryConditions" type="boundaryConditionsType"/>
+            <xs:element name="gravitationalAcceleration" type="xs:double"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -45,7 +40,19 @@
             <xs:element name="mass" type="xs:double"/>
             <xs:element name="grid" type="gridParam"/>
             <xs:element name="spacing" type="xs:double"/>
+            <xs:element name="sigma" type="xs:double"/>
+            <xs:element name="epsilon" type="xs:double"/>
+            <xs:element name="gravitationalAcceleration" type="xs:double"/>
             <xs:element name="type" type="xs:int"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="thermostatType">
+        <xs:sequence>
+            <xs:element name="initialTemperature" type="xs:double"/>
+            <xs:element name="targetTemperature" minOccurs="0" type="xs:double"/>
+            <xs:element name="maxTemperatureChange" minOccurs="0" type="xs:double"/>
+            <xs:element name="thermostatInterval" type="xs:int"/>
         </xs:sequence>
     </xs:complexType>
 

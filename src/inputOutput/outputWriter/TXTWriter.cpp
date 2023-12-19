@@ -29,7 +29,7 @@ namespace outputWriter {
                        << particle.getV()[0] << ' ' << particle.getV()[1] << ' ' << particle.getV()[2] << ' '
                        << particle.getF()[0] << ' ' << particle.getF()[1] << ' ' << particle.getF()[2] << ' '
                        << particle.getOldF()[0] << ' ' << particle.getOldF()[1] << ' ' << particle.getOldF()[2] << ' '
-                       << particle.getM() << ' ' << particle.getType() << std::endl;
+                       << particle.getM() << ' ' << particle.getSigma() << ' ' << particle.getEps() << ' ' << particle.getGGrav() << ' ' << particle.getType() << std::endl;
         }
 
         outputFile.close();

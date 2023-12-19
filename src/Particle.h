@@ -58,12 +58,12 @@ public:
     Particle(
             // for visualization, we need always 3 coordinates
             // -> in case of 2d, we use only the first and the second
-            std::array<double, 3> x_arg, std::array<double, 3> v_arg, double m_arg, double sigma_arg,
-            double epsilon_arg, double gGrav_arg, int type = 0);
+            std::array<double, 3> x_arg, std::array<double, 3> v_arg, double m_arg, double gGrav_type,
+            double sigma_arg, double epsilon_arg, int type_arg);
 
     Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg, std::array<double,
             3> f_arg, std::array<double, 3> oldf_arg, double m_arg, double gGrav_arg, double sigma_arg,
-             double epsilon_arg, int type = 0);
+             double epsilon_arg, int type);
 
     virtual ~Particle();
 

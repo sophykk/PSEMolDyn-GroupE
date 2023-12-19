@@ -8,6 +8,7 @@
 #include <iostream>
 #include <sstream>
 #include <array>
+#include <spdlog/spdlog.h>
 
 ParticlesFileReader::ParticlesFileReader() = default;
 
@@ -19,6 +20,9 @@ void ParticlesFileReader::readFile(std::vector<Particle> &particles, std::string
     std::array<double, 3> f;
     std::array<double, 3> old_f;
     double m;
+    double sigma;
+    double epsilon;
+    double gGrav;
     int type;
     int num_particles = 0;
 
@@ -30,18 +34,14 @@ void ParticlesFileReader::readFile(std::vector<Particle> &particles, std::string
         particles.clear();
 
         getline(input_file, tmp_string);
-        std::cout << "Read line: " << tmp_string << std::endl;
 
         while (tmp_string.empty() or tmp_string[0] == '#') {
             getline(input_file, tmp_string);
-            std::cout << "Read line: " << tmp_string << std::endl;
         }
 
         std::istringstream numstream(tmp_string);
         numstream >> num_particles;
-        std::cout << "Reading " << num_particles << "." << std::endl;
         getline(input_file, tmp_string);
-        std::cout << "Read line: " << tmp_string << std::endl;
 
         for (int i = 0; i < num_particles; i++) {
             std::istringstream datastream(tmp_string);
@@ -59,21 +59,21 @@ void ParticlesFileReader::readFile(std::vector<Particle> &particles, std::string
                 datastream >> old_fj;
             }
             if (datastream.eof()) {
-                std::cout
-                        << "Error reading file: eof reached unexpectedly reading from line "
-                        << i << std::endl;
+                spdlog::error("Error reading file: eof reached unexpectedly reading from line {}", i);
                 exit(-1);
             }
             datastream >> m;
+            datastream >> sigma;
+            datastream >> epsilon;
+            datastream >> gGrav;
             datastream >> type;
-            //todo read sigma and eps and change here
-            particles.emplace_back(x, v, f, old_f, m, 1.0, 5.0, type);
+
+            particles.emplace_back(x, v, f, old_f, m, gGrav, sigma, epsilon, type);
 
             getline(input_file, tmp_string);
-            std::cout << "Read line: " << tmp_string << std::endl;
         }
     } else {
-        std::cout << "Error: could not open file " << filename << std::endl;
+        spdlog::error("Error: could not open file {}", filename);
         exit(-1);
     }
 }

@@ -4,6 +4,8 @@
 #include "Forces/GravitationalForce.h"
 #include "Forces/LennardJonesForce.h"
 #include "inputOutput/inputReader/XMLFileReader.h"
+#include "inputOutput/inputReader/ParticlesFileReader.h"
+#include "inputOutput/outputWriter/TXTWriter.h"
 
 #include <spdlog/spdlog.h>
 #include <iostream>
@@ -25,13 +27,17 @@ int main(int argc, char *argsv[]) {
     int plotInterval;
     spdlog::level::level_enum log_level = spdlog::level::debug;
     bool calcRunTime = false;
+    bool checkpointing;
+    outputWriter::TXTWriter checkpointingWriter;
+    ParticlesFileReader checkpointingReader;
+    std::string checkpointingFile = "checkpointing";
     std::chrono::time_point<std::chrono::high_resolution_clock> start;
     std::chrono::time_point<std::chrono::high_resolution_clock> end;
 
     XMLFileReader xmlReader;
 
     // Read Simulation parameters from the file
-    xmlReader.readSimulationParams(argsv[1], end_time, delta_t, modelType, containerType, objectType, plotInterval);
+    xmlReader.readSimulationParams(argsv[1], end_time, delta_t, modelType, containerType, objectType, plotInterval, checkpointing);
 
     spdlog::set_level(log_level);
 
@@ -44,10 +50,6 @@ int main(int argc, char *argsv[]) {
         forceModel = std::make_unique<GravitationalForce>();
     }
     else if (modelType == "lennardJones") {
-        // Read sigma and epsilon from the file
-        double epsilon;
-        double sigma;
-        xmlReader.readLennardJonesForceParams(argsv[1], sigma, epsilon);
         forceModel = std::make_unique<LennardJonesForce>();
     } else {
         spdlog::error("Unknown force model selected: {}", modelType);
@@ -63,9 +65,10 @@ int main(int argc, char *argsv[]) {
         std::vector<double> d;
         double c;
         std::array<char, 4> b;
-        xmlReader.readLinkedCellParams(argsv[1], d, c, b);
+        double g;
+        xmlReader.readLinkedCellParams(argsv[1], d, c, b, g);
 
-        particleContainer = std::make_unique<LinkedCellContainer>(*forceModel, d, c, b);
+        particleContainer = std::make_unique<LinkedCellContainer>(*forceModel, d, c, b, g);
     } else {
         spdlog::error("Unknown container type selected: {}", containerType);
         exit(-1);
@@ -91,25 +94,47 @@ int main(int argc, char *argsv[]) {
     }
 
     // Thermostat setup
-    double initialTemperature = 300.0; // Example: initial temperature of 300
-    double targetTemperature = 310.0;  // Example: target temperature of 310
-    double maxTempChange = 5.0;        // Example: max temperature change of 5 per step
-    int thermostatInterval = 1;       // Example: apply thermostat every 10 iterations
-    bool useBrownianMotion = true; // Initialize with Brownian Motion if needed
+    double initialTemperature;
+    int thermostatInterval;
+
+    // Read thermostat parameters out of the file
+    xmlReader.readThermostatParams(argsv[1], initialTemperature, thermostatInterval);
+
+    double targetTemperature = initialTemperature;
+    double maxTempChange = std::numeric_limits<double>::infinity();
+    bool useBrownianMotion = true;
 
     Thermostat thermostat(initialTemperature, targetTemperature, maxTempChange, thermostatInterval, useBrownianMotion);
-    if (useBrownianMotion) {
+
+    // Velocity is 0 initially for all simulations, so we useBrownianMotion
+    if(useBrownianMotion){
         thermostat.initializeWithBrownianMotion(*particleContainer);
     }
-    spdlog::info("container size before F: {}\n", particleContainer->size());
+
     // Calculate initial forces
     particleContainer->calculateF();
-    spdlog::info("container size after F: {}\n", particleContainer->size());
 
-    // Main simulation loop
     int iteration = 0;
     double current_time = 0;
+
+    //Main simulation loop
     while (current_time < end_time) {
+
+        if(checkpointing && current_time == 15){
+            //write particles to a file
+            checkpointingWriter.plotParticles(particleContainer->getParticles(), checkpointingFile);
+
+            // Read Sphere from the file
+            auto generators = xmlReader.readSpheres(argsv[1]);
+
+            // Loop over all generators and let them create particles in the container
+            for (auto &gen: generators) {
+                gen.generateParticles(*particleContainer);
+            }
+
+            // Read the liquid and the drom out from the file
+            checkpointingReader.readFile(particleContainer->getParticles(), checkpointingFile);
+        }
 
         if(calcRunTime){
             start = std::chrono::high_resolution_clock::now();
@@ -120,16 +145,16 @@ int main(int argc, char *argsv[]) {
 
         // reset forces
         particleContainer->resetF();
-       // spdlog::info("container size before F: {}\n", particleContainer->size());
+
         // calculate new f
         particleContainer->calculateF();
 
-       // spdlog::info("container size after F: {}\n", particleContainer->size());
-
-        if (iteration % thermostatInterval == 0) {
-            thermostat.applyThermostat(*particleContainer, iteration);
+        // apply the thermostat
+        if(!checkpointing || current_time < 15){
+            if (iteration % thermostatInterval == 0) {
+                thermostat.applyThermostat(*particleContainer, iteration);
+            }
         }
-
 
         // calculate new v
         particleContainer->calculateV(delta_t);

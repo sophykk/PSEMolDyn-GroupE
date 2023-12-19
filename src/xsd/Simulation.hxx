@@ -223,9 +223,9 @@ namespace xml_schema
 // Forward declarations.
 //
 class simulationParamsType;
-class lennardJonesForceParamsType;
 class linkedCellParamsType;
 class cuboidType;
+class thermostatType;
 class sphereType;
 class positionType;
 class velocityType;
@@ -343,6 +343,20 @@ class simulationParamsType: public ::xml_schema::type
   void
   objectType (::std::auto_ptr< objectType_type > p);
 
+  // checkpointing
+  //
+  typedef ::xml_schema::boolean checkpointing_type;
+  typedef ::xsd::cxx::tree::traits< checkpointing_type, char > checkpointing_traits;
+
+  const checkpointing_type&
+  checkpointing () const;
+
+  checkpointing_type&
+  checkpointing ();
+
+  void
+  checkpointing (const checkpointing_type& x);
+
   // Constructors.
   //
   simulationParamsType (const endTime_type&,
@@ -350,7 +364,8 @@ class simulationParamsType: public ::xml_schema::type
                         const modelType_type&,
                         const containerType_type&,
                         const plotInterval_type&,
-                        const objectType_type&);
+                        const objectType_type&,
+                        const checkpointing_type&);
 
   simulationParamsType (const ::xercesc::DOMElement& e,
                         ::xml_schema::flags f = 0,
@@ -384,72 +399,7 @@ class simulationParamsType: public ::xml_schema::type
   ::xsd::cxx::tree::one< containerType_type > containerType_;
   ::xsd::cxx::tree::one< plotInterval_type > plotInterval_;
   ::xsd::cxx::tree::one< objectType_type > objectType_;
-};
-
-class lennardJonesForceParamsType: public ::xml_schema::type
-{
-  public:
-  // sigma
-  //
-  typedef ::xml_schema::double_ sigma_type;
-  typedef ::xsd::cxx::tree::traits< sigma_type, char, ::xsd::cxx::tree::schema_type::double_ > sigma_traits;
-
-  const sigma_type&
-  sigma () const;
-
-  sigma_type&
-  sigma ();
-
-  void
-  sigma (const sigma_type& x);
-
-  // epsilon
-  //
-  typedef ::xml_schema::double_ epsilon_type;
-  typedef ::xsd::cxx::tree::traits< epsilon_type, char, ::xsd::cxx::tree::schema_type::double_ > epsilon_traits;
-
-  const epsilon_type&
-  epsilon () const;
-
-  epsilon_type&
-  epsilon ();
-
-  void
-  epsilon (const epsilon_type& x);
-
-  // Constructors.
-  //
-  lennardJonesForceParamsType (const sigma_type&,
-                               const epsilon_type&);
-
-  lennardJonesForceParamsType (const ::xercesc::DOMElement& e,
-                               ::xml_schema::flags f = 0,
-                               ::xml_schema::container* c = 0);
-
-  lennardJonesForceParamsType (const lennardJonesForceParamsType& x,
-                               ::xml_schema::flags f = 0,
-                               ::xml_schema::container* c = 0);
-
-  virtual lennardJonesForceParamsType*
-  _clone (::xml_schema::flags f = 0,
-          ::xml_schema::container* c = 0) const;
-
-  lennardJonesForceParamsType&
-  operator= (const lennardJonesForceParamsType& x);
-
-  virtual 
-  ~lennardJonesForceParamsType ();
-
-  // Implementation.
-  //
-  protected:
-  void
-  parse (::xsd::cxx::xml::dom::parser< char >&,
-         ::xml_schema::flags);
-
-  protected:
-  ::xsd::cxx::tree::one< sigma_type > sigma_;
-  ::xsd::cxx::tree::one< epsilon_type > epsilon_;
+  ::xsd::cxx::tree::one< checkpointing_type > checkpointing_;
 };
 
 class linkedCellParamsType: public ::xml_schema::type
@@ -503,15 +453,31 @@ class linkedCellParamsType: public ::xml_schema::type
   void
   boundaryConditions (::std::auto_ptr< boundaryConditions_type > p);
 
+  // gravitationalAcceleration
+  //
+  typedef ::xml_schema::double_ gravitationalAcceleration_type;
+  typedef ::xsd::cxx::tree::traits< gravitationalAcceleration_type, char, ::xsd::cxx::tree::schema_type::double_ > gravitationalAcceleration_traits;
+
+  const gravitationalAcceleration_type&
+  gravitationalAcceleration () const;
+
+  gravitationalAcceleration_type&
+  gravitationalAcceleration ();
+
+  void
+  gravitationalAcceleration (const gravitationalAcceleration_type& x);
+
   // Constructors.
   //
   linkedCellParamsType (const domainSize_type&,
                         const cutoffRadius_type&,
-                        const boundaryConditions_type&);
+                        const boundaryConditions_type&,
+                        const gravitationalAcceleration_type&);
 
   linkedCellParamsType (::std::auto_ptr< domainSize_type >,
                         const cutoffRadius_type&,
-                        ::std::auto_ptr< boundaryConditions_type >);
+                        ::std::auto_ptr< boundaryConditions_type >,
+                        const gravitationalAcceleration_type&);
 
   linkedCellParamsType (const ::xercesc::DOMElement& e,
                         ::xml_schema::flags f = 0,
@@ -542,6 +508,7 @@ class linkedCellParamsType: public ::xml_schema::type
   ::xsd::cxx::tree::one< domainSize_type > domainSize_;
   ::xsd::cxx::tree::one< cutoffRadius_type > cutoffRadius_;
   ::xsd::cxx::tree::one< boundaryConditions_type > boundaryConditions_;
+  ::xsd::cxx::tree::one< gravitationalAcceleration_type > gravitationalAcceleration_;
 };
 
 class cuboidType: public ::xml_schema::type
@@ -626,6 +593,48 @@ class cuboidType: public ::xml_schema::type
   void
   spacing (const spacing_type& x);
 
+  // sigma
+  //
+  typedef ::xml_schema::double_ sigma_type;
+  typedef ::xsd::cxx::tree::traits< sigma_type, char, ::xsd::cxx::tree::schema_type::double_ > sigma_traits;
+
+  const sigma_type&
+  sigma () const;
+
+  sigma_type&
+  sigma ();
+
+  void
+  sigma (const sigma_type& x);
+
+  // epsilon
+  //
+  typedef ::xml_schema::double_ epsilon_type;
+  typedef ::xsd::cxx::tree::traits< epsilon_type, char, ::xsd::cxx::tree::schema_type::double_ > epsilon_traits;
+
+  const epsilon_type&
+  epsilon () const;
+
+  epsilon_type&
+  epsilon ();
+
+  void
+  epsilon (const epsilon_type& x);
+
+  // gravitationalAcceleration
+  //
+  typedef ::xml_schema::double_ gravitationalAcceleration_type;
+  typedef ::xsd::cxx::tree::traits< gravitationalAcceleration_type, char, ::xsd::cxx::tree::schema_type::double_ > gravitationalAcceleration_traits;
+
+  const gravitationalAcceleration_type&
+  gravitationalAcceleration () const;
+
+  gravitationalAcceleration_type&
+  gravitationalAcceleration ();
+
+  void
+  gravitationalAcceleration (const gravitationalAcceleration_type& x);
+
   // type
   //
   typedef ::xml_schema::int_ type_type;
@@ -647,6 +656,9 @@ class cuboidType: public ::xml_schema::type
               const mass_type&,
               const grid_type&,
               const spacing_type&,
+              const sigma_type&,
+              const epsilon_type&,
+              const gravitationalAcceleration_type&,
               const type_type&);
 
   cuboidType (::std::auto_ptr< position_type >,
@@ -654,6 +666,9 @@ class cuboidType: public ::xml_schema::type
               const mass_type&,
               ::std::auto_ptr< grid_type >,
               const spacing_type&,
+              const sigma_type&,
+              const epsilon_type&,
+              const gravitationalAcceleration_type&,
               const type_type&);
 
   cuboidType (const ::xercesc::DOMElement& e,
@@ -687,7 +702,114 @@ class cuboidType: public ::xml_schema::type
   ::xsd::cxx::tree::one< mass_type > mass_;
   ::xsd::cxx::tree::one< grid_type > grid_;
   ::xsd::cxx::tree::one< spacing_type > spacing_;
+  ::xsd::cxx::tree::one< sigma_type > sigma_;
+  ::xsd::cxx::tree::one< epsilon_type > epsilon_;
+  ::xsd::cxx::tree::one< gravitationalAcceleration_type > gravitationalAcceleration_;
   ::xsd::cxx::tree::one< type_type > type_;
+};
+
+class thermostatType: public ::xml_schema::type
+{
+  public:
+  // initialTemperature
+  //
+  typedef ::xml_schema::double_ initialTemperature_type;
+  typedef ::xsd::cxx::tree::traits< initialTemperature_type, char, ::xsd::cxx::tree::schema_type::double_ > initialTemperature_traits;
+
+  const initialTemperature_type&
+  initialTemperature () const;
+
+  initialTemperature_type&
+  initialTemperature ();
+
+  void
+  initialTemperature (const initialTemperature_type& x);
+
+  // targetTemperature
+  //
+  typedef ::xml_schema::double_ targetTemperature_type;
+  typedef ::xsd::cxx::tree::optional< targetTemperature_type > targetTemperature_optional;
+  typedef ::xsd::cxx::tree::traits< targetTemperature_type, char, ::xsd::cxx::tree::schema_type::double_ > targetTemperature_traits;
+
+  const targetTemperature_optional&
+  targetTemperature () const;
+
+  targetTemperature_optional&
+  targetTemperature ();
+
+  void
+  targetTemperature (const targetTemperature_type& x);
+
+  void
+  targetTemperature (const targetTemperature_optional& x);
+
+  // maxTemperatureChange
+  //
+  typedef ::xml_schema::double_ maxTemperatureChange_type;
+  typedef ::xsd::cxx::tree::optional< maxTemperatureChange_type > maxTemperatureChange_optional;
+  typedef ::xsd::cxx::tree::traits< maxTemperatureChange_type, char, ::xsd::cxx::tree::schema_type::double_ > maxTemperatureChange_traits;
+
+  const maxTemperatureChange_optional&
+  maxTemperatureChange () const;
+
+  maxTemperatureChange_optional&
+  maxTemperatureChange ();
+
+  void
+  maxTemperatureChange (const maxTemperatureChange_type& x);
+
+  void
+  maxTemperatureChange (const maxTemperatureChange_optional& x);
+
+  // thermostatInterval
+  //
+  typedef ::xml_schema::int_ thermostatInterval_type;
+  typedef ::xsd::cxx::tree::traits< thermostatInterval_type, char > thermostatInterval_traits;
+
+  const thermostatInterval_type&
+  thermostatInterval () const;
+
+  thermostatInterval_type&
+  thermostatInterval ();
+
+  void
+  thermostatInterval (const thermostatInterval_type& x);
+
+  // Constructors.
+  //
+  thermostatType (const initialTemperature_type&,
+                  const thermostatInterval_type&);
+
+  thermostatType (const ::xercesc::DOMElement& e,
+                  ::xml_schema::flags f = 0,
+                  ::xml_schema::container* c = 0);
+
+  thermostatType (const thermostatType& x,
+                  ::xml_schema::flags f = 0,
+                  ::xml_schema::container* c = 0);
+
+  virtual thermostatType*
+  _clone (::xml_schema::flags f = 0,
+          ::xml_schema::container* c = 0) const;
+
+  thermostatType&
+  operator= (const thermostatType& x);
+
+  virtual 
+  ~thermostatType ();
+
+  // Implementation.
+  //
+  protected:
+  void
+  parse (::xsd::cxx::xml::dom::parser< char >&,
+         ::xml_schema::flags);
+
+  protected:
+  ::xsd::cxx::tree::one< initialTemperature_type > initialTemperature_;
+  targetTemperature_optional targetTemperature_;
+  maxTemperatureChange_optional maxTemperatureChange_;
+  ::xsd::cxx::tree::one< thermostatInterval_type > thermostatInterval_;
 };
 
 class sphereType: public ::xml_schema::type
@@ -1291,27 +1413,6 @@ class simulation: public ::xml_schema::type
   void
   simulationParams (::std::auto_ptr< simulationParams_type > p);
 
-  // lennardJonesForceParams
-  //
-  typedef ::lennardJonesForceParamsType lennardJonesForceParams_type;
-  typedef ::xsd::cxx::tree::optional< lennardJonesForceParams_type > lennardJonesForceParams_optional;
-  typedef ::xsd::cxx::tree::traits< lennardJonesForceParams_type, char > lennardJonesForceParams_traits;
-
-  const lennardJonesForceParams_optional&
-  lennardJonesForceParams () const;
-
-  lennardJonesForceParams_optional&
-  lennardJonesForceParams ();
-
-  void
-  lennardJonesForceParams (const lennardJonesForceParams_type& x);
-
-  void
-  lennardJonesForceParams (const lennardJonesForceParams_optional& x);
-
-  void
-  lennardJonesForceParams (::std::auto_ptr< lennardJonesForceParams_type > p);
-
   // linkedCellParams
   //
   typedef ::linkedCellParamsType linkedCellParams_type;
@@ -1332,6 +1433,27 @@ class simulation: public ::xml_schema::type
 
   void
   linkedCellParams (::std::auto_ptr< linkedCellParams_type > p);
+
+  // thermostat
+  //
+  typedef ::thermostatType thermostat_type;
+  typedef ::xsd::cxx::tree::optional< thermostat_type > thermostat_optional;
+  typedef ::xsd::cxx::tree::traits< thermostat_type, char > thermostat_traits;
+
+  const thermostat_optional&
+  thermostat () const;
+
+  thermostat_optional&
+  thermostat ();
+
+  void
+  thermostat (const thermostat_type& x);
+
+  void
+  thermostat (const thermostat_optional& x);
+
+  void
+  thermostat (::std::auto_ptr< thermostat_type > p);
 
   // cuboid
   //
@@ -1400,8 +1522,8 @@ class simulation: public ::xml_schema::type
 
   protected:
   ::xsd::cxx::tree::one< simulationParams_type > simulationParams_;
-  lennardJonesForceParams_optional lennardJonesForceParams_;
   linkedCellParams_optional linkedCellParams_;
+  thermostat_optional thermostat_;
   cuboid_sequence cuboid_;
   sphere_sequence sphere_;
 };

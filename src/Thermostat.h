@@ -8,7 +8,7 @@
 #include <vector>
 #include <cmath>
 #include "Particle.h"
-#include "Containers/LinkedCellContainer2.h"
+#include "Containers/LinkedCellContainer.h"
 #include <limits>
 
 

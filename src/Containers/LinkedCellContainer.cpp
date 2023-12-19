@@ -13,13 +13,11 @@
 #include <spdlog/spdlog.h>
 
 
-//Todo: put gGav in bracket and extend xml to read gGrav
 LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<double> &dSize, double &cRadius,
-                                           std::array<char, 4> bCon) :
-        ParticleContainerBase(model), domainSize(dSize), cutoffRadius(cRadius), boundaryCon(bCon) {
+                                           std::array<char, 4> bCon, double &gGrav) :
+        ParticleContainerBase(model), domainSize(dSize), cutoffRadius(cRadius), boundaryCon(bCon), gGrav(gGrav) {
     int cellDimensionX;
     int cellDimensionY;
-    double gGrav = -12.44;
     std::fmod(domainSize[0], cutoffRadius) == 0 ? cellDimensionX = domainSize[0] / cutoffRadius
                                                 : cellDimensionX = std::ceil(domainSize[0] / cutoffRadius);
     std::fmod(domainSize[1], cutoffRadius) == 0 ? cellDimensionY = domainSize[1] / cutoffRadius
@@ -28,14 +26,12 @@ LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<double> &
     initGrid();
 }
 
-//Todo: put gGav in bracket and extend xml to read gGrav
 LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<Particle> &particles,
-                                           std::vector<double> &dSize, double &cRadius, std::array<char, 4> bCon) :
+                                           std::vector<double> &dSize, double &cRadius, std::array<char, 4> bCon, double &gGrav) :
         ParticleContainerBase(model), particleList(particles), domainSize(dSize), cutoffRadius(cRadius),
-        boundaryCon(bCon) {
+        boundaryCon(bCon), gGrav(gGrav) {
     int cellDimensionX;
     int cellDimensionY;
-    double gGrav = -12.44;
     std::fmod(domainSize[0], cutoffRadius) == 0 ? cellDimensionX = domainSize[0] / cutoffRadius
                                                 : cellDimensionX = std::ceil(
             domainSize[0] / cutoffRadius);

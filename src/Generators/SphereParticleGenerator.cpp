@@ -27,6 +27,7 @@ void SphereParticleGenerator::generateParticles(ParticleContainerBase& particleC
     // Define the number of Particles in the grid
     int numParticlesX = static_cast<int>(std::ceil(2.0 * r / h));
     int numParticlesY = static_cast<int>(std::ceil(2.0 * r / h));
+    double gGrav = -12.44;
 
     // Iterate through each particle
     for (int i = 0; i < numParticlesX; ++i) {
@@ -38,7 +39,7 @@ void SphereParticleGenerator::generateParticles(ParticleContainerBase& particleC
             // Check if the particle is inside the circular boundary
             if (std::hypot(x1 - x[0], y1 - x[1]) <= r) {
                 //Todo change to sigma and eps when read from xml
-                Particle particle({x1, y1, x[2]}, v, m, 1.0, 5.0, type);
+                Particle particle({x1, y1, x[2]}, v, m, gGrav, 1.0, 5.0, type);
                 Formulas::calculateBM(particle);
                 particleContainer.addParticle(particle);
             }

@@ -30,10 +30,10 @@ private:
 
 public:
 
-    LinkedCellContainer(ForceBase &model, std::vector<double> &dSize, double &cRadius, std::array<char, 4> bCon);
+    LinkedCellContainer(ForceBase &model, std::vector<double> &dSize, double &cRadius, std::array<char, 4> bCon, double &gGrav);
 
     LinkedCellContainer(ForceBase &model, std::vector<Particle> &particles, std::vector<double> &dSize,
-                        double &cRadius, std::array<char, 4> bCon);
+                        double &cRadius, std::array<char, 4> bCon, double &gGrav);
 
     char &getBoundaryCon(int index);
 
