@@ -70,6 +70,9 @@
         <mass>1</mass>
         <spacing>1.2</spacing>
         <radius>20</radius>
+        <sigma>1.2</sigma>
+        <epsilon>1.0</epsilon>
+        <gravitationalAcceleration>-12.44</gravitationalAcceleration>
         <type>2</type>
     </sphere>
 </simulation>

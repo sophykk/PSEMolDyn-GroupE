@@ -115,14 +115,12 @@ int main(int argc, char *argsv[]) {
     particleContainer->calculateF();
 
     int iteration = 0;
-    double current_time = 0;
+    double current_time = 15;
 
     //Main simulation loop
     while (current_time < end_time) {
 
         if(checkpointing && current_time == 15){
-            //write particles to a file
-            checkpointingWriter.plotParticles(particleContainer->getParticles(), checkpointingFile);
 
             // Read Sphere from the file
             auto generators = xmlReader.readSpheres(argsv[1]);
@@ -132,7 +130,10 @@ int main(int argc, char *argsv[]) {
                 gen.generateParticles(*particleContainer);
             }
 
-            // Read the liquid and the drom out from the file
+            //write particles to a file
+            checkpointingWriter.plotParticles(particleContainer->getParticles(), checkpointingFile);
+
+            // Read the liquid and the drop out from the file
             checkpointingReader.readFile(particleContainer->getParticles(), checkpointingFile);
         }
 

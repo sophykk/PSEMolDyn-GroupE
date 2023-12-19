@@ -891,6 +891,48 @@ class sphereType: public ::xml_schema::type
   void
   radius (const radius_type& x);
 
+  // sigma
+  //
+  typedef ::xml_schema::double_ sigma_type;
+  typedef ::xsd::cxx::tree::traits< sigma_type, char, ::xsd::cxx::tree::schema_type::double_ > sigma_traits;
+
+  const sigma_type&
+  sigma () const;
+
+  sigma_type&
+  sigma ();
+
+  void
+  sigma (const sigma_type& x);
+
+  // epsilon
+  //
+  typedef ::xml_schema::double_ epsilon_type;
+  typedef ::xsd::cxx::tree::traits< epsilon_type, char, ::xsd::cxx::tree::schema_type::double_ > epsilon_traits;
+
+  const epsilon_type&
+  epsilon () const;
+
+  epsilon_type&
+  epsilon ();
+
+  void
+  epsilon (const epsilon_type& x);
+
+  // gravitationalAcceleration
+  //
+  typedef ::xml_schema::double_ gravitationalAcceleration_type;
+  typedef ::xsd::cxx::tree::traits< gravitationalAcceleration_type, char, ::xsd::cxx::tree::schema_type::double_ > gravitationalAcceleration_traits;
+
+  const gravitationalAcceleration_type&
+  gravitationalAcceleration () const;
+
+  gravitationalAcceleration_type&
+  gravitationalAcceleration ();
+
+  void
+  gravitationalAcceleration (const gravitationalAcceleration_type& x);
+
   // type
   //
   typedef ::xml_schema::int_ type_type;
@@ -912,6 +954,9 @@ class sphereType: public ::xml_schema::type
               const mass_type&,
               const spacing_type&,
               const radius_type&,
+              const sigma_type&,
+              const epsilon_type&,
+              const gravitationalAcceleration_type&,
               const type_type&);
 
   sphereType (::std::auto_ptr< position_type >,
@@ -919,6 +964,9 @@ class sphereType: public ::xml_schema::type
               const mass_type&,
               const spacing_type&,
               const radius_type&,
+              const sigma_type&,
+              const epsilon_type&,
+              const gravitationalAcceleration_type&,
               const type_type&);
 
   sphereType (const ::xercesc::DOMElement& e,
@@ -952,6 +1000,9 @@ class sphereType: public ::xml_schema::type
   ::xsd::cxx::tree::one< mass_type > mass_;
   ::xsd::cxx::tree::one< spacing_type > spacing_;
   ::xsd::cxx::tree::one< radius_type > radius_;
+  ::xsd::cxx::tree::one< sigma_type > sigma_;
+  ::xsd::cxx::tree::one< epsilon_type > epsilon_;
+  ::xsd::cxx::tree::one< gravitationalAcceleration_type > gravitationalAcceleration_;
   ::xsd::cxx::tree::one< type_type > type_;
 };
 

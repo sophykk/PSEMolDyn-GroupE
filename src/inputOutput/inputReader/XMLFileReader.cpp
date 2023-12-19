@@ -84,6 +84,9 @@ std::vector<SphereParticleGenerator> XMLFileReader::readSpheres(const char *file
     double m;
     double spacing;
     double r;
+    double sigma;
+    double epsilon;
+    double gGrav;
     int type;
 
     std::unique_ptr<simulation> parameters = simulation_(filename);
@@ -97,9 +100,12 @@ std::vector<SphereParticleGenerator> XMLFileReader::readSpheres(const char *file
         m = s.mass();
         spacing = s.spacing();
         r = s.radius();
+        sigma = s.sigma();
+        epsilon = s.epsilon();
+        gGrav = s.gravitationalAcceleration();
         type = s.type();
 
-        generators.emplace_back(x,spacing,m,v,r,type);
+        generators.emplace_back(x,spacing,m,v,r,sigma,epsilon,gGrav,type);
     }
 
     return generators;
