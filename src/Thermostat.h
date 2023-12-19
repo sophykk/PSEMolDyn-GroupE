@@ -8,7 +8,7 @@
 #include <vector>
 #include <cmath>
 #include "Particle.h"
-#include "Containers/LinkedCellContainer2.h"
+#include "Containers/LinkedCellContainer.h"
 #include <limits>
 
 
@@ -27,7 +27,7 @@ private:
 
 public:
     /** Constructor with initial temperature, target temperature, deltaT, and nthermostat */
-    Thermostat(double Tinit, double Ttarget = 0, double deltaT = std::numeric_limits<double>::infinity(), int nthermostat = 1, bool useBrownianMotion = false);
+    Thermostat(double Tinit, double Ttarget = 0, double deltaT = std::numeric_limits<double>::infinity(), int nthermostat = 1, bool useBrownianMotion = true);
 
     /** Function to apply the thermostat to a LinkedCell particle container */
     void applyThermostat(ParticleContainerBase& particleContainer, int currentStep);

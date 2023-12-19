@@ -1,7 +1,7 @@
 //
 // Created by Layla Zadina on 08.12.2023.
 //
-#include "Containers/LinkedCellContainer2.h"
+#include "Containers/LinkedCellContainer.h"
 #include "Thermostat.h"
 #include <cmath>
 #include <array>
@@ -22,14 +22,20 @@ void Thermostat::applyThermostat(ParticleContainerBase& particleContainer, int c
 
 
         double Tcurrent = calculateCurrentTemperature(particleContainer);
-        double scalingFactor = std::sqrt(Ttarget / Tcurrent);
-        // Ensuring the temperature change does not exceed deltaT
-        //todo delta?
-        scalingFactor = std::min(scalingFactor, std::sqrt((Tcurrent + deltaT) / Tcurrent));
+        if (std::abs(Tcurrent - Ttarget) < std::numeric_limits<double>::epsilon()) return; // Skip if temperature is already at target
+
+        double newTemp;
+        if (Tcurrent > Ttarget) {
+            newTemp = std::max(Ttarget, Tcurrent - deltaT);
+        } else {
+            newTemp = std::min(Ttarget, Tcurrent + deltaT);
+        }
+
+        double scalingFactor = std::sqrt(newTemp / Tcurrent);
         scaleVelocities(particleContainer, scalingFactor);
         std::cout << "Tcurrent: " << Tcurrent << std::endl;
-
 }
+
 
 /** Helper function
  * Calculate the current temperature of the system */
@@ -37,8 +43,7 @@ double Thermostat::calculateCurrentTemperature(ParticleContainerBase& particleCo
     double Ekin = 0.0;
     // apply formula (2) from the worksheet to calculate the Kinetic Energy of the particles
     auto& particles = particleContainer.getParticles();
-//   std::cout << "Particles size before loop: " << particles.size() << ", "
-//   << std::endl;
+
     for (auto& particle : particles) {
         double vSquared = 0.0;
         for (auto velocity : particle.getV()) {
@@ -62,7 +67,7 @@ double Thermostat::calculateCurrentTemperature(ParticleContainerBase& particleCo
 void Thermostat::initializeWithBrownianMotion(ParticleContainerBase& particleContainer) {
         auto& particles = particleContainer.getParticles();
         for (auto& particle : particles) {
-            auto bmVelocity = maxwellBoltzmannDistributedVelocity(std::sqrt(Tinit / particle.getM()), 3);
+            auto bmVelocity = maxwellBoltzmannDistributedVelocity(std::sqrt(Tinit / particle.getM()), numDimensions);
             particle.setV(bmVelocity);
         }
 
