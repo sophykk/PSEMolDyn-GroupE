@@ -24,7 +24,7 @@
             <right>p</right>
             <down>r</down>
         </boundaryConditions>
-        <gravitationalAcceleration>-12.44</gravitationalAcceleration>
+        <gravitationalAcceleration>1</gravitationalAcceleration>
     </linkedCellParams>
 
     <thermostat>
@@ -36,7 +36,7 @@
         <position>
             <x>0.6</x>
             <y>2</y>
-            <z>1</z>
+            <z>0</z>
         </position>
         <velocity>
             <v>0</v>
@@ -45,14 +45,14 @@
         </velocity>
         <mass>1.0</mass>
         <grid>
-            <Nx>50</Nx>
+            <Nx>50</Nx>.
             <Ny>14</Ny>
             <Nz>1</Nz>
         </grid>
         <spacing>1.2</spacing>
         <sigma>1.0</sigma>
         <epsilon>1.0</epsilon>
-        <gravitationalAcceleration>-12.44</gravitationalAcceleration>
+        <gravitationalAcceleration>1</gravitationalAcceleration>
         <type>1</type>
     </cuboid>
 
@@ -60,7 +60,7 @@
         <position>
             <x>0.6</x>
             <y>19</y>
-            <z>1</z>
+            <z>0</z>
         </position>
         <velocity>
             <v>0</v>
@@ -76,7 +76,7 @@
         <spacing>1.2</spacing>
         <sigma>0.9412</sigma>
         <epsilon>1.0</epsilon>
-        <gravitationalAcceleration>-12.44</gravitationalAcceleration>
+        <gravitationalAcceleration>1</gravitationalAcceleration>
         <type>2</type>
     </cuboid>
 </simulation>

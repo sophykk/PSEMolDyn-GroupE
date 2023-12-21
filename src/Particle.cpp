@@ -17,8 +17,8 @@ Particle::Particle(int type_arg) {
     f = {0., 0., 0.};
     old_f = {0., 0., 0.};
     gGrav = 0.0;
-    sigma = 0.0;
-    epsilon = 0.0;
+    sigma = 1.0;
+    epsilon = 5.0;
 }
 
 Particle::Particle(const Particle &other) {
@@ -80,7 +80,7 @@ void Particle::setV(const std::array<double, 3> &v_new) {
 
 void Particle::addF(const std::array<double, 3> &f_add) {
     f = f + f_add;
-    f[1] = f[1] + (getM() * gGrav);
+    //f[1] = f[1] + (getM() * gGrav);
 }
 
 void Particle::resetF() {

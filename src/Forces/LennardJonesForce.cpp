@@ -30,5 +30,6 @@ std::array<double, 3> LennardJonesForce::calculateForce(Particle &p1, Particle &
     auto force = (-24 * eps / pow(Formulas::secondNorm(p1.getX() - p2.getX()), 2.0)) *
                  (pow((sigma / Formulas::secondNorm(p1.getX() - p2.getX())), 6.0) -
                   2 * pow((sigma / Formulas::secondNorm(p1.getX() - p2.getX())), 12.0)) * (p1.getX() - p2.getX());
+    force[2] = 0.0;
     return force;
 }

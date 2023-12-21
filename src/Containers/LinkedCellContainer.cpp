@@ -33,11 +33,9 @@ LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<Particle>
     int cellDimensionX;
     int cellDimensionY;
     std::fmod(domainSize[0], cutoffRadius) == 0 ? cellDimensionX = domainSize[0] / cutoffRadius
-                                                : cellDimensionX = std::ceil(
-            domainSize[0] / cutoffRadius);
+                                                : cellDimensionX = std::ceil(domainSize[0] / cutoffRadius);
     std::fmod(domainSize[1], cutoffRadius) == 0 ? cellDimensionY = domainSize[1] / cutoffRadius
-                                                : cellDimensionY = std::ceil(
-            domainSize[1] / cutoffRadius);
+                                                : cellDimensionY = std::ceil(domainSize[1] / cutoffRadius);
     grid.resize(cellDimensionX, std::vector<std::vector<Particle>>(cellDimensionY, std::vector<Particle>()));
     initGrid();
 }
@@ -95,24 +93,28 @@ std::size_t LinkedCellContainer::size() const {
  * @brief This methods puts all the particles in a cell in the grid according to their positions
  * if cutoffRadius = 10, and dSize = {180, 90, 1}
  * then first cell from 0-10, next 11-20,
- * */
+ */
 void LinkedCellContainer::initGrid() {
 
     for (auto &p: particleList) {
         if (boundaryCon[0] == 'p' && p.getX()[0] < 0.0) {
             p.setX({p.getX()[0] + domainSize[0], p.getX()[1], p.getX()[2]});
+            //spdlog::info("this is p[2] in initGrid periodic con left {}", p.getX()[2]);
         }
         // upper
         if (boundaryCon[1] == 'p' && p.getX()[1] > domainSize[1]) {
             p.setX({p.getX()[0], p.getX()[1] - domainSize[1], p.getX()[2]});
+            //spdlog::info("this is p[2] in initGrid periodic con up {}", p.getX()[2]);
         }
         // right
         if (boundaryCon[2] == 'p' && p.getX()[0] > domainSize[0]) {
             p.setX({p.getX()[0] - domainSize[0], p.getX()[1], p.getX()[2]});
+            //spdlog::info("this is p[2] in initGrid periodic con right {}", p.getX()[2]);
         }
         // floor
         if (boundaryCon[3] == 'p' && p.getX()[1] < 0.0) {
             p.setX({p.getX()[0], p.getX()[1] + domainSize[1], p.getX()[2]});
+            //spdlog::info("this is p[2] in initGrid periodic con floor {}", p.getX()[2]);
         }
     }
 
@@ -174,8 +176,9 @@ void LinkedCellContainer::calculateF() {
             for (auto p1 = grid[x][y].begin(); p1 < grid[x][y].end(); p1++) {
                 for (auto p2 = p1 + 1; p2 < grid[x][y].end(); p2++) {
                     auto force = forceModel.calculateForce(*p1, *p2);
-                    p1->addF(force);
-                    p2->addF(-1.0 * force);
+                    p1->addF({force[0], force[1] + (p1->getM() * gGrav), force[2]});
+                    p2->addF({-1.0 * force[0], -1.0 * (force[1] + (p2->getM() * gGrav)), -1.0 * force[2]});
+                    //spdlog::info("this is pF[2] in calcF {}", p1->getF()[2]);
                 }
                 if (checkBoundary('r')) {
                     applyReflecting(*p1);
@@ -190,8 +193,9 @@ void LinkedCellContainer::calculateF() {
                 for (auto &p1: getGrid()[x][y]) {
                     for (auto &p2: getGrid()[x][y + 1]) {
                         auto force = forceModel.calculateForce(p1, p2);
-                        p1.addF(force);
-                        p2.addF(-1.0 * force);
+                        p1.addF({force[0], force[1] + (p1.getM() * gGrav), force[2]});
+                        p2.addF({-1.0 * force[0], -1.0 * (force[1] + (p2.getM() * gGrav)), -1.0 * force[2]});
+                        //spdlog::info("this is pF[2] in calcF above {}", p1.getF()[2]);
                     }
                 }
             }
@@ -200,8 +204,9 @@ void LinkedCellContainer::calculateF() {
                 for (auto &p1: getGrid()[x][y]) {
                     for (auto &p2: getGrid()[x + 1][y]) {
                         auto force = forceModel.calculateForce(p1, p2);
-                        p1.addF(force);
-                        p2.addF(-1.0 * force);
+                        p1.addF({force[0], force[1] + (p1.getM() * gGrav), force[2]});
+                        p2.addF({-1.0 * force[0], -1.0 * (force[1] + (p2.getM() * gGrav)), -1.0 * force[2]});
+                        //spdlog::info("this is pF[2] in calcF right {}", p1.getF()[2]);
                     }
                 }
             }
@@ -210,8 +215,9 @@ void LinkedCellContainer::calculateF() {
                 for (auto &p1: getGrid()[x][y]) {
                     for (auto &p2: getGrid()[x + 1][y + 1]) {
                         auto force = forceModel.calculateForce(p1, p2);
-                        p1.addF(force);
-                        p2.addF(-1.0 * force);
+                        p1.addF({force[0], force[1] + (p1.getM() * gGrav), force[2]});
+                        p2.addF({-1.0 * force[0], -1.0 * (force[1] + (p2.getM() * gGrav)), -1.0 * force[2]});
+                        //spdlog::info("this is pF[2] in calcF right diagonal {}", p1.getF()[2]);
                     }
                 }
             }
@@ -220,8 +226,9 @@ void LinkedCellContainer::calculateF() {
                 for (auto &p1: getGrid()[x][y]) {
                     for (auto &p2: getGrid()[x - 1][y + 1]) {
                         auto force = forceModel.calculateForce(p1, p2);
-                        p1.addF(force);
-                        p2.addF(-1.0 * force);
+                        p1.addF({force[0], force[1] + (p1.getM() * gGrav), force[2]});
+                        p2.addF({-1.0 * force[0], -1.0 * (force[1] + (p2.getM() * gGrav)), -1.0 * force[2]});
+                        //spdlog::info("this is pF[2] in calcF left diagonal {}", p1.getF()[2]);
                     }
                 }
             }
@@ -262,23 +269,7 @@ void LinkedCellContainer::calculateF() {
 void LinkedCellContainer::calculateX(double delta_t) {
     for (auto &p: getParticles()) {
         auto xi_tn1 = Formulas::verletXStep(p.getX(), p.getV(), p.getF(), p.getM(), delta_t);
-        /* does not work in here
-        //left
-        if (boundaryCon[0] == 'p' && p.getX()[0] < 0.0) {
-            xi_tn1[0] = p.getX()[0] + domainSize[0];
-        }
-        // upper
-        if (boundaryCon[1] == 'p' && p.getX()[1] > domainSize[1]) {
-            xi_tn1[1] = p.getX()[1] - domainSize[1];
-        }
-        // right
-        if (boundaryCon[2] == 'p' && p.getX()[0] > domainSize[0]) {
-            xi_tn1[0] = p.getX()[0] - domainSize[0];
-        }
-        // floor
-        if (boundaryCon[3] == 'p' && p.getX()[1] < 0.0) {
-            xi_tn1[1] = p.getX()[1] + domainSize[1];
-        }*/
+        xi_tn1[2] = 0.0;
         p.setX(xi_tn1);  // Update the position
     }
     //initGrid();
@@ -291,7 +282,9 @@ void LinkedCellContainer::calculateX(double delta_t) {
 void LinkedCellContainer::calculateV(double delta_t) {
     for (auto &p: getParticles()) {
         auto vi_tn1 = Formulas::verletVStep(p.getV(), p.getOldF(), p.getF(), p.getM(), delta_t);
+        vi_tn1[2] = 0.0;
         p.setV(vi_tn1);
+        //spdlog::info("this is pV[2] in calcV {}", p.getV()[2]);
     }
 }
 
@@ -349,7 +342,8 @@ void LinkedCellContainer::applyReflecting(Particle &p) {
         if (checkDistance(p, "left")) {
             halo.setX({(-1) * p.getX()[0], p.getX()[1], p.getX()[2]});
             auto force = forceModel.calculateForce(p, halo);
-            p.addF(force);
+            p.addF({force[0], force[1] + (p.getM() * gGrav), force[2]});
+            //spdlog::info("this is pF[2] in applyReflect left {}", p.getF()[2]);
         }
     }
     //near right border
@@ -357,7 +351,8 @@ void LinkedCellContainer::applyReflecting(Particle &p) {
         if (checkDistance(p, "right")) {
             halo.setX({domainSize[0] + (domainSize[0] - p.getX()[0]), p.getX()[1], p.getX()[2]});
             auto force = forceModel.calculateForce(p, halo);
-            p.addF(force);
+            p.addF({force[0], force[1] + (p.getM() * gGrav), force[2]});
+            //spdlog::info("this is pF[2] in applyReflect right {}", p.getF()[2]);
         }
     }
     //near floor border
@@ -365,7 +360,8 @@ void LinkedCellContainer::applyReflecting(Particle &p) {
         if (checkDistance(p, "floor")) {
             halo.setX({p.getX()[0], (-1) * p.getX()[1], p.getX()[2]});
             auto force = forceModel.calculateForce(p, halo);
-            p.addF(force);
+            p.addF({force[0], force[1] + (p.getM() * gGrav), force[2]});
+            //spdlog::info("this is pF[2] in applyReflect floor {}", p.getF()[2]);
         }
     }
     //near upper border
@@ -373,7 +369,8 @@ void LinkedCellContainer::applyReflecting(Particle &p) {
         if (checkDistance(p, "upper")) {
             halo.setX({p.getX()[0], domainSize[1] + (domainSize[1] - p.getX()[1]), p.getX()[2]});
             auto force = forceModel.calculateForce(p, halo);
-            p.addF(force);
+            p.addF({force[0], force[1] + (p.getM() * gGrav), force[2]});
+            //spdlog::info("this is pF[2] in applyReflect upper {}", p.getF()[2]);
         }
     }
 }
@@ -396,7 +393,8 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y) {
             for (auto &p1: getGrid()[getGrid().size() - 1][y]) {
                 if (abs(p1.getX()[0] - halo.getX()[0]) <= distance) {
                     auto force = forceModel.calculateForce(p1, halo);
-                    p1.addF(force);
+                    p1.addF({force[0], force[1] + (p1.getM() * gGrav), force[2]});
+                    //spdlog::info("this is pF[2] in applyPeriodic left {}", p.getF()[2]);
                 }
             }
         }
@@ -408,7 +406,8 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y) {
             for (auto &p1: getGrid()[x][0]) {
                 if (abs(p1.getX()[1] - halo.getX()[1]) <= distance) {
                     auto force = forceModel.calculateForce(p1, halo);
-                    p1.addF(force);
+                    p1.addF({force[0], force[1] + (p1.getM() * gGrav), force[2]});
+                    //spdlog::info("this is pF[2] in applyPeriodic upper {}", p.getF()[2]);
                 }
             }
             if (boundaryCon[0] == 'p' && checkDistance(p, "left")) {
@@ -417,7 +416,8 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y) {
                     if (abs(p1.getX()[0] - halo.getX()[0]) <= distance &&
                         abs(p1.getX()[1] - halo.getX()[1]) <= distance) {
                         auto force = forceModel.calculateForce(p1, halo);
-                        p1.addF(force);
+                        p1.addF({force[0], force[1] + (p1.getM() * gGrav), force[2]});
+                        //spdlog::info("this is pF[2] in applyPeriodic upper left {}", p.getF()[2]);
                     }
                 }
             }
@@ -427,7 +427,8 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y) {
                     if (abs(p1.getX()[0] - halo.getX()[0]) <= distance &&
                         abs(p1.getX()[1] - halo.getX()[1]) <= distance) {
                         auto force = forceModel.calculateForce(p1, halo);
-                        p1.addF(force);
+                        p1.addF({force[0], force[1] + (p1.getM() * gGrav), force[2]});
+                        //spdlog::info("this is pF[2] in applyPeriodic upper right {}", p.getF()[2]);
                     }
                 }
             }
@@ -440,7 +441,8 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y) {
             for (auto &p1: getGrid()[0][y]) {
                 if (abs(p1.getX()[0] - halo.getX()[0]) <= distance) {
                     auto force = forceModel.calculateForce(p1, halo);
-                    p1.addF(force);
+                    p1.addF({force[0], force[1] + (p1.getM() * gGrav), force[2]});
+                    //spdlog::info("this is pF[2] in applyPeriodic right {}", p.getF()[2]);
                 }
             }
         }
@@ -452,7 +454,8 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y) {
             for (auto &p1: getGrid()[x][getGrid()[0].size() - 1]) {
                 if (abs(p1.getX()[1] - halo.getX()[1]) <= distance) {
                     auto force = forceModel.calculateForce(p1, halo);
-                    p1.addF(force);
+                    p1.addF({force[0], force[1] + (p1.getM() * gGrav), force[2]});
+                    //spdlog::info("this is pF[2] in applyPeriodic floor {}", p.getF()[2]);
                 }
             }
             if (boundaryCon[0] == 'p' && checkDistance(p, "left")) {
@@ -461,7 +464,8 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y) {
                     if (abs(p1.getX()[0] - halo.getX()[0]) <= distance &&
                         abs(p1.getX()[1] - halo.getX()[1]) <= distance) {
                         auto force = forceModel.calculateForce(p1, halo);
-                        p1.addF(force);
+                        p1.addF({force[0], force[1] + (p1.getM() * gGrav), force[2]});
+                        //spdlog::info("this is pF[2] in applyPeriodic floor left {}", p.getF()[2]);
                     }
                 }
             }
@@ -471,7 +475,8 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y) {
                     if (abs(p1.getX()[0] - halo.getX()[0]) <= distance &&
                         abs(p1.getX()[1] - halo.getX()[1]) <= distance) {
                         auto force = forceModel.calculateForce(p1, halo);
-                        p1.addF(force);
+                        p1.addF({force[0], force[1] + (p1.getM() * gGrav), force[2]});
+                        //spdlog::info("this is pF[2] in applyPeriodic floor right {}", p.getF()[2]);
                     }
                 }
             }
