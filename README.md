@@ -10,7 +10,7 @@ Members:
 * Link:     https://github.com/sophykk/PSEMolDyn-GroupE.git
 * Branch:   master
 * Compiler: g++ 11.4.0
-* Commit ID: e2e2409
+* Commit ID: last commit on the master branch
 * Build and execute instructions:
  ```
  mkdir build
@@ -19,9 +19,9 @@ Members:
  make
  ./MolSim ../input/<file_name>
 
-Files: -w3t2.xml (Task 2)
-       -w3t4.xml (Task 4)
-       -1000p.xml/2000p.xml/4000p.xml/8000p.xml (for runtime measurements)
+Files: -w4t2test.xml (Task 2, the test simulation)
+       -w4t2.xml (Task 2, the big simulation)
+       -w4t3.xml (Task 3)
  
  Doxygen documentation: 
  make doc_doxygen
@@ -61,13 +61,7 @@ ctest
   
 ## Task 3 ##
 
-- implemented the boundary conditions
-- the used boundary condition is read from the input file as a char
-- set boundaryCondition to 'r' for using the reflecting condition and to 'o' for using the outflow condition in the input file
-- 'r' activates a function where it checks whether a particle is near the border and creates a halo particle to bounce it back if true
-
-## Task 4 ##
-
-- implemented a SphereGenerator, which generater the particles in form of a sphere
-- adapted the Simulation.xsd schema, so the user can generate how many spheres he wants by just defining their properties in the input files
-- conducted the experiment of a falling drop using the reflecting boundary condition
+- implemented a new output writer TXTWriter, which writes on the first line of a txt file the number of the particles and then starting with the new line, the values for every particle on its own line; the values of the particles are separated by a space and written in this order: position, velocity, force, old force, mass, sigma, epsilon, gravitational acceleration and type
+- implemented a new file reader ParticlesFileReader, which reads out of a file, given as a parameter, the number of the particles and then reads every line one by one and initializes a particle with the corresponding values; the particle is then added to the vector given as a parameter
+- updated the main function to execute the simulation until timestamp 15; after that, the drop is generated, the values are saved in a file, then the simulation continues with all particles read from the saved file; for the part after the drop is added to the simulation, the thermostat is switched off
+- conducted the experiment of a falling drop by using periodic boundaries on the left and right sides and refleting boundaries for the up and down sides 
