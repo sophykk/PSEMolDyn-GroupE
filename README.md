@@ -36,16 +36,13 @@ ctest
 # Report #
 ## Task 1 ##
 
-- implemented a general schema for the simulation
-- the files have to contain the simulationParams and optionally the lennardJonesForceParams, linkedCellParams, cuboids and/or spheres
-- the XMLReader contains functions for reading each of the above mentioned parameters out of an xml file
-- this functions are called in the main function based on the chosen modelType, containerType and objectType
-- the following parameterTypes contain the following parameters:
-  - simulationParams: endTime, deltaT, modelType, containerType, plotInterval and objectType
-  - lennardJonesForceParams: sigma and epsilon
-  - linkedCellParams: domainSize, cutoffRadius, boundaryCondition
-  - cuboids: position, velocity, mass, grid, spacing, type
-  - spheres: position, velocity, mass, spacing, radius, type
+- implemented Thermostat for controlling the temperature in the system
+- current temperature of the system is calculated with the Kinetic Energy of the particles
+- velocity scaling factor is calculated for the particles to achieve the target temperature
+- systems that have no initial velocities are initialized with Brownian Motion
+- delta T is applied, so the temperature change at each application of Thermostat does not exceed the chosen threshold
+- MolSim is adapted accordinly, Thermostat is applied periodically at the given interval. Thermostat is applied before Velocity calculation, since it influences the velocity scaling
+- XML input is adapted to read the Thermostat parameters
 
 ## Task 2 ##
 
