@@ -24,6 +24,9 @@ private:
     double m;
     std::array<double, 3> v;
     double r;
+    double sigma;
+    double epsilon;
+    double gGrav;
     int type;
 
 public:
@@ -31,7 +34,7 @@ public:
      * create a N1xN2xN3 grid of particles with mass m, initial velocity v, left corner coordinate (x,y,z)
     */
 
-    SphereParticleGenerator(std::array<double, 3> x1, double h1, double m1, std::array<double, 3> v1, double r1, int type1);
+    SphereParticleGenerator(std::array<double, 3> x1, double h1, double m1, std::array<double, 3> v1, double r1, double sigma, double epsilon, double gGrav, int type1);
 
     void generateParticles(ParticleContainerBase& particleContainer);
 };

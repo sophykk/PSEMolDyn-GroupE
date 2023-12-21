@@ -653,6 +653,60 @@ radius (const radius_type& x)
   this->radius_.set (x);
 }
 
+const sphereType::sigma_type& sphereType::
+sigma () const
+{
+  return this->sigma_.get ();
+}
+
+sphereType::sigma_type& sphereType::
+sigma ()
+{
+  return this->sigma_.get ();
+}
+
+void sphereType::
+sigma (const sigma_type& x)
+{
+  this->sigma_.set (x);
+}
+
+const sphereType::epsilon_type& sphereType::
+epsilon () const
+{
+  return this->epsilon_.get ();
+}
+
+sphereType::epsilon_type& sphereType::
+epsilon ()
+{
+  return this->epsilon_.get ();
+}
+
+void sphereType::
+epsilon (const epsilon_type& x)
+{
+  this->epsilon_.set (x);
+}
+
+const sphereType::gravitationalAcceleration_type& sphereType::
+gravitationalAcceleration () const
+{
+  return this->gravitationalAcceleration_.get ();
+}
+
+sphereType::gravitationalAcceleration_type& sphereType::
+gravitationalAcceleration ()
+{
+  return this->gravitationalAcceleration_.get ();
+}
+
+void sphereType::
+gravitationalAcceleration (const gravitationalAcceleration_type& x)
+{
+  this->gravitationalAcceleration_.set (x);
+}
+
 const sphereType::type_type& sphereType::
 type () const
 {
@@ -1999,6 +2053,9 @@ sphereType (const position_type& position,
             const mass_type& mass,
             const spacing_type& spacing,
             const radius_type& radius,
+            const sigma_type& sigma,
+            const epsilon_type& epsilon,
+            const gravitationalAcceleration_type& gravitationalAcceleration,
             const type_type& type)
 : ::xml_schema::type (),
   position_ (position, this),
@@ -2006,6 +2063,9 @@ sphereType (const position_type& position,
   mass_ (mass, this),
   spacing_ (spacing, this),
   radius_ (radius, this),
+  sigma_ (sigma, this),
+  epsilon_ (epsilon, this),
+  gravitationalAcceleration_ (gravitationalAcceleration, this),
   type_ (type, this)
 {
 }
@@ -2016,6 +2076,9 @@ sphereType (::std::auto_ptr< position_type > position,
             const mass_type& mass,
             const spacing_type& spacing,
             const radius_type& radius,
+            const sigma_type& sigma,
+            const epsilon_type& epsilon,
+            const gravitationalAcceleration_type& gravitationalAcceleration,
             const type_type& type)
 : ::xml_schema::type (),
   position_ (position, this),
@@ -2023,6 +2086,9 @@ sphereType (::std::auto_ptr< position_type > position,
   mass_ (mass, this),
   spacing_ (spacing, this),
   radius_ (radius, this),
+  sigma_ (sigma, this),
+  epsilon_ (epsilon, this),
+  gravitationalAcceleration_ (gravitationalAcceleration, this),
   type_ (type, this)
 {
 }
@@ -2037,6 +2103,9 @@ sphereType (const sphereType& x,
   mass_ (x.mass_, f, this),
   spacing_ (x.spacing_, f, this),
   radius_ (x.radius_, f, this),
+  sigma_ (x.sigma_, f, this),
+  epsilon_ (x.epsilon_, f, this),
+  gravitationalAcceleration_ (x.gravitationalAcceleration_, f, this),
   type_ (x.type_, f, this)
 {
 }
@@ -2051,6 +2120,9 @@ sphereType (const ::xercesc::DOMElement& e,
   mass_ (this),
   spacing_ (this),
   radius_ (this),
+  sigma_ (this),
+  epsilon_ (this),
+  gravitationalAcceleration_ (this),
   type_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
@@ -2131,6 +2203,39 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
+    // sigma
+    //
+    if (n.name () == "sigma" && n.namespace_ ().empty ())
+    {
+      if (!sigma_.present ())
+      {
+        this->sigma_.set (sigma_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // epsilon
+    //
+    if (n.name () == "epsilon" && n.namespace_ ().empty ())
+    {
+      if (!epsilon_.present ())
+      {
+        this->epsilon_.set (epsilon_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // gravitationalAcceleration
+    //
+    if (n.name () == "gravitationalAcceleration" && n.namespace_ ().empty ())
+    {
+      if (!gravitationalAcceleration_.present ())
+      {
+        this->gravitationalAcceleration_.set (gravitationalAcceleration_traits::create (i, f, this));
+        continue;
+      }
+    }
+
     // type
     //
     if (n.name () == "type" && n.namespace_ ().empty ())
@@ -2180,6 +2285,27 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       "");
   }
 
+  if (!sigma_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "sigma",
+      "");
+  }
+
+  if (!epsilon_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "epsilon",
+      "");
+  }
+
+  if (!gravitationalAcceleration_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "gravitationalAcceleration",
+      "");
+  }
+
   if (!type_.present ())
   {
     throw ::xsd::cxx::tree::expected_element< char > (
@@ -2206,6 +2332,9 @@ operator= (const sphereType& x)
     this->mass_ = x.mass_;
     this->spacing_ = x.spacing_;
     this->radius_ = x.radius_;
+    this->sigma_ = x.sigma_;
+    this->epsilon_ = x.epsilon_;
+    this->gravitationalAcceleration_ = x.gravitationalAcceleration_;
     this->type_ = x.type_;
   }
 
