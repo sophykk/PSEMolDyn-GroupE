@@ -17,14 +17,12 @@ void LennardJonesForce::setEps(const double nEps) {
 }
 
 std::array<double, 3> LennardJonesForce::calculateForce(Particle &p1, Particle &p2) {
-    if (p1.getSigma() != p2.getSigma()) {
+    if(p1.getType() != p2.getType()){
         setSigma((p1.getSigma() + p2.getSigma()) / 2);
-    } else {
-        setSigma(p1.getSigma());
-    }
-    if (p1.getEps() != p2.getEps()) {
         setEps(std::sqrt(p1.getEps() + p2.getEps()));
-    } else {
+    }
+    else{
+        setSigma(p1.getSigma());
         setEps(p1.getEps());
     }
     auto force = (-24 * eps / pow(Formulas::secondNorm(p1.getX() - p2.getX()), 2.0)) *

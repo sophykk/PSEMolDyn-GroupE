@@ -38,7 +38,7 @@ void SphereParticleGenerator::generateParticles(ParticleContainerBase& particleC
             // Check if the particle is inside the circular boundary
             if (std::hypot(x1 - x[0], y1 - x[1]) <= r) {
                 Particle particle({x1, y1, x[2]}, v, m, gGrav, sigma, epsilon, type);
-                Formulas::calculateBM(particle);
+                Formulas::addMB(particle);
                 particleContainer.addParticle(particle);
             }
         }

@@ -20,7 +20,7 @@ namespace Formulas {
     }
 
 
-    void calculateBM(Particle &p) {
+    void addMB(Particle &p) {
         auto bm = maxwellBoltzmannDistributedVelocity(0.1, 2);
         p.setV(p.getV() + bm);
     }

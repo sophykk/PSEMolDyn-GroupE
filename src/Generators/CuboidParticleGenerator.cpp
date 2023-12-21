@@ -28,7 +28,7 @@ void CuboidParticleGenerator::generateParticles(ParticleContainerBase& particleC
         for (int j = 0; j < N[1]; ++j) {
             for (int k = 0; k < N[2]; ++k) {
                 Particle particle({x[0] + i * h, x[1] + j * h, x[2] + k * h}, v, m, gGrav, sigma, epsilon, type);
-                Formulas::calculateBM(particle);
+                Formulas::addMB(particle);
                 particleContainer.addParticle(particle);
             }
         }
