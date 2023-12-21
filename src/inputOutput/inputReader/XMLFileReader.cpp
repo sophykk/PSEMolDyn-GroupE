@@ -9,6 +9,7 @@ XMLFileReader::XMLFileReader() = default;
 
 XMLFileReader::~XMLFileReader() = default;
 
+/** Function that reads the general parameters used for the simulation out of an xml file */
 void XMLFileReader::readSimulationParams(const char *filename, double &endTime, double &deltaT, std::string &modelType, std::string &containerType, std::string &objectType, int &plotInterval, bool &checkpointing){
 
     std::unique_ptr<simulation> parameters = simulation_(filename);
@@ -22,6 +23,7 @@ void XMLFileReader::readSimulationParams(const char *filename, double &endTime, 
     checkpointing = parameters->simulationParams().checkpointing();
 }
 
+/** Function that reads the parameters for the linkedCellContainer out of an xml file */
 void XMLFileReader::readLinkedCellParams(const char *filename, std::vector<double> &x, double &cutOffR, std::array<char, 4> &boundaryC, double &gGrav) {
 
     std::unique_ptr<simulation> parameters = simulation_(filename);
@@ -32,6 +34,7 @@ void XMLFileReader::readLinkedCellParams(const char *filename, std::vector<doubl
     gGrav = parameters->linkedCellParams()->gravitationalAcceleration();
 }
 
+/** Function that reads the parameters for the thermostat initialization used for the simulation out of an xml file */
 void XMLFileReader::readThermostatParams(const char *filename, double &initT, int &thermostatInterval){
 
     std::unique_ptr<simulation> parameters = simulation_(filename);
@@ -40,6 +43,7 @@ void XMLFileReader::readThermostatParams(const char *filename, double &initT, in
     thermostatInterval = parameters->thermostat()->thermostatInterval();
 }
 
+/** Function that reads the parameters for the cuboid generators out of an xml file and initializes the generators */
 std::vector<CuboidParticleGenerator> XMLFileReader::readCuboids(const char *filename) {
 
 
@@ -76,6 +80,7 @@ std::vector<CuboidParticleGenerator> XMLFileReader::readCuboids(const char *file
     return generators;
 }
 
+/** Function that reads the parameters for the sphere generators out of an xml file and initializes the generators */
 std::vector<SphereParticleGenerator> XMLFileReader::readSpheres(const char *filename) {
 
     std::vector<SphereParticleGenerator> generators;

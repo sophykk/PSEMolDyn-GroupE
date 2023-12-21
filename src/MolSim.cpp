@@ -115,7 +115,7 @@ int main(int argc, char *argsv[]) {
     particleContainer->calculateF();
 
     int iteration = 0;
-    double current_time = 15;
+    double current_time = 0;
 
     //Main simulation loop
     while (current_time < end_time) {
