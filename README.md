@@ -10,7 +10,7 @@ Members:
 * Link:     https://github.com/sophykk/PSEMolDyn-GroupE.git
 * Branch:   master
 * Compiler: g++ 11.4.0
-* Commit ID: last commit on the master branch
+* Commit ID: 66e67ca
 * Build and execute instructions:
  ```
  mkdir build
