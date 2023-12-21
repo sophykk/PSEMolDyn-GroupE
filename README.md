@@ -46,18 +46,14 @@ ctest
 
 ## Task 2 ##
 
-- implemented a new particle container, which realizes the linked cell algo
-- LinkedCellContainer contains a grid with cells made out of a special vector structure
-- particleList is checked and based on the position the particles is assigned a cell
-- generated different sizes of cuboids and calculated the runtime per iteration using the LinkedCellContainer and the BasicParticleContainer
-- measured the time for 1000, 2000, 4000 and 8000 particles comparing performance for Basic and Linked-Cell Containers:
-
-<img src="Basic.png" alt="Time measurements for Basic Container" title="Basic" width="200"/> <img src="Linked Cell.png" alt="Time measurements for Linked Cell Container" title="Linked Cell" width="200"/>
-
-### Visualization Plot for the Time Measurements: ###
-<img src="./measurements_pic.png" alt="Corresponding Graph" title="Comparison graph" style="width: 70%;">
-
-
+- changed boundaryCon to array so walls can have different boundary conditions
+- modified calculateF so it applies different boundary conditions
+- when adding the force, the y value of the force is also modified by the additional gravitational force multiplied with the mass of the particle
+- initGrid also checks whether particles are out of bounds to insert them to the other side
+- added new function "applyPeriodic" for periodic boundary, this creates halo particles at the opposite boundaries and adds a force to particles near them
+- particles also have 2 new variables - sigma and epsilon
+- in LJForce the type is then compared to determine the sigma and epsilon of the system
+- all the new values were also modified accordingly in the XMLReder
   
 ## Task 3 ##
 
