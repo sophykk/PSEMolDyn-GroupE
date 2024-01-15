@@ -50,6 +50,15 @@ private:
 
     double epsilon;
 
+    /** Stiffness constant */
+    double k;
+
+    /** Avg bond length */
+    double r0;
+
+    /** if this particle is a membrane molecule */
+    bool membrane;
+
 public:
     explicit Particle(int type = 0);
 
