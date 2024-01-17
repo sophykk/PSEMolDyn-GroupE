@@ -244,6 +244,18 @@ void LinkedCellContainer::calculateF() {
     particleList = nParticleList;
 }
 
+void LinkedCellContainer::harmonicPotential(Particle &p1, Particle &p2, double k, double r0) {
+    std::array<double,3> force = {0.0, 0.0, 0.0};
+    double L2_dist = Formulas::secondNorm(p2.getX() - p1.getX());
+    auto diff = p2.getX() - p1.getX();
+    //todo: direct/diagonal neighbors
+    //todo: initialize with gridIndex in generator
+    //todo: LJ force truncate in calculateF - how?
+    force = k * (L2_dist - r0)  / L2_dist * diff;
+    p1.addF(force);
+    p2.addF((-1) * force);
+}
+
 /**
  * @brief if cutOffRadius is not cellSize, check distance then
  * @code

@@ -59,6 +59,9 @@ private:
     /** if this particle is a membrane molecule */
     bool membrane;
 
+    /** {x,y,z} in the grid -> initialized in generator */
+    std::array<int, 3> gridIndex{};
+
 public:
     explicit Particle(int type = 0);
 
@@ -94,6 +97,8 @@ public:
 
     double getEps() const;
 
+    const std::array<int, 3> &getGridIndex() const;
+
     bool operator==(const Particle &other) const;
 
     std::string toString() const;
@@ -103,6 +108,8 @@ public:
     void setV(const std::array<double, 3> &v_new);
 
     void setMembrane(bool isMembrane);
+
+    void setGridIndex(std::array<int, 3> &ind);
 
     void addF(const std::array<double, 3> &f_new);
 

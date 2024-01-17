@@ -77,6 +77,9 @@ double Particle::getSigma() const { return sigma; }
 
 double Particle::getEps() const { return epsilon; }
 
+const std::array<int, 3> &Particle::getGridIndex() const {
+    return gridIndex;
+}
 
 void Particle::setX(const std::array<double, 3> &x_new) {
     x = x_new;
@@ -88,6 +91,10 @@ void Particle::setV(const std::array<double, 3> &v_new) {
 
 void Particle::setMembrane(bool isMembrane) {
     membrane = isMembrane;
+}
+
+void Particle::setGridIndex(std::array<int, 3> &ind) {
+    gridIndex = ind;
 }
 
 void Particle::addF(const std::array<double, 3> &f_add) {

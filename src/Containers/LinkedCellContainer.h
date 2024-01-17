@@ -58,6 +58,8 @@ public:
 
     void calculateF();
 
+    void harmonicPotential(Particle &p1, Particle &p2, double k, double r0);
+
     //  bool withinCutoff(Particle &p1, Particle &p2) const;
 
     void calculateX(double delta_t);
