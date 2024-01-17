@@ -102,6 +102,8 @@ public:
 
     void setV(const std::array<double, 3> &v_new);
 
+    void setMembrane(bool isMembrane);
+
     void addF(const std::array<double, 3> &f_new);
 
     void resetF();
