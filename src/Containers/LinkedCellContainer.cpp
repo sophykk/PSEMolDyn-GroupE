@@ -249,8 +249,22 @@ void LinkedCellContainer::harmonicPotential(Particle &p1, Particle &p2, double k
     double L2_dist = Formulas::secondNorm(p2.getX() - p1.getX());
     auto diff = p2.getX() - p1.getX();
     //todo: direct/diagonal neighbors
-    //todo: initialize with gridIndex in generator
-    //todo: LJ force truncate in calculateF - how?
+    /** Example of grid index to check for neighbors in membrane
+     * (1,1) (2,1) (3,1)
+     * (1,2) (2,2) (3,2)
+     * (1,3) (2,3) (3,3)
+     * */
+    if (p1.getGridIndex()[0] - p2.getGridIndex()[0] == 1 && p1.getGridIndex()[1] - p2.getGridIndex()[1] == 1 ){
+        /** diagonal neighbors */
+    }
+    //todo: initialize with gridIndex in CuboidParticleGenerator::generateParticles
+    //todo: if membrane, LJ force truncate in calculateF - how?
+    //todo: initialize with gravity - how?
+    if( (p1.getGridIndex()[0] - p2.getGridIndex()[0] == 0 && p1.getGridIndex()[1] - p2.getGridIndex()[1] == 1) ||
+        (p1.getGridIndex()[0] - p2.getGridIndex()[0] == 1 && p1.getGridIndex()[1] - p2.getGridIndex()[1] == 0) ){
+        /** direct neighbors */
+        force = k * (L2_dist - r0)  / L2_dist * diff;
+    }
     force = k * (L2_dist - r0)  / L2_dist * diff;
     p1.addF(force);
     p2.addF((-1) * force);
