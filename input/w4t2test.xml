@@ -9,7 +9,12 @@
         <plotInterval>10</plotInterval>
         <objectType>cuboid</objectType>
         <checkpointing>false</checkpointing>
+        <useParallelization>true</useParallelization>
     </simulationParams>
+    
+    <parallelizationStrategyParam>
+        <parallelizationStrategy>abc</parallelizationStrategy>
+    </parallelizationStrategyParam>
     
     <linkedCellParams>
         <domainSize>

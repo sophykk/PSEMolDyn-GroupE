@@ -4,6 +4,7 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="simulationParams" type="simulationParamsType"/>
+                <xs:element name="parallelizationStrategyParam" type="parallelizationStrategyType" minOccurs="0"/>
                 <xs:element name="linkedCellParams" type="linkedCellParamsType" minOccurs="0"/>
                 <xs:element name="thermostat" type="thermostatType" minOccurs="0"/>
                 <xs:element name="cuboid" type="cuboidType" minOccurs="0" maxOccurs="unbounded"/>
@@ -21,6 +22,13 @@
             <xs:element name="plotInterval" type="xs:int"/>
             <xs:element name="objectType" type="xs:string"/>
             <xs:element name="checkpointing" type="xs:boolean"/>
+            <xs:element name="useParallelization" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="parallelizationStrategyType">
+        <xs:sequence>
+            <xs:element name="parallelizationStrategy" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>
 

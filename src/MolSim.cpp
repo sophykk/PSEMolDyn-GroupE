@@ -28,6 +28,8 @@ int main(int argc, char *argsv[]) {
     spdlog::level::level_enum log_level = spdlog::level::debug;
     bool calcRunTime = false;
     bool checkpointing;
+    bool useParallelization;
+    std::string parallelizationStrategy;
     outputWriter::TXTWriter checkpointingWriter;
     ParticlesFileReader checkpointingReader;
     std::string checkpointingFile = "checkpointing";
@@ -37,7 +39,12 @@ int main(int argc, char *argsv[]) {
     XMLFileReader xmlReader;
 
     // Read Simulation parameters from the file
-    xmlReader.readSimulationParams(argsv[1], end_time, delta_t, modelType, containerType, objectType, plotInterval, checkpointing);
+    xmlReader.readSimulationParams(argsv[1], end_time, delta_t, modelType, containerType, objectType, plotInterval, checkpointing, useParallelization);
+
+    // Read the parallelization strategy if the useParallelization Variable is set
+    if(useParallelization){
+        xmlReader.readParallelizationStrategy(argsv[1], parallelizationStrategy);
+    }
 
     spdlog::set_level(log_level);
 
@@ -111,7 +118,10 @@ int main(int argc, char *argsv[]) {
         thermostat.initializeWithBrownianMotion(*particleContainer);
     }
 
-    // Calculate initial forces
+    std::cout<<"usePara: "<<useParallelization;
+    std::cout<<"paraStrategy: "<<parallelizationStrategy;
+
+    /*// Calculate initial forces
     particleContainer->calculateF();
 
     int iteration = 0;
@@ -178,7 +188,7 @@ int main(int argc, char *argsv[]) {
         spdlog::info("Iteration {} finished.", iteration);
 
         current_time += delta_t;
-    }
+    }*/
 
     spdlog::info("output written. Terminating...");
 

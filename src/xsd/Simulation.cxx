@@ -187,6 +187,52 @@ checkpointing (const checkpointing_type& x)
   this->checkpointing_.set (x);
 }
 
+const simulationParamsType::useParallelization_type& simulationParamsType::
+useParallelization () const
+{
+  return this->useParallelization_.get ();
+}
+
+simulationParamsType::useParallelization_type& simulationParamsType::
+useParallelization ()
+{
+  return this->useParallelization_.get ();
+}
+
+void simulationParamsType::
+useParallelization (const useParallelization_type& x)
+{
+  this->useParallelization_.set (x);
+}
+
+
+// parallelizationStrategyType
+// 
+
+const parallelizationStrategyType::parallelizationStrategy_type& parallelizationStrategyType::
+parallelizationStrategy () const
+{
+  return this->parallelizationStrategy_.get ();
+}
+
+parallelizationStrategyType::parallelizationStrategy_type& parallelizationStrategyType::
+parallelizationStrategy ()
+{
+  return this->parallelizationStrategy_.get ();
+}
+
+void parallelizationStrategyType::
+parallelizationStrategy (const parallelizationStrategy_type& x)
+{
+  this->parallelizationStrategy_.set (x);
+}
+
+void parallelizationStrategyType::
+parallelizationStrategy (::std::auto_ptr< parallelizationStrategy_type > x)
+{
+  this->parallelizationStrategy_.set (x);
+}
+
 
 // linkedCellParamsType
 // 
@@ -1085,6 +1131,36 @@ simulationParams (::std::auto_ptr< simulationParams_type > x)
   this->simulationParams_.set (x);
 }
 
+const simulation::parallelizationStrategyParam_optional& simulation::
+parallelizationStrategyParam () const
+{
+  return this->parallelizationStrategyParam_;
+}
+
+simulation::parallelizationStrategyParam_optional& simulation::
+parallelizationStrategyParam ()
+{
+  return this->parallelizationStrategyParam_;
+}
+
+void simulation::
+parallelizationStrategyParam (const parallelizationStrategyParam_type& x)
+{
+  this->parallelizationStrategyParam_.set (x);
+}
+
+void simulation::
+parallelizationStrategyParam (const parallelizationStrategyParam_optional& x)
+{
+  this->parallelizationStrategyParam_ = x;
+}
+
+void simulation::
+parallelizationStrategyParam (::std::auto_ptr< parallelizationStrategyParam_type > x)
+{
+  this->parallelizationStrategyParam_.set (x);
+}
+
 const simulation::linkedCellParams_optional& simulation::
 linkedCellParams () const
 {
@@ -1194,7 +1270,8 @@ simulationParamsType (const endTime_type& endTime,
                       const containerType_type& containerType,
                       const plotInterval_type& plotInterval,
                       const objectType_type& objectType,
-                      const checkpointing_type& checkpointing)
+                      const checkpointing_type& checkpointing,
+                      const useParallelization_type& useParallelization)
 : ::xml_schema::type (),
   endTime_ (endTime, this),
   deltaT_ (deltaT, this),
@@ -1202,7 +1279,8 @@ simulationParamsType (const endTime_type& endTime,
   containerType_ (containerType, this),
   plotInterval_ (plotInterval, this),
   objectType_ (objectType, this),
-  checkpointing_ (checkpointing, this)
+  checkpointing_ (checkpointing, this),
+  useParallelization_ (useParallelization, this)
 {
 }
 
@@ -1217,7 +1295,8 @@ simulationParamsType (const simulationParamsType& x,
   containerType_ (x.containerType_, f, this),
   plotInterval_ (x.plotInterval_, f, this),
   objectType_ (x.objectType_, f, this),
-  checkpointing_ (x.checkpointing_, f, this)
+  checkpointing_ (x.checkpointing_, f, this),
+  useParallelization_ (x.useParallelization_, f, this)
 {
 }
 
@@ -1232,7 +1311,8 @@ simulationParamsType (const ::xercesc::DOMElement& e,
   containerType_ (this),
   plotInterval_ (this),
   objectType_ (this),
-  checkpointing_ (this)
+  checkpointing_ (this),
+  useParallelization_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -1337,6 +1417,17 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
+    // useParallelization
+    //
+    if (n.name () == "useParallelization" && n.namespace_ ().empty ())
+    {
+      if (!useParallelization_.present ())
+      {
+        this->useParallelization_.set (useParallelization_traits::create (i, f, this));
+        continue;
+      }
+    }
+
     break;
   }
 
@@ -1388,6 +1479,13 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       "checkpointing",
       "");
   }
+
+  if (!useParallelization_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "useParallelization",
+      "");
+  }
 }
 
 simulationParamsType* simulationParamsType::
@@ -1410,6 +1508,7 @@ operator= (const simulationParamsType& x)
     this->plotInterval_ = x.plotInterval_;
     this->objectType_ = x.objectType_;
     this->checkpointing_ = x.checkpointing_;
+    this->useParallelization_ = x.useParallelization_;
   }
 
   return *this;
@@ -1417,6 +1516,98 @@ operator= (const simulationParamsType& x)
 
 simulationParamsType::
 ~simulationParamsType ()
+{
+}
+
+// parallelizationStrategyType
+//
+
+parallelizationStrategyType::
+parallelizationStrategyType (const parallelizationStrategy_type& parallelizationStrategy)
+: ::xml_schema::type (),
+  parallelizationStrategy_ (parallelizationStrategy, this)
+{
+}
+
+parallelizationStrategyType::
+parallelizationStrategyType (const parallelizationStrategyType& x,
+                             ::xml_schema::flags f,
+                             ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  parallelizationStrategy_ (x.parallelizationStrategy_, f, this)
+{
+}
+
+parallelizationStrategyType::
+parallelizationStrategyType (const ::xercesc::DOMElement& e,
+                             ::xml_schema::flags f,
+                             ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  parallelizationStrategy_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
+}
+
+void parallelizationStrategyType::
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
+
+    // parallelizationStrategy
+    //
+    if (n.name () == "parallelizationStrategy" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< parallelizationStrategy_type > r (
+        parallelizationStrategy_traits::create (i, f, this));
+
+      if (!parallelizationStrategy_.present ())
+      {
+        this->parallelizationStrategy_.set (r);
+        continue;
+      }
+    }
+
+    break;
+  }
+
+  if (!parallelizationStrategy_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "parallelizationStrategy",
+      "");
+  }
+}
+
+parallelizationStrategyType* parallelizationStrategyType::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class parallelizationStrategyType (*this, f, c);
+}
+
+parallelizationStrategyType& parallelizationStrategyType::
+operator= (const parallelizationStrategyType& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->parallelizationStrategy_ = x.parallelizationStrategy_;
+  }
+
+  return *this;
+}
+
+parallelizationStrategyType::
+~parallelizationStrategyType ()
 {
 }
 
@@ -3063,6 +3254,7 @@ simulation::
 simulation (const simulationParams_type& simulationParams)
 : ::xml_schema::type (),
   simulationParams_ (simulationParams, this),
+  parallelizationStrategyParam_ (this),
   linkedCellParams_ (this),
   thermostat_ (this),
   cuboid_ (this),
@@ -3074,6 +3266,7 @@ simulation::
 simulation (::std::auto_ptr< simulationParams_type > simulationParams)
 : ::xml_schema::type (),
   simulationParams_ (simulationParams, this),
+  parallelizationStrategyParam_ (this),
   linkedCellParams_ (this),
   thermostat_ (this),
   cuboid_ (this),
@@ -3087,6 +3280,7 @@ simulation (const simulation& x,
             ::xml_schema::container* c)
 : ::xml_schema::type (x, f, c),
   simulationParams_ (x.simulationParams_, f, this),
+  parallelizationStrategyParam_ (x.parallelizationStrategyParam_, f, this),
   linkedCellParams_ (x.linkedCellParams_, f, this),
   thermostat_ (x.thermostat_, f, this),
   cuboid_ (x.cuboid_, f, this),
@@ -3100,6 +3294,7 @@ simulation (const ::xercesc::DOMElement& e,
             ::xml_schema::container* c)
 : ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
   simulationParams_ (this),
+  parallelizationStrategyParam_ (this),
   linkedCellParams_ (this),
   thermostat_ (this),
   cuboid_ (this),
@@ -3132,6 +3327,20 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       if (!simulationParams_.present ())
       {
         this->simulationParams_.set (r);
+        continue;
+      }
+    }
+
+    // parallelizationStrategyParam
+    //
+    if (n.name () == "parallelizationStrategyParam" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< parallelizationStrategyParam_type > r (
+        parallelizationStrategyParam_traits::create (i, f, this));
+
+      if (!this->parallelizationStrategyParam_)
+      {
+        this->parallelizationStrategyParam_.set (r);
         continue;
       }
     }
@@ -3211,6 +3420,7 @@ operator= (const simulation& x)
   {
     static_cast< ::xml_schema::type& > (*this) = x;
     this->simulationParams_ = x.simulationParams_;
+    this->parallelizationStrategyParam_ = x.parallelizationStrategyParam_;
     this->linkedCellParams_ = x.linkedCellParams_;
     this->thermostat_ = x.thermostat_;
     this->cuboid_ = x.cuboid_;

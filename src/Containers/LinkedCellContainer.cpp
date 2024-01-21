@@ -11,6 +11,7 @@
 #include <limits>
 #include <cstdlib>
 #include <spdlog/spdlog.h>
+#include <omp.h>
 
 
 LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<double> &dSize, double &cRadius,
@@ -96,6 +97,9 @@ std::size_t LinkedCellContainer::size() const {
  */
 void LinkedCellContainer::initGrid() {
 
+    #ifdef _OPENMP
+    #pragma omp parallel for
+    #endif
     for (auto &p: particleList) {
         if (boundaryCon[0] == 'p' && p.getX()[0] < 0.0) {
             p.setX({p.getX()[0] + domainSize[0], p.getX()[1], p.getX()[2]});

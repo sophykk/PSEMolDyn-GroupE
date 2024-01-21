@@ -10,7 +10,8 @@ XMLFileReader::XMLFileReader() = default;
 XMLFileReader::~XMLFileReader() = default;
 
 /** Function that reads the general parameters used for the simulation out of an xml file */
-void XMLFileReader::readSimulationParams(const char *filename, double &endTime, double &deltaT, std::string &modelType, std::string &containerType, std::string &objectType, int &plotInterval, bool &checkpointing){
+void XMLFileReader::readSimulationParams(const char *filename, double &endTime, double &deltaT, std::string &modelType, std::string &containerType, std::string &objectType,
+                                         int &plotInterval, bool &checkpointing, bool &useParallelization){
 
     std::unique_ptr<simulation> parameters = simulation_(filename);
 
@@ -21,6 +22,14 @@ void XMLFileReader::readSimulationParams(const char *filename, double &endTime, 
     objectType = parameters->simulationParams().objectType();
     plotInterval = parameters->simulationParams().plotInterval();
     checkpointing = parameters->simulationParams().checkpointing();
+    useParallelization = parameters->simulationParams().useParallelization();
+}
+
+void XMLFileReader::readParallelizationStrategy(const char *filename, std::string &parallelizationStrategy) {
+
+    std::unique_ptr<simulation> parameters = simulation_(filename);
+
+    parallelizationStrategy = parameters->parallelizationStrategyParam()->parallelizationStrategy();
 }
 
 /** Function that reads the parameters for the linkedCellContainer out of an xml file */
