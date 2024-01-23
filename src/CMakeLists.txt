@@ -10,6 +10,11 @@ file(GLOB_RECURSE MY_SRC
 # Make a MolSim library so we don't need to recompile everything when testing
 add_library(MolSimLib ${MY_SRC})
 
+find_package(OpenMP)
+if(OpenMP_CXX_FOUND)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+endif()
+
 target_include_directories(MolSimLib
         PUBLIC
         ${XercesC_INCLUDE_DIRS}
@@ -23,6 +28,7 @@ target_link_libraries(MolSimLib
         PUBLIC
         ${XercesC_LIBRARY}
         spdlog::spdlog
+        OpenMP::OpenMP_CXX
 )
 
 # create make target
@@ -40,6 +46,13 @@ target_link_libraries(MolSim
         PUBLIC
         MolSimLib
 )
+
+
+# enable OpenMP if available
+find_package(OpenMP)
+if(OpenMP_CXX_FOUND)
+    target_link_libraries(MolSim PUBLIC OpenMP::OpenMP_CXX)
+endif()
 
 # activate all compiler warnings. Clean up your code :P
 # depending on the compiler different flags are used

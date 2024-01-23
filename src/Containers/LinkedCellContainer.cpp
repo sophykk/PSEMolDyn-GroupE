@@ -96,10 +96,7 @@ std::size_t LinkedCellContainer::size() const {
  * then first cell from 0-10, next 11-20,
  */
 void LinkedCellContainer::initGrid() {
-
-    #ifdef _OPENMP
     #pragma omp parallel for
-    #endif
     for (auto &p: particleList) {
         if (boundaryCon[0] == 'p' && p.getX()[0] < 0.0) {
             p.setX({p.getX()[0] + domainSize[0], p.getX()[1], p.getX()[2]});
@@ -132,9 +129,11 @@ void LinkedCellContainer::initGrid() {
         //x,y0 --> 0,0 --> 1,0 --> 2,0 --> 3,0
         for (int x = 0; x < std::ceil(domainSize[0] / cutoffRadius); ++x) {
             grid[x][y].clear();
+            #pragma omp parallel for
             for (auto &p1: getParticles()) {
                 if (p1.getX()[0] <= upperX && p1.getX()[0] >= lowerX &&
                     p1.getX()[1] <= upperY && p1.getX()[1] >= lowerY) {
+                    #pragma omp critical
                     grid[x][y].push_back(p1);
                 }
             }
@@ -174,12 +173,16 @@ void LinkedCellContainer::calculateF() {
     std::vector<Particle> nParticleList;
     initGrid();
     //down to up
+    //#pragma omp parallel for
     for (int y = 0; y < getGrid()[0].size(); ++y) {
         //left to right
+       // #pragma omp parallel for
         for (int x = 0; x < getGrid().size(); ++x) {
             for (auto p1 = grid[x][y].begin(); p1 < grid[x][y].end(); p1++) {
+               // #pragma omp parallel for
                 for (auto p2 = p1 + 1; p2 < grid[x][y].end(); p2++) {
                     auto force = forceModel.calculateForce(*p1, *p2);
+                   // #pragma omp critical
                     p1->addF({force[0], force[1] + (p1->getM() * gGrav), force[2]});
                     p2->addF({-1.0 * force[0], -1.0 * (force[1] + (p2->getM() * gGrav)), -1.0 * force[2]});
                     //spdlog::info("this is pF[2] in calcF {}", p1->getF()[2]);

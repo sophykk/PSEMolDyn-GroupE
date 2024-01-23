@@ -10,6 +10,7 @@
 #include <spdlog/spdlog.h>
 #include <iostream>
 #include <chrono>
+#include <omp.h>
 
 #include "Thermostat.h"
 
@@ -118,10 +119,17 @@ int main(int argc, char *argsv[]) {
         thermostat.initializeWithBrownianMotion(*particleContainer);
     }
 
-    std::cout<<"usePara: "<<useParallelization;
-    std::cout<<"paraStrategy: "<<parallelizationStrategy;
+    // Enable OpenMP parallelization
+    #pragma omp parallel
+        {
+            // This block will be executed in parallel
+    #pragma omp critical
+            {
+                std::cout << "Hello from thread " << omp_get_thread_num() << std::endl;
+            }
+        }
 
-    /*// Calculate initial forces
+    // Calculate initial forces
     particleContainer->calculateF();
 
     int iteration = 0;
@@ -188,7 +196,7 @@ int main(int argc, char *argsv[]) {
         spdlog::info("Iteration {} finished.", iteration);
 
         current_time += delta_t;
-    }*/
+    }
 
     spdlog::info("output written. Terminating...");
 
