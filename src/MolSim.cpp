@@ -101,7 +101,8 @@ int main(int argc, char *argsv[]) {
     xmlReader.readThermostatParams(argsv[1], initialTemperature, thermostatInterval);
 
     double targetTemperature = initialTemperature;
-    double maxTempChange = std::numeric_limits<double>::infinity();
+    //todo: maxTempChange should read deltaT parameter from XML-file
+    double maxTempChange = 0.01;
     bool useBrownianMotion = true;
 
     Thermostat thermostat(initialTemperature, targetTemperature, maxTempChange, thermostatInterval, useBrownianMotion);

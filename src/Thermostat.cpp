@@ -90,6 +90,7 @@ void Thermostat::scaleVelocities(ParticleContainerBase &particleContainer, doubl
         //for (size_t i = 0; i < currentVelocity.size(); ++i) {
         scaledVelocity[0] = currentVelocity[0] * scalingFactor;
         scaledVelocity[1] = currentVelocity[1] * scalingFactor;
+        scaledVelocity[2] = currentVelocity[2] * scalingFactor;
         //}
 
         particle.setV(scaledVelocity);
