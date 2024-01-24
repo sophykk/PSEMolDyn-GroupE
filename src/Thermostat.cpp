@@ -17,13 +17,23 @@ void Thermostat::applyThermostat(ParticleContainerBase &particleContainer, int c
 
     /** Systems that have no initial velocities need to be initialized
      * with Brownian Motion to have a non-zero temperature. */
-
-
     double Tcurrent = calculateCurrentTemperature(particleContainer);
-    double scalingFactor = std::sqrt(Ttarget / Tcurrent);
+
+    /** Skip if temperature is already at target */
+    if (std::abs(Tcurrent - Ttarget) < std::numeric_limits<double>::epsilon()) return;
+
+    /** Application for cooling and heating */
+    double newTemp;
+    if (Tcurrent > Ttarget) {
+        newTemp = std::max(Ttarget, Tcurrent - deltaT);
+    } else {
+        newTemp = std::min(Ttarget, Tcurrent + deltaT);
+    }
+
+    double scalingFactor = std::sqrt(newTemp / Tcurrent);
     // Ensuring the temperature change does not exceed deltaT
     //todo delta?
-    scalingFactor = std::min(scalingFactor, std::sqrt((Tcurrent + deltaT) / Tcurrent));
+
     scaleVelocities(particleContainer, scalingFactor);
     //std::cout << "Tcurrent: " << Tcurrent << std::endl;
 
