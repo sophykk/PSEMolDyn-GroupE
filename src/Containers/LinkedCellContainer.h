@@ -73,7 +73,7 @@ public:
 
     void applyPeriodic(Particle &p, int x, int y, int z);
 
-    std::array<double, 3> applyNeighbouringForce(Particle &p1, Particle &p2);
+    std::array<double, 3> applyNeighbouringForce(Particle &p1, Particle &p2, std::string type);
 };
 
 #endif //PSEMOLDYN_GROUPE_LINKEDCELLCONTAINER_H

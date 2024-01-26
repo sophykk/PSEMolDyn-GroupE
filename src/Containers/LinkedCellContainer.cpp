@@ -229,29 +229,55 @@ void LinkedCellContainer::calculateF() {
             for (int x = 0; x < getGrid().size(); ++x) {
                 for (auto p1 = grid[x][y][z].begin(); p1 < grid[x][y][z].end(); p1++) {
                     for (auto p2 = p1 + 1; p2 < grid[x][y][z].end(); p2++) {
-                        std::array<double, 3> force{};
-                        //if (p1->isMembrane() && p2->isMembrane()) {
-                        //    force = applyNeighbouringForce(*p1, *p2);
-                        //} else {
-                        force = forceModel.calculateForce(*p1, *p2);
-                        //}
-                      //  spdlog::info("in calcF this is calculated force {}, {}, {}", force[0], force[1], force[2]);
+                        double sigma;
+                        if (p1->getType() != p2->getType()) {
+                            sigma = ((p1->getSigma() + p2->getSigma()) / 2);
+                        } else {
+                            sigma = p1->getSigma();
+                        }
+                        auto dis = std::pow(2, (1 / 6)) * sigma;
+                        std::array<double, 3> force{0.0, 0.0, 0.0};
+                        if (p1->isMembrane() && p2->isMembrane()) {
+                            if ((abs(p1->getX()[0] - p2->getX()[0]) && p1->getX()[1] == p2->getX()[1] &&
+                                 p1->getX()[2] == p2->getX()[2])
+                                || (abs(p1->getX()[1] - p2->getX()[1]) && p1->getX()[0] == p2->getX()[0] &&
+                                    p1->getX()[2] == p2->getX()[2])
+                                || (abs(p1->getX()[2] - p2->getX()[2]) && p1->getX()[1] == p2->getX()[1] &&
+                                    p1->getX()[0] == p2->getX()[0])) {
+                                force = applyNeighbouringForce(*p1, *p2, "direct");
+                            } else if ((abs(p1->getX()[0] - p2->getX()[0]) && abs(p1->getX()[1] - p2->getX()[1]))
+                                       || (abs(p1->getX()[0] - p2->getX()[0]) && abs(p1->getX()[2] - p2->getX()[2]))
+                                       || (abs(p1->getX()[1] - p2->getX()[1]) && abs(p1->getX()[2] - p2->getX()[2]))) {
+                                force = applyNeighbouringForce(*p1, *p2, "diagonal");
+                            } else if (abs(p1->getX()[0] - p2->getX()[0]) < dis &&
+                                       abs(p1->getX()[1] - p2->getX()[1]) < dis &&
+                                       abs(p1->getX()[2] - p2->getX()[2]) < dis) {
+                                force = forceModel.calculateForce(*p1, *p2);
+                            }
+                        }
+                        spdlog::info("this is calcX ps position {}, {}, {}", p1->getX()[0], p1->getX()[1],
+                                     p1->getX()[2]);
+                        spdlog::info("this is calcX ps velocity{}, {}, {}", p1->getV()[0], p1->getV()[1],
+                                     p1->getV()[2]);
+                        spdlog::info("in calcF this is force of p1 before {}, {}, {}", p1->getF()[0], p1->getF()[1],
+                                     p1->getF()[2]);
+                        spdlog::info("in calcF this is calculated force {}, {}, {}", force[0], force[1], force[2]);
                         p1->addF({force[0], force[1] + (p1->getM() * gGrav), force[2]});
                         p2->addF({-1.0 * force[0], -1.0 * (force[1] + (p2->getM() * gGrav)), -1.0 * force[2]});
-                       // spdlog::info("in calcF this is force of p1 {}, {}, {}", p1->getF()[0], p1->getF()[1],
-                                //     p1->getF()[2]);
+                        spdlog::info("in calcF this is force of p1 after {}, {}, {}", p1->getF()[0], p1->getF()[1],
+                                     p1->getF()[2]);
                     }
                     // check done
                     if (checkBoundary('r')) {
                         applyReflecting(*p1);
-                      //  spdlog::info("in calcF reflect this is force of p1 {}, {}, {}", p1->getF()[0], p1->getF()[1],
-                        //             p1->getF()[2]);
+                        spdlog::info("in calcF reflect this is force of p1 {}, {}, {}", p1->getF()[0], p1->getF()[1],
+                                     p1->getF()[2]);
                     }
                     // check done
                     if (checkBoundary('p')) {
                         applyPeriodic(*p1, x, y, z);
-                     //   spdlog::info("in calcF periodic this is force of p1 {}, {}, {}", p1->getF()[0], p1->getF()[1],
-                       //              p1->getF()[2]);
+                        spdlog::info("in calcF periodic this is force of p1 {}, {}, {}", p1->getF()[0], p1->getF()[1],
+                                     p1->getF()[2]);
                     }
                 }
                 //if above neighbour exists (y+1)
@@ -410,7 +436,10 @@ void LinkedCellContainer::calculateX(double delta_t) {
             xi_tn1[2] = p.getX()[2] - domainSize[2];
         }
         p.setX(xi_tn1);  // Update the position
-       // spdlog::info("in calcV this is position of p1 {}, {}, {}", p.getX()[0], p.getX()[1], p.getX()[2]);
+        spdlog::info("this is calcX ps position {}, {}, {}", p.getX()[0], p.getX()[1], p.getX()[2]);
+        spdlog::info("this is calcX ps force {}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
+        spdlog::info("this is calcX ps velocity{}, {}, {}", p.getV()[0], p.getV()[1], p.getV()[2]);
+
     }
     //initGrid();
 }
@@ -427,7 +456,10 @@ void LinkedCellContainer::calculateV(double delta_t) {
         auto vi_tn1 = Formulas::verletVStep(p.getV(), p.getOldF(), p.getF(), p.getM(), delta_t);
         //vi_tn1[2] = 0.0;
         p.setV(vi_tn1);
-       // spdlog::info("in calcV this is velocity of p1 {}, {}, {}", p.getV()[0], p.getV()[1], p.getV()[2]);
+        spdlog::info("this is calcX ps position {}, {}, {}", p.getX()[0], p.getX()[1], p.getX()[2]);
+        spdlog::info("this is calcX ps force {}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
+        spdlog::info("this is calcX ps velocity{}, {}, {}", p.getV()[0], p.getV()[1], p.getV()[2]);
+        // spdlog::info("in calcV this is velocity of p1 {}, {}, {}", p.getV()[0], p.getV()[1], p.getV()[2]);
     }
 }
 
@@ -490,6 +522,7 @@ bool LinkedCellContainer::checkDistance(Particle &p, std::string border) {
  */
 //check done
 void LinkedCellContainer::applyReflecting(Particle &p) {
+    auto dis = std::pow(2, (1 / 6)) * p.getSigma();
 
     Particle halo(p);
     //near left border
@@ -498,7 +531,8 @@ void LinkedCellContainer::applyReflecting(Particle &p) {
             spdlog::info("this is appReflect, left");
             halo.setX({(-1) * p.getX()[0], p.getX()[1], p.getX()[2]});
             spdlog::info("this is appReflect left ps pos {}, {}, {}", p.getX()[0], p.getX()[1], p.getX()[2]);
-            spdlog::info("this is appReflect left halos pos {}, {}, {}", halo.getX()[0], halo.getX()[1], halo.getX()[2]);
+            spdlog::info("this is appReflect left halos pos {}, {}, {}", halo.getX()[0], halo.getX()[1],
+                         halo.getX()[2]);
             spdlog::info("this is appReflect left ps force before {}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
             auto force = forceModel.calculateForce(p, halo);
             spdlog::info("this is appReflect left force {}, {}, {}", force[0], force[1], force[2]);
@@ -512,7 +546,8 @@ void LinkedCellContainer::applyReflecting(Particle &p) {
             spdlog::info("this is appReflect, upper");
             halo.setX({p.getX()[0], domainSize[1] + (domainSize[1] - p.getX()[1]), p.getX()[2]});
             spdlog::info("this is appReflect upper ps pos {}, {}, {}", p.getX()[0], p.getX()[1], p.getX()[2]);
-            spdlog::info("this is appReflect upper halos pos {}, {}, {}", halo.getX()[0], halo.getX()[1], halo.getX()[2]);
+            spdlog::info("this is appReflect upper halos pos {}, {}, {}", halo.getX()[0], halo.getX()[1],
+                         halo.getX()[2]);
             spdlog::info("this is appReflect upper ps force before {}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
             auto force = forceModel.calculateForce(p, halo);
             spdlog::info("this is appReflect upper force {}, {}, {}", force[0], force[1], force[2]);
@@ -527,7 +562,8 @@ void LinkedCellContainer::applyReflecting(Particle &p) {
             spdlog::info("this is appReflect, right");
             halo.setX({domainSize[0] + (domainSize[0] - p.getX()[0]), p.getX()[1], p.getX()[2]});
             spdlog::info("this is appReflect right ps pos {}, {}, {}", p.getX()[0], p.getX()[1], p.getX()[2]);
-            spdlog::info("this is appReflect right halos pos {}, {}, {}", halo.getX()[0], halo.getX()[1], halo.getX()[2]);
+            spdlog::info("this is appReflect right halos pos {}, {}, {}", halo.getX()[0], halo.getX()[1],
+                         halo.getX()[2]);
             spdlog::info("this is appReflect right ps force before{}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
             auto force = forceModel.calculateForce(p, halo);
             spdlog::info("this is appReflect right force {}, {}, {}", force[0], force[1], force[2]);
@@ -541,7 +577,8 @@ void LinkedCellContainer::applyReflecting(Particle &p) {
             spdlog::info("this is appReflect, floor");
             halo.setX({p.getX()[0], (-1) * p.getX()[1], p.getX()[2]});
             spdlog::info("this is appReflect floor ps pos {}, {}, {}", p.getX()[0], p.getX()[1], p.getX()[2]);
-            spdlog::info("this is appReflect floor halos pos {}, {}, {}", halo.getX()[0], halo.getX()[1], halo.getX()[2]);
+            spdlog::info("this is appReflect floor halos pos {}, {}, {}", halo.getX()[0], halo.getX()[1],
+                         halo.getX()[2]);
             spdlog::info("this is appReflect floor ps force before {}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
             auto force = forceModel.calculateForce(p, halo);
             spdlog::info("this is appReflect floor force {}, {}, {}", force[0], force[1], force[2]);
@@ -553,15 +590,19 @@ void LinkedCellContainer::applyReflecting(Particle &p) {
         //near front border
         if (boundaryCon[4] == 'r') {
             if (checkDistance(p, "front")) {
-                  spdlog::info("this is appReflect, front");
-                halo.setX({p.getX()[0], p.getX()[1], (-1) * p.getX()[2]});
+                spdlog::info("this is appReflect, front");
+                //halo.setX({p.getX()[0], p.getX()[1], (-1) * p.getX()[2]});
+                halo.setX({p.getX()[0], p.getX()[1], p.getX()[2] - dis});
                 spdlog::info("this is appReflect front ps pos {}, {}, {}", p.getX()[0], p.getX()[1], p.getX()[2]);
-                spdlog::info("this is appReflect front halos pos {}, {}, {}", halo.getX()[0], halo.getX()[1], halo.getX()[2]);
-                spdlog::info("this is appReflect front ps force before {}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
+                spdlog::info("this is appReflect front halos pos {}, {}, {}", halo.getX()[0], halo.getX()[1],
+                             halo.getX()[2]);
+                spdlog::info("this is appReflect front ps force before {}, {}, {}", p.getF()[0], p.getF()[1],
+                             p.getF()[2]);
                 auto force = forceModel.calculateForce(p, halo);
                 spdlog::info("this is appReflect front force {}, {}, {}", force[0], force[1], force[2]);
                 p.addF({force[0], force[1] + (p.getM() * gGrav), force[2]});
-                spdlog::info("this is appReflect front ps force after {}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
+                spdlog::info("this is appReflect front ps force after {}, {}, {}", p.getF()[0], p.getF()[1],
+                             p.getF()[2]);
             }
         }
         //near back border
@@ -569,14 +610,18 @@ void LinkedCellContainer::applyReflecting(Particle &p) {
             if (checkDistance(p, "back")) {
                 spdlog::info("this is appReflect, back");
                 //changed from p.getX()[2] + (domainSize[2] - p.getX()[2]) -> domainSize[2] + (domainSize[2] - p.getX()[2])
-                halo.setX({p.getX()[0], p.getX()[1], domainSize[2] + (domainSize[2] - p.getX()[2])});
+                //halo.setX({p.getX()[0], p.getX()[1], domainSize[2] + (domainSize[2] - p.getX()[2])});
+                halo.setX({p.getX()[0], p.getX()[1], p.getX()[2] + dis});
                 spdlog::info("this is appReflect left ps pos {}, {}, {}", p.getX()[0], p.getX()[1], p.getX()[2]);
-                spdlog::info("this is appReflect left halos pos {}, {}, {}", halo.getX()[0], halo.getX()[1], halo.getX()[2]);
-                spdlog::info("this is appReflect back ps force before {}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
+                spdlog::info("this is appReflect left halos pos {}, {}, {}", halo.getX()[0], halo.getX()[1],
+                             halo.getX()[2]);
+                spdlog::info("this is appReflect back ps force before {}, {}, {}", p.getF()[0], p.getF()[1],
+                             p.getF()[2]);
                 auto force = forceModel.calculateForce(p, halo);
                 spdlog::info("this is appReflect back force {}, {}, {}", force[0], force[1], force[2]);
                 p.addF({force[0], force[1] + (p.getM() * gGrav), force[2]});
-                spdlog::info("this is appReflect back ps force after {}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
+                spdlog::info("this is appReflect back ps force after {}, {}, {}", p.getF()[0], p.getF()[1],
+                             p.getF()[2]);
             }
         }
     }
@@ -929,21 +974,23 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
 }
 
 
-std::array<double, 3> LinkedCellContainer::applyNeighbouringForce(Particle &p1, Particle &p2) {
+std::array<double, 3> LinkedCellContainer::applyNeighbouringForce(Particle &p1, Particle &p2, std::string type) {
     auto p = p2.getX() - p1.getX();
     std::array<double, 3> x = {p[0] / Formulas::secondNorm(p1.getX() - p2.getX()),
                                p[1] / Formulas::secondNorm(p1.getX() - p2.getX()),
                                p[2] / Formulas::secondNorm(p1.getX() - p2.getX())};
 
     // direct neighbors
-    if ((abs(p1.getX()[0] - p2.getX()[0]) && p1.getX()[1] == p2.getX()[1] && p1.getX()[2] == p2.getX()[2])
-        || (abs(p1.getX()[1] - p2.getX()[1]) && p1.getX()[0] == p2.getX()[0] && p1.getX()[2] == p2.getX()[2])
-        || (abs(p1.getX()[2] - p2.getX()[2]) && p1.getX()[1] == p2.getX()[1] && p1.getX()[0] == p2.getX()[0])) {
+    //if ((abs(p1.getX()[0] - p2.getX()[0]) && p1.getX()[1] == p2.getX()[1] && p1.getX()[2] == p2.getX()[2])
+    //    || (abs(p1.getX()[1] - p2.getX()[1]) && p1.getX()[0] == p2.getX()[0] && p1.getX()[2] == p2.getX()[2])
+    //    || (abs(p1.getX()[2] - p2.getX()[2]) && p1.getX()[1] == p2.getX()[1] && p1.getX()[0] == p2.getX()[0])) {
+    if (type == "direct") {
         return k * ((Formulas::secondNorm(p1.getX() - p2.getX())) - r0) * x;
-    } // diagonal neigbors
-    else if ((abs(p1.getX()[0] - p2.getX()[0]) && abs(p1.getX()[1] - p2.getX()[1]))
-             || (abs(p1.getX()[0] - p2.getX()[0]) && abs(p1.getX()[2] - p2.getX()[2]))
-             || (abs(p1.getX()[1] - p2.getX()[1]) && abs(p1.getX()[2] - p2.getX()[2]))) {
+    } // diagonal neighbors
+        //else if ((abs(p1.getX()[0] - p2.getX()[0]) && abs(p1.getX()[1] - p2.getX()[1]))
+        //         || (abs(p1.getX()[0] - p2.getX()[0]) && abs(p1.getX()[2] - p2.getX()[2]))
+        //         || (abs(p1.getX()[1] - p2.getX()[1]) && abs(p1.getX()[2] - p2.getX()[2]))) {
+    else if (type == "diagonal") {
         return k * (Formulas::secondNorm(p1.getX() - p2.getX()) - sqrt(2 * r0)) * x;
     }
     return std::array<double, 3>();
