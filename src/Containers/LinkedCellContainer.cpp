@@ -234,6 +234,16 @@ void LinkedCellContainer::resetF() {
     }
 }
 
+
+void LinkedCellContainer::calculateF() {
+    if (isMembrane) {
+        calcNF();
+    } else {
+        calcF();
+    }
+}
+
+
 /**
  * @brief calculates force between all particles in cell with itself and its neighbours
  * start in the left corner cell, only has  3(4) neighbours
@@ -243,8 +253,8 @@ void LinkedCellContainer::resetF() {
  * now just calc for above, right and right diagonal and left diagonal if exists
  * and same for one dimension behind if exists
  */
-//check done something wrong here -> in reflecting something wrong
-void LinkedCellContainer::calculateF() {
+//check done something wrong here maybe fixed now?
+void LinkedCellContainer::calcF() {
 
     //spdlog::info("this is calcF");
     std::vector<Particle> nParticleList;
@@ -257,30 +267,7 @@ void LinkedCellContainer::calculateF() {
             for (int x = 0; x < getGrid().size(); ++x) {
                 for (auto p1 = grid[x][y][z].begin(); p1 < grid[x][y][z].end(); p1++) {
                     for (auto p2 = p1 + 1; p2 < grid[x][y][z].end(); p2++) {
-                        double sigma;
-                        if (p1->getType() != p2->getType()) {
-                            sigma = ((p1->getSigma() + p2->getSigma()) / 2);
-                        } else {
-                            sigma = p1->getSigma();
-                        }
-                        auto dis = std::pow(2, (1 / 6)) * sigma;
-                        std::array<double, 3> force{0.0, 0.0, 0.0};
-                        if (isMembrane) {
-                            if ((p1->getXIndex() == p2->getXIndex() && abs(p2->getYIndex() - p1->getYIndex()) == 1)
-                                ||
-                                (p1->getYIndex() == p2->getYIndex() && abs(p2->getXIndex() - p1->getXIndex()) == 1)) {
-                                force = applyNeighbouringForce(*p1, *p2, "direct");
-                            } else if (abs(p2->getXIndex() - p1->getXIndex()) == 1 &&
-                                       abs(p2->getYIndex() - p1->getYIndex()) == 1) {
-                                force = applyNeighbouringForce(*p1, *p2, "diagonal");
-                            } else if (abs(p1->getX()[0] - p2->getX()[0]) < dis &&
-                                       abs(p1->getX()[1] - p2->getX()[1]) < dis &&
-                                       abs(p1->getX()[2] - p2->getX()[2]) < dis) {
-                                force = forceModel.calculateForce(*p1, *p2);
-                            }
-                        } else {
-                            force = forceModel.calculateForce(*p1, *p2);
-                        }
+                        auto force = forceModel.calculateForce(*p1, *p2);
                         /*        spdlog::info("this is calcX ps position {}, {}, {}", p1->getX()[0], p1->getX()[1],
                                              p1->getX()[2]);
                                 spdlog::info("this is calcX ps velocity{}, {}, {}", p1->getV()[0], p1->getV()[1],
@@ -423,6 +410,41 @@ void LinkedCellContainer::calculateF() {
         }
     }
     particleList = nParticleList;
+}
+
+//if membrane -> neighboring forces
+void LinkedCellContainer::calcNF() {
+    for (auto p1 = particleList.begin(); p1 < particleList.end(); p1++) {
+        for (auto p2 = p1 + 1; p2 < particleList.end(); p2++) {
+            double sigma;
+            if (p1->getType() != p2->getType()) {
+                sigma = ((p1->getSigma() + p2->getSigma()) / 2);
+            } else {
+                sigma = p1->getSigma();
+            }
+            auto dis = std::pow(2, (1 / 6)) * sigma;
+            std::array<double, 3> force{0.0, 0.0, 0.0};
+            if ((p1->getXIndex() == p2->getXIndex() && abs(p2->getYIndex() - p1->getYIndex()) == 1)
+                || (p1->getYIndex() == p2->getYIndex() && abs(p2->getXIndex() - p1->getXIndex()) == 1)) {
+                force = applyNeighbouringForce(*p1, *p2, "direct");
+            } else if (abs(p2->getXIndex() - p1->getXIndex()) == 1 && abs(p2->getYIndex() - p1->getYIndex()) == 1) {
+                force = applyNeighbouringForce(*p1, *p2, "diagonal");
+            } else if (abs(p1->getX()[0] - p2->getX()[0]) < dis &&
+                       abs(p1->getX()[1] - p2->getX()[1]) < dis &&
+                       abs(p1->getX()[2] - p2->getX()[2]) < dis) {
+                force = forceModel.calculateForce(*p1, *p2);
+            }
+            //The particles with x/y-indices (17/24), (17/25), (18/24) and (18/25) are pulled
+            //by a constant force FZ-UP “upwards“ along the z-axis:
+            if ((p1->getXIndex() == 17 && p1->getXIndex() == 25) ||
+                (p1->getXIndex() == 17 && p1->getXIndex() == 25) ||
+                (p1->getXIndex() == 18 && p1->getXIndex() == 24) ||
+                (p1->getXIndex() == 18 && p1->getXIndex() == 25)) {
+                force[2] += pullUpF;
+            }
+
+        }
+    }
 }
 
 /**

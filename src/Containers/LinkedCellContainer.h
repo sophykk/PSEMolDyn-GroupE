@@ -63,6 +63,10 @@ public:
 
     void calculateF();
 
+    void calcF();
+
+    void calcNF();
+
     //  bool withinCutoff(Particle &p1, Particle &p2) const;
 
     void calculateX(double delta_t);
