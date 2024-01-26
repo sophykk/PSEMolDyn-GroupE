@@ -15,8 +15,8 @@
  */
 
 SphereParticleGenerator::SphereParticleGenerator(std::array<double, 3> x1, double h1, double m1, std::array<double, 3> v1,
-                                                 double r1, double sigma1, double epsilon1, double gGrav1, bool membrane1, int type1)
-        : x(x1), h(h1), m(m1), v(v1), r(r1), sigma(sigma1), epsilon(epsilon1), gGrav(gGrav1), membrane(membrane1), type(type1) {
+                                                 double r1, double sigma1, double epsilon1, double gGrav1, int type1)
+        : x(x1), h(h1), m(m1), v(v1), r(r1), sigma(sigma1), epsilon(epsilon1), gGrav(gGrav1), type(type1) {
 }
 
 /**
@@ -37,7 +37,7 @@ void SphereParticleGenerator::generateParticles(ParticleContainerBase& particleC
 
             // Check if the particle is inside the circular boundary
             if (std::hypot(x1 - x[0], y1 - x[1]) <= r) {
-                Particle particle({x1, y1, x[2]}, v, m, gGrav, sigma, epsilon, membrane, type);
+                Particle particle({x1, y1, x[2]}, v, m, gGrav, sigma, epsilon, type);
                 Formulas::addMB(particle);
                 particleContainer.addParticle(particle);
             }

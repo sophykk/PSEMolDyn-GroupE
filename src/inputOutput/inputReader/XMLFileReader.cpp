@@ -26,7 +26,7 @@ void XMLFileReader::readSimulationParams(const char *filename, double &endTime, 
 
 /** Function that reads the parameters for the linkedCellContainer out of an xml file */
 void XMLFileReader::readLinkedCellParams(const char *filename, std::vector<double> &x, double &cutOffR,
-                                         std::array<char, 6> &boundaryC, double &gGrav) {
+                                         std::array<char, 6> &boundaryC, double &gGrav, bool &isMembrane) {
 
     std::unique_ptr<simulation> parameters = simulation_(filename);
 
@@ -41,6 +41,16 @@ void XMLFileReader::readLinkedCellParams(const char *filename, std::vector<doubl
                  parameters->linkedCellParams()->boundaryConditions().back()[0]
     };
     gGrav = parameters->linkedCellParams()->gravitationalAcceleration();
+    isMembrane = parameters->linkedCellParams()->isMembrane();
+}
+
+void XMLFileReader::readMembraneParams(const char *filename, int &k, double &r0, double &pullUpF) {
+
+    std::unique_ptr<simulation> parameters = simulation_(filename);
+
+    k = parameters->membraneParams()->stiffness();
+    r0 = parameters->membraneParams()->averageBond();
+    pullUpF = parameters->membraneParams()->pullUpForce();
 }
 
 /** Function that reads the parameters for the thermostat initialization used for the simulation out of an xml file */
@@ -66,7 +76,6 @@ std::vector<CuboidParticleGenerator> XMLFileReader::readCuboids(const char *file
     double sigma;
     double epsilon;
     double gGrav;
-    double membrane;
     int type;
 
     std::unique_ptr<simulation> parameters = simulation_(filename);
@@ -83,10 +92,9 @@ std::vector<CuboidParticleGenerator> XMLFileReader::readCuboids(const char *file
         sigma = c.sigma();
         epsilon = c.epsilon();
         gGrav = c.gravitationalAcceleration();
-        membrane = c.membrane();
         type = c.type();
 
-        generators.emplace_back(N, spacing, m, v, x, sigma, epsilon, gGrav, membrane, type);
+        generators.emplace_back(N, spacing, m, v, x, sigma, epsilon, gGrav, type);
     }
 
     return generators;
@@ -104,7 +112,6 @@ std::vector<SphereParticleGenerator> XMLFileReader::readSpheres(const char *file
     double sigma;
     double epsilon;
     double gGrav;
-    double membrane;
     int type;
 
     std::unique_ptr<simulation> parameters = simulation_(filename);
@@ -121,10 +128,9 @@ std::vector<SphereParticleGenerator> XMLFileReader::readSpheres(const char *file
         sigma = s.sigma();
         epsilon = s.epsilon();
         gGrav = s.gravitationalAcceleration();
-        membrane = s.membrane();
         type = s.type();
 
-        generators.emplace_back(x, spacing, m, v, r, sigma, epsilon, gGrav, membrane, type);
+        generators.emplace_back(x, spacing, m, v, r, sigma, epsilon, gGrav, type);
     }
 
     return generators;

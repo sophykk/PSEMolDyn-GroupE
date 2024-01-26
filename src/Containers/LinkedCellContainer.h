@@ -27,15 +27,21 @@ private:
     std::array<char, 6> boundaryCon;
     //std::vector<Particle> haloList;
     double gGrav;
+    bool isMembrane;
     int k = 300;
     double r0 = 2.2;
+    double pullUpF;
+
 
 public:
 
-    LinkedCellContainer(ForceBase &model, std::vector<double> &dSize, double &cRadius, std::array<char, 6> bCon, double &gGrav);
+    LinkedCellContainer(ForceBase &model, std::vector<double> &dSize, double &cRadius, std::array<char, 6> bCon, double &gGrav, bool &isMembrane);
 
     LinkedCellContainer(ForceBase &model, std::vector<Particle> &particles, std::vector<double> &dSize,
-                        double &cRadius, std::array<char, 6> bCon, double &gGrav);
+                        double &cRadius, std::array<char, 6> bCon, double &gGrav, bool &isMembrane);
+
+    LinkedCellContainer(ForceBase &model, std::vector<double> &dSize, double &cRadius, std::array<char, 6> bCon, double &gGrav, bool &isMembrane,
+                        int &k, double &r0, double &pullUpF);
 
     char &getBoundaryCon(int index);
 

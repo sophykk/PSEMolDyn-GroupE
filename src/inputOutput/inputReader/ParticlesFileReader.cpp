@@ -23,7 +23,6 @@ void ParticlesFileReader::readFile(std::vector<Particle> &particles, std::string
     double sigma;
     double epsilon;
     double gGrav;
-    double membrane;
     int type;
     int num_particles = 0;
 
@@ -67,10 +66,9 @@ void ParticlesFileReader::readFile(std::vector<Particle> &particles, std::string
             datastream >> sigma;
             datastream >> epsilon;
             datastream >> gGrav;
-            datastream >> membrane;
             datastream >> type;
 
-            particles.emplace_back(x, v, f, old_f, m, gGrav, sigma, epsilon, membrane, type);
+            particles.emplace_back(x, v, f, old_f, m, gGrav, sigma, epsilon, type);
 
             getline(input_file, tmp_string);
         }

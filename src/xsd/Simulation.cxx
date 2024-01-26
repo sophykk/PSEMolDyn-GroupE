@@ -43,1029 +43,1332 @@
 // simulationParamsType
 // 
 
-const simulationParamsType::endTime_type &simulationParamsType::
-endTime() const {
-    return this->endTime_.get();
+const simulationParamsType::endTime_type& simulationParamsType::
+endTime () const
+{
+  return this->endTime_.get ();
 }
 
-simulationParamsType::endTime_type &simulationParamsType::
-endTime() {
-    return this->endTime_.get();
-}
-
-void simulationParamsType::
-endTime(const endTime_type &x) {
-    this->endTime_.set(x);
-}
-
-const simulationParamsType::deltaT_type &simulationParamsType::
-deltaT() const {
-    return this->deltaT_.get();
-}
-
-simulationParamsType::deltaT_type &simulationParamsType::
-deltaT() {
-    return this->deltaT_.get();
+simulationParamsType::endTime_type& simulationParamsType::
+endTime ()
+{
+  return this->endTime_.get ();
 }
 
 void simulationParamsType::
-deltaT(const deltaT_type &x) {
-    this->deltaT_.set(x);
+endTime (const endTime_type& x)
+{
+  this->endTime_.set (x);
 }
 
-const simulationParamsType::modelType_type &simulationParamsType::
-modelType() const {
-    return this->modelType_.get();
+const simulationParamsType::deltaT_type& simulationParamsType::
+deltaT () const
+{
+  return this->deltaT_.get ();
 }
 
-simulationParamsType::modelType_type &simulationParamsType::
-modelType() {
-    return this->modelType_.get();
-}
-
-void simulationParamsType::
-modelType(const modelType_type &x) {
-    this->modelType_.set(x);
-}
-
-void simulationParamsType::
-modelType(::std::auto_ptr<modelType_type> x) {
-    this->modelType_.set(x);
-}
-
-const simulationParamsType::containerType_type &simulationParamsType::
-containerType() const {
-    return this->containerType_.get();
-}
-
-simulationParamsType::containerType_type &simulationParamsType::
-containerType() {
-    return this->containerType_.get();
+simulationParamsType::deltaT_type& simulationParamsType::
+deltaT ()
+{
+  return this->deltaT_.get ();
 }
 
 void simulationParamsType::
-containerType(const containerType_type &x) {
-    this->containerType_.set(x);
+deltaT (const deltaT_type& x)
+{
+  this->deltaT_.set (x);
+}
+
+const simulationParamsType::modelType_type& simulationParamsType::
+modelType () const
+{
+  return this->modelType_.get ();
+}
+
+simulationParamsType::modelType_type& simulationParamsType::
+modelType ()
+{
+  return this->modelType_.get ();
 }
 
 void simulationParamsType::
-containerType(::std::auto_ptr<containerType_type> x) {
-    this->containerType_.set(x);
-}
-
-const simulationParamsType::plotInterval_type &simulationParamsType::
-plotInterval() const {
-    return this->plotInterval_.get();
-}
-
-simulationParamsType::plotInterval_type &simulationParamsType::
-plotInterval() {
-    return this->plotInterval_.get();
+modelType (const modelType_type& x)
+{
+  this->modelType_.set (x);
 }
 
 void simulationParamsType::
-plotInterval(const plotInterval_type &x) {
-    this->plotInterval_.set(x);
+modelType (::std::auto_ptr< modelType_type > x)
+{
+  this->modelType_.set (x);
 }
 
-const simulationParamsType::objectType_type &simulationParamsType::
-objectType() const {
-    return this->objectType_.get();
+const simulationParamsType::containerType_type& simulationParamsType::
+containerType () const
+{
+  return this->containerType_.get ();
 }
 
-simulationParamsType::objectType_type &simulationParamsType::
-objectType() {
-    return this->objectType_.get();
-}
-
-void simulationParamsType::
-objectType(const objectType_type &x) {
-    this->objectType_.set(x);
-}
-
-void simulationParamsType::
-objectType(::std::auto_ptr<objectType_type> x) {
-    this->objectType_.set(x);
-}
-
-const simulationParamsType::checkpointing_type &simulationParamsType::
-checkpointing() const {
-    return this->checkpointing_.get();
-}
-
-simulationParamsType::checkpointing_type &simulationParamsType::
-checkpointing() {
-    return this->checkpointing_.get();
+simulationParamsType::containerType_type& simulationParamsType::
+containerType ()
+{
+  return this->containerType_.get ();
 }
 
 void simulationParamsType::
-checkpointing(const checkpointing_type &x) {
-    this->checkpointing_.set(x);
+containerType (const containerType_type& x)
+{
+  this->containerType_.set (x);
+}
+
+void simulationParamsType::
+containerType (::std::auto_ptr< containerType_type > x)
+{
+  this->containerType_.set (x);
+}
+
+const simulationParamsType::plotInterval_type& simulationParamsType::
+plotInterval () const
+{
+  return this->plotInterval_.get ();
+}
+
+simulationParamsType::plotInterval_type& simulationParamsType::
+plotInterval ()
+{
+  return this->plotInterval_.get ();
+}
+
+void simulationParamsType::
+plotInterval (const plotInterval_type& x)
+{
+  this->plotInterval_.set (x);
+}
+
+const simulationParamsType::objectType_type& simulationParamsType::
+objectType () const
+{
+  return this->objectType_.get ();
+}
+
+simulationParamsType::objectType_type& simulationParamsType::
+objectType ()
+{
+  return this->objectType_.get ();
+}
+
+void simulationParamsType::
+objectType (const objectType_type& x)
+{
+  this->objectType_.set (x);
+}
+
+void simulationParamsType::
+objectType (::std::auto_ptr< objectType_type > x)
+{
+  this->objectType_.set (x);
+}
+
+const simulationParamsType::checkpointing_type& simulationParamsType::
+checkpointing () const
+{
+  return this->checkpointing_.get ();
+}
+
+simulationParamsType::checkpointing_type& simulationParamsType::
+checkpointing ()
+{
+  return this->checkpointing_.get ();
+}
+
+void simulationParamsType::
+checkpointing (const checkpointing_type& x)
+{
+  this->checkpointing_.set (x);
 }
 
 
 // linkedCellParamsType
-//
+// 
 
-const linkedCellParamsType::domainSize_type &linkedCellParamsType::
-domainSize() const {
-    return this->domainSize_.get();
+const linkedCellParamsType::domainSize_type& linkedCellParamsType::
+domainSize () const
+{
+  return this->domainSize_.get ();
 }
 
-linkedCellParamsType::domainSize_type &linkedCellParamsType::
-domainSize() {
-    return this->domainSize_.get();
-}
-
-void linkedCellParamsType::
-domainSize(const domainSize_type &x) {
-    this->domainSize_.set(x);
+linkedCellParamsType::domainSize_type& linkedCellParamsType::
+domainSize ()
+{
+  return this->domainSize_.get ();
 }
 
 void linkedCellParamsType::
-domainSize(::std::auto_ptr<domainSize_type> x) {
-    this->domainSize_.set(x);
-}
-
-const linkedCellParamsType::cutoffRadius_type &linkedCellParamsType::
-cutoffRadius() const {
-    return this->cutoffRadius_.get();
-}
-
-linkedCellParamsType::cutoffRadius_type &linkedCellParamsType::
-cutoffRadius() {
-    return this->cutoffRadius_.get();
+domainSize (const domainSize_type& x)
+{
+  this->domainSize_.set (x);
 }
 
 void linkedCellParamsType::
-cutoffRadius(const cutoffRadius_type &x) {
-    this->cutoffRadius_.set(x);
+domainSize (::std::auto_ptr< domainSize_type > x)
+{
+  this->domainSize_.set (x);
 }
 
-const linkedCellParamsType::boundaryConditions_type &linkedCellParamsType::
-boundaryConditions() const {
-    return this->boundaryConditions_.get();
+const linkedCellParamsType::cutoffRadius_type& linkedCellParamsType::
+cutoffRadius () const
+{
+  return this->cutoffRadius_.get ();
 }
 
-linkedCellParamsType::boundaryConditions_type &linkedCellParamsType::
-boundaryConditions() {
-    return this->boundaryConditions_.get();
-}
-
-void linkedCellParamsType::
-boundaryConditions(const boundaryConditions_type &x) {
-    this->boundaryConditions_.set(x);
-}
-
-void linkedCellParamsType::
-boundaryConditions(::std::auto_ptr<boundaryConditions_type> x) {
-    this->boundaryConditions_.set(x);
-}
-
-const linkedCellParamsType::gravitationalAcceleration_type &linkedCellParamsType::
-gravitationalAcceleration() const {
-    return this->gravitationalAcceleration_.get();
-}
-
-linkedCellParamsType::gravitationalAcceleration_type &linkedCellParamsType::
-gravitationalAcceleration() {
-    return this->gravitationalAcceleration_.get();
+linkedCellParamsType::cutoffRadius_type& linkedCellParamsType::
+cutoffRadius ()
+{
+  return this->cutoffRadius_.get ();
 }
 
 void linkedCellParamsType::
-gravitationalAcceleration(const gravitationalAcceleration_type &x) {
-    this->gravitationalAcceleration_.set(x);
+cutoffRadius (const cutoffRadius_type& x)
+{
+  this->cutoffRadius_.set (x);
+}
+
+const linkedCellParamsType::boundaryConditions_type& linkedCellParamsType::
+boundaryConditions () const
+{
+  return this->boundaryConditions_.get ();
+}
+
+linkedCellParamsType::boundaryConditions_type& linkedCellParamsType::
+boundaryConditions ()
+{
+  return this->boundaryConditions_.get ();
+}
+
+void linkedCellParamsType::
+boundaryConditions (const boundaryConditions_type& x)
+{
+  this->boundaryConditions_.set (x);
+}
+
+void linkedCellParamsType::
+boundaryConditions (::std::auto_ptr< boundaryConditions_type > x)
+{
+  this->boundaryConditions_.set (x);
+}
+
+const linkedCellParamsType::gravitationalAcceleration_type& linkedCellParamsType::
+gravitationalAcceleration () const
+{
+  return this->gravitationalAcceleration_.get ();
+}
+
+linkedCellParamsType::gravitationalAcceleration_type& linkedCellParamsType::
+gravitationalAcceleration ()
+{
+  return this->gravitationalAcceleration_.get ();
+}
+
+void linkedCellParamsType::
+gravitationalAcceleration (const gravitationalAcceleration_type& x)
+{
+  this->gravitationalAcceleration_.set (x);
+}
+
+const linkedCellParamsType::isMembrane_type& linkedCellParamsType::
+isMembrane () const
+{
+  return this->isMembrane_.get ();
+}
+
+linkedCellParamsType::isMembrane_type& linkedCellParamsType::
+isMembrane ()
+{
+  return this->isMembrane_.get ();
+}
+
+void linkedCellParamsType::
+isMembrane (const isMembrane_type& x)
+{
+  this->isMembrane_.set (x);
+}
+
+
+// membraneParamsType
+// 
+
+const membraneParamsType::stiffness_type& membraneParamsType::
+stiffness () const
+{
+  return this->stiffness_.get ();
+}
+
+membraneParamsType::stiffness_type& membraneParamsType::
+stiffness ()
+{
+  return this->stiffness_.get ();
+}
+
+void membraneParamsType::
+stiffness (const stiffness_type& x)
+{
+  this->stiffness_.set (x);
+}
+
+const membraneParamsType::averageBond_type& membraneParamsType::
+averageBond () const
+{
+  return this->averageBond_.get ();
+}
+
+membraneParamsType::averageBond_type& membraneParamsType::
+averageBond ()
+{
+  return this->averageBond_.get ();
+}
+
+void membraneParamsType::
+averageBond (const averageBond_type& x)
+{
+  this->averageBond_.set (x);
+}
+
+const membraneParamsType::pullUpForce_type& membraneParamsType::
+pullUpForce () const
+{
+  return this->pullUpForce_.get ();
+}
+
+membraneParamsType::pullUpForce_type& membraneParamsType::
+pullUpForce ()
+{
+  return this->pullUpForce_.get ();
+}
+
+void membraneParamsType::
+pullUpForce (const pullUpForce_type& x)
+{
+  this->pullUpForce_.set (x);
 }
 
 
 // cuboidType
-//
+// 
 
-const cuboidType::position_type &cuboidType::
-position() const {
-    return this->position_.get();
+const cuboidType::position_type& cuboidType::
+position () const
+{
+  return this->position_.get ();
 }
 
-cuboidType::position_type &cuboidType::
-position() {
-    return this->position_.get();
-}
-
-void cuboidType::
-position(const position_type &x) {
-    this->position_.set(x);
+cuboidType::position_type& cuboidType::
+position ()
+{
+  return this->position_.get ();
 }
 
 void cuboidType::
-position(::std::auto_ptr<position_type> x) {
-    this->position_.set(x);
-}
-
-const cuboidType::velocity_type &cuboidType::
-velocity() const {
-    return this->velocity_.get();
-}
-
-cuboidType::velocity_type &cuboidType::
-velocity() {
-    return this->velocity_.get();
+position (const position_type& x)
+{
+  this->position_.set (x);
 }
 
 void cuboidType::
-velocity(const velocity_type &x) {
-    this->velocity_.set(x);
+position (::std::auto_ptr< position_type > x)
+{
+  this->position_.set (x);
+}
+
+const cuboidType::velocity_type& cuboidType::
+velocity () const
+{
+  return this->velocity_.get ();
+}
+
+cuboidType::velocity_type& cuboidType::
+velocity ()
+{
+  return this->velocity_.get ();
 }
 
 void cuboidType::
-velocity(::std::auto_ptr<velocity_type> x) {
-    this->velocity_.set(x);
-}
-
-const cuboidType::mass_type &cuboidType::
-mass() const {
-    return this->mass_.get();
-}
-
-cuboidType::mass_type &cuboidType::
-mass() {
-    return this->mass_.get();
+velocity (const velocity_type& x)
+{
+  this->velocity_.set (x);
 }
 
 void cuboidType::
-mass(const mass_type &x) {
-    this->mass_.set(x);
+velocity (::std::auto_ptr< velocity_type > x)
+{
+  this->velocity_.set (x);
 }
 
-const cuboidType::grid_type &cuboidType::
-grid() const {
-    return this->grid_.get();
+const cuboidType::mass_type& cuboidType::
+mass () const
+{
+  return this->mass_.get ();
 }
 
-cuboidType::grid_type &cuboidType::
-grid() {
-    return this->grid_.get();
-}
-
-void cuboidType::
-grid(const grid_type &x) {
-    this->grid_.set(x);
-}
-
-void cuboidType::
-grid(::std::auto_ptr<grid_type> x) {
-    this->grid_.set(x);
-}
-
-const cuboidType::spacing_type &cuboidType::
-spacing() const {
-    return this->spacing_.get();
-}
-
-cuboidType::spacing_type &cuboidType::
-spacing() {
-    return this->spacing_.get();
+cuboidType::mass_type& cuboidType::
+mass ()
+{
+  return this->mass_.get ();
 }
 
 void cuboidType::
-spacing(const spacing_type &x) {
-    this->spacing_.set(x);
+mass (const mass_type& x)
+{
+  this->mass_.set (x);
 }
 
-const cuboidType::sigma_type &cuboidType::
-sigma() const {
-    return this->sigma_.get();
+const cuboidType::grid_type& cuboidType::
+grid () const
+{
+  return this->grid_.get ();
 }
 
-cuboidType::sigma_type &cuboidType::
-sigma() {
-    return this->sigma_.get();
-}
-
-void cuboidType::
-sigma(const sigma_type &x) {
-    this->sigma_.set(x);
-}
-
-const cuboidType::epsilon_type &cuboidType::
-epsilon() const {
-    return this->epsilon_.get();
-}
-
-cuboidType::epsilon_type &cuboidType::
-epsilon() {
-    return this->epsilon_.get();
+cuboidType::grid_type& cuboidType::
+grid ()
+{
+  return this->grid_.get ();
 }
 
 void cuboidType::
-epsilon(const epsilon_type &x) {
-    this->epsilon_.set(x);
-}
-
-const cuboidType::membrane_type &cuboidType::
-membrane() const {
-    return this->membrane_.get();
-}
-
-cuboidType::membrane_type &cuboidType::
-membrane() {
-    return this->membrane_.get();
+grid (const grid_type& x)
+{
+  this->grid_.set (x);
 }
 
 void cuboidType::
-membrane(const membrane_type &x) {
-    this->membrane_.set(x);
+grid (::std::auto_ptr< grid_type > x)
+{
+  this->grid_.set (x);
 }
 
-const cuboidType::gravitationalAcceleration_type &cuboidType::
-gravitationalAcceleration() const {
-    return this->gravitationalAcceleration_.get();
+const cuboidType::spacing_type& cuboidType::
+spacing () const
+{
+  return this->spacing_.get ();
 }
 
-cuboidType::gravitationalAcceleration_type &cuboidType::
-gravitationalAcceleration() {
-    return this->gravitationalAcceleration_.get();
-}
-
-void cuboidType::
-gravitationalAcceleration(const gravitationalAcceleration_type &x) {
-    this->gravitationalAcceleration_.set(x);
-}
-
-const cuboidType::type_type &cuboidType::
-type() const {
-    return this->type_.get();
-}
-
-cuboidType::type_type &cuboidType::
-type() {
-    return this->type_.get();
+cuboidType::spacing_type& cuboidType::
+spacing ()
+{
+  return this->spacing_.get ();
 }
 
 void cuboidType::
-type(const type_type &x) {
-    this->type_.set(x);
+spacing (const spacing_type& x)
+{
+  this->spacing_.set (x);
+}
+
+const cuboidType::sigma_type& cuboidType::
+sigma () const
+{
+  return this->sigma_.get ();
+}
+
+cuboidType::sigma_type& cuboidType::
+sigma ()
+{
+  return this->sigma_.get ();
+}
+
+void cuboidType::
+sigma (const sigma_type& x)
+{
+  this->sigma_.set (x);
+}
+
+const cuboidType::epsilon_type& cuboidType::
+epsilon () const
+{
+  return this->epsilon_.get ();
+}
+
+cuboidType::epsilon_type& cuboidType::
+epsilon ()
+{
+  return this->epsilon_.get ();
+}
+
+void cuboidType::
+epsilon (const epsilon_type& x)
+{
+  this->epsilon_.set (x);
+}
+
+const cuboidType::isMembrane_type& cuboidType::
+isMembrane () const
+{
+  return this->isMembrane_.get ();
+}
+
+cuboidType::isMembrane_type& cuboidType::
+isMembrane ()
+{
+  return this->isMembrane_.get ();
+}
+
+void cuboidType::
+isMembrane (const isMembrane_type& x)
+{
+  this->isMembrane_.set (x);
+}
+
+const cuboidType::gravitationalAcceleration_type& cuboidType::
+gravitationalAcceleration () const
+{
+  return this->gravitationalAcceleration_.get ();
+}
+
+cuboidType::gravitationalAcceleration_type& cuboidType::
+gravitationalAcceleration ()
+{
+  return this->gravitationalAcceleration_.get ();
+}
+
+void cuboidType::
+gravitationalAcceleration (const gravitationalAcceleration_type& x)
+{
+  this->gravitationalAcceleration_.set (x);
+}
+
+const cuboidType::type_type& cuboidType::
+type () const
+{
+  return this->type_.get ();
+}
+
+cuboidType::type_type& cuboidType::
+type ()
+{
+  return this->type_.get ();
+}
+
+void cuboidType::
+type (const type_type& x)
+{
+  this->type_.set (x);
 }
 
 
 // thermostatType
-//
+// 
 
-const thermostatType::initialTemperature_type &thermostatType::
-initialTemperature() const {
-    return this->initialTemperature_.get();
+const thermostatType::initialTemperature_type& thermostatType::
+initialTemperature () const
+{
+  return this->initialTemperature_.get ();
 }
 
-thermostatType::initialTemperature_type &thermostatType::
-initialTemperature() {
-    return this->initialTemperature_.get();
-}
-
-void thermostatType::
-initialTemperature(const initialTemperature_type &x) {
-    this->initialTemperature_.set(x);
-}
-
-const thermostatType::targetTemperature_optional &thermostatType::
-targetTemperature() const {
-    return this->targetTemperature_;
-}
-
-thermostatType::targetTemperature_optional &thermostatType::
-targetTemperature() {
-    return this->targetTemperature_;
+thermostatType::initialTemperature_type& thermostatType::
+initialTemperature ()
+{
+  return this->initialTemperature_.get ();
 }
 
 void thermostatType::
-targetTemperature(const targetTemperature_type &x) {
-    this->targetTemperature_.set(x);
+initialTemperature (const initialTemperature_type& x)
+{
+  this->initialTemperature_.set (x);
+}
+
+const thermostatType::targetTemperature_optional& thermostatType::
+targetTemperature () const
+{
+  return this->targetTemperature_;
+}
+
+thermostatType::targetTemperature_optional& thermostatType::
+targetTemperature ()
+{
+  return this->targetTemperature_;
 }
 
 void thermostatType::
-targetTemperature(const targetTemperature_optional &x) {
-    this->targetTemperature_ = x;
-}
-
-const thermostatType::maxTemperatureChange_optional &thermostatType::
-maxTemperatureChange() const {
-    return this->maxTemperatureChange_;
-}
-
-thermostatType::maxTemperatureChange_optional &thermostatType::
-maxTemperatureChange() {
-    return this->maxTemperatureChange_;
+targetTemperature (const targetTemperature_type& x)
+{
+  this->targetTemperature_.set (x);
 }
 
 void thermostatType::
-maxTemperatureChange(const maxTemperatureChange_type &x) {
-    this->maxTemperatureChange_.set(x);
+targetTemperature (const targetTemperature_optional& x)
+{
+  this->targetTemperature_ = x;
+}
+
+const thermostatType::maxTemperatureChange_optional& thermostatType::
+maxTemperatureChange () const
+{
+  return this->maxTemperatureChange_;
+}
+
+thermostatType::maxTemperatureChange_optional& thermostatType::
+maxTemperatureChange ()
+{
+  return this->maxTemperatureChange_;
 }
 
 void thermostatType::
-maxTemperatureChange(const maxTemperatureChange_optional &x) {
-    this->maxTemperatureChange_ = x;
-}
-
-const thermostatType::thermostatInterval_type &thermostatType::
-thermostatInterval() const {
-    return this->thermostatInterval_.get();
-}
-
-thermostatType::thermostatInterval_type &thermostatType::
-thermostatInterval() {
-    return this->thermostatInterval_.get();
+maxTemperatureChange (const maxTemperatureChange_type& x)
+{
+  this->maxTemperatureChange_.set (x);
 }
 
 void thermostatType::
-thermostatInterval(const thermostatInterval_type &x) {
-    this->thermostatInterval_.set(x);
+maxTemperatureChange (const maxTemperatureChange_optional& x)
+{
+  this->maxTemperatureChange_ = x;
+}
+
+const thermostatType::thermostatInterval_type& thermostatType::
+thermostatInterval () const
+{
+  return this->thermostatInterval_.get ();
+}
+
+thermostatType::thermostatInterval_type& thermostatType::
+thermostatInterval ()
+{
+  return this->thermostatInterval_.get ();
+}
+
+void thermostatType::
+thermostatInterval (const thermostatInterval_type& x)
+{
+  this->thermostatInterval_.set (x);
 }
 
 
 // sphereType
-//
+// 
 
-const sphereType::position_type &sphereType::
-position() const {
-    return this->position_.get();
+const sphereType::position_type& sphereType::
+position () const
+{
+  return this->position_.get ();
 }
 
-sphereType::position_type &sphereType::
-position() {
-    return this->position_.get();
-}
-
-void sphereType::
-position(const position_type &x) {
-    this->position_.set(x);
+sphereType::position_type& sphereType::
+position ()
+{
+  return this->position_.get ();
 }
 
 void sphereType::
-position(::std::auto_ptr<position_type> x) {
-    this->position_.set(x);
-}
-
-const sphereType::velocity_type &sphereType::
-velocity() const {
-    return this->velocity_.get();
-}
-
-sphereType::velocity_type &sphereType::
-velocity() {
-    return this->velocity_.get();
+position (const position_type& x)
+{
+  this->position_.set (x);
 }
 
 void sphereType::
-velocity(const velocity_type &x) {
-    this->velocity_.set(x);
+position (::std::auto_ptr< position_type > x)
+{
+  this->position_.set (x);
+}
+
+const sphereType::velocity_type& sphereType::
+velocity () const
+{
+  return this->velocity_.get ();
+}
+
+sphereType::velocity_type& sphereType::
+velocity ()
+{
+  return this->velocity_.get ();
 }
 
 void sphereType::
-velocity(::std::auto_ptr<velocity_type> x) {
-    this->velocity_.set(x);
-}
-
-const sphereType::mass_type &sphereType::
-mass() const {
-    return this->mass_.get();
-}
-
-sphereType::mass_type &sphereType::
-mass() {
-    return this->mass_.get();
+velocity (const velocity_type& x)
+{
+  this->velocity_.set (x);
 }
 
 void sphereType::
-mass(const mass_type &x) {
-    this->mass_.set(x);
+velocity (::std::auto_ptr< velocity_type > x)
+{
+  this->velocity_.set (x);
 }
 
-const sphereType::spacing_type &sphereType::
-spacing() const {
-    return this->spacing_.get();
+const sphereType::mass_type& sphereType::
+mass () const
+{
+  return this->mass_.get ();
 }
 
-sphereType::spacing_type &sphereType::
-spacing() {
-    return this->spacing_.get();
-}
-
-void sphereType::
-spacing(const spacing_type &x) {
-    this->spacing_.set(x);
-}
-
-const sphereType::radius_type &sphereType::
-radius() const {
-    return this->radius_.get();
-}
-
-sphereType::radius_type &sphereType::
-radius() {
-    return this->radius_.get();
+sphereType::mass_type& sphereType::
+mass ()
+{
+  return this->mass_.get ();
 }
 
 void sphereType::
-radius(const radius_type &x) {
-    this->radius_.set(x);
+mass (const mass_type& x)
+{
+  this->mass_.set (x);
 }
 
-const sphereType::sigma_type &sphereType::
-sigma() const {
-    return this->sigma_.get();
+const sphereType::spacing_type& sphereType::
+spacing () const
+{
+  return this->spacing_.get ();
 }
 
-sphereType::sigma_type &sphereType::
-sigma() {
-    return this->sigma_.get();
-}
-
-void sphereType::
-sigma(const sigma_type &x) {
-    this->sigma_.set(x);
-}
-
-const sphereType::epsilon_type &sphereType::
-epsilon() const {
-    return this->epsilon_.get();
-}
-
-sphereType::epsilon_type &sphereType::
-epsilon() {
-    return this->epsilon_.get();
+sphereType::spacing_type& sphereType::
+spacing ()
+{
+  return this->spacing_.get ();
 }
 
 void sphereType::
-epsilon(const epsilon_type &x) {
-    this->epsilon_.set(x);
+spacing (const spacing_type& x)
+{
+  this->spacing_.set (x);
 }
 
-const sphereType::membrane_type &sphereType::
-membrane() const {
-    return this->membrane_.get();
+const sphereType::radius_type& sphereType::
+radius () const
+{
+  return this->radius_.get ();
 }
 
-sphereType::membrane_type &sphereType::
-membrane() {
-    return this->membrane_.get();
-}
-
-void sphereType::
-membrane(const membrane_type &x) {
-    this->membrane_.set(x);
-}
-
-const sphereType::gravitationalAcceleration_type &sphereType::
-gravitationalAcceleration() const {
-    return this->gravitationalAcceleration_.get();
-}
-
-sphereType::gravitationalAcceleration_type &sphereType::
-gravitationalAcceleration() {
-    return this->gravitationalAcceleration_.get();
+sphereType::radius_type& sphereType::
+radius ()
+{
+  return this->radius_.get ();
 }
 
 void sphereType::
-gravitationalAcceleration(const gravitationalAcceleration_type &x) {
-    this->gravitationalAcceleration_.set(x);
+radius (const radius_type& x)
+{
+  this->radius_.set (x);
 }
 
-const sphereType::type_type &sphereType::
-type() const {
-    return this->type_.get();
+const sphereType::sigma_type& sphereType::
+sigma () const
+{
+  return this->sigma_.get ();
 }
 
-sphereType::type_type &sphereType::
-type() {
-    return this->type_.get();
+sphereType::sigma_type& sphereType::
+sigma ()
+{
+  return this->sigma_.get ();
 }
 
 void sphereType::
-type(const type_type &x) {
-    this->type_.set(x);
+sigma (const sigma_type& x)
+{
+  this->sigma_.set (x);
+}
+
+const sphereType::epsilon_type& sphereType::
+epsilon () const
+{
+  return this->epsilon_.get ();
+}
+
+sphereType::epsilon_type& sphereType::
+epsilon ()
+{
+  return this->epsilon_.get ();
+}
+
+void sphereType::
+epsilon (const epsilon_type& x)
+{
+  this->epsilon_.set (x);
+}
+
+const sphereType::isMembrane_type& sphereType::
+isMembrane () const
+{
+  return this->isMembrane_.get ();
+}
+
+sphereType::isMembrane_type& sphereType::
+isMembrane ()
+{
+  return this->isMembrane_.get ();
+}
+
+void sphereType::
+isMembrane (const isMembrane_type& x)
+{
+  this->isMembrane_.set (x);
+}
+
+const sphereType::gravitationalAcceleration_type& sphereType::
+gravitationalAcceleration () const
+{
+  return this->gravitationalAcceleration_.get ();
+}
+
+sphereType::gravitationalAcceleration_type& sphereType::
+gravitationalAcceleration ()
+{
+  return this->gravitationalAcceleration_.get ();
+}
+
+void sphereType::
+gravitationalAcceleration (const gravitationalAcceleration_type& x)
+{
+  this->gravitationalAcceleration_.set (x);
+}
+
+const sphereType::type_type& sphereType::
+type () const
+{
+  return this->type_.get ();
+}
+
+sphereType::type_type& sphereType::
+type ()
+{
+  return this->type_.get ();
+}
+
+void sphereType::
+type (const type_type& x)
+{
+  this->type_.set (x);
 }
 
 
 // positionType
-//
+// 
 
-const positionType::x_type &positionType::
-x() const {
-    return this->x_.get();
+const positionType::x_type& positionType::
+x () const
+{
+  return this->x_.get ();
 }
 
-positionType::x_type &positionType::
-x() {
-    return this->x_.get();
-}
-
-void positionType::
-x(const x_type &x) {
-    this->x_.set(x);
-}
-
-const positionType::y_type &positionType::
-y() const {
-    return this->y_.get();
-}
-
-positionType::y_type &positionType::
-y() {
-    return this->y_.get();
+positionType::x_type& positionType::
+x ()
+{
+  return this->x_.get ();
 }
 
 void positionType::
-y(const y_type &x) {
-    this->y_.set(x);
+x (const x_type& x)
+{
+  this->x_.set (x);
 }
 
-const positionType::z_type &positionType::
-z() const {
-    return this->z_.get();
+const positionType::y_type& positionType::
+y () const
+{
+  return this->y_.get ();
 }
 
-positionType::z_type &positionType::
-z() {
-    return this->z_.get();
+positionType::y_type& positionType::
+y ()
+{
+  return this->y_.get ();
 }
 
 void positionType::
-z(const z_type &x) {
-    this->z_.set(x);
+y (const y_type& x)
+{
+  this->y_.set (x);
+}
+
+const positionType::z_type& positionType::
+z () const
+{
+  return this->z_.get ();
+}
+
+positionType::z_type& positionType::
+z ()
+{
+  return this->z_.get ();
+}
+
+void positionType::
+z (const z_type& x)
+{
+  this->z_.set (x);
 }
 
 
 // velocityType
-//
+// 
 
-const velocityType::v_type &velocityType::
-v() const {
-    return this->v_.get();
+const velocityType::v_type& velocityType::
+v () const
+{
+  return this->v_.get ();
 }
 
-velocityType::v_type &velocityType::
-v() {
-    return this->v_.get();
-}
-
-void velocityType::
-v(const v_type &x) {
-    this->v_.set(x);
-}
-
-const velocityType::w_type &velocityType::
-w() const {
-    return this->w_.get();
-}
-
-velocityType::w_type &velocityType::
-w() {
-    return this->w_.get();
+velocityType::v_type& velocityType::
+v ()
+{
+  return this->v_.get ();
 }
 
 void velocityType::
-w(const w_type &x) {
-    this->w_.set(x);
+v (const v_type& x)
+{
+  this->v_.set (x);
 }
 
-const velocityType::z_type &velocityType::
-z() const {
-    return this->z_.get();
+const velocityType::w_type& velocityType::
+w () const
+{
+  return this->w_.get ();
 }
 
-velocityType::z_type &velocityType::
-z() {
-    return this->z_.get();
+velocityType::w_type& velocityType::
+w ()
+{
+  return this->w_.get ();
 }
 
 void velocityType::
-z(const z_type &x) {
-    this->z_.set(x);
+w (const w_type& x)
+{
+  this->w_.set (x);
+}
+
+const velocityType::z_type& velocityType::
+z () const
+{
+  return this->z_.get ();
+}
+
+velocityType::z_type& velocityType::
+z ()
+{
+  return this->z_.get ();
+}
+
+void velocityType::
+z (const z_type& x)
+{
+  this->z_.set (x);
 }
 
 
 // gridParam
-//
+// 
 
-const gridParam::Nx_type &gridParam::
-Nx() const {
-    return this->Nx_.get();
+const gridParam::Nx_type& gridParam::
+Nx () const
+{
+  return this->Nx_.get ();
 }
 
-gridParam::Nx_type &gridParam::
-Nx() {
-    return this->Nx_.get();
-}
-
-void gridParam::
-Nx(const Nx_type &x) {
-    this->Nx_.set(x);
-}
-
-const gridParam::Ny_type &gridParam::
-Ny() const {
-    return this->Ny_.get();
-}
-
-gridParam::Ny_type &gridParam::
-Ny() {
-    return this->Ny_.get();
+gridParam::Nx_type& gridParam::
+Nx ()
+{
+  return this->Nx_.get ();
 }
 
 void gridParam::
-Ny(const Ny_type &x) {
-    this->Ny_.set(x);
+Nx (const Nx_type& x)
+{
+  this->Nx_.set (x);
 }
 
-const gridParam::Nz_type &gridParam::
-Nz() const {
-    return this->Nz_.get();
+const gridParam::Ny_type& gridParam::
+Ny () const
+{
+  return this->Ny_.get ();
 }
 
-gridParam::Nz_type &gridParam::
-Nz() {
-    return this->Nz_.get();
+gridParam::Ny_type& gridParam::
+Ny ()
+{
+  return this->Ny_.get ();
 }
 
 void gridParam::
-Nz(const Nz_type &x) {
-    this->Nz_.set(x);
+Ny (const Ny_type& x)
+{
+  this->Ny_.set (x);
+}
+
+const gridParam::Nz_type& gridParam::
+Nz () const
+{
+  return this->Nz_.get ();
+}
+
+gridParam::Nz_type& gridParam::
+Nz ()
+{
+  return this->Nz_.get ();
+}
+
+void gridParam::
+Nz (const Nz_type& x)
+{
+  this->Nz_.set (x);
 }
 
 
 // domainParam
-//
+// 
 
-const domainParam::Lx_type &domainParam::
-Lx() const {
-    return this->Lx_.get();
+const domainParam::Lx_type& domainParam::
+Lx () const
+{
+  return this->Lx_.get ();
 }
 
-domainParam::Lx_type &domainParam::
-Lx() {
-    return this->Lx_.get();
-}
-
-void domainParam::
-Lx(const Lx_type &x) {
-    this->Lx_.set(x);
-}
-
-const domainParam::Ly_type &domainParam::
-Ly() const {
-    return this->Ly_.get();
-}
-
-domainParam::Ly_type &domainParam::
-Ly() {
-    return this->Ly_.get();
+domainParam::Lx_type& domainParam::
+Lx ()
+{
+  return this->Lx_.get ();
 }
 
 void domainParam::
-Ly(const Ly_type &x) {
-    this->Ly_.set(x);
+Lx (const Lx_type& x)
+{
+  this->Lx_.set (x);
 }
 
-const domainParam::Lz_type &domainParam::
-Lz() const {
-    return this->Lz_.get();
+const domainParam::Ly_type& domainParam::
+Ly () const
+{
+  return this->Ly_.get ();
 }
 
-domainParam::Lz_type &domainParam::
-Lz() {
-    return this->Lz_.get();
+domainParam::Ly_type& domainParam::
+Ly ()
+{
+  return this->Ly_.get ();
 }
 
 void domainParam::
-Lz(const Lz_type &x) {
-    this->Lz_.set(x);
+Ly (const Ly_type& x)
+{
+  this->Ly_.set (x);
+}
+
+const domainParam::Lz_type& domainParam::
+Lz () const
+{
+  return this->Lz_.get ();
+}
+
+domainParam::Lz_type& domainParam::
+Lz ()
+{
+  return this->Lz_.get ();
+}
+
+void domainParam::
+Lz (const Lz_type& x)
+{
+  this->Lz_.set (x);
 }
 
 
 // boundaryConditionsType
-//
+// 
 
-const boundaryConditionsType::left_type &boundaryConditionsType::
-left() const {
-    return this->left_.get();
+const boundaryConditionsType::left_type& boundaryConditionsType::
+left () const
+{
+  return this->left_.get ();
 }
 
-boundaryConditionsType::left_type &boundaryConditionsType::
-left() {
-    return this->left_.get();
-}
-
-void boundaryConditionsType::
-left(const left_type &x) {
-    this->left_.set(x);
+boundaryConditionsType::left_type& boundaryConditionsType::
+left ()
+{
+  return this->left_.get ();
 }
 
 void boundaryConditionsType::
-left(::std::auto_ptr<left_type> x) {
-    this->left_.set(x);
-}
-
-const boundaryConditionsType::up_type &boundaryConditionsType::
-up() const {
-    return this->up_.get();
-}
-
-boundaryConditionsType::up_type &boundaryConditionsType::
-up() {
-    return this->up_.get();
+left (const left_type& x)
+{
+  this->left_.set (x);
 }
 
 void boundaryConditionsType::
-up(const up_type &x) {
-    this->up_.set(x);
+left (::std::auto_ptr< left_type > x)
+{
+  this->left_.set (x);
+}
+
+const boundaryConditionsType::up_type& boundaryConditionsType::
+up () const
+{
+  return this->up_.get ();
+}
+
+boundaryConditionsType::up_type& boundaryConditionsType::
+up ()
+{
+  return this->up_.get ();
 }
 
 void boundaryConditionsType::
-up(::std::auto_ptr<up_type> x) {
-    this->up_.set(x);
-}
-
-const boundaryConditionsType::right_type &boundaryConditionsType::
-right() const {
-    return this->right_.get();
-}
-
-boundaryConditionsType::right_type &boundaryConditionsType::
-right() {
-    return this->right_.get();
+up (const up_type& x)
+{
+  this->up_.set (x);
 }
 
 void boundaryConditionsType::
-right(const right_type &x) {
-    this->right_.set(x);
+up (::std::auto_ptr< up_type > x)
+{
+  this->up_.set (x);
+}
+
+const boundaryConditionsType::right_type& boundaryConditionsType::
+right () const
+{
+  return this->right_.get ();
+}
+
+boundaryConditionsType::right_type& boundaryConditionsType::
+right ()
+{
+  return this->right_.get ();
 }
 
 void boundaryConditionsType::
-right(::std::auto_ptr<right_type> x) {
-    this->right_.set(x);
-}
-
-const boundaryConditionsType::down_type &boundaryConditionsType::
-down() const {
-    return this->down_.get();
-}
-
-boundaryConditionsType::down_type &boundaryConditionsType::
-down() {
-    return this->down_.get();
+right (const right_type& x)
+{
+  this->right_.set (x);
 }
 
 void boundaryConditionsType::
-down(const down_type &x) {
-    this->down_.set(x);
+right (::std::auto_ptr< right_type > x)
+{
+  this->right_.set (x);
+}
+
+const boundaryConditionsType::down_type& boundaryConditionsType::
+down () const
+{
+  return this->down_.get ();
+}
+
+boundaryConditionsType::down_type& boundaryConditionsType::
+down ()
+{
+  return this->down_.get ();
 }
 
 void boundaryConditionsType::
-down(::std::auto_ptr<down_type> x) {
-    this->down_.set(x);
-}
-
-const boundaryConditionsType::front_type &boundaryConditionsType::
-front() const {
-    return this->front_.get();
-}
-
-boundaryConditionsType::front_type &boundaryConditionsType::
-front() {
-    return this->front_.get();
+down (const down_type& x)
+{
+  this->down_.set (x);
 }
 
 void boundaryConditionsType::
-front(const front_type &x) {
-    this->front_.set(x);
+down (::std::auto_ptr< down_type > x)
+{
+  this->down_.set (x);
+}
+
+const boundaryConditionsType::front_type& boundaryConditionsType::
+front () const
+{
+  return this->front_.get ();
+}
+
+boundaryConditionsType::front_type& boundaryConditionsType::
+front ()
+{
+  return this->front_.get ();
 }
 
 void boundaryConditionsType::
-front(::std::auto_ptr<front_type> x) {
-    this->front_.set(x);
-}
-
-const boundaryConditionsType::back_type &boundaryConditionsType::
-back() const {
-    return this->back_.get();
-}
-
-boundaryConditionsType::back_type &boundaryConditionsType::
-back() {
-    return this->back_.get();
+front (const front_type& x)
+{
+  this->front_.set (x);
 }
 
 void boundaryConditionsType::
-back(const back_type &x) {
-    this->back_.set(x);
+front (::std::auto_ptr< front_type > x)
+{
+  this->front_.set (x);
+}
+
+const boundaryConditionsType::back_type& boundaryConditionsType::
+back () const
+{
+  return this->back_.get ();
+}
+
+boundaryConditionsType::back_type& boundaryConditionsType::
+back ()
+{
+  return this->back_.get ();
 }
 
 void boundaryConditionsType::
-back(::std::auto_ptr<back_type> x) {
-    this->back_.set(x);
+back (const back_type& x)
+{
+  this->back_.set (x);
+}
+
+void boundaryConditionsType::
+back (::std::auto_ptr< back_type > x)
+{
+  this->back_.set (x);
 }
 
 
 // simulation
-//
+// 
 
-const simulation::simulationParams_type &simulation::
-simulationParams() const {
-    return this->simulationParams_.get();
+const simulation::simulationParams_type& simulation::
+simulationParams () const
+{
+  return this->simulationParams_.get ();
 }
 
-simulation::simulationParams_type &simulation::
-simulationParams() {
-    return this->simulationParams_.get();
-}
-
-void simulation::
-simulationParams(const simulationParams_type &x) {
-    this->simulationParams_.set(x);
+simulation::simulationParams_type& simulation::
+simulationParams ()
+{
+  return this->simulationParams_.get ();
 }
 
 void simulation::
-simulationParams(::std::auto_ptr<simulationParams_type> x) {
-    this->simulationParams_.set(x);
-}
-
-const simulation::linkedCellParams_optional &simulation::
-linkedCellParams() const {
-    return this->linkedCellParams_;
-}
-
-simulation::linkedCellParams_optional &simulation::
-linkedCellParams() {
-    return this->linkedCellParams_;
+simulationParams (const simulationParams_type& x)
+{
+  this->simulationParams_.set (x);
 }
 
 void simulation::
-linkedCellParams(const linkedCellParams_type &x) {
-    this->linkedCellParams_.set(x);
+simulationParams (::std::auto_ptr< simulationParams_type > x)
+{
+  this->simulationParams_.set (x);
+}
+
+const simulation::linkedCellParams_optional& simulation::
+linkedCellParams () const
+{
+  return this->linkedCellParams_;
+}
+
+simulation::linkedCellParams_optional& simulation::
+linkedCellParams ()
+{
+  return this->linkedCellParams_;
 }
 
 void simulation::
-linkedCellParams(const linkedCellParams_optional &x) {
-    this->linkedCellParams_ = x;
+linkedCellParams (const linkedCellParams_type& x)
+{
+  this->linkedCellParams_.set (x);
 }
 
 void simulation::
-linkedCellParams(::std::auto_ptr<linkedCellParams_type> x) {
-    this->linkedCellParams_.set(x);
-}
-
-const simulation::thermostat_optional &simulation::
-thermostat() const {
-    return this->thermostat_;
-}
-
-simulation::thermostat_optional &simulation::
-thermostat() {
-    return this->thermostat_;
+linkedCellParams (const linkedCellParams_optional& x)
+{
+  this->linkedCellParams_ = x;
 }
 
 void simulation::
-thermostat(const thermostat_type &x) {
-    this->thermostat_.set(x);
+linkedCellParams (::std::auto_ptr< linkedCellParams_type > x)
+{
+  this->linkedCellParams_.set (x);
+}
+
+const simulation::membraneParams_optional& simulation::
+membraneParams () const
+{
+  return this->membraneParams_;
+}
+
+simulation::membraneParams_optional& simulation::
+membraneParams ()
+{
+  return this->membraneParams_;
 }
 
 void simulation::
-thermostat(const thermostat_optional &x) {
-    this->thermostat_ = x;
+membraneParams (const membraneParams_type& x)
+{
+  this->membraneParams_.set (x);
 }
 
 void simulation::
-thermostat(::std::auto_ptr<thermostat_type> x) {
-    this->thermostat_.set(x);
-}
-
-const simulation::cuboid_sequence &simulation::
-cuboid() const {
-    return this->cuboid_;
-}
-
-simulation::cuboid_sequence &simulation::
-cuboid() {
-    return this->cuboid_;
+membraneParams (const membraneParams_optional& x)
+{
+  this->membraneParams_ = x;
 }
 
 void simulation::
-cuboid(const cuboid_sequence &s) {
-    this->cuboid_ = s;
+membraneParams (::std::auto_ptr< membraneParams_type > x)
+{
+  this->membraneParams_.set (x);
 }
 
-const simulation::sphere_sequence &simulation::
-sphere() const {
-    return this->sphere_;
+const simulation::thermostat_optional& simulation::
+thermostat () const
+{
+  return this->thermostat_;
 }
 
-simulation::sphere_sequence &simulation::
-sphere() {
-    return this->sphere_;
+simulation::thermostat_optional& simulation::
+thermostat ()
+{
+  return this->thermostat_;
 }
 
 void simulation::
-sphere(const sphere_sequence &s) {
-    this->sphere_ = s;
+thermostat (const thermostat_type& x)
+{
+  this->thermostat_.set (x);
+}
+
+void simulation::
+thermostat (const thermostat_optional& x)
+{
+  this->thermostat_ = x;
+}
+
+void simulation::
+thermostat (::std::auto_ptr< thermostat_type > x)
+{
+  this->thermostat_.set (x);
+}
+
+const simulation::cuboid_sequence& simulation::
+cuboid () const
+{
+  return this->cuboid_;
+}
+
+simulation::cuboid_sequence& simulation::
+cuboid ()
+{
+  return this->cuboid_;
+}
+
+void simulation::
+cuboid (const cuboid_sequence& s)
+{
+  this->cuboid_ = s;
+}
+
+const simulation::sphere_sequence& simulation::
+sphere () const
+{
+  return this->sphere_;
+}
+
+simulation::sphere_sequence& simulation::
+sphere ()
+{
+  return this->sphere_;
+}
+
+void simulation::
+sphere (const sphere_sequence& s)
+{
+  this->sphere_ = s;
 }
 
 
@@ -1075,2117 +1378,2592 @@ sphere(const sphere_sequence &s) {
 //
 
 simulationParamsType::
-simulationParamsType(const endTime_type &endTime,
-                     const deltaT_type &deltaT,
-                     const modelType_type &modelType,
-                     const containerType_type &containerType,
-                     const plotInterval_type &plotInterval,
-                     const objectType_type &objectType,
-                     const checkpointing_type &checkpointing)
-        : ::xml_schema::type(),
-          endTime_(endTime, this),
-          deltaT_(deltaT, this),
-          modelType_(modelType, this),
-          containerType_(containerType, this),
-          plotInterval_(plotInterval, this),
-          objectType_(objectType, this),
-          checkpointing_(checkpointing, this) {
+simulationParamsType (const endTime_type& endTime,
+                      const deltaT_type& deltaT,
+                      const modelType_type& modelType,
+                      const containerType_type& containerType,
+                      const plotInterval_type& plotInterval,
+                      const objectType_type& objectType,
+                      const checkpointing_type& checkpointing)
+: ::xml_schema::type (),
+  endTime_ (endTime, this),
+  deltaT_ (deltaT, this),
+  modelType_ (modelType, this),
+  containerType_ (containerType, this),
+  plotInterval_ (plotInterval, this),
+  objectType_ (objectType, this),
+  checkpointing_ (checkpointing, this)
+{
 }
 
 simulationParamsType::
-simulationParamsType(const simulationParamsType &x,
-                     ::xml_schema::flags f,
-                     ::xml_schema::container *c)
-        : ::xml_schema::type(x, f, c),
-          endTime_(x.endTime_, f, this),
-          deltaT_(x.deltaT_, f, this),
-          modelType_(x.modelType_, f, this),
-          containerType_(x.containerType_, f, this),
-          plotInterval_(x.plotInterval_, f, this),
-          objectType_(x.objectType_, f, this),
-          checkpointing_(x.checkpointing_, f, this) {
+simulationParamsType (const simulationParamsType& x,
+                      ::xml_schema::flags f,
+                      ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  endTime_ (x.endTime_, f, this),
+  deltaT_ (x.deltaT_, f, this),
+  modelType_ (x.modelType_, f, this),
+  containerType_ (x.containerType_, f, this),
+  plotInterval_ (x.plotInterval_, f, this),
+  objectType_ (x.objectType_, f, this),
+  checkpointing_ (x.checkpointing_, f, this)
+{
 }
 
 simulationParamsType::
-simulationParamsType(const ::xercesc::DOMElement &e,
-                     ::xml_schema::flags f,
-                     ::xml_schema::container *c)
-        : ::xml_schema::type(e, f | ::xml_schema::flags::base, c),
-          endTime_(this),
-          deltaT_(this),
-          modelType_(this),
-          containerType_(this),
-          plotInterval_(this),
-          objectType_(this),
-          checkpointing_(this) {
-    if ((f & ::xml_schema::flags::base) == 0) {
-        ::xsd::cxx::xml::dom::parser<char> p(e, true, false, false);
-        this->parse(p, f);
-    }
+simulationParamsType (const ::xercesc::DOMElement& e,
+                      ::xml_schema::flags f,
+                      ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  endTime_ (this),
+  deltaT_ (this),
+  modelType_ (this),
+  containerType_ (this),
+  plotInterval_ (this),
+  objectType_ (this),
+  checkpointing_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
 }
 
 void simulationParamsType::
-parse(::xsd::cxx::xml::dom::parser<char> &p,
-      ::xml_schema::flags f) {
-    for (; p.more_content(); p.next_content(false)) {
-        const ::xercesc::DOMElement &i(p.cur_element());
-        const ::xsd::cxx::xml::qualified_name<char> n(
-                ::xsd::cxx::xml::dom::name<char>(i));
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
 
-        // endTime
-        //
-        if (n.name() == "endTime" && n.namespace_().empty()) {
-            if (!endTime_.present()) {
-                this->endTime_.set(endTime_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // deltaT
-        //
-        if (n.name() == "deltaT" && n.namespace_().empty()) {
-            if (!deltaT_.present()) {
-                this->deltaT_.set(deltaT_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // modelType
-        //
-        if (n.name() == "modelType" && n.namespace_().empty()) {
-            ::std::auto_ptr<modelType_type> r(
-                    modelType_traits::create(i, f, this));
-
-            if (!modelType_.present()) {
-                this->modelType_.set(r);
-                continue;
-            }
-        }
-
-        // containerType
-        //
-        if (n.name() == "containerType" && n.namespace_().empty()) {
-            ::std::auto_ptr<containerType_type> r(
-                    containerType_traits::create(i, f, this));
-
-            if (!containerType_.present()) {
-                this->containerType_.set(r);
-                continue;
-            }
-        }
-
-        // plotInterval
-        //
-        if (n.name() == "plotInterval" && n.namespace_().empty()) {
-            if (!plotInterval_.present()) {
-                this->plotInterval_.set(plotInterval_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // objectType
-        //
-        if (n.name() == "objectType" && n.namespace_().empty()) {
-            ::std::auto_ptr<objectType_type> r(
-                    objectType_traits::create(i, f, this));
-
-            if (!objectType_.present()) {
-                this->objectType_.set(r);
-                continue;
-            }
-        }
-
-        // checkpointing
-        //
-        if (n.name() == "checkpointing" && n.namespace_().empty()) {
-            if (!checkpointing_.present()) {
-                this->checkpointing_.set(checkpointing_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        break;
+    // endTime
+    //
+    if (n.name () == "endTime" && n.namespace_ ().empty ())
+    {
+      if (!endTime_.present ())
+      {
+        this->endTime_.set (endTime_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!endTime_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "endTime",
-                "");
+    // deltaT
+    //
+    if (n.name () == "deltaT" && n.namespace_ ().empty ())
+    {
+      if (!deltaT_.present ())
+      {
+        this->deltaT_.set (deltaT_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!deltaT_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "deltaT",
-                "");
+    // modelType
+    //
+    if (n.name () == "modelType" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< modelType_type > r (
+        modelType_traits::create (i, f, this));
+
+      if (!modelType_.present ())
+      {
+        this->modelType_.set (r);
+        continue;
+      }
     }
 
-    if (!modelType_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "modelType",
-                "");
+    // containerType
+    //
+    if (n.name () == "containerType" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< containerType_type > r (
+        containerType_traits::create (i, f, this));
+
+      if (!containerType_.present ())
+      {
+        this->containerType_.set (r);
+        continue;
+      }
     }
 
-    if (!containerType_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "containerType",
-                "");
+    // plotInterval
+    //
+    if (n.name () == "plotInterval" && n.namespace_ ().empty ())
+    {
+      if (!plotInterval_.present ())
+      {
+        this->plotInterval_.set (plotInterval_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!plotInterval_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "plotInterval",
-                "");
+    // objectType
+    //
+    if (n.name () == "objectType" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< objectType_type > r (
+        objectType_traits::create (i, f, this));
+
+      if (!objectType_.present ())
+      {
+        this->objectType_.set (r);
+        continue;
+      }
     }
 
-    if (!objectType_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "objectType",
-                "");
+    // checkpointing
+    //
+    if (n.name () == "checkpointing" && n.namespace_ ().empty ())
+    {
+      if (!checkpointing_.present ())
+      {
+        this->checkpointing_.set (checkpointing_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!checkpointing_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "checkpointing",
-                "");
-    }
+    break;
+  }
+
+  if (!endTime_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "endTime",
+      "");
+  }
+
+  if (!deltaT_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "deltaT",
+      "");
+  }
+
+  if (!modelType_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "modelType",
+      "");
+  }
+
+  if (!containerType_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "containerType",
+      "");
+  }
+
+  if (!plotInterval_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "plotInterval",
+      "");
+  }
+
+  if (!objectType_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "objectType",
+      "");
+  }
+
+  if (!checkpointing_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "checkpointing",
+      "");
+  }
 }
 
-simulationParamsType *simulationParamsType::
-_clone(::xml_schema::flags f,
-       ::xml_schema::container *c) const {
-    return new class simulationParamsType(*this, f, c);
+simulationParamsType* simulationParamsType::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class simulationParamsType (*this, f, c);
 }
 
-simulationParamsType &simulationParamsType::
-operator=(const simulationParamsType &x) {
-    if (this != &x) {
-        static_cast< ::xml_schema::type & > (*this) = x;
-        this->endTime_ = x.endTime_;
-        this->deltaT_ = x.deltaT_;
-        this->modelType_ = x.modelType_;
-        this->containerType_ = x.containerType_;
-        this->plotInterval_ = x.plotInterval_;
-        this->objectType_ = x.objectType_;
-        this->checkpointing_ = x.checkpointing_;
-    }
+simulationParamsType& simulationParamsType::
+operator= (const simulationParamsType& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->endTime_ = x.endTime_;
+    this->deltaT_ = x.deltaT_;
+    this->modelType_ = x.modelType_;
+    this->containerType_ = x.containerType_;
+    this->plotInterval_ = x.plotInterval_;
+    this->objectType_ = x.objectType_;
+    this->checkpointing_ = x.checkpointing_;
+  }
 
-    return *this;
+  return *this;
 }
 
 simulationParamsType::
-~simulationParamsType() {
+~simulationParamsType ()
+{
 }
 
 // linkedCellParamsType
 //
 
 linkedCellParamsType::
-linkedCellParamsType(const domainSize_type &domainSize,
-                     const cutoffRadius_type &cutoffRadius,
-                     const boundaryConditions_type &boundaryConditions,
-                     const gravitationalAcceleration_type &gravitationalAcceleration)
-        : ::xml_schema::type(),
-          domainSize_(domainSize, this),
-          cutoffRadius_(cutoffRadius, this),
-          boundaryConditions_(boundaryConditions, this),
-          gravitationalAcceleration_(gravitationalAcceleration, this) {
+linkedCellParamsType (const domainSize_type& domainSize,
+                      const cutoffRadius_type& cutoffRadius,
+                      const boundaryConditions_type& boundaryConditions,
+                      const gravitationalAcceleration_type& gravitationalAcceleration,
+                      const isMembrane_type& isMembrane)
+: ::xml_schema::type (),
+  domainSize_ (domainSize, this),
+  cutoffRadius_ (cutoffRadius, this),
+  boundaryConditions_ (boundaryConditions, this),
+  gravitationalAcceleration_ (gravitationalAcceleration, this),
+  isMembrane_ (isMembrane, this)
+{
 }
 
 linkedCellParamsType::
-linkedCellParamsType(::std::auto_ptr<domainSize_type> domainSize,
-                     const cutoffRadius_type &cutoffRadius,
-                     ::std::auto_ptr<boundaryConditions_type> boundaryConditions,
-                     const gravitationalAcceleration_type &gravitationalAcceleration)
-        : ::xml_schema::type(),
-          domainSize_(domainSize, this),
-          cutoffRadius_(cutoffRadius, this),
-          boundaryConditions_(boundaryConditions, this),
-          gravitationalAcceleration_(gravitationalAcceleration, this) {
+linkedCellParamsType (::std::auto_ptr< domainSize_type > domainSize,
+                      const cutoffRadius_type& cutoffRadius,
+                      ::std::auto_ptr< boundaryConditions_type > boundaryConditions,
+                      const gravitationalAcceleration_type& gravitationalAcceleration,
+                      const isMembrane_type& isMembrane)
+: ::xml_schema::type (),
+  domainSize_ (domainSize, this),
+  cutoffRadius_ (cutoffRadius, this),
+  boundaryConditions_ (boundaryConditions, this),
+  gravitationalAcceleration_ (gravitationalAcceleration, this),
+  isMembrane_ (isMembrane, this)
+{
 }
 
 linkedCellParamsType::
-linkedCellParamsType(const linkedCellParamsType &x,
-                     ::xml_schema::flags f,
-                     ::xml_schema::container *c)
-        : ::xml_schema::type(x, f, c),
-          domainSize_(x.domainSize_, f, this),
-          cutoffRadius_(x.cutoffRadius_, f, this),
-          boundaryConditions_(x.boundaryConditions_, f, this),
-          gravitationalAcceleration_(x.gravitationalAcceleration_, f, this) {
+linkedCellParamsType (const linkedCellParamsType& x,
+                      ::xml_schema::flags f,
+                      ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  domainSize_ (x.domainSize_, f, this),
+  cutoffRadius_ (x.cutoffRadius_, f, this),
+  boundaryConditions_ (x.boundaryConditions_, f, this),
+  gravitationalAcceleration_ (x.gravitationalAcceleration_, f, this),
+  isMembrane_ (x.isMembrane_, f, this)
+{
 }
 
 linkedCellParamsType::
-linkedCellParamsType(const ::xercesc::DOMElement &e,
-                     ::xml_schema::flags f,
-                     ::xml_schema::container *c)
-        : ::xml_schema::type(e, f | ::xml_schema::flags::base, c),
-          domainSize_(this),
-          cutoffRadius_(this),
-          boundaryConditions_(this),
-          gravitationalAcceleration_(this) {
-    if ((f & ::xml_schema::flags::base) == 0) {
-        ::xsd::cxx::xml::dom::parser<char> p(e, true, false, false);
-        this->parse(p, f);
-    }
+linkedCellParamsType (const ::xercesc::DOMElement& e,
+                      ::xml_schema::flags f,
+                      ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  domainSize_ (this),
+  cutoffRadius_ (this),
+  boundaryConditions_ (this),
+  gravitationalAcceleration_ (this),
+  isMembrane_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
 }
 
 void linkedCellParamsType::
-parse(::xsd::cxx::xml::dom::parser<char> &p,
-      ::xml_schema::flags f) {
-    for (; p.more_content(); p.next_content(false)) {
-        const ::xercesc::DOMElement &i(p.cur_element());
-        const ::xsd::cxx::xml::qualified_name<char> n(
-                ::xsd::cxx::xml::dom::name<char>(i));
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
 
-        // domainSize
-        //
-        if (n.name() == "domainSize" && n.namespace_().empty()) {
-            ::std::auto_ptr<domainSize_type> r(
-                    domainSize_traits::create(i, f, this));
+    // domainSize
+    //
+    if (n.name () == "domainSize" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< domainSize_type > r (
+        domainSize_traits::create (i, f, this));
 
-            if (!domainSize_.present()) {
-                this->domainSize_.set(r);
-                continue;
-            }
-        }
-
-        // cutoffRadius
-        //
-        if (n.name() == "cutoffRadius" && n.namespace_().empty()) {
-            if (!cutoffRadius_.present()) {
-                this->cutoffRadius_.set(cutoffRadius_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // boundaryConditions
-        //
-        if (n.name() == "boundaryConditions" && n.namespace_().empty()) {
-            ::std::auto_ptr<boundaryConditions_type> r(
-                    boundaryConditions_traits::create(i, f, this));
-
-            if (!boundaryConditions_.present()) {
-                this->boundaryConditions_.set(r);
-                continue;
-            }
-        }
-
-        // gravitationalAcceleration
-        //
-        if (n.name() == "gravitationalAcceleration" && n.namespace_().empty()) {
-            if (!gravitationalAcceleration_.present()) {
-                this->gravitationalAcceleration_.set(gravitationalAcceleration_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        break;
+      if (!domainSize_.present ())
+      {
+        this->domainSize_.set (r);
+        continue;
+      }
     }
 
-    if (!domainSize_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "domainSize",
-                "");
+    // cutoffRadius
+    //
+    if (n.name () == "cutoffRadius" && n.namespace_ ().empty ())
+    {
+      if (!cutoffRadius_.present ())
+      {
+        this->cutoffRadius_.set (cutoffRadius_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!cutoffRadius_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "cutoffRadius",
-                "");
+    // boundaryConditions
+    //
+    if (n.name () == "boundaryConditions" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< boundaryConditions_type > r (
+        boundaryConditions_traits::create (i, f, this));
+
+      if (!boundaryConditions_.present ())
+      {
+        this->boundaryConditions_.set (r);
+        continue;
+      }
     }
 
-    if (!boundaryConditions_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "boundaryConditions",
-                "");
+    // gravitationalAcceleration
+    //
+    if (n.name () == "gravitationalAcceleration" && n.namespace_ ().empty ())
+    {
+      if (!gravitationalAcceleration_.present ())
+      {
+        this->gravitationalAcceleration_.set (gravitationalAcceleration_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!gravitationalAcceleration_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "gravitationalAcceleration",
-                "");
+    // isMembrane
+    //
+    if (n.name () == "isMembrane" && n.namespace_ ().empty ())
+    {
+      if (!isMembrane_.present ())
+      {
+        this->isMembrane_.set (isMembrane_traits::create (i, f, this));
+        continue;
+      }
     }
+
+    break;
+  }
+
+  if (!domainSize_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "domainSize",
+      "");
+  }
+
+  if (!cutoffRadius_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "cutoffRadius",
+      "");
+  }
+
+  if (!boundaryConditions_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "boundaryConditions",
+      "");
+  }
+
+  if (!gravitationalAcceleration_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "gravitationalAcceleration",
+      "");
+  }
+
+  if (!isMembrane_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "isMembrane",
+      "");
+  }
 }
 
-linkedCellParamsType *linkedCellParamsType::
-_clone(::xml_schema::flags f,
-       ::xml_schema::container *c) const {
-    return new class linkedCellParamsType(*this, f, c);
+linkedCellParamsType* linkedCellParamsType::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class linkedCellParamsType (*this, f, c);
 }
 
-linkedCellParamsType &linkedCellParamsType::
-operator=(const linkedCellParamsType &x) {
-    if (this != &x) {
-        static_cast< ::xml_schema::type & > (*this) = x;
-        this->domainSize_ = x.domainSize_;
-        this->cutoffRadius_ = x.cutoffRadius_;
-        this->boundaryConditions_ = x.boundaryConditions_;
-        this->gravitationalAcceleration_ = x.gravitationalAcceleration_;
-    }
+linkedCellParamsType& linkedCellParamsType::
+operator= (const linkedCellParamsType& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->domainSize_ = x.domainSize_;
+    this->cutoffRadius_ = x.cutoffRadius_;
+    this->boundaryConditions_ = x.boundaryConditions_;
+    this->gravitationalAcceleration_ = x.gravitationalAcceleration_;
+    this->isMembrane_ = x.isMembrane_;
+  }
 
-    return *this;
+  return *this;
 }
 
 linkedCellParamsType::
-~linkedCellParamsType() {
+~linkedCellParamsType ()
+{
+}
+
+// membraneParamsType
+//
+
+membraneParamsType::
+membraneParamsType (const stiffness_type& stiffness,
+                    const averageBond_type& averageBond,
+                    const pullUpForce_type& pullUpForce)
+: ::xml_schema::type (),
+  stiffness_ (stiffness, this),
+  averageBond_ (averageBond, this),
+  pullUpForce_ (pullUpForce, this)
+{
+}
+
+membraneParamsType::
+membraneParamsType (const membraneParamsType& x,
+                    ::xml_schema::flags f,
+                    ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  stiffness_ (x.stiffness_, f, this),
+  averageBond_ (x.averageBond_, f, this),
+  pullUpForce_ (x.pullUpForce_, f, this)
+{
+}
+
+membraneParamsType::
+membraneParamsType (const ::xercesc::DOMElement& e,
+                    ::xml_schema::flags f,
+                    ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  stiffness_ (this),
+  averageBond_ (this),
+  pullUpForce_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
+}
+
+void membraneParamsType::
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
+
+    // stiffness
+    //
+    if (n.name () == "stiffness" && n.namespace_ ().empty ())
+    {
+      if (!stiffness_.present ())
+      {
+        this->stiffness_.set (stiffness_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // averageBond
+    //
+    if (n.name () == "averageBond" && n.namespace_ ().empty ())
+    {
+      if (!averageBond_.present ())
+      {
+        this->averageBond_.set (averageBond_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // pullUpForce
+    //
+    if (n.name () == "pullUpForce" && n.namespace_ ().empty ())
+    {
+      if (!pullUpForce_.present ())
+      {
+        this->pullUpForce_.set (pullUpForce_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    break;
+  }
+
+  if (!stiffness_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "stiffness",
+      "");
+  }
+
+  if (!averageBond_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "averageBond",
+      "");
+  }
+
+  if (!pullUpForce_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "pullUpForce",
+      "");
+  }
+}
+
+membraneParamsType* membraneParamsType::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class membraneParamsType (*this, f, c);
+}
+
+membraneParamsType& membraneParamsType::
+operator= (const membraneParamsType& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->stiffness_ = x.stiffness_;
+    this->averageBond_ = x.averageBond_;
+    this->pullUpForce_ = x.pullUpForce_;
+  }
+
+  return *this;
+}
+
+membraneParamsType::
+~membraneParamsType ()
+{
 }
 
 // cuboidType
 //
 
 cuboidType::
-cuboidType(const position_type &position,
-           const velocity_type &velocity,
-           const mass_type &mass,
-           const grid_type &grid,
-           const spacing_type &spacing,
-           const sigma_type &sigma,
-           const epsilon_type &epsilon,
-           const membrane_type &membrane,
-           const gravitationalAcceleration_type &gravitationalAcceleration,
-           const type_type &type)
-        : ::xml_schema::type(),
-          position_(position, this),
-          velocity_(velocity, this),
-          mass_(mass, this),
-          grid_(grid, this),
-          spacing_(spacing, this),
-          sigma_(sigma, this),
-          epsilon_(epsilon, this),
-          membrane_(membrane, this),
-          gravitationalAcceleration_(gravitationalAcceleration, this),
-          type_(type, this) {
+cuboidType (const position_type& position,
+            const velocity_type& velocity,
+            const mass_type& mass,
+            const grid_type& grid,
+            const spacing_type& spacing,
+            const sigma_type& sigma,
+            const epsilon_type& epsilon,
+            const isMembrane_type& isMembrane,
+            const gravitationalAcceleration_type& gravitationalAcceleration,
+            const type_type& type)
+: ::xml_schema::type (),
+  position_ (position, this),
+  velocity_ (velocity, this),
+  mass_ (mass, this),
+  grid_ (grid, this),
+  spacing_ (spacing, this),
+  sigma_ (sigma, this),
+  epsilon_ (epsilon, this),
+  isMembrane_ (isMembrane, this),
+  gravitationalAcceleration_ (gravitationalAcceleration, this),
+  type_ (type, this)
+{
 }
 
 cuboidType::
-cuboidType(::std::auto_ptr<position_type> position,
-           ::std::auto_ptr<velocity_type> velocity,
-           const mass_type &mass,
-           ::std::auto_ptr<grid_type> grid,
-           const spacing_type &spacing,
-           const sigma_type &sigma,
-           const epsilon_type &epsilon,
-           const membrane_type &membrane,
-           const gravitationalAcceleration_type &gravitationalAcceleration,
-           const type_type &type)
-        : ::xml_schema::type(),
-          position_(position, this),
-          velocity_(velocity, this),
-          mass_(mass, this),
-          grid_(grid, this),
-          spacing_(spacing, this),
-          sigma_(sigma, this),
-          epsilon_(epsilon, this),
-          membrane_(membrane, this),
-          gravitationalAcceleration_(gravitationalAcceleration, this),
-          type_(type, this) {
+cuboidType (::std::auto_ptr< position_type > position,
+            ::std::auto_ptr< velocity_type > velocity,
+            const mass_type& mass,
+            ::std::auto_ptr< grid_type > grid,
+            const spacing_type& spacing,
+            const sigma_type& sigma,
+            const epsilon_type& epsilon,
+            const isMembrane_type& isMembrane,
+            const gravitationalAcceleration_type& gravitationalAcceleration,
+            const type_type& type)
+: ::xml_schema::type (),
+  position_ (position, this),
+  velocity_ (velocity, this),
+  mass_ (mass, this),
+  grid_ (grid, this),
+  spacing_ (spacing, this),
+  sigma_ (sigma, this),
+  epsilon_ (epsilon, this),
+  isMembrane_ (isMembrane, this),
+  gravitationalAcceleration_ (gravitationalAcceleration, this),
+  type_ (type, this)
+{
 }
 
 cuboidType::
-cuboidType(const cuboidType &x,
-           ::xml_schema::flags f,
-           ::xml_schema::container *c)
-        : ::xml_schema::type(x, f, c),
-          position_(x.position_, f, this),
-          velocity_(x.velocity_, f, this),
-          mass_(x.mass_, f, this),
-          grid_(x.grid_, f, this),
-          spacing_(x.spacing_, f, this),
-          sigma_(x.sigma_, f, this),
-          epsilon_(x.epsilon_, f, this),
-          membrane_(x.membrane_, f, this),
-          gravitationalAcceleration_(x.gravitationalAcceleration_, f, this),
-          type_(x.type_, f, this) {
+cuboidType (const cuboidType& x,
+            ::xml_schema::flags f,
+            ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  position_ (x.position_, f, this),
+  velocity_ (x.velocity_, f, this),
+  mass_ (x.mass_, f, this),
+  grid_ (x.grid_, f, this),
+  spacing_ (x.spacing_, f, this),
+  sigma_ (x.sigma_, f, this),
+  epsilon_ (x.epsilon_, f, this),
+  isMembrane_ (x.isMembrane_, f, this),
+  gravitationalAcceleration_ (x.gravitationalAcceleration_, f, this),
+  type_ (x.type_, f, this)
+{
 }
 
 cuboidType::
-cuboidType(const ::xercesc::DOMElement &e,
-           ::xml_schema::flags f,
-           ::xml_schema::container *c)
-        : ::xml_schema::type(e, f | ::xml_schema::flags::base, c),
-          position_(this),
-          velocity_(this),
-          mass_(this),
-          grid_(this),
-          spacing_(this),
-          sigma_(this),
-          epsilon_(this),
-          membrane_(this),
-          gravitationalAcceleration_(this),
-          type_(this) {
-    if ((f & ::xml_schema::flags::base) == 0) {
-        ::xsd::cxx::xml::dom::parser<char> p(e, true, false, false);
-        this->parse(p, f);
-    }
+cuboidType (const ::xercesc::DOMElement& e,
+            ::xml_schema::flags f,
+            ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  position_ (this),
+  velocity_ (this),
+  mass_ (this),
+  grid_ (this),
+  spacing_ (this),
+  sigma_ (this),
+  epsilon_ (this),
+  isMembrane_ (this),
+  gravitationalAcceleration_ (this),
+  type_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
 }
 
 void cuboidType::
-parse(::xsd::cxx::xml::dom::parser<char> &p,
-      ::xml_schema::flags f) {
-    for (; p.more_content(); p.next_content(false)) {
-        const ::xercesc::DOMElement &i(p.cur_element());
-        const ::xsd::cxx::xml::qualified_name<char> n(
-                ::xsd::cxx::xml::dom::name<char>(i));
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
 
-        // position
-        //
-        if (n.name() == "position" && n.namespace_().empty()) {
-            ::std::auto_ptr<position_type> r(
-                    position_traits::create(i, f, this));
+    // position
+    //
+    if (n.name () == "position" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< position_type > r (
+        position_traits::create (i, f, this));
 
-            if (!position_.present()) {
-                this->position_.set(r);
-                continue;
-            }
-        }
-
-        // velocity
-        //
-        if (n.name() == "velocity" && n.namespace_().empty()) {
-            ::std::auto_ptr<velocity_type> r(
-                    velocity_traits::create(i, f, this));
-
-            if (!velocity_.present()) {
-                this->velocity_.set(r);
-                continue;
-            }
-        }
-
-        // mass
-        //
-        if (n.name() == "mass" && n.namespace_().empty()) {
-            if (!mass_.present()) {
-                this->mass_.set(mass_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // grid
-        //
-        if (n.name() == "grid" && n.namespace_().empty()) {
-            ::std::auto_ptr<grid_type> r(
-                    grid_traits::create(i, f, this));
-
-            if (!grid_.present()) {
-                this->grid_.set(r);
-                continue;
-            }
-        }
-
-        // spacing
-        //
-        if (n.name() == "spacing" && n.namespace_().empty()) {
-            if (!spacing_.present()) {
-                this->spacing_.set(spacing_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // sigma
-        //
-        if (n.name() == "sigma" && n.namespace_().empty()) {
-            if (!sigma_.present()) {
-                this->sigma_.set(sigma_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // epsilon
-        //
-        if (n.name() == "epsilon" && n.namespace_().empty()) {
-            if (!epsilon_.present()) {
-                this->epsilon_.set(epsilon_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // membrane
-        //
-        if (n.name() == "membrane" && n.namespace_().empty()) {
-            if (!membrane_.present()) {
-                this->membrane_.set(membrane_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // gravitationalAcceleration
-        //
-        if (n.name() == "gravitationalAcceleration" && n.namespace_().empty()) {
-            if (!gravitationalAcceleration_.present()) {
-                this->gravitationalAcceleration_.set(gravitationalAcceleration_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // type
-        //
-        if (n.name() == "type" && n.namespace_().empty()) {
-            if (!type_.present()) {
-                this->type_.set(type_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        break;
+      if (!position_.present ())
+      {
+        this->position_.set (r);
+        continue;
+      }
     }
 
-    if (!position_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "position",
-                "");
+    // velocity
+    //
+    if (n.name () == "velocity" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< velocity_type > r (
+        velocity_traits::create (i, f, this));
+
+      if (!velocity_.present ())
+      {
+        this->velocity_.set (r);
+        continue;
+      }
     }
 
-    if (!velocity_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "velocity",
-                "");
+    // mass
+    //
+    if (n.name () == "mass" && n.namespace_ ().empty ())
+    {
+      if (!mass_.present ())
+      {
+        this->mass_.set (mass_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!mass_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "mass",
-                "");
+    // grid
+    //
+    if (n.name () == "grid" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< grid_type > r (
+        grid_traits::create (i, f, this));
+
+      if (!grid_.present ())
+      {
+        this->grid_.set (r);
+        continue;
+      }
     }
 
-    if (!grid_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "grid",
-                "");
+    // spacing
+    //
+    if (n.name () == "spacing" && n.namespace_ ().empty ())
+    {
+      if (!spacing_.present ())
+      {
+        this->spacing_.set (spacing_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!spacing_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "spacing",
-                "");
+    // sigma
+    //
+    if (n.name () == "sigma" && n.namespace_ ().empty ())
+    {
+      if (!sigma_.present ())
+      {
+        this->sigma_.set (sigma_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!sigma_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "sigma",
-                "");
+    // epsilon
+    //
+    if (n.name () == "epsilon" && n.namespace_ ().empty ())
+    {
+      if (!epsilon_.present ())
+      {
+        this->epsilon_.set (epsilon_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!epsilon_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "epsilon",
-                "");
+    // isMembrane
+    //
+    if (n.name () == "isMembrane" && n.namespace_ ().empty ())
+    {
+      if (!isMembrane_.present ())
+      {
+        this->isMembrane_.set (isMembrane_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!membrane_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "membrane",
-                "");
+    // gravitationalAcceleration
+    //
+    if (n.name () == "gravitationalAcceleration" && n.namespace_ ().empty ())
+    {
+      if (!gravitationalAcceleration_.present ())
+      {
+        this->gravitationalAcceleration_.set (gravitationalAcceleration_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!gravitationalAcceleration_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "gravitationalAcceleration",
-                "");
+    // type
+    //
+    if (n.name () == "type" && n.namespace_ ().empty ())
+    {
+      if (!type_.present ())
+      {
+        this->type_.set (type_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!type_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "type",
-                "");
-    }
+    break;
+  }
+
+  if (!position_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "position",
+      "");
+  }
+
+  if (!velocity_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "velocity",
+      "");
+  }
+
+  if (!mass_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "mass",
+      "");
+  }
+
+  if (!grid_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "grid",
+      "");
+  }
+
+  if (!spacing_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "spacing",
+      "");
+  }
+
+  if (!sigma_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "sigma",
+      "");
+  }
+
+  if (!epsilon_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "epsilon",
+      "");
+  }
+
+  if (!isMembrane_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "isMembrane",
+      "");
+  }
+
+  if (!gravitationalAcceleration_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "gravitationalAcceleration",
+      "");
+  }
+
+  if (!type_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "type",
+      "");
+  }
 }
 
-cuboidType *cuboidType::
-_clone(::xml_schema::flags f,
-       ::xml_schema::container *c) const {
-    return new class cuboidType(*this, f, c);
+cuboidType* cuboidType::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class cuboidType (*this, f, c);
 }
 
-cuboidType &cuboidType::
-operator=(const cuboidType &x) {
-    if (this != &x) {
-        static_cast< ::xml_schema::type & > (*this) = x;
-        this->position_ = x.position_;
-        this->velocity_ = x.velocity_;
-        this->mass_ = x.mass_;
-        this->grid_ = x.grid_;
-        this->spacing_ = x.spacing_;
-        this->sigma_ = x.sigma_;
-        this->epsilon_ = x.epsilon_;
-        this->membrane_ = x.membrane_;
-        this->gravitationalAcceleration_ = x.gravitationalAcceleration_;
-        this->type_ = x.type_;
-    }
+cuboidType& cuboidType::
+operator= (const cuboidType& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->position_ = x.position_;
+    this->velocity_ = x.velocity_;
+    this->mass_ = x.mass_;
+    this->grid_ = x.grid_;
+    this->spacing_ = x.spacing_;
+    this->sigma_ = x.sigma_;
+    this->epsilon_ = x.epsilon_;
+    this->isMembrane_ = x.isMembrane_;
+    this->gravitationalAcceleration_ = x.gravitationalAcceleration_;
+    this->type_ = x.type_;
+  }
 
-    return *this;
+  return *this;
 }
 
 cuboidType::
-~cuboidType() {
+~cuboidType ()
+{
 }
 
 // thermostatType
 //
 
 thermostatType::
-thermostatType(const initialTemperature_type &initialTemperature,
-               const thermostatInterval_type &thermostatInterval)
-        : ::xml_schema::type(),
-          initialTemperature_(initialTemperature, this),
-          targetTemperature_(this),
-          maxTemperatureChange_(this),
-          thermostatInterval_(thermostatInterval, this) {
+thermostatType (const initialTemperature_type& initialTemperature,
+                const thermostatInterval_type& thermostatInterval)
+: ::xml_schema::type (),
+  initialTemperature_ (initialTemperature, this),
+  targetTemperature_ (this),
+  maxTemperatureChange_ (this),
+  thermostatInterval_ (thermostatInterval, this)
+{
 }
 
 thermostatType::
-thermostatType(const thermostatType &x,
-               ::xml_schema::flags f,
-               ::xml_schema::container *c)
-        : ::xml_schema::type(x, f, c),
-          initialTemperature_(x.initialTemperature_, f, this),
-          targetTemperature_(x.targetTemperature_, f, this),
-          maxTemperatureChange_(x.maxTemperatureChange_, f, this),
-          thermostatInterval_(x.thermostatInterval_, f, this) {
+thermostatType (const thermostatType& x,
+                ::xml_schema::flags f,
+                ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  initialTemperature_ (x.initialTemperature_, f, this),
+  targetTemperature_ (x.targetTemperature_, f, this),
+  maxTemperatureChange_ (x.maxTemperatureChange_, f, this),
+  thermostatInterval_ (x.thermostatInterval_, f, this)
+{
 }
 
 thermostatType::
-thermostatType(const ::xercesc::DOMElement &e,
-               ::xml_schema::flags f,
-               ::xml_schema::container *c)
-        : ::xml_schema::type(e, f | ::xml_schema::flags::base, c),
-          initialTemperature_(this),
-          targetTemperature_(this),
-          maxTemperatureChange_(this),
-          thermostatInterval_(this) {
-    if ((f & ::xml_schema::flags::base) == 0) {
-        ::xsd::cxx::xml::dom::parser<char> p(e, true, false, false);
-        this->parse(p, f);
-    }
+thermostatType (const ::xercesc::DOMElement& e,
+                ::xml_schema::flags f,
+                ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  initialTemperature_ (this),
+  targetTemperature_ (this),
+  maxTemperatureChange_ (this),
+  thermostatInterval_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
 }
 
 void thermostatType::
-parse(::xsd::cxx::xml::dom::parser<char> &p,
-      ::xml_schema::flags f) {
-    for (; p.more_content(); p.next_content(false)) {
-        const ::xercesc::DOMElement &i(p.cur_element());
-        const ::xsd::cxx::xml::qualified_name<char> n(
-                ::xsd::cxx::xml::dom::name<char>(i));
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
 
-        // initialTemperature
-        //
-        if (n.name() == "initialTemperature" && n.namespace_().empty()) {
-            if (!initialTemperature_.present()) {
-                this->initialTemperature_.set(initialTemperature_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // targetTemperature
-        //
-        if (n.name() == "targetTemperature" && n.namespace_().empty()) {
-            if (!this->targetTemperature_) {
-                this->targetTemperature_.set(targetTemperature_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // maxTemperatureChange
-        //
-        if (n.name() == "maxTemperatureChange" && n.namespace_().empty()) {
-            if (!this->maxTemperatureChange_) {
-                this->maxTemperatureChange_.set(maxTemperatureChange_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // thermostatInterval
-        //
-        if (n.name() == "thermostatInterval" && n.namespace_().empty()) {
-            if (!thermostatInterval_.present()) {
-                this->thermostatInterval_.set(thermostatInterval_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        break;
+    // initialTemperature
+    //
+    if (n.name () == "initialTemperature" && n.namespace_ ().empty ())
+    {
+      if (!initialTemperature_.present ())
+      {
+        this->initialTemperature_.set (initialTemperature_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!initialTemperature_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "initialTemperature",
-                "");
+    // targetTemperature
+    //
+    if (n.name () == "targetTemperature" && n.namespace_ ().empty ())
+    {
+      if (!this->targetTemperature_)
+      {
+        this->targetTemperature_.set (targetTemperature_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!thermostatInterval_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "thermostatInterval",
-                "");
+    // maxTemperatureChange
+    //
+    if (n.name () == "maxTemperatureChange" && n.namespace_ ().empty ())
+    {
+      if (!this->maxTemperatureChange_)
+      {
+        this->maxTemperatureChange_.set (maxTemperatureChange_traits::create (i, f, this));
+        continue;
+      }
     }
+
+    // thermostatInterval
+    //
+    if (n.name () == "thermostatInterval" && n.namespace_ ().empty ())
+    {
+      if (!thermostatInterval_.present ())
+      {
+        this->thermostatInterval_.set (thermostatInterval_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    break;
+  }
+
+  if (!initialTemperature_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "initialTemperature",
+      "");
+  }
+
+  if (!thermostatInterval_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "thermostatInterval",
+      "");
+  }
 }
 
-thermostatType *thermostatType::
-_clone(::xml_schema::flags f,
-       ::xml_schema::container *c) const {
-    return new class thermostatType(*this, f, c);
+thermostatType* thermostatType::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class thermostatType (*this, f, c);
 }
 
-thermostatType &thermostatType::
-operator=(const thermostatType &x) {
-    if (this != &x) {
-        static_cast< ::xml_schema::type & > (*this) = x;
-        this->initialTemperature_ = x.initialTemperature_;
-        this->targetTemperature_ = x.targetTemperature_;
-        this->maxTemperatureChange_ = x.maxTemperatureChange_;
-        this->thermostatInterval_ = x.thermostatInterval_;
-    }
+thermostatType& thermostatType::
+operator= (const thermostatType& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->initialTemperature_ = x.initialTemperature_;
+    this->targetTemperature_ = x.targetTemperature_;
+    this->maxTemperatureChange_ = x.maxTemperatureChange_;
+    this->thermostatInterval_ = x.thermostatInterval_;
+  }
 
-    return *this;
+  return *this;
 }
 
 thermostatType::
-~thermostatType() {
+~thermostatType ()
+{
 }
 
 // sphereType
 //
 
 sphereType::
-sphereType(const position_type &position,
-           const velocity_type &velocity,
-           const mass_type &mass,
-           const spacing_type &spacing,
-           const radius_type &radius,
-           const sigma_type &sigma,
-           const epsilon_type &epsilon,
-           const membrane_type &membrane,
-           const gravitationalAcceleration_type &gravitationalAcceleration,
-           const type_type &type)
-        : ::xml_schema::type(),
-          position_(position, this),
-          velocity_(velocity, this),
-          mass_(mass, this),
-          spacing_(spacing, this),
-          radius_(radius, this),
-          sigma_(sigma, this),
-          epsilon_(epsilon, this),
-          membrane_(membrane, this),
-          gravitationalAcceleration_(gravitationalAcceleration, this),
-          type_(type, this) {
+sphereType (const position_type& position,
+            const velocity_type& velocity,
+            const mass_type& mass,
+            const spacing_type& spacing,
+            const radius_type& radius,
+            const sigma_type& sigma,
+            const epsilon_type& epsilon,
+            const isMembrane_type& isMembrane,
+            const gravitationalAcceleration_type& gravitationalAcceleration,
+            const type_type& type)
+: ::xml_schema::type (),
+  position_ (position, this),
+  velocity_ (velocity, this),
+  mass_ (mass, this),
+  spacing_ (spacing, this),
+  radius_ (radius, this),
+  sigma_ (sigma, this),
+  epsilon_ (epsilon, this),
+  isMembrane_ (isMembrane, this),
+  gravitationalAcceleration_ (gravitationalAcceleration, this),
+  type_ (type, this)
+{
 }
 
 sphereType::
-sphereType(::std::auto_ptr<position_type> position,
-           ::std::auto_ptr<velocity_type> velocity,
-           const mass_type &mass,
-           const spacing_type &spacing,
-           const radius_type &radius,
-           const sigma_type &sigma,
-           const epsilon_type &epsilon,
-           const membrane_type &membrane,
-           const gravitationalAcceleration_type &gravitationalAcceleration,
-           const type_type &type)
-        : ::xml_schema::type(),
-          position_(position, this),
-          velocity_(velocity, this),
-          mass_(mass, this),
-          spacing_(spacing, this),
-          radius_(radius, this),
-          sigma_(sigma, this),
-          epsilon_(epsilon, this),
-          membrane_(membrane, this),
-          gravitationalAcceleration_(gravitationalAcceleration, this),
-          type_(type, this) {
+sphereType (::std::auto_ptr< position_type > position,
+            ::std::auto_ptr< velocity_type > velocity,
+            const mass_type& mass,
+            const spacing_type& spacing,
+            const radius_type& radius,
+            const sigma_type& sigma,
+            const epsilon_type& epsilon,
+            const isMembrane_type& isMembrane,
+            const gravitationalAcceleration_type& gravitationalAcceleration,
+            const type_type& type)
+: ::xml_schema::type (),
+  position_ (position, this),
+  velocity_ (velocity, this),
+  mass_ (mass, this),
+  spacing_ (spacing, this),
+  radius_ (radius, this),
+  sigma_ (sigma, this),
+  epsilon_ (epsilon, this),
+  isMembrane_ (isMembrane, this),
+  gravitationalAcceleration_ (gravitationalAcceleration, this),
+  type_ (type, this)
+{
 }
 
 sphereType::
-sphereType(const sphereType &x,
-           ::xml_schema::flags f,
-           ::xml_schema::container *c)
-        : ::xml_schema::type(x, f, c),
-          position_(x.position_, f, this),
-          velocity_(x.velocity_, f, this),
-          mass_(x.mass_, f, this),
-          spacing_(x.spacing_, f, this),
-          radius_(x.radius_, f, this),
-          sigma_(x.sigma_, f, this),
-          epsilon_(x.epsilon_, f, this),
-          membrane_(x.membrane_, f, this),
-          gravitationalAcceleration_(x.gravitationalAcceleration_, f, this),
-          type_(x.type_, f, this) {
+sphereType (const sphereType& x,
+            ::xml_schema::flags f,
+            ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  position_ (x.position_, f, this),
+  velocity_ (x.velocity_, f, this),
+  mass_ (x.mass_, f, this),
+  spacing_ (x.spacing_, f, this),
+  radius_ (x.radius_, f, this),
+  sigma_ (x.sigma_, f, this),
+  epsilon_ (x.epsilon_, f, this),
+  isMembrane_ (x.isMembrane_, f, this),
+  gravitationalAcceleration_ (x.gravitationalAcceleration_, f, this),
+  type_ (x.type_, f, this)
+{
 }
 
 sphereType::
-sphereType(const ::xercesc::DOMElement &e,
-           ::xml_schema::flags f,
-           ::xml_schema::container *c)
-        : ::xml_schema::type(e, f | ::xml_schema::flags::base, c),
-          position_(this),
-          velocity_(this),
-          mass_(this),
-          spacing_(this),
-          radius_(this),
-          sigma_(this),
-          epsilon_(this),
-          membrane_(this),
-          gravitationalAcceleration_(this),
-          type_(this) {
-    if ((f & ::xml_schema::flags::base) == 0) {
-        ::xsd::cxx::xml::dom::parser<char> p(e, true, false, false);
-        this->parse(p, f);
-    }
+sphereType (const ::xercesc::DOMElement& e,
+            ::xml_schema::flags f,
+            ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  position_ (this),
+  velocity_ (this),
+  mass_ (this),
+  spacing_ (this),
+  radius_ (this),
+  sigma_ (this),
+  epsilon_ (this),
+  isMembrane_ (this),
+  gravitationalAcceleration_ (this),
+  type_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
 }
 
 void sphereType::
-parse(::xsd::cxx::xml::dom::parser<char> &p,
-      ::xml_schema::flags f) {
-    for (; p.more_content(); p.next_content(false)) {
-        const ::xercesc::DOMElement &i(p.cur_element());
-        const ::xsd::cxx::xml::qualified_name<char> n(
-                ::xsd::cxx::xml::dom::name<char>(i));
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
 
-        // position
-        //
-        if (n.name() == "position" && n.namespace_().empty()) {
-            ::std::auto_ptr<position_type> r(
-                    position_traits::create(i, f, this));
+    // position
+    //
+    if (n.name () == "position" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< position_type > r (
+        position_traits::create (i, f, this));
 
-            if (!position_.present()) {
-                this->position_.set(r);
-                continue;
-            }
-        }
-
-        // velocity
-        //
-        if (n.name() == "velocity" && n.namespace_().empty()) {
-            ::std::auto_ptr<velocity_type> r(
-                    velocity_traits::create(i, f, this));
-
-            if (!velocity_.present()) {
-                this->velocity_.set(r);
-                continue;
-            }
-        }
-
-        // mass
-        //
-        if (n.name() == "mass" && n.namespace_().empty()) {
-            if (!mass_.present()) {
-                this->mass_.set(mass_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // spacing
-        //
-        if (n.name() == "spacing" && n.namespace_().empty()) {
-            if (!spacing_.present()) {
-                this->spacing_.set(spacing_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // radius
-        //
-        if (n.name() == "radius" && n.namespace_().empty()) {
-            if (!radius_.present()) {
-                this->radius_.set(radius_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // sigma
-        //
-        if (n.name() == "sigma" && n.namespace_().empty()) {
-            if (!sigma_.present()) {
-                this->sigma_.set(sigma_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // epsilon
-        //
-        if (n.name() == "epsilon" && n.namespace_().empty()) {
-            if (!epsilon_.present()) {
-                this->epsilon_.set(epsilon_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // membrane
-        //
-        if (n.name() == "membrane" && n.namespace_().empty()) {
-            if (!membrane_.present()) {
-                this->membrane_.set(membrane_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // gravitationalAcceleration
-        //
-        if (n.name() == "gravitationalAcceleration" && n.namespace_().empty()) {
-            if (!gravitationalAcceleration_.present()) {
-                this->gravitationalAcceleration_.set(gravitationalAcceleration_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // type
-        //
-        if (n.name() == "type" && n.namespace_().empty()) {
-            if (!type_.present()) {
-                this->type_.set(type_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        break;
+      if (!position_.present ())
+      {
+        this->position_.set (r);
+        continue;
+      }
     }
 
-    if (!position_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "position",
-                "");
+    // velocity
+    //
+    if (n.name () == "velocity" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< velocity_type > r (
+        velocity_traits::create (i, f, this));
+
+      if (!velocity_.present ())
+      {
+        this->velocity_.set (r);
+        continue;
+      }
     }
 
-    if (!velocity_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "velocity",
-                "");
+    // mass
+    //
+    if (n.name () == "mass" && n.namespace_ ().empty ())
+    {
+      if (!mass_.present ())
+      {
+        this->mass_.set (mass_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!mass_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "mass",
-                "");
+    // spacing
+    //
+    if (n.name () == "spacing" && n.namespace_ ().empty ())
+    {
+      if (!spacing_.present ())
+      {
+        this->spacing_.set (spacing_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!spacing_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "spacing",
-                "");
+    // radius
+    //
+    if (n.name () == "radius" && n.namespace_ ().empty ())
+    {
+      if (!radius_.present ())
+      {
+        this->radius_.set (radius_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!radius_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "radius",
-                "");
+    // sigma
+    //
+    if (n.name () == "sigma" && n.namespace_ ().empty ())
+    {
+      if (!sigma_.present ())
+      {
+        this->sigma_.set (sigma_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!sigma_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "sigma",
-                "");
+    // epsilon
+    //
+    if (n.name () == "epsilon" && n.namespace_ ().empty ())
+    {
+      if (!epsilon_.present ())
+      {
+        this->epsilon_.set (epsilon_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!epsilon_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "epsilon",
-                "");
+    // isMembrane
+    //
+    if (n.name () == "isMembrane" && n.namespace_ ().empty ())
+    {
+      if (!isMembrane_.present ())
+      {
+        this->isMembrane_.set (isMembrane_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!membrane_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "membrane",
-                "");
+    // gravitationalAcceleration
+    //
+    if (n.name () == "gravitationalAcceleration" && n.namespace_ ().empty ())
+    {
+      if (!gravitationalAcceleration_.present ())
+      {
+        this->gravitationalAcceleration_.set (gravitationalAcceleration_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!gravitationalAcceleration_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "gravitationalAcceleration",
-                "");
+    // type
+    //
+    if (n.name () == "type" && n.namespace_ ().empty ())
+    {
+      if (!type_.present ())
+      {
+        this->type_.set (type_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!type_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "type",
-                "");
-    }
+    break;
+  }
+
+  if (!position_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "position",
+      "");
+  }
+
+  if (!velocity_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "velocity",
+      "");
+  }
+
+  if (!mass_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "mass",
+      "");
+  }
+
+  if (!spacing_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "spacing",
+      "");
+  }
+
+  if (!radius_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "radius",
+      "");
+  }
+
+  if (!sigma_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "sigma",
+      "");
+  }
+
+  if (!epsilon_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "epsilon",
+      "");
+  }
+
+  if (!isMembrane_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "isMembrane",
+      "");
+  }
+
+  if (!gravitationalAcceleration_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "gravitationalAcceleration",
+      "");
+  }
+
+  if (!type_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "type",
+      "");
+  }
 }
 
-sphereType *sphereType::
-_clone(::xml_schema::flags f,
-       ::xml_schema::container *c) const {
-    return new class sphereType(*this, f, c);
+sphereType* sphereType::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class sphereType (*this, f, c);
 }
 
-sphereType &sphereType::
-operator=(const sphereType &x) {
-    if (this != &x) {
-        static_cast< ::xml_schema::type & > (*this) = x;
-        this->position_ = x.position_;
-        this->velocity_ = x.velocity_;
-        this->mass_ = x.mass_;
-        this->spacing_ = x.spacing_;
-        this->radius_ = x.radius_;
-        this->sigma_ = x.sigma_;
-        this->epsilon_ = x.epsilon_;
-        this->membrane_ = x.membrane_;
-        this->gravitationalAcceleration_ = x.gravitationalAcceleration_;
-        this->type_ = x.type_;
-    }
+sphereType& sphereType::
+operator= (const sphereType& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->position_ = x.position_;
+    this->velocity_ = x.velocity_;
+    this->mass_ = x.mass_;
+    this->spacing_ = x.spacing_;
+    this->radius_ = x.radius_;
+    this->sigma_ = x.sigma_;
+    this->epsilon_ = x.epsilon_;
+    this->isMembrane_ = x.isMembrane_;
+    this->gravitationalAcceleration_ = x.gravitationalAcceleration_;
+    this->type_ = x.type_;
+  }
 
-    return *this;
+  return *this;
 }
 
 sphereType::
-~sphereType() {
+~sphereType ()
+{
 }
 
 // positionType
 //
 
 positionType::
-positionType(const x_type &x,
-             const y_type &y,
-             const z_type &z)
-        : ::xml_schema::type(),
-          x_(x, this),
-          y_(y, this),
-          z_(z, this) {
+positionType (const x_type& x,
+              const y_type& y,
+              const z_type& z)
+: ::xml_schema::type (),
+  x_ (x, this),
+  y_ (y, this),
+  z_ (z, this)
+{
 }
 
 positionType::
-positionType(const positionType &x,
-             ::xml_schema::flags f,
-             ::xml_schema::container *c)
-        : ::xml_schema::type(x, f, c),
-          x_(x.x_, f, this),
-          y_(x.y_, f, this),
-          z_(x.z_, f, this) {
+positionType (const positionType& x,
+              ::xml_schema::flags f,
+              ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  x_ (x.x_, f, this),
+  y_ (x.y_, f, this),
+  z_ (x.z_, f, this)
+{
 }
 
 positionType::
-positionType(const ::xercesc::DOMElement &e,
-             ::xml_schema::flags f,
-             ::xml_schema::container *c)
-        : ::xml_schema::type(e, f | ::xml_schema::flags::base, c),
-          x_(this),
-          y_(this),
-          z_(this) {
-    if ((f & ::xml_schema::flags::base) == 0) {
-        ::xsd::cxx::xml::dom::parser<char> p(e, true, false, false);
-        this->parse(p, f);
-    }
+positionType (const ::xercesc::DOMElement& e,
+              ::xml_schema::flags f,
+              ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  x_ (this),
+  y_ (this),
+  z_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
 }
 
 void positionType::
-parse(::xsd::cxx::xml::dom::parser<char> &p,
-      ::xml_schema::flags f) {
-    for (; p.more_content(); p.next_content(false)) {
-        const ::xercesc::DOMElement &i(p.cur_element());
-        const ::xsd::cxx::xml::qualified_name<char> n(
-                ::xsd::cxx::xml::dom::name<char>(i));
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
 
-        // x
-        //
-        if (n.name() == "x" && n.namespace_().empty()) {
-            if (!x_.present()) {
-                this->x_.set(x_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // y
-        //
-        if (n.name() == "y" && n.namespace_().empty()) {
-            if (!y_.present()) {
-                this->y_.set(y_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // z
-        //
-        if (n.name() == "z" && n.namespace_().empty()) {
-            if (!z_.present()) {
-                this->z_.set(z_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        break;
+    // x
+    //
+    if (n.name () == "x" && n.namespace_ ().empty ())
+    {
+      if (!x_.present ())
+      {
+        this->x_.set (x_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!x_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "x",
-                "");
+    // y
+    //
+    if (n.name () == "y" && n.namespace_ ().empty ())
+    {
+      if (!y_.present ())
+      {
+        this->y_.set (y_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!y_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "y",
-                "");
+    // z
+    //
+    if (n.name () == "z" && n.namespace_ ().empty ())
+    {
+      if (!z_.present ())
+      {
+        this->z_.set (z_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!z_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "z",
-                "");
-    }
+    break;
+  }
+
+  if (!x_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "x",
+      "");
+  }
+
+  if (!y_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "y",
+      "");
+  }
+
+  if (!z_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "z",
+      "");
+  }
 }
 
-positionType *positionType::
-_clone(::xml_schema::flags f,
-       ::xml_schema::container *c) const {
-    return new class positionType(*this, f, c);
+positionType* positionType::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class positionType (*this, f, c);
 }
 
-positionType &positionType::
-operator=(const positionType &x) {
-    if (this != &x) {
-        static_cast< ::xml_schema::type & > (*this) = x;
-        this->x_ = x.x_;
-        this->y_ = x.y_;
-        this->z_ = x.z_;
-    }
+positionType& positionType::
+operator= (const positionType& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->x_ = x.x_;
+    this->y_ = x.y_;
+    this->z_ = x.z_;
+  }
 
-    return *this;
+  return *this;
 }
 
 positionType::
-~positionType() {
+~positionType ()
+{
 }
 
 // velocityType
 //
 
 velocityType::
-velocityType(const v_type &v,
-             const w_type &w,
-             const z_type &z)
-        : ::xml_schema::type(),
-          v_(v, this),
-          w_(w, this),
-          z_(z, this) {
+velocityType (const v_type& v,
+              const w_type& w,
+              const z_type& z)
+: ::xml_schema::type (),
+  v_ (v, this),
+  w_ (w, this),
+  z_ (z, this)
+{
 }
 
 velocityType::
-velocityType(const velocityType &x,
-             ::xml_schema::flags f,
-             ::xml_schema::container *c)
-        : ::xml_schema::type(x, f, c),
-          v_(x.v_, f, this),
-          w_(x.w_, f, this),
-          z_(x.z_, f, this) {
+velocityType (const velocityType& x,
+              ::xml_schema::flags f,
+              ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  v_ (x.v_, f, this),
+  w_ (x.w_, f, this),
+  z_ (x.z_, f, this)
+{
 }
 
 velocityType::
-velocityType(const ::xercesc::DOMElement &e,
-             ::xml_schema::flags f,
-             ::xml_schema::container *c)
-        : ::xml_schema::type(e, f | ::xml_schema::flags::base, c),
-          v_(this),
-          w_(this),
-          z_(this) {
-    if ((f & ::xml_schema::flags::base) == 0) {
-        ::xsd::cxx::xml::dom::parser<char> p(e, true, false, false);
-        this->parse(p, f);
-    }
+velocityType (const ::xercesc::DOMElement& e,
+              ::xml_schema::flags f,
+              ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  v_ (this),
+  w_ (this),
+  z_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
 }
 
 void velocityType::
-parse(::xsd::cxx::xml::dom::parser<char> &p,
-      ::xml_schema::flags f) {
-    for (; p.more_content(); p.next_content(false)) {
-        const ::xercesc::DOMElement &i(p.cur_element());
-        const ::xsd::cxx::xml::qualified_name<char> n(
-                ::xsd::cxx::xml::dom::name<char>(i));
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
 
-        // v
-        //
-        if (n.name() == "v" && n.namespace_().empty()) {
-            if (!v_.present()) {
-                this->v_.set(v_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // w
-        //
-        if (n.name() == "w" && n.namespace_().empty()) {
-            if (!w_.present()) {
-                this->w_.set(w_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // z
-        //
-        if (n.name() == "z" && n.namespace_().empty()) {
-            if (!z_.present()) {
-                this->z_.set(z_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        break;
+    // v
+    //
+    if (n.name () == "v" && n.namespace_ ().empty ())
+    {
+      if (!v_.present ())
+      {
+        this->v_.set (v_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!v_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "v",
-                "");
+    // w
+    //
+    if (n.name () == "w" && n.namespace_ ().empty ())
+    {
+      if (!w_.present ())
+      {
+        this->w_.set (w_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!w_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "w",
-                "");
+    // z
+    //
+    if (n.name () == "z" && n.namespace_ ().empty ())
+    {
+      if (!z_.present ())
+      {
+        this->z_.set (z_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!z_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "z",
-                "");
-    }
+    break;
+  }
+
+  if (!v_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "v",
+      "");
+  }
+
+  if (!w_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "w",
+      "");
+  }
+
+  if (!z_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "z",
+      "");
+  }
 }
 
-velocityType *velocityType::
-_clone(::xml_schema::flags f,
-       ::xml_schema::container *c) const {
-    return new class velocityType(*this, f, c);
+velocityType* velocityType::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class velocityType (*this, f, c);
 }
 
-velocityType &velocityType::
-operator=(const velocityType &x) {
-    if (this != &x) {
-        static_cast< ::xml_schema::type & > (*this) = x;
-        this->v_ = x.v_;
-        this->w_ = x.w_;
-        this->z_ = x.z_;
-    }
+velocityType& velocityType::
+operator= (const velocityType& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->v_ = x.v_;
+    this->w_ = x.w_;
+    this->z_ = x.z_;
+  }
 
-    return *this;
+  return *this;
 }
 
 velocityType::
-~velocityType() {
+~velocityType ()
+{
 }
 
 // gridParam
 //
 
 gridParam::
-gridParam(const Nx_type &Nx,
-          const Ny_type &Ny,
-          const Nz_type &Nz)
-        : ::xml_schema::type(),
-          Nx_(Nx, this),
-          Ny_(Ny, this),
-          Nz_(Nz, this) {
+gridParam (const Nx_type& Nx,
+           const Ny_type& Ny,
+           const Nz_type& Nz)
+: ::xml_schema::type (),
+  Nx_ (Nx, this),
+  Ny_ (Ny, this),
+  Nz_ (Nz, this)
+{
 }
 
 gridParam::
-gridParam(const gridParam &x,
-          ::xml_schema::flags f,
-          ::xml_schema::container *c)
-        : ::xml_schema::type(x, f, c),
-          Nx_(x.Nx_, f, this),
-          Ny_(x.Ny_, f, this),
-          Nz_(x.Nz_, f, this) {
+gridParam (const gridParam& x,
+           ::xml_schema::flags f,
+           ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  Nx_ (x.Nx_, f, this),
+  Ny_ (x.Ny_, f, this),
+  Nz_ (x.Nz_, f, this)
+{
 }
 
 gridParam::
-gridParam(const ::xercesc::DOMElement &e,
-          ::xml_schema::flags f,
-          ::xml_schema::container *c)
-        : ::xml_schema::type(e, f | ::xml_schema::flags::base, c),
-          Nx_(this),
-          Ny_(this),
-          Nz_(this) {
-    if ((f & ::xml_schema::flags::base) == 0) {
-        ::xsd::cxx::xml::dom::parser<char> p(e, true, false, false);
-        this->parse(p, f);
-    }
+gridParam (const ::xercesc::DOMElement& e,
+           ::xml_schema::flags f,
+           ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  Nx_ (this),
+  Ny_ (this),
+  Nz_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
 }
 
 void gridParam::
-parse(::xsd::cxx::xml::dom::parser<char> &p,
-      ::xml_schema::flags f) {
-    for (; p.more_content(); p.next_content(false)) {
-        const ::xercesc::DOMElement &i(p.cur_element());
-        const ::xsd::cxx::xml::qualified_name<char> n(
-                ::xsd::cxx::xml::dom::name<char>(i));
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
 
-        // Nx
-        //
-        if (n.name() == "Nx" && n.namespace_().empty()) {
-            if (!Nx_.present()) {
-                this->Nx_.set(Nx_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // Ny
-        //
-        if (n.name() == "Ny" && n.namespace_().empty()) {
-            if (!Ny_.present()) {
-                this->Ny_.set(Ny_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // Nz
-        //
-        if (n.name() == "Nz" && n.namespace_().empty()) {
-            if (!Nz_.present()) {
-                this->Nz_.set(Nz_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        break;
+    // Nx
+    //
+    if (n.name () == "Nx" && n.namespace_ ().empty ())
+    {
+      if (!Nx_.present ())
+      {
+        this->Nx_.set (Nx_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!Nx_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "Nx",
-                "");
+    // Ny
+    //
+    if (n.name () == "Ny" && n.namespace_ ().empty ())
+    {
+      if (!Ny_.present ())
+      {
+        this->Ny_.set (Ny_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!Ny_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "Ny",
-                "");
+    // Nz
+    //
+    if (n.name () == "Nz" && n.namespace_ ().empty ())
+    {
+      if (!Nz_.present ())
+      {
+        this->Nz_.set (Nz_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!Nz_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "Nz",
-                "");
-    }
+    break;
+  }
+
+  if (!Nx_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "Nx",
+      "");
+  }
+
+  if (!Ny_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "Ny",
+      "");
+  }
+
+  if (!Nz_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "Nz",
+      "");
+  }
 }
 
-gridParam *gridParam::
-_clone(::xml_schema::flags f,
-       ::xml_schema::container *c) const {
-    return new class gridParam(*this, f, c);
+gridParam* gridParam::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class gridParam (*this, f, c);
 }
 
-gridParam &gridParam::
-operator=(const gridParam &x) {
-    if (this != &x) {
-        static_cast< ::xml_schema::type & > (*this) = x;
-        this->Nx_ = x.Nx_;
-        this->Ny_ = x.Ny_;
-        this->Nz_ = x.Nz_;
-    }
+gridParam& gridParam::
+operator= (const gridParam& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->Nx_ = x.Nx_;
+    this->Ny_ = x.Ny_;
+    this->Nz_ = x.Nz_;
+  }
 
-    return *this;
+  return *this;
 }
 
 gridParam::
-~gridParam() {
+~gridParam ()
+{
 }
 
 // domainParam
 //
 
 domainParam::
-domainParam(const Lx_type &Lx,
-            const Ly_type &Ly,
-            const Lz_type &Lz)
-        : ::xml_schema::type(),
-          Lx_(Lx, this),
-          Ly_(Ly, this),
-          Lz_(Lz, this) {
+domainParam (const Lx_type& Lx,
+             const Ly_type& Ly,
+             const Lz_type& Lz)
+: ::xml_schema::type (),
+  Lx_ (Lx, this),
+  Ly_ (Ly, this),
+  Lz_ (Lz, this)
+{
 }
 
 domainParam::
-domainParam(const domainParam &x,
-            ::xml_schema::flags f,
-            ::xml_schema::container *c)
-        : ::xml_schema::type(x, f, c),
-          Lx_(x.Lx_, f, this),
-          Ly_(x.Ly_, f, this),
-          Lz_(x.Lz_, f, this) {
+domainParam (const domainParam& x,
+             ::xml_schema::flags f,
+             ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  Lx_ (x.Lx_, f, this),
+  Ly_ (x.Ly_, f, this),
+  Lz_ (x.Lz_, f, this)
+{
 }
 
 domainParam::
-domainParam(const ::xercesc::DOMElement &e,
-            ::xml_schema::flags f,
-            ::xml_schema::container *c)
-        : ::xml_schema::type(e, f | ::xml_schema::flags::base, c),
-          Lx_(this),
-          Ly_(this),
-          Lz_(this) {
-    if ((f & ::xml_schema::flags::base) == 0) {
-        ::xsd::cxx::xml::dom::parser<char> p(e, true, false, false);
-        this->parse(p, f);
-    }
+domainParam (const ::xercesc::DOMElement& e,
+             ::xml_schema::flags f,
+             ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  Lx_ (this),
+  Ly_ (this),
+  Lz_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
 }
 
 void domainParam::
-parse(::xsd::cxx::xml::dom::parser<char> &p,
-      ::xml_schema::flags f) {
-    for (; p.more_content(); p.next_content(false)) {
-        const ::xercesc::DOMElement &i(p.cur_element());
-        const ::xsd::cxx::xml::qualified_name<char> n(
-                ::xsd::cxx::xml::dom::name<char>(i));
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
 
-        // Lx
-        //
-        if (n.name() == "Lx" && n.namespace_().empty()) {
-            if (!Lx_.present()) {
-                this->Lx_.set(Lx_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // Ly
-        //
-        if (n.name() == "Ly" && n.namespace_().empty()) {
-            if (!Ly_.present()) {
-                this->Ly_.set(Ly_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        // Lz
-        //
-        if (n.name() == "Lz" && n.namespace_().empty()) {
-            if (!Lz_.present()) {
-                this->Lz_.set(Lz_traits::create(i, f, this));
-                continue;
-            }
-        }
-
-        break;
+    // Lx
+    //
+    if (n.name () == "Lx" && n.namespace_ ().empty ())
+    {
+      if (!Lx_.present ())
+      {
+        this->Lx_.set (Lx_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!Lx_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "Lx",
-                "");
+    // Ly
+    //
+    if (n.name () == "Ly" && n.namespace_ ().empty ())
+    {
+      if (!Ly_.present ())
+      {
+        this->Ly_.set (Ly_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!Ly_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "Ly",
-                "");
+    // Lz
+    //
+    if (n.name () == "Lz" && n.namespace_ ().empty ())
+    {
+      if (!Lz_.present ())
+      {
+        this->Lz_.set (Lz_traits::create (i, f, this));
+        continue;
+      }
     }
 
-    if (!Lz_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "Lz",
-                "");
-    }
+    break;
+  }
+
+  if (!Lx_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "Lx",
+      "");
+  }
+
+  if (!Ly_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "Ly",
+      "");
+  }
+
+  if (!Lz_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "Lz",
+      "");
+  }
 }
 
-domainParam *domainParam::
-_clone(::xml_schema::flags f,
-       ::xml_schema::container *c) const {
-    return new class domainParam(*this, f, c);
+domainParam* domainParam::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class domainParam (*this, f, c);
 }
 
-domainParam &domainParam::
-operator=(const domainParam &x) {
-    if (this != &x) {
-        static_cast< ::xml_schema::type & > (*this) = x;
-        this->Lx_ = x.Lx_;
-        this->Ly_ = x.Ly_;
-        this->Lz_ = x.Lz_;
-    }
+domainParam& domainParam::
+operator= (const domainParam& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->Lx_ = x.Lx_;
+    this->Ly_ = x.Ly_;
+    this->Lz_ = x.Lz_;
+  }
 
-    return *this;
+  return *this;
 }
 
 domainParam::
-~domainParam() {
+~domainParam ()
+{
 }
 
 // boundaryConditionsType
 //
 
 boundaryConditionsType::
-boundaryConditionsType(const left_type &left,
-                       const up_type &up,
-                       const right_type &right,
-                       const down_type &down,
-                       const front_type &front,
-                       const back_type &back)
-        : ::xml_schema::type(),
-          left_(left, this),
-          up_(up, this),
-          right_(right, this),
-          down_(down, this),
-          front_(front, this),
-          back_(back, this) {
+boundaryConditionsType (const left_type& left,
+                        const up_type& up,
+                        const right_type& right,
+                        const down_type& down,
+                        const front_type& front,
+                        const back_type& back)
+: ::xml_schema::type (),
+  left_ (left, this),
+  up_ (up, this),
+  right_ (right, this),
+  down_ (down, this),
+  front_ (front, this),
+  back_ (back, this)
+{
 }
 
 boundaryConditionsType::
-boundaryConditionsType(const boundaryConditionsType &x,
-                       ::xml_schema::flags f,
-                       ::xml_schema::container *c)
-        : ::xml_schema::type(x, f, c),
-          left_(x.left_, f, this),
-          up_(x.up_, f, this),
-          right_(x.right_, f, this),
-          down_(x.down_, f, this),
-          front_(x.front_, f, this),
-          back_(x.back_, f, this) {
+boundaryConditionsType (const boundaryConditionsType& x,
+                        ::xml_schema::flags f,
+                        ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  left_ (x.left_, f, this),
+  up_ (x.up_, f, this),
+  right_ (x.right_, f, this),
+  down_ (x.down_, f, this),
+  front_ (x.front_, f, this),
+  back_ (x.back_, f, this)
+{
 }
 
 boundaryConditionsType::
-boundaryConditionsType(const ::xercesc::DOMElement &e,
-                       ::xml_schema::flags f,
-                       ::xml_schema::container *c)
-        : ::xml_schema::type(e, f | ::xml_schema::flags::base, c),
-          left_(this),
-          up_(this),
-          right_(this),
-          down_(this),
-          front_(this),
-          back_(this) {
-    if ((f & ::xml_schema::flags::base) == 0) {
-        ::xsd::cxx::xml::dom::parser<char> p(e, true, false, false);
-        this->parse(p, f);
-    }
+boundaryConditionsType (const ::xercesc::DOMElement& e,
+                        ::xml_schema::flags f,
+                        ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  left_ (this),
+  up_ (this),
+  right_ (this),
+  down_ (this),
+  front_ (this),
+  back_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
 }
 
 void boundaryConditionsType::
-parse(::xsd::cxx::xml::dom::parser<char> &p,
-      ::xml_schema::flags f) {
-    for (; p.more_content(); p.next_content(false)) {
-        const ::xercesc::DOMElement &i(p.cur_element());
-        const ::xsd::cxx::xml::qualified_name<char> n(
-                ::xsd::cxx::xml::dom::name<char>(i));
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
 
-        // left
-        //
-        if (n.name() == "left" && n.namespace_().empty()) {
-            ::std::auto_ptr<left_type> r(
-                    left_traits::create(i, f, this));
+    // left
+    //
+    if (n.name () == "left" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< left_type > r (
+        left_traits::create (i, f, this));
 
-            if (!left_.present()) {
-                this->left_.set(r);
-                continue;
-            }
-        }
-
-        // up
-        //
-        if (n.name() == "up" && n.namespace_().empty()) {
-            ::std::auto_ptr<up_type> r(
-                    up_traits::create(i, f, this));
-
-            if (!up_.present()) {
-                this->up_.set(r);
-                continue;
-            }
-        }
-
-        // right
-        //
-        if (n.name() == "right" && n.namespace_().empty()) {
-            ::std::auto_ptr<right_type> r(
-                    right_traits::create(i, f, this));
-
-            if (!right_.present()) {
-                this->right_.set(r);
-                continue;
-            }
-        }
-
-        // down
-        //
-        if (n.name() == "down" && n.namespace_().empty()) {
-            ::std::auto_ptr<down_type> r(
-                    down_traits::create(i, f, this));
-
-            if (!down_.present()) {
-                this->down_.set(r);
-                continue;
-            }
-        }
-
-        // front
-        //
-        if (n.name() == "front" && n.namespace_().empty()) {
-            ::std::auto_ptr<front_type> r(
-                    front_traits::create(i, f, this));
-
-            if (!front_.present()) {
-                this->front_.set(r);
-                continue;
-            }
-        }
-
-        // back
-        //
-        if (n.name() == "back" && n.namespace_().empty()) {
-            ::std::auto_ptr<back_type> r(
-                    back_traits::create(i, f, this));
-
-            if (!back_.present()) {
-                this->back_.set(r);
-                continue;
-            }
-        }
-
-        break;
+      if (!left_.present ())
+      {
+        this->left_.set (r);
+        continue;
+      }
     }
 
-    if (!left_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "left",
-                "");
+    // up
+    //
+    if (n.name () == "up" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< up_type > r (
+        up_traits::create (i, f, this));
+
+      if (!up_.present ())
+      {
+        this->up_.set (r);
+        continue;
+      }
     }
 
-    if (!up_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "up",
-                "");
+    // right
+    //
+    if (n.name () == "right" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< right_type > r (
+        right_traits::create (i, f, this));
+
+      if (!right_.present ())
+      {
+        this->right_.set (r);
+        continue;
+      }
     }
 
-    if (!right_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "right",
-                "");
+    // down
+    //
+    if (n.name () == "down" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< down_type > r (
+        down_traits::create (i, f, this));
+
+      if (!down_.present ())
+      {
+        this->down_.set (r);
+        continue;
+      }
     }
 
-    if (!down_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "down",
-                "");
+    // front
+    //
+    if (n.name () == "front" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< front_type > r (
+        front_traits::create (i, f, this));
+
+      if (!front_.present ())
+      {
+        this->front_.set (r);
+        continue;
+      }
     }
 
-    if (!front_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "front",
-                "");
+    // back
+    //
+    if (n.name () == "back" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< back_type > r (
+        back_traits::create (i, f, this));
+
+      if (!back_.present ())
+      {
+        this->back_.set (r);
+        continue;
+      }
     }
 
-    if (!back_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "back",
-                "");
-    }
+    break;
+  }
+
+  if (!left_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "left",
+      "");
+  }
+
+  if (!up_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "up",
+      "");
+  }
+
+  if (!right_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "right",
+      "");
+  }
+
+  if (!down_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "down",
+      "");
+  }
+
+  if (!front_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "front",
+      "");
+  }
+
+  if (!back_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "back",
+      "");
+  }
 }
 
-boundaryConditionsType *boundaryConditionsType::
-_clone(::xml_schema::flags f,
-       ::xml_schema::container *c) const {
-    return new class boundaryConditionsType(*this, f, c);
+boundaryConditionsType* boundaryConditionsType::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class boundaryConditionsType (*this, f, c);
 }
 
-boundaryConditionsType &boundaryConditionsType::
-operator=(const boundaryConditionsType &x) {
-    if (this != &x) {
-        static_cast< ::xml_schema::type & > (*this) = x;
-        this->left_ = x.left_;
-        this->up_ = x.up_;
-        this->right_ = x.right_;
-        this->down_ = x.down_;
-        this->front_ = x.front_;
-        this->back_ = x.back_;
+boundaryConditionsType& boundaryConditionsType::
+operator= (const boundaryConditionsType& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->left_ = x.left_;
+    this->up_ = x.up_;
+    this->right_ = x.right_;
+    this->down_ = x.down_;
+    this->front_ = x.front_;
+    this->back_ = x.back_;
+  }
 
-    }
-
-    return *this;
+  return *this;
 }
 
 boundaryConditionsType::
-~boundaryConditionsType() {
+~boundaryConditionsType ()
+{
 }
 
 // simulation
 //
 
 simulation::
-simulation(const simulationParams_type &simulationParams)
-        : ::xml_schema::type(),
-          simulationParams_(simulationParams, this),
-          linkedCellParams_(this),
-          thermostat_(this),
-          cuboid_(this),
-          sphere_(this) {
+simulation (const simulationParams_type& simulationParams)
+: ::xml_schema::type (),
+  simulationParams_ (simulationParams, this),
+  linkedCellParams_ (this),
+  membraneParams_ (this),
+  thermostat_ (this),
+  cuboid_ (this),
+  sphere_ (this)
+{
 }
 
 simulation::
-simulation(::std::auto_ptr<simulationParams_type> simulationParams)
-        : ::xml_schema::type(),
-          simulationParams_(simulationParams, this),
-          linkedCellParams_(this),
-          thermostat_(this),
-          cuboid_(this),
-          sphere_(this) {
+simulation (::std::auto_ptr< simulationParams_type > simulationParams)
+: ::xml_schema::type (),
+  simulationParams_ (simulationParams, this),
+  linkedCellParams_ (this),
+  membraneParams_ (this),
+  thermostat_ (this),
+  cuboid_ (this),
+  sphere_ (this)
+{
 }
 
 simulation::
-simulation(const simulation &x,
-           ::xml_schema::flags f,
-           ::xml_schema::container *c)
-        : ::xml_schema::type(x, f, c),
-          simulationParams_(x.simulationParams_, f, this),
-          linkedCellParams_(x.linkedCellParams_, f, this),
-          thermostat_(x.thermostat_, f, this),
-          cuboid_(x.cuboid_, f, this),
-          sphere_(x.sphere_, f, this) {
+simulation (const simulation& x,
+            ::xml_schema::flags f,
+            ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  simulationParams_ (x.simulationParams_, f, this),
+  linkedCellParams_ (x.linkedCellParams_, f, this),
+  membraneParams_ (x.membraneParams_, f, this),
+  thermostat_ (x.thermostat_, f, this),
+  cuboid_ (x.cuboid_, f, this),
+  sphere_ (x.sphere_, f, this)
+{
 }
 
 simulation::
-simulation(const ::xercesc::DOMElement &e,
-           ::xml_schema::flags f,
-           ::xml_schema::container *c)
-        : ::xml_schema::type(e, f | ::xml_schema::flags::base, c),
-          simulationParams_(this),
-          linkedCellParams_(this),
-          thermostat_(this),
-          cuboid_(this),
-          sphere_(this) {
-    if ((f & ::xml_schema::flags::base) == 0) {
-        ::xsd::cxx::xml::dom::parser<char> p(e, true, false, false);
-        this->parse(p, f);
-    }
+simulation (const ::xercesc::DOMElement& e,
+            ::xml_schema::flags f,
+            ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  simulationParams_ (this),
+  linkedCellParams_ (this),
+  membraneParams_ (this),
+  thermostat_ (this),
+  cuboid_ (this),
+  sphere_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
 }
 
 void simulation::
-parse(::xsd::cxx::xml::dom::parser<char> &p,
-      ::xml_schema::flags f) {
-    for (; p.more_content(); p.next_content(false)) {
-        const ::xercesc::DOMElement &i(p.cur_element());
-        const ::xsd::cxx::xml::qualified_name<char> n(
-                ::xsd::cxx::xml::dom::name<char>(i));
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
 
-        // simulationParams
-        //
-        if (n.name() == "simulationParams" && n.namespace_().empty()) {
-            ::std::auto_ptr<simulationParams_type> r(
-                    simulationParams_traits::create(i, f, this));
+    // simulationParams
+    //
+    if (n.name () == "simulationParams" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< simulationParams_type > r (
+        simulationParams_traits::create (i, f, this));
 
-            if (!simulationParams_.present()) {
-                this->simulationParams_.set(r);
-                continue;
-            }
-        }
-
-        // linkedCellParams
-        //
-        if (n.name() == "linkedCellParams" && n.namespace_().empty()) {
-            ::std::auto_ptr<linkedCellParams_type> r(
-                    linkedCellParams_traits::create(i, f, this));
-
-            if (!this->linkedCellParams_) {
-                this->linkedCellParams_.set(r);
-                continue;
-            }
-        }
-
-        // thermostat
-        //
-        if (n.name() == "thermostat" && n.namespace_().empty()) {
-            ::std::auto_ptr<thermostat_type> r(
-                    thermostat_traits::create(i, f, this));
-
-            if (!this->thermostat_) {
-                this->thermostat_.set(r);
-                continue;
-            }
-        }
-
-        // cuboid
-        //
-        if (n.name() == "cuboid" && n.namespace_().empty()) {
-            ::std::auto_ptr<cuboid_type> r(
-                    cuboid_traits::create(i, f, this));
-
-            this->cuboid_.push_back(r);
-            continue;
-        }
-
-        // sphere
-        //
-        if (n.name() == "sphere" && n.namespace_().empty()) {
-            ::std::auto_ptr<sphere_type> r(
-                    sphere_traits::create(i, f, this));
-
-            this->sphere_.push_back(r);
-            continue;
-        }
-
-        break;
+      if (!simulationParams_.present ())
+      {
+        this->simulationParams_.set (r);
+        continue;
+      }
     }
 
-    if (!simulationParams_.present()) {
-        throw ::xsd::cxx::tree::expected_element<char>(
-                "simulationParams",
-                "");
+    // linkedCellParams
+    //
+    if (n.name () == "linkedCellParams" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< linkedCellParams_type > r (
+        linkedCellParams_traits::create (i, f, this));
+
+      if (!this->linkedCellParams_)
+      {
+        this->linkedCellParams_.set (r);
+        continue;
+      }
     }
+
+    // membraneParams
+    //
+    if (n.name () == "membraneParams" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< membraneParams_type > r (
+        membraneParams_traits::create (i, f, this));
+
+      if (!this->membraneParams_)
+      {
+        this->membraneParams_.set (r);
+        continue;
+      }
+    }
+
+    // thermostat
+    //
+    if (n.name () == "thermostat" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< thermostat_type > r (
+        thermostat_traits::create (i, f, this));
+
+      if (!this->thermostat_)
+      {
+        this->thermostat_.set (r);
+        continue;
+      }
+    }
+
+    // cuboid
+    //
+    if (n.name () == "cuboid" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< cuboid_type > r (
+        cuboid_traits::create (i, f, this));
+
+      this->cuboid_.push_back (r);
+      continue;
+    }
+
+    // sphere
+    //
+    if (n.name () == "sphere" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< sphere_type > r (
+        sphere_traits::create (i, f, this));
+
+      this->sphere_.push_back (r);
+      continue;
+    }
+
+    break;
+  }
+
+  if (!simulationParams_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "simulationParams",
+      "");
+  }
 }
 
-simulation *simulation::
-_clone(::xml_schema::flags f,
-       ::xml_schema::container *c) const {
-    return new class simulation(*this, f, c);
+simulation* simulation::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class simulation (*this, f, c);
 }
 
-simulation &simulation::
-operator=(const simulation &x) {
-    if (this != &x) {
-        static_cast< ::xml_schema::type & > (*this) = x;
-        this->simulationParams_ = x.simulationParams_;
-        this->linkedCellParams_ = x.linkedCellParams_;
-        this->thermostat_ = x.thermostat_;
-        this->cuboid_ = x.cuboid_;
-        this->sphere_ = x.sphere_;
-    }
+simulation& simulation::
+operator= (const simulation& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->simulationParams_ = x.simulationParams_;
+    this->linkedCellParams_ = x.linkedCellParams_;
+    this->membraneParams_ = x.membraneParams_;
+    this->thermostat_ = x.thermostat_;
+    this->cuboid_ = x.cuboid_;
+    this->sphere_ = x.sphere_;
+  }
 
-    return *this;
+  return *this;
 }
 
 simulation::
-~simulation() {
+~simulation ()
+{
 }
 
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>
 
-::std::auto_ptr<::simulation>
-simulation_(const ::std::string &u,
-            ::xml_schema::flags f,
-            const ::xml_schema::properties &p) {
-    ::xsd::cxx::xml::auto_initializer i(
-            (f & ::xml_schema::flags::dont_initialize) == 0,
-            (f & ::xml_schema::flags::keep_dom) == 0);
+::std::auto_ptr< ::simulation >
+simulation_ (const ::std::string& u,
+             ::xml_schema::flags f,
+             const ::xml_schema::properties& p)
+{
+  ::xsd::cxx::xml::auto_initializer i (
+    (f & ::xml_schema::flags::dont_initialize) == 0,
+    (f & ::xml_schema::flags::keep_dom) == 0);
 
-    ::xsd::cxx::tree::error_handler<char> h;
+  ::xsd::cxx::tree::error_handler< char > h;
 
-    ::xml_schema::dom::auto_ptr<::xercesc::DOMDocument> d(
-            ::xsd::cxx::xml::dom::parse<char>(
-                    u, h, p, f));
+  ::xml_schema::dom::auto_ptr< ::xercesc::DOMDocument > d (
+    ::xsd::cxx::xml::dom::parse< char > (
+      u, h, p, f));
 
-    h.throw_if_failed<::xsd::cxx::tree::parsing<char> >();
+  h.throw_if_failed< ::xsd::cxx::tree::parsing< char > > ();
 
-    return ::std::auto_ptr<::simulation>(
-            ::simulation_(
-                    d, f | ::xml_schema::flags::own_dom, p));
+  return ::std::auto_ptr< ::simulation > (
+    ::simulation_ (
+      d, f | ::xml_schema::flags::own_dom, p));
 }
 
-::std::auto_ptr<::simulation>
-simulation_(const ::std::string &u,
-            ::xml_schema::error_handler &h,
-            ::xml_schema::flags f,
-            const ::xml_schema::properties &p) {
-    ::xsd::cxx::xml::auto_initializer i(
-            (f & ::xml_schema::flags::dont_initialize) == 0,
-            (f & ::xml_schema::flags::keep_dom) == 0);
+::std::auto_ptr< ::simulation >
+simulation_ (const ::std::string& u,
+             ::xml_schema::error_handler& h,
+             ::xml_schema::flags f,
+             const ::xml_schema::properties& p)
+{
+  ::xsd::cxx::xml::auto_initializer i (
+    (f & ::xml_schema::flags::dont_initialize) == 0,
+    (f & ::xml_schema::flags::keep_dom) == 0);
 
-    ::xml_schema::dom::auto_ptr<::xercesc::DOMDocument> d(
-            ::xsd::cxx::xml::dom::parse<char>(
-                    u, h, p, f));
+  ::xml_schema::dom::auto_ptr< ::xercesc::DOMDocument > d (
+    ::xsd::cxx::xml::dom::parse< char > (
+      u, h, p, f));
 
-    if (!d.get())
-        throw ::xsd::cxx::tree::parsing<char>();
+  if (!d.get ())
+    throw ::xsd::cxx::tree::parsing< char > ();
 
-    return ::std::auto_ptr<::simulation>(
-            ::simulation_(
-                    d, f | ::xml_schema::flags::own_dom, p));
+  return ::std::auto_ptr< ::simulation > (
+    ::simulation_ (
+      d, f | ::xml_schema::flags::own_dom, p));
 }
 
-::std::auto_ptr<::simulation>
-simulation_(const ::std::string &u,
-            ::xercesc::DOMErrorHandler &h,
-            ::xml_schema::flags f,
-            const ::xml_schema::properties &p) {
-    ::xml_schema::dom::auto_ptr<::xercesc::DOMDocument> d(
-            ::xsd::cxx::xml::dom::parse<char>(
-                    u, h, p, f));
+::std::auto_ptr< ::simulation >
+simulation_ (const ::std::string& u,
+             ::xercesc::DOMErrorHandler& h,
+             ::xml_schema::flags f,
+             const ::xml_schema::properties& p)
+{
+  ::xml_schema::dom::auto_ptr< ::xercesc::DOMDocument > d (
+    ::xsd::cxx::xml::dom::parse< char > (
+      u, h, p, f));
 
-    if (!d.get())
-        throw ::xsd::cxx::tree::parsing<char>();
+  if (!d.get ())
+    throw ::xsd::cxx::tree::parsing< char > ();
 
-    return ::std::auto_ptr<::simulation>(
-            ::simulation_(
-                    d, f | ::xml_schema::flags::own_dom, p));
+  return ::std::auto_ptr< ::simulation > (
+    ::simulation_ (
+      d, f | ::xml_schema::flags::own_dom, p));
 }
 
-::std::auto_ptr<::simulation>
-simulation_(::std::istream &is,
-            ::xml_schema::flags f,
-            const ::xml_schema::properties &p) {
-    ::xsd::cxx::xml::auto_initializer i(
-            (f & ::xml_schema::flags::dont_initialize) == 0,
-            (f & ::xml_schema::flags::keep_dom) == 0);
+::std::auto_ptr< ::simulation >
+simulation_ (::std::istream& is,
+             ::xml_schema::flags f,
+             const ::xml_schema::properties& p)
+{
+  ::xsd::cxx::xml::auto_initializer i (
+    (f & ::xml_schema::flags::dont_initialize) == 0,
+    (f & ::xml_schema::flags::keep_dom) == 0);
 
-    ::xsd::cxx::xml::sax::std_input_source isrc(is);
-    return ::simulation_(isrc, f, p);
+  ::xsd::cxx::xml::sax::std_input_source isrc (is);
+  return ::simulation_ (isrc, f, p);
 }
 
-::std::auto_ptr<::simulation>
-simulation_(::std::istream &is,
-            ::xml_schema::error_handler &h,
-            ::xml_schema::flags f,
-            const ::xml_schema::properties &p) {
-    ::xsd::cxx::xml::auto_initializer i(
-            (f & ::xml_schema::flags::dont_initialize) == 0,
-            (f & ::xml_schema::flags::keep_dom) == 0);
+::std::auto_ptr< ::simulation >
+simulation_ (::std::istream& is,
+             ::xml_schema::error_handler& h,
+             ::xml_schema::flags f,
+             const ::xml_schema::properties& p)
+{
+  ::xsd::cxx::xml::auto_initializer i (
+    (f & ::xml_schema::flags::dont_initialize) == 0,
+    (f & ::xml_schema::flags::keep_dom) == 0);
 
-    ::xsd::cxx::xml::sax::std_input_source isrc(is);
-    return ::simulation_(isrc, h, f, p);
+  ::xsd::cxx::xml::sax::std_input_source isrc (is);
+  return ::simulation_ (isrc, h, f, p);
 }
 
-::std::auto_ptr<::simulation>
-simulation_(::std::istream &is,
-            ::xercesc::DOMErrorHandler &h,
-            ::xml_schema::flags f,
-            const ::xml_schema::properties &p) {
-    ::xsd::cxx::xml::sax::std_input_source isrc(is);
-    return ::simulation_(isrc, h, f, p);
+::std::auto_ptr< ::simulation >
+simulation_ (::std::istream& is,
+             ::xercesc::DOMErrorHandler& h,
+             ::xml_schema::flags f,
+             const ::xml_schema::properties& p)
+{
+  ::xsd::cxx::xml::sax::std_input_source isrc (is);
+  return ::simulation_ (isrc, h, f, p);
 }
 
-::std::auto_ptr<::simulation>
-simulation_(::std::istream &is,
-            const ::std::string &sid,
-            ::xml_schema::flags f,
-            const ::xml_schema::properties &p) {
-    ::xsd::cxx::xml::auto_initializer i(
-            (f & ::xml_schema::flags::dont_initialize) == 0,
-            (f & ::xml_schema::flags::keep_dom) == 0);
+::std::auto_ptr< ::simulation >
+simulation_ (::std::istream& is,
+             const ::std::string& sid,
+             ::xml_schema::flags f,
+             const ::xml_schema::properties& p)
+{
+  ::xsd::cxx::xml::auto_initializer i (
+    (f & ::xml_schema::flags::dont_initialize) == 0,
+    (f & ::xml_schema::flags::keep_dom) == 0);
 
-    ::xsd::cxx::xml::sax::std_input_source isrc(is, sid);
-    return ::simulation_(isrc, f, p);
+  ::xsd::cxx::xml::sax::std_input_source isrc (is, sid);
+  return ::simulation_ (isrc, f, p);
 }
 
-::std::auto_ptr<::simulation>
-simulation_(::std::istream &is,
-            const ::std::string &sid,
-            ::xml_schema::error_handler &h,
-            ::xml_schema::flags f,
-            const ::xml_schema::properties &p) {
-    ::xsd::cxx::xml::auto_initializer i(
-            (f & ::xml_schema::flags::dont_initialize) == 0,
-            (f & ::xml_schema::flags::keep_dom) == 0);
+::std::auto_ptr< ::simulation >
+simulation_ (::std::istream& is,
+             const ::std::string& sid,
+             ::xml_schema::error_handler& h,
+             ::xml_schema::flags f,
+             const ::xml_schema::properties& p)
+{
+  ::xsd::cxx::xml::auto_initializer i (
+    (f & ::xml_schema::flags::dont_initialize) == 0,
+    (f & ::xml_schema::flags::keep_dom) == 0);
 
-    ::xsd::cxx::xml::sax::std_input_source isrc(is, sid);
-    return ::simulation_(isrc, h, f, p);
+  ::xsd::cxx::xml::sax::std_input_source isrc (is, sid);
+  return ::simulation_ (isrc, h, f, p);
 }
 
-::std::auto_ptr<::simulation>
-simulation_(::std::istream &is,
-            const ::std::string &sid,
-            ::xercesc::DOMErrorHandler &h,
-            ::xml_schema::flags f,
-            const ::xml_schema::properties &p) {
-    ::xsd::cxx::xml::sax::std_input_source isrc(is, sid);
-    return ::simulation_(isrc, h, f, p);
+::std::auto_ptr< ::simulation >
+simulation_ (::std::istream& is,
+             const ::std::string& sid,
+             ::xercesc::DOMErrorHandler& h,
+             ::xml_schema::flags f,
+             const ::xml_schema::properties& p)
+{
+  ::xsd::cxx::xml::sax::std_input_source isrc (is, sid);
+  return ::simulation_ (isrc, h, f, p);
 }
 
-::std::auto_ptr<::simulation>
-simulation_(::xercesc::InputSource &i,
-            ::xml_schema::flags f,
-            const ::xml_schema::properties &p) {
-    ::xsd::cxx::tree::error_handler<char> h;
+::std::auto_ptr< ::simulation >
+simulation_ (::xercesc::InputSource& i,
+             ::xml_schema::flags f,
+             const ::xml_schema::properties& p)
+{
+  ::xsd::cxx::tree::error_handler< char > h;
 
-    ::xml_schema::dom::auto_ptr<::xercesc::DOMDocument> d(
-            ::xsd::cxx::xml::dom::parse<char>(
-                    i, h, p, f));
+  ::xml_schema::dom::auto_ptr< ::xercesc::DOMDocument > d (
+    ::xsd::cxx::xml::dom::parse< char > (
+      i, h, p, f));
 
-    h.throw_if_failed<::xsd::cxx::tree::parsing<char> >();
+  h.throw_if_failed< ::xsd::cxx::tree::parsing< char > > ();
 
-    return ::std::auto_ptr<::simulation>(
-            ::simulation_(
-                    d, f | ::xml_schema::flags::own_dom, p));
+  return ::std::auto_ptr< ::simulation > (
+    ::simulation_ (
+      d, f | ::xml_schema::flags::own_dom, p));
 }
 
-::std::auto_ptr<::simulation>
-simulation_(::xercesc::InputSource &i,
-            ::xml_schema::error_handler &h,
-            ::xml_schema::flags f,
-            const ::xml_schema::properties &p) {
-    ::xml_schema::dom::auto_ptr<::xercesc::DOMDocument> d(
-            ::xsd::cxx::xml::dom::parse<char>(
-                    i, h, p, f));
+::std::auto_ptr< ::simulation >
+simulation_ (::xercesc::InputSource& i,
+             ::xml_schema::error_handler& h,
+             ::xml_schema::flags f,
+             const ::xml_schema::properties& p)
+{
+  ::xml_schema::dom::auto_ptr< ::xercesc::DOMDocument > d (
+    ::xsd::cxx::xml::dom::parse< char > (
+      i, h, p, f));
 
-    if (!d.get())
-        throw ::xsd::cxx::tree::parsing<char>();
+  if (!d.get ())
+    throw ::xsd::cxx::tree::parsing< char > ();
 
-    return ::std::auto_ptr<::simulation>(
-            ::simulation_(
-                    d, f | ::xml_schema::flags::own_dom, p));
+  return ::std::auto_ptr< ::simulation > (
+    ::simulation_ (
+      d, f | ::xml_schema::flags::own_dom, p));
 }
 
-::std::auto_ptr<::simulation>
-simulation_(::xercesc::InputSource &i,
-            ::xercesc::DOMErrorHandler &h,
-            ::xml_schema::flags f,
-            const ::xml_schema::properties &p) {
-    ::xml_schema::dom::auto_ptr<::xercesc::DOMDocument> d(
-            ::xsd::cxx::xml::dom::parse<char>(
-                    i, h, p, f));
+::std::auto_ptr< ::simulation >
+simulation_ (::xercesc::InputSource& i,
+             ::xercesc::DOMErrorHandler& h,
+             ::xml_schema::flags f,
+             const ::xml_schema::properties& p)
+{
+  ::xml_schema::dom::auto_ptr< ::xercesc::DOMDocument > d (
+    ::xsd::cxx::xml::dom::parse< char > (
+      i, h, p, f));
 
-    if (!d.get())
-        throw ::xsd::cxx::tree::parsing<char>();
+  if (!d.get ())
+    throw ::xsd::cxx::tree::parsing< char > ();
 
-    return ::std::auto_ptr<::simulation>(
-            ::simulation_(
-                    d, f | ::xml_schema::flags::own_dom, p));
+  return ::std::auto_ptr< ::simulation > (
+    ::simulation_ (
+      d, f | ::xml_schema::flags::own_dom, p));
 }
 
-::std::auto_ptr<::simulation>
-simulation_(const ::xercesc::DOMDocument &doc,
-            ::xml_schema::flags f,
-            const ::xml_schema::properties &p) {
-    if (f & ::xml_schema::flags::keep_dom) {
-        ::xml_schema::dom::auto_ptr<::xercesc::DOMDocument> d(
-                static_cast< ::xercesc::DOMDocument * > (doc.cloneNode(true)));
+::std::auto_ptr< ::simulation >
+simulation_ (const ::xercesc::DOMDocument& doc,
+             ::xml_schema::flags f,
+             const ::xml_schema::properties& p)
+{
+  if (f & ::xml_schema::flags::keep_dom)
+  {
+    ::xml_schema::dom::auto_ptr< ::xercesc::DOMDocument > d (
+      static_cast< ::xercesc::DOMDocument* > (doc.cloneNode (true)));
 
-        return ::std::auto_ptr<::simulation>(
-                ::simulation_(
-                        d, f | ::xml_schema::flags::own_dom, p));
-    }
+    return ::std::auto_ptr< ::simulation > (
+      ::simulation_ (
+        d, f | ::xml_schema::flags::own_dom, p));
+  }
 
-    const ::xercesc::DOMElement &e(*doc.getDocumentElement());
-    const ::xsd::cxx::xml::qualified_name<char> n(
-            ::xsd::cxx::xml::dom::name<char>(e));
+  const ::xercesc::DOMElement& e (*doc.getDocumentElement ());
+  const ::xsd::cxx::xml::qualified_name< char > n (
+    ::xsd::cxx::xml::dom::name< char > (e));
 
-    if (n.name() == "simulation" &&
-        n.namespace_() == "") {
-        ::std::auto_ptr<::simulation> r(
-                ::xsd::cxx::tree::traits<::simulation, char>::create(
-                        e, f, 0));
-        return r;
-    }
+  if (n.name () == "simulation" &&
+      n.namespace_ () == "")
+  {
+    ::std::auto_ptr< ::simulation > r (
+      ::xsd::cxx::tree::traits< ::simulation, char >::create (
+        e, f, 0));
+    return r;
+  }
 
-    throw ::xsd::cxx::tree::unexpected_element<char>(
-            n.name(),
-            n.namespace_(),
-            "simulation",
-            "");
+  throw ::xsd::cxx::tree::unexpected_element < char > (
+    n.name (),
+    n.namespace_ (),
+    "simulation",
+    "");
 }
 
-::std::auto_ptr<::simulation>
-simulation_(::xml_schema::dom::auto_ptr<::xercesc::DOMDocument> d,
-            ::xml_schema::flags f,
-            const ::xml_schema::properties &) {
-    ::xml_schema::dom::auto_ptr<::xercesc::DOMDocument> c(
-            ((f & ::xml_schema::flags::keep_dom) &&
-             !(f & ::xml_schema::flags::own_dom))
-            ? static_cast< ::xercesc::DOMDocument * > (d->cloneNode(true))
-            : 0);
+::std::auto_ptr< ::simulation >
+simulation_ (::xml_schema::dom::auto_ptr< ::xercesc::DOMDocument > d,
+             ::xml_schema::flags f,
+             const ::xml_schema::properties&)
+{
+  ::xml_schema::dom::auto_ptr< ::xercesc::DOMDocument > c (
+    ((f & ::xml_schema::flags::keep_dom) &&
+     !(f & ::xml_schema::flags::own_dom))
+    ? static_cast< ::xercesc::DOMDocument* > (d->cloneNode (true))
+    : 0);
 
-    ::xercesc::DOMDocument &doc(c.get() ? *c : *d);
-    const ::xercesc::DOMElement &e(*doc.getDocumentElement());
+  ::xercesc::DOMDocument& doc (c.get () ? *c : *d);
+  const ::xercesc::DOMElement& e (*doc.getDocumentElement ());
 
-    const ::xsd::cxx::xml::qualified_name<char> n(
-            ::xsd::cxx::xml::dom::name<char>(e));
+  const ::xsd::cxx::xml::qualified_name< char > n (
+    ::xsd::cxx::xml::dom::name< char > (e));
 
-    if (f & ::xml_schema::flags::keep_dom)
-        doc.setUserData(::xml_schema::dom::tree_node_key,
-                        (c.get() ? &c : &d),
-                        0);
+  if (f & ::xml_schema::flags::keep_dom)
+    doc.setUserData (::xml_schema::dom::tree_node_key,
+                     (c.get () ? &c : &d),
+                     0);
 
-    if (n.name() == "simulation" &&
-        n.namespace_() == "") {
-        ::std::auto_ptr<::simulation> r(
-                ::xsd::cxx::tree::traits<::simulation, char>::create(
-                        e, f, 0));
-        return r;
-    }
+  if (n.name () == "simulation" &&
+      n.namespace_ () == "")
+  {
+    ::std::auto_ptr< ::simulation > r (
+      ::xsd::cxx::tree::traits< ::simulation, char >::create (
+        e, f, 0));
+    return r;
+  }
 
-    throw ::xsd::cxx::tree::unexpected_element<char>(
-            n.name(),
-            n.namespace_(),
-            "simulation",
-            "");
+  throw ::xsd::cxx::tree::unexpected_element < char > (
+    n.name (),
+    n.namespace_ (),
+    "simulation",
+    "");
 }
 
 #include <xsd/cxx/post.hxx>

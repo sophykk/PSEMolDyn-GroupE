@@ -14,8 +14,8 @@
 
 //check
 LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<double> &dSize, double &cRadius,
-                                         std::array<char, 6> bCon, double &gGrav) :
-        ParticleContainerBase(model), domainSize(dSize), cutoffRadius(cRadius), boundaryCon(bCon), gGrav(gGrav) {
+                                         std::array<char, 6> bCon, double &gGrav, bool &isMembrane) :
+        ParticleContainerBase(model), domainSize(dSize), cutoffRadius(cRadius), boundaryCon(bCon), gGrav(gGrav), isMembrane(isMembrane) {
     int cellDimensionX;
     int cellDimensionY;
     int cellDimensionZ;
@@ -37,9 +37,9 @@ LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<double> &
 
 //check, maybe if z grid = 1 => 2D
 LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<Particle> &particles, std::vector<double> &dSize,
-                                         double &cRadius, std::array<char, 6> bCon, double &gGrav) :
+                                         double &cRadius, std::array<char, 6> bCon, double &gGrav, bool &isMembrane) :
         ParticleContainerBase(model), particleList(particles), domainSize(dSize), cutoffRadius(cRadius),
-        boundaryCon(bCon), gGrav(gGrav) {
+        boundaryCon(bCon), gGrav(gGrav), isMembrane(isMembrane) {
     int cellDimensionX;
     int cellDimensionY;
     int cellDimensionZ;
@@ -56,6 +56,28 @@ LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<Particle>
                         cellDimensionY,
                         std::vector<std::vector<Particle>>(
                                 cellDimensionZ, std::vector<Particle>())));
+    initGrid();
+}
+
+LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<double> &dSize, double &cRadius,
+                                         std::array<char, 6> bCon, double &gGrav, bool &isMembrane, int &k, double &r0, double &pullUpF) :
+        ParticleContainerBase(model), domainSize(dSize), cutoffRadius(cRadius), boundaryCon(bCon), gGrav(gGrav), isMembrane(isMembrane), k(k), r0(r0), pullUpF(pullUpF) {
+    int cellDimensionX;
+    int cellDimensionY;
+    int cellDimensionZ;
+    std::fmod(domainSize[0], cutoffRadius) == 0 ? cellDimensionX = domainSize[0] / cutoffRadius
+                                                : cellDimensionX = std::ceil(domainSize[0] / cutoffRadius);
+    std::fmod(domainSize[1], cutoffRadius) == 0 ? cellDimensionY = domainSize[1] / cutoffRadius
+                                                : cellDimensionY = std::ceil(domainSize[1] / cutoffRadius);
+    std::fmod(domainSize[2], cutoffRadius) == 0 ? cellDimensionZ = domainSize[2] / cutoffRadius
+                                                : cellDimensionZ = std::ceil(domainSize[2] / cutoffRadius);
+    //domainSize[2] == 1 ? cellDimensionZ = 1 : (std::fmod(domainSize[2], cutoffRadius) == 0 ?
+    //        cellDimensionZ = domainSize[2] / cutoffRadius : cellDimensionZ = std::ceil(domainSize[2] / cutoffRadius));
+    grid.resize(cellDimensionX,
+                std::vector<std::vector<std::vector<Particle>>>(
+            cellDimensionY,
+                    std::vector<std::vector<Particle>>(
+                            cellDimensionZ, std::vector<Particle>())));
     initGrid();
 }
 

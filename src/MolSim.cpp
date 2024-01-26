@@ -66,9 +66,18 @@ int main(int argc, char *argsv[]) {
         double c;
         std::array<char, 6> b;
         double g;
-        xmlReader.readLinkedCellParams(argsv[1], d, c, b, g);
-
-        particleContainer = std::make_unique<LinkedCellContainer>(*forceModel, d, c, b, g);
+        bool isMembrane;
+        int k;
+        double r0;
+        double pullUpF;
+        xmlReader.readLinkedCellParams(argsv[1], d, c, b, g, isMembrane);
+        if(isMembrane){
+            xmlReader.readMembraneParams(argsv[1], k, r0, pullUpF);
+            std::cout<<"k: "<<k<<", r0: "<<r0<<", pullUpF: "<<pullUpF;
+            particleContainer = std::make_unique<LinkedCellContainer>(*forceModel, d, c, b, g, isMembrane, k, r0, pullUpF);
+        } else {
+            particleContainer = std::make_unique<LinkedCellContainer>(*forceModel, d, c, b, g, isMembrane);
+        }
     } else {
         spdlog::error("Unknown container type selected: {}", containerType);
         exit(-1);
@@ -94,7 +103,7 @@ int main(int argc, char *argsv[]) {
     }
 
     // Thermostat setup
-    double initialTemperature;
+    /*double initialTemperature;
     int thermostatInterval;
 
     // Read thermostat parameters out of the file
@@ -182,7 +191,7 @@ int main(int argc, char *argsv[]) {
         spdlog::info("Iteration {} finished.", iteration);
 
         current_time += delta_t;
-    }
+    }*/
 
     spdlog::info("output written. Terminating...");
 
