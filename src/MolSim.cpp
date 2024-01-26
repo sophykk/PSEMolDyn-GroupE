@@ -28,6 +28,7 @@ int main(int argc, char *argsv[]) {
     spdlog::level::level_enum log_level = spdlog::level::debug;
     bool calcRunTime = false;
     bool checkpointing;
+    bool isMembrane = false;
     outputWriter::TXTWriter checkpointingWriter;
     ParticlesFileReader checkpointingReader;
     std::string checkpointingFile = "checkpointing";
@@ -66,14 +67,12 @@ int main(int argc, char *argsv[]) {
         double c;
         std::array<char, 6> b;
         double g;
-        bool isMembrane;
         int k;
         double r0;
         double pullUpF;
         xmlReader.readLinkedCellParams(argsv[1], d, c, b, g, isMembrane);
         if(isMembrane){
             xmlReader.readMembraneParams(argsv[1], k, r0, pullUpF);
-            std::cout<<"k: "<<k<<", r0: "<<r0<<", pullUpF: "<<pullUpF;
             particleContainer = std::make_unique<LinkedCellContainer>(*forceModel, d, c, b, g, isMembrane, k, r0, pullUpF);
         } else {
             particleContainer = std::make_unique<LinkedCellContainer>(*forceModel, d, c, b, g, isMembrane);
@@ -102,23 +101,27 @@ int main(int argc, char *argsv[]) {
         }
     }
 
+
     // Thermostat setup
-    /*double initialTemperature;
+    double initialTemperature;
     int thermostatInterval;
 
-    // Read thermostat parameters out of the file
-    xmlReader.readThermostatParams(argsv[1], initialTemperature, thermostatInterval);
+    //if not the membrane simulation is ran, the thermostat should be initialized
+    if(!isMembrane){
+        // Read thermostat parameters out of the file
+        xmlReader.readThermostatParams(argsv[1], initialTemperature, thermostatInterval);
+    }
 
-    //double targetTemperature = initialTemperature;
-    //double maxTempChange = std::numeric_limits<double>::infinity();
+    double targetTemperature = initialTemperature;
+    double maxTempChange = std::numeric_limits<double>::infinity();
     bool useBrownianMotion = true;
 
     Thermostat thermostat(*particleContainer, initialTemperature, thermostatInterval, useBrownianMotion);
 
     // Velocity is 0 initially for all simulations, so we useBrownianMotion
-    //if(useBrownianMotion){
-    //    thermostat.initializeWithBrownianMotion(*particleContainer);
-    //}*/
+    if(useBrownianMotion && !isMembrane){
+        thermostat.initializeWithBrownianMotion(*particleContainer);
+    }
 
     // Calculate initial forces
     particleContainer->calculateF();
@@ -163,11 +166,11 @@ int main(int argc, char *argsv[]) {
         particleContainer->calculateF();
 
         // apply the thermostat
-        /*if(!checkpointing || current_time < 15){
+        if((!checkpointing || current_time < 15) && !isMembrane){
             if (iteration % thermostatInterval == 0) {
                 thermostat.applyThermostat(*particleContainer);
             }
-        }*/
+        }
 
         // calculate new v
         //spdlog::info("this is calcV in MolSim");
