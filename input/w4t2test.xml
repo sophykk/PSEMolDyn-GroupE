@@ -2,7 +2,7 @@
 <simulation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="../src/xsd/Simulation.xsd">
     <simulationParams>
-        <endTime>25</endTime>
+        <endTime>0.1</endTime>
         <deltaT> 0.0005</deltaT>
         <modelType>lennardJones</modelType>
         <containerType>linkedCells</containerType>

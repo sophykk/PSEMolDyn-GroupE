@@ -119,15 +119,16 @@ int main(int argc, char *argsv[]) {
         thermostat.initializeWithBrownianMotion(*particleContainer);
     }
 
-    // Enable OpenMP parallelization
-    #pragma omp parallel
-        {
-            // This block will be executed in parallel
-    #pragma omp critical
-            {
-                std::cout << "Hello from thread " << omp_get_thread_num() << std::endl;
-            }
-        }
+        #ifdef _OPENMP
+            std::cout << "OpenMP is enabled. Number of threads: " << omp_get_max_threads() << std::endl;
+        #else
+            std::cout << "OpenMP is not enabled." << std::endl;
+        #endif
+
+    omp_set_num_threads(4);
+
+    // Record start time
+    start = std::chrono::high_resolution_clock::now();
 
     // Calculate initial forces
     particleContainer->calculateF();
@@ -155,10 +156,6 @@ int main(int argc, char *argsv[]) {
             checkpointingReader.readFile(particleContainer->getParticles(), checkpointingFile);
         }
 
-        if(calcRunTime){
-            start = std::chrono::high_resolution_clock::now();
-        }
-
         // calculate new x
         particleContainer->calculateX(delta_t);
 
@@ -178,27 +175,23 @@ int main(int argc, char *argsv[]) {
         // calculate new v
         particleContainer->calculateV(delta_t);
 
-        if(calcRunTime){
-            // Record end time
-            end = std::chrono::high_resolution_clock::now();
-
-            // Calculate duration
-            auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-
-            // Print the duration in microseconds
-            std::cout << "Runtime: " << duration.count() << " microseconds\n";
-        }
-
         iteration++;
         if (iteration % plotInterval == 0) {
             particleContainer->plotParticles(iteration);
         }
-        spdlog::info("Iteration {} finished.", iteration);
+        //spdlog::info("Iteration {} finished.", iteration);
 
         current_time += delta_t;
     }
 
-    spdlog::info("output written. Terminating...");
+    // Record end time
+    end = std::chrono::high_resolution_clock::now();
+
+    // Calculate and print execution time
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cout << "Threads: 4" << ", Execution Time: " << duration.count() << " ms\n";
+
+    //spdlog::info("output written. Terminating...");
 
     return 0;
 }
