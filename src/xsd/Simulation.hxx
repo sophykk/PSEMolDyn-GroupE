@@ -224,6 +224,7 @@ namespace xml_schema
 //
 class simulationParamsType;
 class linkedCellParamsType;
+class membraneParamsType;
 class cuboidType;
 class thermostatType;
 class sphereType;
@@ -467,17 +468,33 @@ class linkedCellParamsType: public ::xml_schema::type
   void
   gravitationalAcceleration (const gravitationalAcceleration_type& x);
 
+  // isMembrane
+  //
+  typedef ::xml_schema::boolean isMembrane_type;
+  typedef ::xsd::cxx::tree::traits< isMembrane_type, char > isMembrane_traits;
+
+  const isMembrane_type&
+  isMembrane () const;
+
+  isMembrane_type&
+  isMembrane ();
+
+  void
+  isMembrane (const isMembrane_type& x);
+
   // Constructors.
   //
   linkedCellParamsType (const domainSize_type&,
                         const cutoffRadius_type&,
                         const boundaryConditions_type&,
-                        const gravitationalAcceleration_type&);
+                        const gravitationalAcceleration_type&,
+                        const isMembrane_type&);
 
   linkedCellParamsType (::std::auto_ptr< domainSize_type >,
                         const cutoffRadius_type&,
                         ::std::auto_ptr< boundaryConditions_type >,
-                        const gravitationalAcceleration_type&);
+                        const gravitationalAcceleration_type&,
+                        const isMembrane_type&);
 
   linkedCellParamsType (const ::xercesc::DOMElement& e,
                         ::xml_schema::flags f = 0,
@@ -509,6 +526,89 @@ class linkedCellParamsType: public ::xml_schema::type
   ::xsd::cxx::tree::one< cutoffRadius_type > cutoffRadius_;
   ::xsd::cxx::tree::one< boundaryConditions_type > boundaryConditions_;
   ::xsd::cxx::tree::one< gravitationalAcceleration_type > gravitationalAcceleration_;
+  ::xsd::cxx::tree::one< isMembrane_type > isMembrane_;
+};
+
+class membraneParamsType: public ::xml_schema::type
+{
+  public:
+  // stiffness
+  //
+  typedef ::xml_schema::int_ stiffness_type;
+  typedef ::xsd::cxx::tree::traits< stiffness_type, char > stiffness_traits;
+
+  const stiffness_type&
+  stiffness () const;
+
+  stiffness_type&
+  stiffness ();
+
+  void
+  stiffness (const stiffness_type& x);
+
+  // averageBond
+  //
+  typedef ::xml_schema::double_ averageBond_type;
+  typedef ::xsd::cxx::tree::traits< averageBond_type, char, ::xsd::cxx::tree::schema_type::double_ > averageBond_traits;
+
+  const averageBond_type&
+  averageBond () const;
+
+  averageBond_type&
+  averageBond ();
+
+  void
+  averageBond (const averageBond_type& x);
+
+  // pullUpForce
+  //
+  typedef ::xml_schema::double_ pullUpForce_type;
+  typedef ::xsd::cxx::tree::traits< pullUpForce_type, char, ::xsd::cxx::tree::schema_type::double_ > pullUpForce_traits;
+
+  const pullUpForce_type&
+  pullUpForce () const;
+
+  pullUpForce_type&
+  pullUpForce ();
+
+  void
+  pullUpForce (const pullUpForce_type& x);
+
+  // Constructors.
+  //
+  membraneParamsType (const stiffness_type&,
+                      const averageBond_type&,
+                      const pullUpForce_type&);
+
+  membraneParamsType (const ::xercesc::DOMElement& e,
+                      ::xml_schema::flags f = 0,
+                      ::xml_schema::container* c = 0);
+
+  membraneParamsType (const membraneParamsType& x,
+                      ::xml_schema::flags f = 0,
+                      ::xml_schema::container* c = 0);
+
+  virtual membraneParamsType*
+  _clone (::xml_schema::flags f = 0,
+          ::xml_schema::container* c = 0) const;
+
+  membraneParamsType&
+  operator= (const membraneParamsType& x);
+
+  virtual 
+  ~membraneParamsType ();
+
+  // Implementation.
+  //
+  protected:
+  void
+  parse (::xsd::cxx::xml::dom::parser< char >&,
+         ::xml_schema::flags);
+
+  protected:
+  ::xsd::cxx::tree::one< stiffness_type > stiffness_;
+  ::xsd::cxx::tree::one< averageBond_type > averageBond_;
+  ::xsd::cxx::tree::one< pullUpForce_type > pullUpForce_;
 };
 
 class cuboidType: public ::xml_schema::type
@@ -1405,12 +1505,48 @@ class boundaryConditionsType: public ::xml_schema::type
   void
   down (::std::auto_ptr< down_type > p);
 
+  // front
+  //
+  typedef ::xml_schema::string front_type;
+  typedef ::xsd::cxx::tree::traits< front_type, char > front_traits;
+
+  const front_type&
+  front () const;
+
+  front_type&
+  front ();
+
+  void
+  front (const front_type& x);
+
+  void
+  front (::std::auto_ptr< front_type > p);
+
+  // back
+  //
+  typedef ::xml_schema::string back_type;
+  typedef ::xsd::cxx::tree::traits< back_type, char > back_traits;
+
+  const back_type&
+  back () const;
+
+  back_type&
+  back ();
+
+  void
+  back (const back_type& x);
+
+  void
+  back (::std::auto_ptr< back_type > p);
+
   // Constructors.
   //
   boundaryConditionsType (const left_type&,
                           const up_type&,
                           const right_type&,
-                          const down_type&);
+                          const down_type&,
+                          const front_type&,
+                          const back_type&);
 
   boundaryConditionsType (const ::xercesc::DOMElement& e,
                           ::xml_schema::flags f = 0,
@@ -1442,6 +1578,8 @@ class boundaryConditionsType: public ::xml_schema::type
   ::xsd::cxx::tree::one< up_type > up_;
   ::xsd::cxx::tree::one< right_type > right_;
   ::xsd::cxx::tree::one< down_type > down_;
+  ::xsd::cxx::tree::one< front_type > front_;
+  ::xsd::cxx::tree::one< back_type > back_;
 };
 
 class simulation: public ::xml_schema::type
@@ -1484,6 +1622,27 @@ class simulation: public ::xml_schema::type
 
   void
   linkedCellParams (::std::auto_ptr< linkedCellParams_type > p);
+
+  // membraneParams
+  //
+  typedef ::membraneParamsType membraneParams_type;
+  typedef ::xsd::cxx::tree::optional< membraneParams_type > membraneParams_optional;
+  typedef ::xsd::cxx::tree::traits< membraneParams_type, char > membraneParams_traits;
+
+  const membraneParams_optional&
+  membraneParams () const;
+
+  membraneParams_optional&
+  membraneParams ();
+
+  void
+  membraneParams (const membraneParams_type& x);
+
+  void
+  membraneParams (const membraneParams_optional& x);
+
+  void
+  membraneParams (::std::auto_ptr< membraneParams_type > p);
 
   // thermostat
   //
@@ -1574,6 +1733,7 @@ class simulation: public ::xml_schema::type
   protected:
   ::xsd::cxx::tree::one< simulationParams_type > simulationParams_;
   linkedCellParams_optional linkedCellParams_;
+  membraneParams_optional membraneParams_;
   thermostat_optional thermostat_;
   cuboid_sequence cuboid_;
   sphere_sequence sphere_;

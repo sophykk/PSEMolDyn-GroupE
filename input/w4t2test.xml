@@ -2,15 +2,15 @@
 <simulation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="../src/xsd/Simulation.xsd">
     <simulationParams>
-        <endTime>25</endTime>
+        <endTime>15</endTime>
         <deltaT> 0.0005</deltaT>
         <modelType>lennardJones</modelType>
         <containerType>linkedCells</containerType>
-        <plotInterval>10</plotInterval>
+        <plotInterval>100</plotInterval>
         <objectType>cuboid</objectType>
         <checkpointing>false</checkpointing>
     </simulationParams>
-    
+
     <linkedCellParams>
         <domainSize>
             <Lx>63</Lx>
@@ -19,12 +19,15 @@
         </domainSize>
         <cutoffRadius>2.5</cutoffRadius>
         <boundaryConditions>
-            <left>p</left>
+            <left>r</left>
             <up>r</up>
-            <right>p</right>
+            <right>r</right>
             <down>r</down>
+            <front>r</front>
+            <back>r</back>
         </boundaryConditions>
         <gravitationalAcceleration>-12.44</gravitationalAcceleration>
+        <isMembrane>false</isMembrane>
     </linkedCellParams>
 
     <thermostat>
