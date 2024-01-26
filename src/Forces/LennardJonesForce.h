@@ -19,8 +19,8 @@ public:
     void setEps(const double nEps);
 
 private:
-    double sigma = 1.0;
-    double eps = 5.0;
+    double sigma;
+    double eps;
 };
 
 

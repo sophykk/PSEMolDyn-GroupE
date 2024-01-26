@@ -15,19 +15,20 @@
  */
 
 CuboidParticleGenerator::CuboidParticleGenerator(std::array<int, 3> N1, double h1, double m1, std::array<double, 3> v1,
-                                                 std::array<double, 3> x1, double sigma1, double epsilon1, double gGrav1, int type1)
-        : N(N1), h(h1), m(m1), v(v1), x(x1), sigma(sigma1), epsilon(epsilon1), gGrav(gGrav1), type(type1) {
+                                                 std::array<double, 3> x1, double sigma1, double epsilon1,
+                                                 double gGrav1, bool membrane, int type1)
+        : N(N1), h(h1), m(m1), v(v1), x(x1), sigma(sigma1), epsilon(epsilon1), gGrav(gGrav1), membrane(membrane), type(type1) {
 }
 
 /**
  * @brief create a N1xN2xN3 grid of particles with mass m, initial velocity v, left corner coordinate (x,y,z)
  * */
-void CuboidParticleGenerator::generateParticles(ParticleContainerBase& particleContainer) {
+void CuboidParticleGenerator::generateParticles(ParticleContainerBase &particleContainer) {
 
     for (int i = 0; i < N[0]; ++i) {
         for (int j = 0; j < N[1]; ++j) {
             for (int k = 0; k < N[2]; ++k) {
-                Particle particle({x[0] + i * h, x[1] + j * h, x[2] + k * h}, v, m, gGrav, sigma, epsilon, type);
+                Particle particle({x[0] + i * h, x[1] + j * h, x[2] + k * h}, v, m, gGrav, sigma, epsilon, membrane, type);
                 Formulas::addMB(particle);
                 particleContainer.addParticle(particle);
             }

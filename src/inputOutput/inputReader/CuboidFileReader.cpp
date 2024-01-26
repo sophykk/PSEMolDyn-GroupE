@@ -28,6 +28,7 @@ std::vector<CuboidParticleGenerator> CuboidFileReader::readFile(char *filename) 
     double sigma;
     double epsilon;
     double gGrav;
+    double membrane;
     int type;
     int num_cuboids = 0;
 
@@ -56,10 +57,10 @@ std::vector<CuboidParticleGenerator> CuboidFileReader::readFile(char *filename) 
         for (int i = 0; i < num_cuboids; i++) {
             std::istringstream datastream(tmp_string);
 
-            for (auto &xj : x) {
+            for (auto &xj: x) {
                 datastream >> xj;
             }
-            for (auto &vj : v) {
+            for (auto &vj: v) {
                 datastream >> vj;
             }
 
@@ -72,7 +73,7 @@ std::vector<CuboidParticleGenerator> CuboidFileReader::readFile(char *filename) 
             /**If there is N (Grid), generate the Grid first and then pass it to particles*/
             std::array<int, 3> N; // Array to store N values
 
-            for (auto &Nj : N) {
+            for (auto &Nj: N) {
                 datastream >> Nj;
             }
 
@@ -80,9 +81,10 @@ std::vector<CuboidParticleGenerator> CuboidFileReader::readFile(char *filename) 
             datastream >> sigma;
             datastream >> epsilon;
             datastream >> gGrav;
+            datastream >> membrane;
             datastream >> type;
 
-            generators.emplace_back(N, spacing, m, v, x, sigma, epsilon, gGrav,type);
+            generators.emplace_back(N, spacing, m, v, x, sigma, epsilon, gGrav, membrane, type);
 
             getline(input_file, tmp_string);
             spdlog::debug("Read line: {}", tmp_string);

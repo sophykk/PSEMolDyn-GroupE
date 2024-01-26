@@ -41,7 +41,7 @@ TEST(ParticleContainerTest, AddParticle) {
 TEST(ParticleContainerTest, LinkedCellContainerDefaultConstructor) {
     std::vector<double> domainSize = {180.0, 90.0, 1.0};
     double cutoffRadius = 3.0;
-    std::array<char, 4> boundaryCon{'r', 'r', 'r', 'r'}; // Reflecting
+    std::array<char, 6> boundaryCon{'r', 'r', 'r', 'r', 'r', 'r'}; // Reflecting
     double gGrav = 12;
     LennardJonesForce force;
 
@@ -56,7 +56,7 @@ TEST(ParticleContainerTest, LinkedCellContainerDefaultConstructor) {
 TEST(ParticleContainerTest, LinkedCellContainer2ConstructorWithParticles) {
     std::vector<double> domainSize = {180.0, 90.0, 1.0};
     double cutoffRadius = 3.0;
-    std::array<char, 4> boundaryCon{'r', 'r', 'r', 'r'}; // Reflecting
+    std::array<char, 6> boundaryCon{'r', 'r', 'r', 'r', 'r', 'r'}; // Reflecting
     double gGrav = 12;
     LennardJonesForce force;
     std::vector<Particle> particlesList = {Particle(), Particle()};
@@ -70,7 +70,7 @@ TEST(ParticleContainerTest, LinkedCellContainer2ConstructorWithParticles) {
 TEST(ParticleContainerTest, LinkedCellContainer2AddParticle) {
     std::vector<double> domainSize = {180.0, 90.0, 1.0};
     double cutoffRadius = 3.0;
-    std::array<char, 4> boundaryCon{'r', 'r', 'r', 'r'}; // Reflecting
+    std::array<char, 6> boundaryCon{'r', 'r', 'r', 'r', 'r', 'r'}; // Reflecting
     double gGrav = 12;
 
     LennardJonesForce force;
@@ -88,10 +88,10 @@ TEST(ParticleContainerTest, LinkedCellContainer2InitGrid) {
     LennardJonesForce force;
     std::vector<double> domainSize = {180.0, 90.0, 1.0};
     double cutoffRadius = 10.0;
-    std::array<char, 4> boundaryCon{'r', 'r', 'r', 'r'}; // Reflecting
+    std::array<char, 6> boundaryCon{'r', 'r', 'r', 'r', 'r', 'r'}; // Reflecting
     std::vector<Particle> particlesList = {
-            Particle({5.0, 5.0, 0.0}, {0.0, 0.0, 0.0}, 1.0 ,12.0, 1.0, 5.0, 1),
-            Particle({15.0, 5.0, 0.0}, {0.0, 0.0, 0.0}, 1.0, 12.0, 1.0,5.0, 1)
+            Particle({5.0, 5.0, 0.0}, {0.0, 0.0, 0.0}, 1.0, 12.0, 1.0, 5.0, 0.0, 1),
+            Particle({15.0, 5.0, 0.0}, {0.0, 0.0, 0.0}, 1.0, 12.0, 1.0, 5.0, 0.0, 1)
     };
     double gGrav = 12.0;
 
@@ -144,7 +144,7 @@ TEST(ParticleContainerTest, LinkedCellContainer2ResetForces) {
     LennardJonesForce force;
     std::vector<double> domainSize = {100.0, 100.0, 1.0};
     double cutoffRadius = 5.0;
-    std::array<char, 4> boundaryCon{'r', 'r', 'r', 'r'}; // Reflecting
+    std::array<char, 6> boundaryCon{'r', 'r', 'r', 'r', 'r', 'r'}; // Reflecting
     std::vector<Particle> particlesList = {/* Initialize some particles */};
     double gGrav = 12.0;
 
@@ -154,7 +154,7 @@ TEST(ParticleContainerTest, LinkedCellContainer2ResetForces) {
     container.calculateF();
     container.resetF();
 
-    for (const auto& particle : container.getParticles()) {
+    for (const auto &particle: container.getParticles()) {
         // Check if the force on each particle is reset to zero
         auto force = particle.getF();
         EXPECT_EQ(force[0], 0.0);
@@ -168,8 +168,8 @@ TEST(ParticleContainerTest, LinkedCellContainer2BoundaryConditions) {
     LennardJonesForce force;
     std::vector<double> domainSize = {100.0, 100.0, 1.0};
     double cutoffRadius = 5.0;
-    std::array<char, 4> reflectingBoundaryCon{'r', 'r', 'r', 'r'}; // Reflecting
-    std::array<char, 4> openBoundaryCon{'o', 'o', 'o', 'o'}; // Outflow
+    std::array<char, 6> reflectingBoundaryCon{'r', 'r', 'r', 'r', 'r', 'r'}; // Reflecting
+    std::array<char, 6> openBoundaryCon{'o', 'o', 'o', 'o', 'o', 'o'}; // Outflow
     double gGrav;
 
     LinkedCellContainer reflectingContainer(force, domainSize, cutoffRadius, reflectingBoundaryCon, gGrav);

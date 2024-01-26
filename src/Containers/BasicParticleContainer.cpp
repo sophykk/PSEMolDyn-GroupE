@@ -8,12 +8,16 @@
 #include "utils/ArrayUtils.h"
 #include "inputOutput/outputWriter/VTKWriter.h"
 
-std::vector<Particle>& BasicParticleContainer::getParticles() {
+std::vector<Particle> &BasicParticleContainer::getParticles() {
     return particleList;
 }
 
 void BasicParticleContainer::addParticle(Particle &particle) {
     particleList.push_back(particle);
+}
+
+int BasicParticleContainer::getDimension() const{
+    return 2;
 }
 
 std::size_t BasicParticleContainer::size() const {
@@ -26,7 +30,7 @@ void BasicParticleContainer::resetF() {
     }
 }
 
-void BasicParticleContainer::calculateF(){
+void BasicParticleContainer::calculateF() {
     for (auto p1 = getParticles().begin(); p1 < getParticles().end(); p1++) {
         for (auto p2 = p1 + 1; p2 < getParticles().end(); p2++) {
             auto force = forceModel.calculateForce(*p1, *p2);

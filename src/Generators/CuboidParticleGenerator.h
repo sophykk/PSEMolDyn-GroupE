@@ -26,6 +26,7 @@ private:
     double sigma;
     double epsilon;
     double gGrav;
+    bool membrane;
     int type;
 
 public:
@@ -34,7 +35,7 @@ public:
     */
 
     CuboidParticleGenerator(std::array<int, 3> N1, double h1, double m1, std::array<double, 3> v1,
-                            std::array<double, 3> x1, double sigma1, double epsilon1, double gGrav1, int type1);
+                            std::array<double, 3> x1, double sigma1, double epsilon1, double gGrav1, bool membrane, int type1);
 
     void generateParticles(ParticleContainerBase& particleContainer);
 };

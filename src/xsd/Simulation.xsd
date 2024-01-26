@@ -42,6 +42,7 @@
             <xs:element name="spacing" type="xs:double"/>
             <xs:element name="sigma" type="xs:double"/>
             <xs:element name="epsilon" type="xs:double"/>
+            <xs:element name="membrane" type="xs:double"/>
             <xs:element name="gravitationalAcceleration" type="xs:double"/>
             <xs:element name="type" type="xs:int"/>
         </xs:sequence>
@@ -65,6 +66,7 @@
             <xs:element name="radius" type="xs:double"/>
             <xs:element name="sigma" type="xs:double"/>
             <xs:element name="epsilon" type="xs:double"/>
+            <xs:element name="membrane" type="xs:boolean"/>
             <xs:element name="gravitationalAcceleration" type="xs:double"/>
             <xs:element name="type" type="xs:int"/>
         </xs:sequence>
@@ -108,6 +110,9 @@
             <xs:element name="up" type="xs:string"/>
             <xs:element name="right" type="xs:string"/>
             <xs:element name="down" type="xs:string"/>
+            <xs:element name="front" type="xs:string"/>
+            <xs:element name="back" type="xs:string"/>
+
         </xs:sequence>
     </xs:complexType>
 

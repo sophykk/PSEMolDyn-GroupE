@@ -19,18 +19,20 @@ private:
     /**
    * All the particles
    */
-    std::vector <Particle> particleList;
+    std::vector<Particle> particleList;
 
 public:
 
-    BasicParticleContainer(ForceBase& model) : ParticleContainerBase(model){};
+    BasicParticleContainer(ForceBase &model) : ParticleContainerBase(model) {};
 
-    BasicParticleContainer(ForceBase& model, std::vector<Particle>& particles) : particleList(particles),
+    BasicParticleContainer(ForceBase &model, std::vector<Particle> &particles) : particleList(particles),
                                                                                  ParticleContainerBase(model) {};
 
     void addParticle(Particle &particle);
 
-    std::vector<Particle>& getParticles();
+    std::vector<Particle> &getParticles();
+
+    int getDimension() const;
 
     std::size_t size() const;
 

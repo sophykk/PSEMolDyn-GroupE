@@ -2,11 +2,11 @@
 <simulation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="../src/xsd/Simulation.xsd">
     <simulationParams>
-        <endTime>25</endTime>
+        <endTime>15</endTime>
         <deltaT> 0.0005</deltaT>
         <modelType>lennardJones</modelType>
         <containerType>linkedCells</containerType>
-        <plotInterval>10</plotInterval>
+        <plotInterval>100</plotInterval>
         <objectType>cuboid</objectType>
         <checkpointing>false</checkpointing>
     </simulationParams>
@@ -15,14 +15,16 @@
         <domainSize>
             <Lx>63</Lx>
             <Ly>36</Ly>
-            <Lz>1</Lz>
+            <Lz>20</Lz>
         </domainSize>
         <cutoffRadius>2.5</cutoffRadius>
         <boundaryConditions>
-            <left>p</left>
+            <left>r</left>
             <up>r</up>
-            <right>p</right>
+            <right>r</right>
             <down>r</down>
+            <front>r</front>
+            <back>r</back>
         </boundaryConditions>
         <gravitationalAcceleration>-12.44</gravitationalAcceleration>
     </linkedCellParams>
@@ -47,11 +49,12 @@
         <grid>
             <Nx>50</Nx>
             <Ny>14</Ny>
-            <Nz>1</Nz>
+            <Nz>10</Nz>
         </grid>
         <spacing>1.2</spacing>
         <sigma>1.0</sigma>
         <epsilon>1.0</epsilon>
+        <membrane>0.0</membrane>
         <gravitationalAcceleration>-12.44</gravitationalAcceleration>
         <type>1</type>
     </cuboid>
@@ -71,11 +74,12 @@
         <grid>
             <Nx>50</Nx>
             <Ny>14</Ny>
-            <Nz>1</Nz>
+            <Nz>10</Nz>
         </grid>
         <spacing>1.2</spacing>
         <sigma>0.9412</sigma>
         <epsilon>1.0</epsilon>
+        <membrane>0.0</membrane>
         <gravitationalAcceleration>-12.44</gravitationalAcceleration>
         <type>2</type>
     </cuboid>

@@ -20,14 +20,14 @@ protected:
     /**
      * Reference to the used force model, e.g. gravitation or lennard-jones
      */
-    ForceBase& forceModel;
+    ForceBase &forceModel;
 
 public:
     /**
      * Abstract base class for all particle containers.
      * @param model Force model to be used for calculating forces on all particles.
      */
-    ParticleContainerBase(ForceBase& model) : forceModel(model) {}
+    ParticleContainerBase(ForceBase &model) : forceModel(model) {}
 
     /**
      * Default Destructor
@@ -44,7 +44,12 @@ public:
      * Get a flat vector of all particles
      * @return Vector of all particles
      */
-    virtual std::vector<Particle>& getParticles() = 0;
+    virtual std::vector<Particle> &getParticles() = 0;
+
+    /**
+     * Get dimension
+     */
+    virtual int getDimension() const = 0;
 
     /**
      * @return Number of particles in the container.

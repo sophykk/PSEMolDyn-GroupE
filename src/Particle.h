@@ -9,6 +9,7 @@
 
 #include <array>
 #include <string>
+#include <vector>
 
 class Particle {
 
@@ -46,9 +47,11 @@ private:
 
   double gGrav;
 
-    double sigma;
+  double sigma;
 
-    double epsilon;
+  double epsilon;
+
+  double membrane;
 
 public:
     explicit Particle(int type = 0);
@@ -59,11 +62,11 @@ public:
             // for visualization, we need always 3 coordinates
             // -> in case of 2d, we use only the first and the second
             std::array<double, 3> x_arg, std::array<double, 3> v_arg, double m_arg, double gGrav_type,
-            double sigma_arg, double epsilon_arg, int type_arg);
+            double sigma_arg, double epsilon_arg, double membrane_arg, int type_arg);
 
     Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg, std::array<double,
             3> f_arg, std::array<double, 3> oldf_arg, double m_arg, double gGrav_arg, double sigma_arg,
-             double epsilon_arg, int type);
+             double epsilon_arg, double membrane_arg, int type);
 
     virtual ~Particle();
 
@@ -92,6 +95,8 @@ public:
     void setX(const std::array<double, 3> &x_new);
 
     void setV(const std::array<double, 3> &v_new);
+
+    bool isMembrane();
 
     void addF(const std::array<double, 3> &f_new);
 
