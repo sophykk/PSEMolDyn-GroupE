@@ -44,8 +44,9 @@ TEST(ParticleContainerTest, LinkedCellContainerDefaultConstructor) {
     std::array<char, 6> boundaryCon{'r', 'r', 'r', 'r', 'r', 'r'}; // Reflecting
     double gGrav = 12;
     LennardJonesForce force;
+    bool membrane = false;
 
-    LinkedCellContainer container(force, domainSize, cutoffRadius, boundaryCon, gGrav);
+    LinkedCellContainer container(force, domainSize, cutoffRadius, boundaryCon, gGrav, membrane);
 
     EXPECT_EQ(container.size(), 0);
     EXPECT_EQ(container.getBoundaryCon(1), boundaryCon[1]);
@@ -58,10 +59,11 @@ TEST(ParticleContainerTest, LinkedCellContainer2ConstructorWithParticles) {
     double cutoffRadius = 3.0;
     std::array<char, 6> boundaryCon{'r', 'r', 'r', 'r', 'r', 'r'}; // Reflecting
     double gGrav = 12;
+    bool membrane = false;
     LennardJonesForce force;
     std::vector<Particle> particlesList = {Particle(), Particle()};
 
-    LinkedCellContainer container(force, particlesList, domainSize, cutoffRadius, boundaryCon, gGrav);
+    LinkedCellContainer container(force, particlesList, domainSize, cutoffRadius, boundaryCon, gGrav, membrane);
 
     EXPECT_EQ(container.size(), particlesList.size());
 }
@@ -72,10 +74,11 @@ TEST(ParticleContainerTest, LinkedCellContainer2AddParticle) {
     double cutoffRadius = 3.0;
     std::array<char, 6> boundaryCon{'r', 'r', 'r', 'r', 'r', 'r'}; // Reflecting
     double gGrav = 12;
+    bool membrane = false;
 
     LennardJonesForce force;
 
-    LinkedCellContainer container(force, domainSize, cutoffRadius, boundaryCon, gGrav);
+    LinkedCellContainer container(force, domainSize, cutoffRadius, boundaryCon, gGrav, membrane);
 
     Particle particle;
     container.addParticle(particle);
@@ -90,12 +93,13 @@ TEST(ParticleContainerTest, LinkedCellContainer2InitGrid) {
     double cutoffRadius = 10.0;
     std::array<char, 6> boundaryCon{'r', 'r', 'r', 'r', 'r', 'r'}; // Reflecting
     std::vector<Particle> particlesList = {
-            Particle({5.0, 5.0, 0.0}, {0.0, 0.0, 0.0}, 1.0, 12.0, 1.0, 5.0, 0.0, 1),
-            Particle({15.0, 5.0, 0.0}, {0.0, 0.0, 0.0}, 1.0, 12.0, 1.0, 5.0, 0.0, 1)
+            Particle({5.0, 5.0, 0.0}, {0.0, 0.0, 0.0}, 1.0, 12.0, 1.0, 5.0, 1),
+            Particle({15.0, 5.0, 0.0}, {0.0, 0.0, 0.0}, 1.0, 12.0, 1.0, 5.0, 1)
     };
     double gGrav = 12.0;
+    bool membrane = false;
 
-    LinkedCellContainer container(force, particlesList, domainSize, cutoffRadius, boundaryCon, gGrav);
+    LinkedCellContainer container(force, particlesList, domainSize, cutoffRadius, boundaryCon, gGrav, membrane);
     container.initGrid();
 
     auto grid = container.getGrid();
@@ -147,8 +151,9 @@ TEST(ParticleContainerTest, LinkedCellContainer2ResetForces) {
     std::array<char, 6> boundaryCon{'r', 'r', 'r', 'r', 'r', 'r'}; // Reflecting
     std::vector<Particle> particlesList = {/* Initialize some particles */};
     double gGrav = 12.0;
+    bool membrane = false;
 
-    LinkedCellContainer container(force, particlesList, domainSize, cutoffRadius, boundaryCon, gGrav);
+    LinkedCellContainer container(force, particlesList, domainSize, cutoffRadius, boundaryCon, gGrav, membrane);
 
     // Simulate a step to ensure some forces are calculated
     container.calculateF();
@@ -171,11 +176,12 @@ TEST(ParticleContainerTest, LinkedCellContainer2BoundaryConditions) {
     std::array<char, 6> reflectingBoundaryCon{'r', 'r', 'r', 'r', 'r', 'r'}; // Reflecting
     std::array<char, 6> openBoundaryCon{'o', 'o', 'o', 'o', 'o', 'o'}; // Outflow
     double gGrav;
+    bool membrane = false;
 
-    LinkedCellContainer reflectingContainer(force, domainSize, cutoffRadius, reflectingBoundaryCon, gGrav);
+    LinkedCellContainer reflectingContainer(force, domainSize, cutoffRadius, reflectingBoundaryCon, gGrav, membrane);
     EXPECT_EQ(reflectingContainer.getBoundaryCon(0), reflectingBoundaryCon[0]);
 
-    LinkedCellContainer openContainer(force, domainSize, cutoffRadius, openBoundaryCon, gGrav);
+    LinkedCellContainer openContainer(force, domainSize, cutoffRadius, openBoundaryCon, gGrav, membrane);
     EXPECT_EQ(openContainer.getBoundaryCon(2), openBoundaryCon[2]);
 
 }

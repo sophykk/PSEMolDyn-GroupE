@@ -3,7 +3,6 @@
 //
 #include "Thermostat.h"
 #include <cmath>
-#include <typeinfo>
 #include "utils/MaxwellBoltzmannDistribution.h"
 
 Thermostat::Thermostat(ParticleContainerBase &pc, double init, int n, bool useBM) : initT(init), nThermostat(n) {

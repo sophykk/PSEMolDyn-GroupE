@@ -35,12 +35,8 @@ Particle::Particle(const Particle &other) {
 }
 
 Particle::Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg, double m_arg, double gGrav_arg,
-                   double sigma_arg, double epsilon_arg, int type_arg) : x(x_arg), v(v_arg),
-                                                                                              m(m_arg),
-                                                                                              gGrav(gGrav_arg),
-                                                                                              sigma(sigma_arg),
-                                                                                              epsilon(epsilon_arg),
-                                                                                              type(type_arg) {
+                   double sigma_arg, double epsilon_arg, int type_arg) : x(x_arg), v(v_arg), m(m_arg),
+                   gGrav(gGrav_arg), sigma(sigma_arg), epsilon(epsilon_arg), type(type_arg) {
     f = {0., 0., 0.};
     old_f = {0., 0., 0.};
     // spdlog::debug("Particle generated!");
