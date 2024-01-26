@@ -25,10 +25,11 @@ CuboidParticleGenerator::CuboidParticleGenerator(std::array<int, 3> N1, double h
  * */
 void CuboidParticleGenerator::generateParticles(ParticleContainerBase &particleContainer) {
 
-    for (int i = 0; i < N[0]; ++i) {
-        for (int j = 0; j < N[1]; ++j) {
-            for (int k = 0; k < N[2]; ++k) {
-                Particle particle({x[0] + i * h, x[1] + j * h, x[2] + k * h}, v, m, gGrav, sigma, epsilon, type);
+    for (int xIndex = 0; xIndex < N[0]; ++xIndex) {
+        for (int yIndex = 0; yIndex < N[1]; ++yIndex) {
+            for (int zIndex = 0; zIndex < N[2]; ++zIndex) {
+                Particle particle({x[0] + xIndex * h, x[1] + yIndex * h, x[2] + zIndex * h}, v, m, gGrav, sigma,
+                                  epsilon, type, xIndex, yIndex);
                 Formulas::addMB(particle);
                 particleContainer.addParticle(particle);
             }

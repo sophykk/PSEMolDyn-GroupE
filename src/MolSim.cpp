@@ -127,7 +127,7 @@ int main(int argc, char *argsv[]) {
     double current_time = 0;
 
     //Main simulation loop
-    //while (current_time < end_time) {
+    while (current_time < end_time) {
 
         if(checkpointing && current_time == 15){
 
@@ -191,7 +191,7 @@ int main(int argc, char *argsv[]) {
         spdlog::info("Iteration {} finished.", iteration);
 
         current_time += delta_t;
-    //}
+    }
 
     spdlog::info("output written. Terminating...");
 
