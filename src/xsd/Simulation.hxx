@@ -721,20 +721,6 @@ class cuboidType: public ::xml_schema::type
   void
   epsilon (const epsilon_type& x);
 
-  // isMembrane
-  //
-  typedef ::xml_schema::double_ isMembrane_type;
-  typedef ::xsd::cxx::tree::traits< isMembrane_type, char, ::xsd::cxx::tree::schema_type::double_ > isMembrane_traits;
-
-  const isMembrane_type&
-  isMembrane () const;
-
-  isMembrane_type&
-  isMembrane ();
-
-  void
-  isMembrane (const isMembrane_type& x);
-
   // gravitationalAcceleration
   //
   typedef ::xml_schema::double_ gravitationalAcceleration_type;
@@ -772,7 +758,6 @@ class cuboidType: public ::xml_schema::type
               const spacing_type&,
               const sigma_type&,
               const epsilon_type&,
-              const isMembrane_type&,
               const gravitationalAcceleration_type&,
               const type_type&);
 
@@ -783,7 +768,6 @@ class cuboidType: public ::xml_schema::type
               const spacing_type&,
               const sigma_type&,
               const epsilon_type&,
-              const isMembrane_type&,
               const gravitationalAcceleration_type&,
               const type_type&);
 
@@ -820,7 +804,6 @@ class cuboidType: public ::xml_schema::type
   ::xsd::cxx::tree::one< spacing_type > spacing_;
   ::xsd::cxx::tree::one< sigma_type > sigma_;
   ::xsd::cxx::tree::one< epsilon_type > epsilon_;
-  ::xsd::cxx::tree::one< isMembrane_type > isMembrane_;
   ::xsd::cxx::tree::one< gravitationalAcceleration_type > gravitationalAcceleration_;
   ::xsd::cxx::tree::one< type_type > type_;
 };
@@ -1036,20 +1019,6 @@ class sphereType: public ::xml_schema::type
   void
   epsilon (const epsilon_type& x);
 
-  // isMembrane
-  //
-  typedef ::xml_schema::boolean isMembrane_type;
-  typedef ::xsd::cxx::tree::traits< isMembrane_type, char > isMembrane_traits;
-
-  const isMembrane_type&
-  isMembrane () const;
-
-  isMembrane_type&
-  isMembrane ();
-
-  void
-  isMembrane (const isMembrane_type& x);
-
   // gravitationalAcceleration
   //
   typedef ::xml_schema::double_ gravitationalAcceleration_type;
@@ -1087,7 +1056,6 @@ class sphereType: public ::xml_schema::type
               const radius_type&,
               const sigma_type&,
               const epsilon_type&,
-              const isMembrane_type&,
               const gravitationalAcceleration_type&,
               const type_type&);
 
@@ -1098,7 +1066,6 @@ class sphereType: public ::xml_schema::type
               const radius_type&,
               const sigma_type&,
               const epsilon_type&,
-              const isMembrane_type&,
               const gravitationalAcceleration_type&,
               const type_type&);
 
@@ -1135,7 +1102,6 @@ class sphereType: public ::xml_schema::type
   ::xsd::cxx::tree::one< radius_type > radius_;
   ::xsd::cxx::tree::one< sigma_type > sigma_;
   ::xsd::cxx::tree::one< epsilon_type > epsilon_;
-  ::xsd::cxx::tree::one< isMembrane_type > isMembrane_;
   ::xsd::cxx::tree::one< gravitationalAcceleration_type > gravitationalAcceleration_;
   ::xsd::cxx::tree::one< type_type > type_;
 };

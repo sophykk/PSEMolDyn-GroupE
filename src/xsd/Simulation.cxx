@@ -499,24 +499,6 @@ epsilon (const epsilon_type& x)
   this->epsilon_.set (x);
 }
 
-const cuboidType::isMembrane_type& cuboidType::
-isMembrane () const
-{
-  return this->isMembrane_.get ();
-}
-
-cuboidType::isMembrane_type& cuboidType::
-isMembrane ()
-{
-  return this->isMembrane_.get ();
-}
-
-void cuboidType::
-isMembrane (const isMembrane_type& x)
-{
-  this->isMembrane_.set (x);
-}
-
 const cuboidType::gravitationalAcceleration_type& cuboidType::
 gravitationalAcceleration () const
 {
@@ -781,24 +763,6 @@ void sphereType::
 epsilon (const epsilon_type& x)
 {
   this->epsilon_.set (x);
-}
-
-const sphereType::isMembrane_type& sphereType::
-isMembrane () const
-{
-  return this->isMembrane_.get ();
-}
-
-sphereType::isMembrane_type& sphereType::
-isMembrane ()
-{
-  return this->isMembrane_.get ();
-}
-
-void sphereType::
-isMembrane (const isMembrane_type& x)
-{
-  this->isMembrane_.set (x);
 }
 
 const sphereType::gravitationalAcceleration_type& sphereType::
@@ -1958,7 +1922,6 @@ cuboidType (const position_type& position,
             const spacing_type& spacing,
             const sigma_type& sigma,
             const epsilon_type& epsilon,
-            const isMembrane_type& isMembrane,
             const gravitationalAcceleration_type& gravitationalAcceleration,
             const type_type& type)
 : ::xml_schema::type (),
@@ -1969,7 +1932,6 @@ cuboidType (const position_type& position,
   spacing_ (spacing, this),
   sigma_ (sigma, this),
   epsilon_ (epsilon, this),
-  isMembrane_ (isMembrane, this),
   gravitationalAcceleration_ (gravitationalAcceleration, this),
   type_ (type, this)
 {
@@ -1983,7 +1945,6 @@ cuboidType (::std::auto_ptr< position_type > position,
             const spacing_type& spacing,
             const sigma_type& sigma,
             const epsilon_type& epsilon,
-            const isMembrane_type& isMembrane,
             const gravitationalAcceleration_type& gravitationalAcceleration,
             const type_type& type)
 : ::xml_schema::type (),
@@ -1994,7 +1955,6 @@ cuboidType (::std::auto_ptr< position_type > position,
   spacing_ (spacing, this),
   sigma_ (sigma, this),
   epsilon_ (epsilon, this),
-  isMembrane_ (isMembrane, this),
   gravitationalAcceleration_ (gravitationalAcceleration, this),
   type_ (type, this)
 {
@@ -2012,7 +1972,6 @@ cuboidType (const cuboidType& x,
   spacing_ (x.spacing_, f, this),
   sigma_ (x.sigma_, f, this),
   epsilon_ (x.epsilon_, f, this),
-  isMembrane_ (x.isMembrane_, f, this),
   gravitationalAcceleration_ (x.gravitationalAcceleration_, f, this),
   type_ (x.type_, f, this)
 {
@@ -2030,7 +1989,6 @@ cuboidType (const ::xercesc::DOMElement& e,
   spacing_ (this),
   sigma_ (this),
   epsilon_ (this),
-  isMembrane_ (this),
   gravitationalAcceleration_ (this),
   type_ (this)
 {
@@ -2137,17 +2095,6 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
-    // isMembrane
-    //
-    if (n.name () == "isMembrane" && n.namespace_ ().empty ())
-    {
-      if (!isMembrane_.present ())
-      {
-        this->isMembrane_.set (isMembrane_traits::create (i, f, this));
-        continue;
-      }
-    }
-
     // gravitationalAcceleration
     //
     if (n.name () == "gravitationalAcceleration" && n.namespace_ ().empty ())
@@ -2222,13 +2169,6 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       "");
   }
 
-  if (!isMembrane_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "isMembrane",
-      "");
-  }
-
   if (!gravitationalAcceleration_.present ())
   {
     throw ::xsd::cxx::tree::expected_element< char > (
@@ -2264,7 +2204,6 @@ operator= (const cuboidType& x)
     this->spacing_ = x.spacing_;
     this->sigma_ = x.sigma_;
     this->epsilon_ = x.epsilon_;
-    this->isMembrane_ = x.isMembrane_;
     this->gravitationalAcceleration_ = x.gravitationalAcceleration_;
     this->type_ = x.type_;
   }
@@ -2430,7 +2369,6 @@ sphereType (const position_type& position,
             const radius_type& radius,
             const sigma_type& sigma,
             const epsilon_type& epsilon,
-            const isMembrane_type& isMembrane,
             const gravitationalAcceleration_type& gravitationalAcceleration,
             const type_type& type)
 : ::xml_schema::type (),
@@ -2441,7 +2379,6 @@ sphereType (const position_type& position,
   radius_ (radius, this),
   sigma_ (sigma, this),
   epsilon_ (epsilon, this),
-  isMembrane_ (isMembrane, this),
   gravitationalAcceleration_ (gravitationalAcceleration, this),
   type_ (type, this)
 {
@@ -2455,7 +2392,6 @@ sphereType (::std::auto_ptr< position_type > position,
             const radius_type& radius,
             const sigma_type& sigma,
             const epsilon_type& epsilon,
-            const isMembrane_type& isMembrane,
             const gravitationalAcceleration_type& gravitationalAcceleration,
             const type_type& type)
 : ::xml_schema::type (),
@@ -2466,7 +2402,6 @@ sphereType (::std::auto_ptr< position_type > position,
   radius_ (radius, this),
   sigma_ (sigma, this),
   epsilon_ (epsilon, this),
-  isMembrane_ (isMembrane, this),
   gravitationalAcceleration_ (gravitationalAcceleration, this),
   type_ (type, this)
 {
@@ -2484,7 +2419,6 @@ sphereType (const sphereType& x,
   radius_ (x.radius_, f, this),
   sigma_ (x.sigma_, f, this),
   epsilon_ (x.epsilon_, f, this),
-  isMembrane_ (x.isMembrane_, f, this),
   gravitationalAcceleration_ (x.gravitationalAcceleration_, f, this),
   type_ (x.type_, f, this)
 {
@@ -2502,7 +2436,6 @@ sphereType (const ::xercesc::DOMElement& e,
   radius_ (this),
   sigma_ (this),
   epsilon_ (this),
-  isMembrane_ (this),
   gravitationalAcceleration_ (this),
   type_ (this)
 {
@@ -2606,17 +2539,6 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
-    // isMembrane
-    //
-    if (n.name () == "isMembrane" && n.namespace_ ().empty ())
-    {
-      if (!isMembrane_.present ())
-      {
-        this->isMembrane_.set (isMembrane_traits::create (i, f, this));
-        continue;
-      }
-    }
-
     // gravitationalAcceleration
     //
     if (n.name () == "gravitationalAcceleration" && n.namespace_ ().empty ())
@@ -2691,13 +2613,6 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       "");
   }
 
-  if (!isMembrane_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "isMembrane",
-      "");
-  }
-
   if (!gravitationalAcceleration_.present ())
   {
     throw ::xsd::cxx::tree::expected_element< char > (
@@ -2733,7 +2648,6 @@ operator= (const sphereType& x)
     this->radius_ = x.radius_;
     this->sigma_ = x.sigma_;
     this->epsilon_ = x.epsilon_;
-    this->isMembrane_ = x.isMembrane_;
     this->gravitationalAcceleration_ = x.gravitationalAcceleration_;
     this->type_ = x.type_;
   }

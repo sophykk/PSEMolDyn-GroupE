@@ -259,7 +259,7 @@ void LinkedCellContainer::calculateF() {
                         }
                         auto dis = std::pow(2, (1 / 6)) * sigma;
                         std::array<double, 3> force{0.0, 0.0, 0.0};
-                        if (p1->isMembrane() && p2->isMembrane()) {
+                        if (isMembrane) {
                             if ((abs(p1->getX()[0] - p2->getX()[0]) && p1->getX()[1] == p2->getX()[1] &&
                                  p1->getX()[2] == p2->getX()[2])
                                 || (abs(p1->getX()[1] - p2->getX()[1]) && p1->getX()[0] == p2->getX()[0] &&
@@ -271,12 +271,13 @@ void LinkedCellContainer::calculateF() {
                                        || (abs(p1->getX()[0] - p2->getX()[0]) && abs(p1->getX()[2] - p2->getX()[2]))
                                        || (abs(p1->getX()[1] - p2->getX()[1]) && abs(p1->getX()[2] - p2->getX()[2]))) {
                                 force = applyNeighbouringForce(*p1, *p2, "diagonal");
-                            } else if (abs(p1->getX()[0] - p2->getX()[0]) < dis &&
+                            }
+                        } else if (abs(p1->getX()[0] - p2->getX()[0]) < dis &&
                                        abs(p1->getX()[1] - p2->getX()[1]) < dis &&
                                        abs(p1->getX()[2] - p2->getX()[2]) < dis) {
                                 force = forceModel.calculateForce(*p1, *p2);
-                            }
                         }
+
                         spdlog::info("this is calcX ps position {}, {}, {}", p1->getX()[0], p1->getX()[1],
                                      p1->getX()[2]);
                         spdlog::info("this is calcX ps velocity{}, {}, {}", p1->getV()[0], p1->getV()[1],
@@ -286,8 +287,8 @@ void LinkedCellContainer::calculateF() {
                         spdlog::info("in calcF this is calculated force {}, {}, {}", force[0], force[1], force[2]);
                         p1->addF({force[0], force[1] + (p1->getM() * gGrav), force[2]});
                         p2->addF({-1.0 * force[0], -1.0 * (force[1] + (p2->getM() * gGrav)), -1.0 * force[2]});
-                        spdlog::info("in calcF this is force of p1 after {}, {}, {}", p1->getF()[0], p1->getF()[1],
-                                     p1->getF()[2]);
+                        spdlog::info("in calcF this is force of p1 after {}, {}, {}", p1->getOldF()[0], p1->getOldF()[1],
+                                     p1->getOldF()[2]);
                     }
                     // check done
                     if (checkBoundary('r')) {

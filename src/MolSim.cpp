@@ -118,7 +118,7 @@ int main(int argc, char *argsv[]) {
     // Velocity is 0 initially for all simulations, so we useBrownianMotion
     //if(useBrownianMotion){
     //    thermostat.initializeWithBrownianMotion(*particleContainer);
-    //}
+    //}*/
 
     // Calculate initial forces
     particleContainer->calculateF();
@@ -127,7 +127,7 @@ int main(int argc, char *argsv[]) {
     double current_time = 0;
 
     //Main simulation loop
-    while (current_time < end_time) {
+    //while (current_time < end_time) {
 
         if(checkpointing && current_time == 15){
 
@@ -163,11 +163,11 @@ int main(int argc, char *argsv[]) {
         particleContainer->calculateF();
 
         // apply the thermostat
-        if(!checkpointing || current_time < 15){
+        /*if(!checkpointing || current_time < 15){
             if (iteration % thermostatInterval == 0) {
                 thermostat.applyThermostat(*particleContainer);
             }
-        }
+        }*/
 
         // calculate new v
         //spdlog::info("this is calcV in MolSim");
@@ -191,7 +191,7 @@ int main(int argc, char *argsv[]) {
         spdlog::info("Iteration {} finished.", iteration);
 
         current_time += delta_t;
-    }*/
+    //}
 
     spdlog::info("output written. Terminating...");
 
