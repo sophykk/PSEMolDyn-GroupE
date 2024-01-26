@@ -28,8 +28,15 @@ void CuboidParticleGenerator::generateParticles(ParticleContainerBase &particleC
     for (int xIndex = 0; xIndex < N[0]; ++xIndex) {
         for (int yIndex = 0; yIndex < N[1]; ++yIndex) {
             for (int zIndex = 0; zIndex < N[2]; ++zIndex) {
+
                 Particle particle({x[0] + xIndex * h, x[1] + yIndex * h, x[2] + zIndex * h}, v, m, gGrav, sigma,
                                   epsilon, type, xIndex, yIndex);
+                    if ((xIndex == 17 && yIndex == 24) ||
+                        (xIndex == 17 && yIndex == 25) ||
+                        (xIndex == 18 && yIndex == 24) ||
+                        (xIndex == 18 && yIndex == 25)) {
+                        particle.setType(2);
+                    }
                 Formulas::addMB(particle);
                 particleContainer.addParticle(particle);
             }

@@ -437,11 +437,11 @@ void LinkedCellContainer::calcNF() {
             }
             //The particles with x/y-indices (17/24), (17/25), (18/24) and (18/25) are pulled
             //by a constant force FZ-UP “upwards“ along the z-axis:
-            if ((p1->getXIndex() == 17 && p1->getXIndex() == 25) ||
+            if ((p1->getXIndex() == 17 && p1->getXIndex() == 24) ||
                 (p1->getXIndex() == 17 && p1->getXIndex() == 25) ||
                 (p1->getXIndex() == 18 && p1->getXIndex() == 24) ||
                 (p1->getXIndex() == 18 && p1->getXIndex() == 25)) {
-                p1->setType(2);
+                //p1->setType(2);
                 force[2] += pullUpF;
             }
 
