@@ -102,6 +102,11 @@ void Particle::setV(const std::array<double, 3> &v_new) {
     v = v_new;
 }
 
+void Particle::setType(const int &type_new){
+    type = type_new;
+}
+
+
 void Particle::addF(const std::array<double, 3> &f_add) {
     f = f + f_add;
 }

@@ -416,6 +416,7 @@ void LinkedCellContainer::calcF() {
 void LinkedCellContainer::calcNF() {
     for (auto p1 = particleList.begin(); p1 < particleList.end(); p1++) {
         for (auto p2 = p1 + 1; p2 < particleList.end(); p2++) {
+            applyReflecting(*p1);
             double sigma;
             if (p1->getType() != p2->getType()) {
                 sigma = ((p1->getSigma() + p2->getSigma()) / 2);
@@ -440,6 +441,7 @@ void LinkedCellContainer::calcNF() {
                 (p1->getXIndex() == 17 && p1->getXIndex() == 25) ||
                 (p1->getXIndex() == 18 && p1->getXIndex() == 24) ||
                 (p1->getXIndex() == 18 && p1->getXIndex() == 25)) {
+                p1->setType(2);
                 force[2] += pullUpF;
             }
 

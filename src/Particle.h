@@ -108,6 +108,8 @@ public:
 
     void setV(const std::array<double, 3> &v_new);
 
+    void setType(const int &type_new);
+
     void addF(const std::array<double, 3> &f_new);
 
     void resetF();
