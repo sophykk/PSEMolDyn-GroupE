@@ -93,8 +93,8 @@ TEST(ParticleContainerTest, LinkedCellContainer2InitGrid) {
     double cutoffRadius = 10.0;
     std::array<char, 6> boundaryCon{'r', 'r', 'r', 'r', 'r', 'r'}; // Reflecting
     std::vector<Particle> particlesList = {
-            Particle({5.0, 5.0, 0.0}, {0.0, 0.0, 0.0}, 1.0, 12.0, 1.0, 5.0, 1),
-            Particle({15.0, 5.0, 0.0}, {0.0, 0.0, 0.0}, 1.0, 12.0, 1.0, 5.0, 1)
+            Particle({5.0, 5.0, 0.0}, {0.0, 0.0, 0.0}, 1.0, 12.0, 1.0, 5.0, 1, false),
+            Particle({15.0, 5.0, 0.0}, {0.0, 0.0, 0.0}, 1.0, 12.0, 1.0, 5.0, 1, false)
     };
     double gGrav = 12.0;
     bool membrane = false;
