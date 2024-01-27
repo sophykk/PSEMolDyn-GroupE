@@ -101,11 +101,13 @@ int main(int argc, char *argsv[]) {
     xmlReader.readThermostatParams(argsv[1], initialTemperature, thermostatInterval);
 
     double targetTemperature = initialTemperature;
-    //todo: maxTempChange should read deltaT parameter from XML-file
-    double maxTempChange = 0.01;
+    double maxTempChange = 5.0;
     bool useBrownianMotion = true;
 
     Thermostat thermostat(initialTemperature, targetTemperature, maxTempChange, thermostatInterval, useBrownianMotion);
+
+   // spdlog::info("Initial temperature: {}", thermostat.getCurrentT()); -> correct
+    spdlog::info("Initial Target Temp: {}", thermostat.getTargetT());
 
     // Velocity is 0 initially for all simulations, so we useBrownianMotion
     if(useBrownianMotion){
@@ -152,11 +154,11 @@ int main(int argc, char *argsv[]) {
         particleContainer->calculateF();
 
         // apply the thermostat
-        if(!checkpointing || current_time < 15){
+
             if (iteration % thermostatInterval == 0) {
                 thermostat.applyThermostat(*particleContainer, iteration);
             }
-        }
+
 
         // calculate new v
         particleContainer->calculateV(delta_t);
@@ -176,8 +178,10 @@ int main(int argc, char *argsv[]) {
         if (iteration % plotInterval == 0) {
             particleContainer->plotParticles(iteration);
         }
-        spdlog::info("Iteration {} finished.", iteration);
+        spdlog::info("Current Temp: {}", thermostat.getCurrentT());
+        spdlog::info("Target Temp: {}", thermostat.getTargetT());
 
+        spdlog::info("Iteration {} finished.", iteration);
         current_time += delta_t;
     }
 

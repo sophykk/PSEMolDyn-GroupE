@@ -14,10 +14,11 @@
 
 class Thermostat {
 private:
-    static constexpr int numDimensions = 3;
+    static constexpr int numDimensions = 2;
     static constexpr double kBoltzmann = 1.0;
     double Tinit;          // Initial temperature
     double Ttarget;        // Target temperature
+    double Tcurrent;
     double deltaT;         // Max temperature change per application
     int nthermostat;       // Number of time steps for periodic application
 
@@ -40,6 +41,10 @@ public:
 
     /** Function to scale the velocities of the particles */
     void scaleVelocities(ParticleContainerBase& particleContainer, double scalingFactor);
+
+    double getCurrentT() const;
+
+    double getTargetT() const;
 };
 
 

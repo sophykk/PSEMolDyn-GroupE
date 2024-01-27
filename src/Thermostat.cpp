@@ -10,15 +10,17 @@
 // Constructor
 Thermostat::Thermostat(double Tinit, double Ttarget, double deltaT, int nthermostat, bool useBrownianMotion)
         : Tinit(Tinit), Ttarget(Ttarget == 0 ? Tinit : Ttarget), deltaT(deltaT), nthermostat(nthermostat),
-          useBrownianMotion(useBrownianMotion) {}
+          useBrownianMotion(useBrownianMotion) {
+    Tcurrent = Tinit;
+}
 
 /** Apply the thermostat to a LinkedCellContainer2 */
 void Thermostat::applyThermostat(ParticleContainerBase &particleContainer, int currentStep) {
 
     /** Systems that have no initial velocities need to be initialized
      * with Brownian Motion to have a non-zero temperature. */
-    double Tcurrent = calculateCurrentTemperature(particleContainer);
-
+    double Tcurr = calculateCurrentTemperature(particleContainer);
+    Tcurrent = Tcurr;
     /** Skip if temperature is already at target */
     if (std::abs(Tcurrent - Ttarget) < std::numeric_limits<double>::epsilon()) return;
 
@@ -32,7 +34,7 @@ void Thermostat::applyThermostat(ParticleContainerBase &particleContainer, int c
 
     double scalingFactor = std::sqrt(newTemp / Tcurrent);
     // Ensuring the temperature change does not exceed deltaT
-    //todo delta?
+
 
     scaleVelocities(particleContainer, scalingFactor);
     //std::cout << "Tcurrent: " << Tcurrent << std::endl;
@@ -52,6 +54,7 @@ double Thermostat::calculateCurrentTemperature(ParticleContainerBase &particleCo
         //for (auto velocity : particle.getV()) {
         vSquared += particle.getV()[0] * particle.getV()[0];
         vSquared += particle.getV()[1] * particle.getV()[1];
+        vSquared += particle.getV()[2] * particle.getV()[2];
         //vSquared += velocity[] * velocity[];
         //}
 
@@ -97,4 +100,11 @@ void Thermostat::scaleVelocities(ParticleContainerBase &particleContainer, doubl
     }
 }
 
+double Thermostat::getCurrentT() const {
+    return Tcurrent;
+}
+
+double Thermostat::getTargetT() const {
+    return Ttarget;
+}
 
