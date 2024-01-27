@@ -54,6 +54,7 @@
             <xs:element name="epsilon" type="xs:double"/>
             <xs:element name="gravitationalAcceleration" type="xs:double"/>
             <xs:element name="type" type="xs:int"/>
+            <xs:element name="isWall" type="xs:boolean"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -77,6 +78,7 @@
             <xs:element name="epsilon" type="xs:double"/>
             <xs:element name="gravitationalAcceleration" type="xs:double"/>
             <xs:element name="type" type="xs:int"/>
+            <xs:element name="isWall" type="xs:boolean"/>
         </xs:sequence>
     </xs:complexType>
 

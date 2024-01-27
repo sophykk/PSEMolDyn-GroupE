@@ -64,7 +64,7 @@ void XMLFileReader::readThermostatParams(const char *filename, double &initT, in
 }
 
 /** Function that reads the parameters for the cuboid generators out of an xml file and initializes the generators */
-std::vector<CuboidParticleGenerator> XMLFileReader::readCuboids(const char *filename) {
+std::vector<CuboidParticleGenerator> XMLFileReader::readCuboids(const char *filename, bool &isMembrane) {
 
 
     std::vector<CuboidParticleGenerator> generators;
@@ -77,6 +77,7 @@ std::vector<CuboidParticleGenerator> XMLFileReader::readCuboids(const char *file
     double epsilon;
     double gGrav;
     int type;
+    bool isWall;
 
     std::unique_ptr<simulation> parameters = simulation_(filename);
 
@@ -93,8 +94,9 @@ std::vector<CuboidParticleGenerator> XMLFileReader::readCuboids(const char *file
         epsilon = c.epsilon();
         gGrav = c.gravitationalAcceleration();
         type = c.type();
+        isWall = c.isWall();
 
-        generators.emplace_back(N, spacing, m, v, x, sigma, epsilon, gGrav, type);
+        generators.emplace_back(N, spacing, m, v, x, sigma, epsilon, gGrav, type, isMembrane, isWall);
     }
 
     return generators;
@@ -113,6 +115,7 @@ std::vector<SphereParticleGenerator> XMLFileReader::readSpheres(const char *file
     double epsilon;
     double gGrav;
     int type;
+    bool isWall;
 
     std::unique_ptr<simulation> parameters = simulation_(filename);
 
@@ -129,8 +132,9 @@ std::vector<SphereParticleGenerator> XMLFileReader::readSpheres(const char *file
         epsilon = s.epsilon();
         gGrav = s.gravitationalAcceleration();
         type = s.type();
+        isWall = s.isWall();
 
-        generators.emplace_back(x, spacing, m, v, r, sigma, epsilon, gGrav, type);
+        generators.emplace_back(x, spacing, m, v, r, sigma, epsilon, gGrav, type, isWall);
     }
 
     return generators;

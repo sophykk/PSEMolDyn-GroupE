@@ -535,6 +535,24 @@ type (const type_type& x)
   this->type_.set (x);
 }
 
+const cuboidType::isWall_type& cuboidType::
+isWall () const
+{
+  return this->isWall_.get ();
+}
+
+cuboidType::isWall_type& cuboidType::
+isWall ()
+{
+  return this->isWall_.get ();
+}
+
+void cuboidType::
+isWall (const isWall_type& x)
+{
+  this->isWall_.set (x);
+}
+
 
 // thermostatType
 // 
@@ -799,6 +817,24 @@ void sphereType::
 type (const type_type& x)
 {
   this->type_.set (x);
+}
+
+const sphereType::isWall_type& sphereType::
+isWall () const
+{
+  return this->isWall_.get ();
+}
+
+sphereType::isWall_type& sphereType::
+isWall ()
+{
+  return this->isWall_.get ();
+}
+
+void sphereType::
+isWall (const isWall_type& x)
+{
+  this->isWall_.set (x);
 }
 
 
@@ -1923,7 +1959,8 @@ cuboidType (const position_type& position,
             const sigma_type& sigma,
             const epsilon_type& epsilon,
             const gravitationalAcceleration_type& gravitationalAcceleration,
-            const type_type& type)
+            const type_type& type,
+            const isWall_type& isWall)
 : ::xml_schema::type (),
   position_ (position, this),
   velocity_ (velocity, this),
@@ -1933,7 +1970,8 @@ cuboidType (const position_type& position,
   sigma_ (sigma, this),
   epsilon_ (epsilon, this),
   gravitationalAcceleration_ (gravitationalAcceleration, this),
-  type_ (type, this)
+  type_ (type, this),
+  isWall_ (isWall, this)
 {
 }
 
@@ -1946,7 +1984,8 @@ cuboidType (::std::auto_ptr< position_type > position,
             const sigma_type& sigma,
             const epsilon_type& epsilon,
             const gravitationalAcceleration_type& gravitationalAcceleration,
-            const type_type& type)
+            const type_type& type,
+            const isWall_type& isWall)
 : ::xml_schema::type (),
   position_ (position, this),
   velocity_ (velocity, this),
@@ -1956,7 +1995,8 @@ cuboidType (::std::auto_ptr< position_type > position,
   sigma_ (sigma, this),
   epsilon_ (epsilon, this),
   gravitationalAcceleration_ (gravitationalAcceleration, this),
-  type_ (type, this)
+  type_ (type, this),
+  isWall_ (isWall, this)
 {
 }
 
@@ -1973,7 +2013,8 @@ cuboidType (const cuboidType& x,
   sigma_ (x.sigma_, f, this),
   epsilon_ (x.epsilon_, f, this),
   gravitationalAcceleration_ (x.gravitationalAcceleration_, f, this),
-  type_ (x.type_, f, this)
+  type_ (x.type_, f, this),
+  isWall_ (x.isWall_, f, this)
 {
 }
 
@@ -1990,7 +2031,8 @@ cuboidType (const ::xercesc::DOMElement& e,
   sigma_ (this),
   epsilon_ (this),
   gravitationalAcceleration_ (this),
-  type_ (this)
+  type_ (this),
+  isWall_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -2117,6 +2159,17 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
+    // isWall
+    //
+    if (n.name () == "isWall" && n.namespace_ ().empty ())
+    {
+      if (!isWall_.present ())
+      {
+        this->isWall_.set (isWall_traits::create (i, f, this));
+        continue;
+      }
+    }
+
     break;
   }
 
@@ -2182,6 +2235,13 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       "type",
       "");
   }
+
+  if (!isWall_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "isWall",
+      "");
+  }
 }
 
 cuboidType* cuboidType::
@@ -2206,6 +2266,7 @@ operator= (const cuboidType& x)
     this->epsilon_ = x.epsilon_;
     this->gravitationalAcceleration_ = x.gravitationalAcceleration_;
     this->type_ = x.type_;
+    this->isWall_ = x.isWall_;
   }
 
   return *this;
@@ -2370,7 +2431,8 @@ sphereType (const position_type& position,
             const sigma_type& sigma,
             const epsilon_type& epsilon,
             const gravitationalAcceleration_type& gravitationalAcceleration,
-            const type_type& type)
+            const type_type& type,
+            const isWall_type& isWall)
 : ::xml_schema::type (),
   position_ (position, this),
   velocity_ (velocity, this),
@@ -2380,7 +2442,8 @@ sphereType (const position_type& position,
   sigma_ (sigma, this),
   epsilon_ (epsilon, this),
   gravitationalAcceleration_ (gravitationalAcceleration, this),
-  type_ (type, this)
+  type_ (type, this),
+  isWall_ (isWall, this)
 {
 }
 
@@ -2393,7 +2456,8 @@ sphereType (::std::auto_ptr< position_type > position,
             const sigma_type& sigma,
             const epsilon_type& epsilon,
             const gravitationalAcceleration_type& gravitationalAcceleration,
-            const type_type& type)
+            const type_type& type,
+            const isWall_type& isWall)
 : ::xml_schema::type (),
   position_ (position, this),
   velocity_ (velocity, this),
@@ -2403,7 +2467,8 @@ sphereType (::std::auto_ptr< position_type > position,
   sigma_ (sigma, this),
   epsilon_ (epsilon, this),
   gravitationalAcceleration_ (gravitationalAcceleration, this),
-  type_ (type, this)
+  type_ (type, this),
+  isWall_ (isWall, this)
 {
 }
 
@@ -2420,7 +2485,8 @@ sphereType (const sphereType& x,
   sigma_ (x.sigma_, f, this),
   epsilon_ (x.epsilon_, f, this),
   gravitationalAcceleration_ (x.gravitationalAcceleration_, f, this),
-  type_ (x.type_, f, this)
+  type_ (x.type_, f, this),
+  isWall_ (x.isWall_, f, this)
 {
 }
 
@@ -2437,7 +2503,8 @@ sphereType (const ::xercesc::DOMElement& e,
   sigma_ (this),
   epsilon_ (this),
   gravitationalAcceleration_ (this),
-  type_ (this)
+  type_ (this),
+  isWall_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -2561,6 +2628,17 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
+    // isWall
+    //
+    if (n.name () == "isWall" && n.namespace_ ().empty ())
+    {
+      if (!isWall_.present ())
+      {
+        this->isWall_.set (isWall_traits::create (i, f, this));
+        continue;
+      }
+    }
+
     break;
   }
 
@@ -2626,6 +2704,13 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       "type",
       "");
   }
+
+  if (!isWall_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "isWall",
+      "");
+  }
 }
 
 sphereType* sphereType::
@@ -2650,6 +2735,7 @@ operator= (const sphereType& x)
     this->epsilon_ = x.epsilon_;
     this->gravitationalAcceleration_ = x.gravitationalAcceleration_;
     this->type_ = x.type_;
+    this->isWall_ = x.isWall_;
   }
 
   return *this;

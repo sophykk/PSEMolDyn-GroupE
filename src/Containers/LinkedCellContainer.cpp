@@ -275,8 +275,12 @@ void LinkedCellContainer::calcF() {
                                 spdlog::info("in calcF this is force of p1 before {}, {}, {}", p1->getF()[0], p1->getF()[1],
                                              p1->getF()[2]);
                                 spdlog::info("in calcF this is calculated force {}, {}, {}", force[0], force[1], force[2]);*/
-                        p1->addF({force[0], force[1], force[2] + (p1->getM() * gGrav)});
-                        p2->addF({-1.0 * force[0], -1.0 * force[1], -1.0 * (force[2] + (p2->getM() * gGrav))});
+                        if(!p1->getIsWall()){
+                            p1->addF({force[0], force[1], force[2] + (p1->getM() * gGrav)});
+                        }
+                        if(!p2->getIsWall()) {
+                            p2->addF({-1.0 * force[0], -1.0 * force[1], -1.0 * (force[2] + (p2->getM() * gGrav))});
+                        }
                         //     spdlog::info("in calcF this is force of p1 after {}, {}, {}", p1->getF()[0], p1->getF()[1],
                         //                 p1->getF()[2]);
                     }
@@ -300,8 +304,12 @@ void LinkedCellContainer::calcF() {
                         for (auto &p2: getGrid()[x][y + 1][z]) {
                             // spdlog::info("calcF, above");
                             auto force = forceModel.calculateForce(p1, p2);
-                            p1.addF({force[0], force[1], force[2] + (p1.getM() * gGrav)});
-                            p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * (force[2] + (p2.getM() * gGrav))});
+                            if(!p1.getIsWall()){
+                                p1.addF({force[0], force[1], force[2] + (p1.getM() * gGrav)});
+                            }
+                            if(!p2.getIsWall()) {
+                                p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * (force[2] + (p2.getM() * gGrav))});
+                            }
                         }
                     }
                 }
@@ -312,8 +320,12 @@ void LinkedCellContainer::calcF() {
                         for (auto &p2: getGrid()[x][y + 1][z + 1]) {
                             //  spdlog::info("calcF, above back");
                             auto force = forceModel.calculateForce(p1, p2);
-                            p1.addF({force[0], force[1], force[2] + (p1.getM() * gGrav)});
-                            p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * (force[2] + (p2.getM() * gGrav))});
+                            if(!p1.getIsWall()) {
+                                p1.addF({force[0], force[1], force[2] + (p1.getM() * gGrav)});
+                            }
+                            if(!p2.getIsWall()) {
+                                p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * (force[2] + (p2.getM() * gGrav))});
+                            }
                         }
                     }
                 }
@@ -323,8 +335,12 @@ void LinkedCellContainer::calcF() {
                         for (auto &p2: getGrid()[x + 1][y][z]) {
                             //   spdlog::info("calcF, right");
                             auto force = forceModel.calculateForce(p1, p2);
-                            p1.addF({force[0], force[1], force[2] + (p1.getM() * gGrav)});
-                            p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * (force[2] + (p2.getM() * gGrav))});
+                            if(!p1.getIsWall()) {
+                                p1.addF({force[0], force[1], force[2] + (p1.getM() * gGrav)});
+                            }
+                            if(!p2.getIsWall()) {
+                                p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * (force[2] + (p2.getM() * gGrav))});
+                            }
                         }
                     }
                 }
@@ -335,8 +351,12 @@ void LinkedCellContainer::calcF() {
                         for (auto &p2: getGrid()[x + 1][y][z + 1]) {
                             //   spdlog::info("calcF, right back");
                             auto force = forceModel.calculateForce(p1, p2);
-                            p1.addF({force[0], force[1], force[2] + (p1.getM() * gGrav)});
-                            p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * (force[2] + (p2.getM() * gGrav))});
+                            if(!p1.getIsWall()) {
+                                p1.addF({force[0], force[1], force[2] + (p1.getM() * gGrav)});
+                            }
+                            if(!p2.getIsWall()) {
+                                p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * (force[2] + (p2.getM() * gGrav))});
+                            }
                         }
                     }
                 }
@@ -346,8 +366,12 @@ void LinkedCellContainer::calcF() {
                         for (auto &p2: getGrid()[x + 1][y + 1][z]) {
                             //spdlog::info("calcF, upper right");
                             auto force = forceModel.calculateForce(p1, p2);
-                            p1.addF({force[0], force[1], force[2] + (p1.getM() * gGrav)});
-                            p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * (force[2] + (p2.getM() * gGrav))});
+                            if(!p1.getIsWall()) {
+                                p1.addF({force[0], force[1], force[2] + (p1.getM() * gGrav)});
+                            }
+                            if(!p2.getIsWall()) {
+                                p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * (force[2] + (p2.getM() * gGrav))});
+                            }
                         }
                     }
                 }
@@ -358,8 +382,12 @@ void LinkedCellContainer::calcF() {
                         for (auto &p2: getGrid()[x + 1][y + 1][z + 1]) {
                             //   spdlog::info("calcF, upper right diagonal back");
                             auto force = forceModel.calculateForce(p1, p2);
-                            p1.addF({force[0], force[1], force[2] + (p1.getM() * gGrav)});
-                            p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * (force[2] + (p2.getM() * gGrav))});
+                            if(!p1.getIsWall()) {
+                                p1.addF({force[0], force[1], force[2] + (p1.getM() * gGrav)});
+                            }
+                            if(!p2.getIsWall()) {
+                                p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * (force[2] + (p2.getM() * gGrav))});
+                            }
                         }
                     }
                 }
@@ -369,8 +397,12 @@ void LinkedCellContainer::calcF() {
                         for (auto &p2: getGrid()[x - 1][y + 1][z]) {
                             //   spdlog::info("calcF, upper left diagonal");
                             auto force = forceModel.calculateForce(p1, p2);
-                            p1.addF({force[0], force[1], force[2] + (p1.getM() * gGrav)});
-                            p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * (force[2] + (p2.getM() * gGrav))});
+                            if (!p1.getIsWall()) {
+                                p1.addF({force[0], force[1], force[2] + (p1.getM() * gGrav)});
+                            }
+                            if (!p2.getIsWall()) {
+                                p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * (force[2] + (p2.getM() * gGrav))});
+                            }
                         }
                     }
                 }
@@ -381,8 +413,12 @@ void LinkedCellContainer::calcF() {
                         for (auto &p2: getGrid()[x - 1][y + 1][z + 1]) {
                             //  spdlog::info("calcF, upper left diagonal back");
                             auto force = forceModel.calculateForce(p1, p2);
-                            p1.addF({force[0], force[1], force[2] + (p1.getM() * gGrav)});
-                            p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * (force[2] + (p2.getM() * gGrav))});
+                            if(!p1.getIsWall()) {
+                                p1.addF({force[0], force[1], force[2] + (p1.getM() * gGrav)});
+                            }
+                            if(!p2.getIsWall()) {
+                                p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * (force[2] + (p2.getM() * gGrav))});
+                            }
                         }
                     }
                 }
@@ -392,8 +428,12 @@ void LinkedCellContainer::calcF() {
                         for (auto &p2: getGrid()[x][y][z + 1]) {
                             //   spdlog::info("calcF, back");
                             auto force = forceModel.calculateForce(p1, p2);
-                            p1.addF({force[0], force[1], force[2] + (p1.getM() * gGrav)});
-                            p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * (force[2] + (p2.getM() * gGrav))});
+                            if(!p1.getIsWall()) {
+                                p1.addF({force[0], force[1], force[2] + (p1.getM() * gGrav)});
+                            }
+                            if(!p2.getIsWall()) {
+                                p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * (force[2] + (p2.getM() * gGrav))});
+                            }
                         }
                     }
                 }
@@ -485,7 +525,9 @@ void LinkedCellContainer::calculateX(double delta_t) {
         if (boundaryCon[5] == 'p' && p.getX()[2] > domainSize[0]) {
             xi_tn1[2] = p.getX()[2] - domainSize[2];
         }
-        p.setX(xi_tn1);  // Update the position
+        if(!p.getIsWall()) {
+            p.setX(xi_tn1);  // Update the position
+        }
         /*    spdlog::info("this is calcX ps position {}, {}, {}", p.getX()[0], p.getX()[1], p.getX()[2]);
             spdlog::info("this is calcX ps force {}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
             spdlog::info("this is calcX ps velocity{}, {}, {}", p.getV()[0], p.getV()[1], p.getV()[2]);*/

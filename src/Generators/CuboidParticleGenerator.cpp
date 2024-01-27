@@ -16,8 +16,8 @@
 
 CuboidParticleGenerator::CuboidParticleGenerator(std::array<int, 3> N1, double h1, double m1, std::array<double, 3> v1,
                                                  std::array<double, 3> x1, double sigma1, double epsilon1,
-                                                 double gGrav1, int type1)
-        : N(N1), h(h1), m(m1), v(v1), x(x1), sigma(sigma1), epsilon(epsilon1), gGrav(gGrav1), type(type1) {
+                                                 double gGrav1, int type1, bool isMembrane1, bool isWall1)
+        : N(N1), h(h1), m(m1), v(v1), x(x1), sigma(sigma1), epsilon(epsilon1), gGrav(gGrav1), type(type1), isMembrane(isMembrane1), isWall(isWall1) {
 }
 
 /**
@@ -30,13 +30,15 @@ void CuboidParticleGenerator::generateParticles(ParticleContainerBase &particleC
             for (int zIndex = 0; zIndex < N[2]; ++zIndex) {
 
                 Particle particle({x[0] + xIndex * h, x[1] + yIndex * h, x[2] + zIndex * h}, v, m, gGrav, sigma,
-                                  epsilon, type, xIndex, yIndex);
+                                  epsilon, type, xIndex, yIndex, isWall);
+                if(isMembrane){
                     if ((xIndex == 17 && yIndex == 24) ||
                         (xIndex == 17 && yIndex == 25) ||
                         (xIndex == 18 && yIndex == 24) ||
                         (xIndex == 18 && yIndex == 25)) {
                         particle.setType(2);
                     }
+                }
                 Formulas::addMB(particle);
                 particleContainer.addParticle(particle);
             }

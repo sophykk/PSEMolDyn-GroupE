@@ -20,5 +20,5 @@ public:
   CuboidFileReader();
   virtual ~CuboidFileReader();
 
-  std::vector<CuboidParticleGenerator> readFile(char *filename);
+  std::vector<CuboidParticleGenerator> readFile(char *filename, bool &isMembrane);
 };

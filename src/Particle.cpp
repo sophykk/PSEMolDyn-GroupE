@@ -39,8 +39,8 @@ Particle::Particle(const Particle &other) {
 }
 
 Particle::Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg, double m_arg, double gGrav_arg,
-                   double sigma_arg, double epsilon_arg, int type_arg) : x(x_arg), v(v_arg), m(m_arg), gGrav(gGrav_arg),
-                   sigma(sigma_arg), epsilon(epsilon_arg), type(type_arg) {
+                   double sigma_arg, double epsilon_arg, int type_arg, bool isWall_arg) : x(x_arg), v(v_arg), m(m_arg), gGrav(gGrav_arg),
+                   sigma(sigma_arg), epsilon(epsilon_arg), type(type_arg), isWall(isWall_arg) {
     f = {0., 0., 0.};
     old_f = {0., 0., 0.};
     xIndex = 0;
@@ -49,9 +49,9 @@ Particle::Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg, dou
 }
 
 Particle::Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg, double m_arg, double gGrav_arg,
-                   double sigma_arg, double epsilon_arg, int type_arg, int xIndex_arg, int yIndex_arg) : x(x_arg),
+                   double sigma_arg, double epsilon_arg, int type_arg, int xIndex_arg, int yIndex_arg, bool isWall_arg) : x(x_arg),
                    v(v_arg), m(m_arg), gGrav(gGrav_arg), sigma(sigma_arg), epsilon(epsilon_arg), type(type_arg),
-                   xIndex(xIndex_arg), yIndex(yIndex_arg) {
+                   xIndex(xIndex_arg), yIndex(yIndex_arg), isWall(isWall_arg) {
     f = {0., 0., 0.};
     old_f = {0., 0., 0.};
     // spdlog::debug("Particle generated!");
@@ -59,16 +59,16 @@ Particle::Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg, dou
 
 Particle::Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg, std::array<double, 3> f_arg,
                    std::array<double, 3> oldf_arg, double m_arg, double gGrav_arg, double sigma_arg, double epsilon_arg,
-                   int type_arg)
+                   int type_arg, bool isWall_arg)
         : x(x_arg), v(v_arg), f(f_arg), old_f(oldf_arg), m(m_arg),
-          gGrav(gGrav_arg), sigma(sigma_arg), epsilon(epsilon_arg), type(type_arg){}
+          gGrav(gGrav_arg), sigma(sigma_arg), epsilon(epsilon_arg), type(type_arg), isWall(isWall_arg){}
 
 Particle::Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg, std::array<double, 3> f_arg,
                    std::array<double, 3> oldf_arg, double m_arg, double gGrav_arg, double sigma_arg, double epsilon_arg,
-                   int type_arg, int xIndex_arg, int yIndex_arg)
+                   int type_arg, int xIndex_arg, int yIndex_arg, bool isWall_arg)
         : x(x_arg), v(v_arg), f(f_arg), old_f(oldf_arg), m(m_arg),
           gGrav(gGrav_arg), sigma(sigma_arg), epsilon(epsilon_arg), type(type_arg), xIndex(xIndex_arg),
-          yIndex(yIndex_arg) {}
+          yIndex(yIndex_arg), isWall(isWall_arg){}
 
 Particle::~Particle() { //spdlog::debug("Particle destructed!"); }
 }
@@ -92,6 +92,8 @@ double Particle::getEps() const { return epsilon; }
 int Particle::getXIndex() const { return xIndex; }
 
 int Particle::getYIndex() const { return yIndex; }
+
+bool Particle::getIsWall() const { return isWall; }
 
 
 void Particle::setX(const std::array<double, 3> &x_new) {

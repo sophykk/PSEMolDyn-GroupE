@@ -93,15 +93,13 @@ int main(int argc, char *argsv[]) {
     }
     else{
         // Read Cuboids from the file
-        auto generators = xmlReader.readCuboids(argsv[1]);
+        auto generators = xmlReader.readCuboids(argsv[1], isMembrane);
 
         // Loop over all generators and let them create particles in the container
         for (auto &gen: generators) {
             gen.generateParticles(*particleContainer);
         }
     }
-
-
     // Thermostat setup
     double initialTemperature;
     int thermostatInterval;
@@ -124,7 +122,7 @@ int main(int argc, char *argsv[]) {
     }
 
     // Calculate initial forces
-    particleContainer->calculateF();
+    //particleContainer->calculateF();
 
     int iteration = 0;
     double current_time = 0;
@@ -168,7 +166,7 @@ int main(int argc, char *argsv[]) {
         // apply the thermostat
         if((!checkpointing || current_time < 15) && !isMembrane){
             if (iteration % thermostatInterval == 0) {
-                thermostat.applyThermostat(*particleContainer);
+                //thermostat.applyThermostat(*particleContainer);
             }
         }
 
@@ -188,7 +186,7 @@ int main(int argc, char *argsv[]) {
         }
 
         iteration++;
-        if (iteration % plotInterval == 0) {
+        if (iteration % plotInterval == 1) {
             particleContainer->plotParticles(iteration);
         }
         spdlog::info("Iteration {} finished.", iteration);

@@ -19,7 +19,7 @@ CuboidFileReader::CuboidFileReader() = default;
 
 CuboidFileReader::~CuboidFileReader() = default;
 
-std::vector<CuboidParticleGenerator> CuboidFileReader::readFile(char *filename) {
+std::vector<CuboidParticleGenerator> CuboidFileReader::readFile(char *filename, bool &isMembrane) {
     std::vector<CuboidParticleGenerator> generators;
     std::array<double, 3> x;
     std::array<double, 3> v;
@@ -29,6 +29,7 @@ std::vector<CuboidParticleGenerator> CuboidFileReader::readFile(char *filename) 
     double epsilon;
     double gGrav;
     int type;
+    bool isWall;
     int num_cuboids = 0;
 
     std::ifstream input_file(filename);
@@ -81,8 +82,9 @@ std::vector<CuboidParticleGenerator> CuboidFileReader::readFile(char *filename) 
             datastream >> epsilon;
             datastream >> gGrav;
             datastream >> type;
+            datastream >> isWall;
 
-            generators.emplace_back(N, spacing, m, v, x, sigma, epsilon, gGrav, type);
+            generators.emplace_back(N, spacing, m, v, x, sigma, epsilon, gGrav, type, isMembrane, isWall);
 
             getline(input_file, tmp_string);
             spdlog::debug("Read line: {}", tmp_string);

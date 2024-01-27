@@ -57,6 +57,7 @@
         <epsilon>1.0</epsilon>
         <gravitationalAcceleration>-12.44</gravitationalAcceleration>
         <type>1</type>
+        <isWall>false</isWall>
     </cuboid>
 
     <cuboid>
@@ -81,5 +82,6 @@
         <epsilon>1.0</epsilon>
         <gravitationalAcceleration>-12.44</gravitationalAcceleration>
         <type>2</type>
+        <isWall>false</isWall>
     </cuboid>
 </simulation>

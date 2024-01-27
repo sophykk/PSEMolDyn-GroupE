@@ -30,7 +30,7 @@ public:
 
     void readThermostatParams(const char *filename, double &initT, int &thermostatInterval);
 
-    std::vector<CuboidParticleGenerator> readCuboids(const char *filename);
+    std::vector<CuboidParticleGenerator> readCuboids(const char *filename, bool &isMembrane);
 
     std::vector<SphereParticleGenerator> readSpheres(const char *filename);
 };

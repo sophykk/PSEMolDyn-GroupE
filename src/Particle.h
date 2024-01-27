@@ -55,6 +55,8 @@ private:
 
     int yIndex;
 
+    bool isWall;
+
 public:
     explicit Particle(int type = 0);
 
@@ -62,19 +64,19 @@ public:
 
     Particle(
             std::array<double, 3> x_arg, std::array<double, 3> v_arg, double m_arg, double gGrav_type,
-            double sigma_arg, double epsilon_arg, int type_arg);
+            double sigma_arg, double epsilon_arg, int type_arg, bool isWall);
 
     Particle(
             std::array<double, 3> x_arg, std::array<double, 3> v_arg, double m_arg, double gGrav_type,
-            double sigma_arg, double epsilon_arg, int type_arg, int xIndex_arg, int yIndex_arg);
+            double sigma_arg, double epsilon_arg, int type_arg, int xIndex_arg, int yIndex_arg, bool isWall);
 
     Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg, std::array<double,
             3> f_arg, std::array<double, 3> oldf_arg, double m_arg, double gGrav_arg, double sigma_arg,
-             double epsilon_arg, int type);
+             double epsilon_arg, int type, bool isWall);
 
     Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg, std::array<double,
             3> f_arg, std::array<double, 3> oldf_arg, double m_arg, double gGrav_arg, double sigma_arg,
-             double epsilon_arg, int type, int xIndex_arg, int yIndex_arg);
+             double epsilon_arg, int type, int xIndex_arg, int yIndex_arg, bool isWall);
 
     virtual ~Particle();
 
@@ -99,6 +101,8 @@ public:
     int getXIndex() const;
 
     int getYIndex() const;
+
+    bool getIsWall() const;
 
     bool operator==(const Particle &other) const;
 

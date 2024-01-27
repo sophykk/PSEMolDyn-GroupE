@@ -28,6 +28,7 @@ private:
     double epsilon;
     double gGrav;
     int type;
+    bool isWall;
 
 public:
     /**
@@ -35,7 +36,7 @@ public:
     */
 
     SphereParticleGenerator(std::array<double, 3> x1, double h1, double m1, std::array<double, 3> v1, double r1,
-                            double sigma, double epsilon, double gGrav, int type1);
+                            double sigma, double epsilon, double gGrav, int type1, bool isWall);
 
     void generateParticles(ParticleContainerBase &particleContainer);
 };

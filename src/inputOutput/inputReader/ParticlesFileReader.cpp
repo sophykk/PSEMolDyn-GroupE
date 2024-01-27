@@ -24,6 +24,7 @@ void ParticlesFileReader::readFile(std::vector<Particle> &particles, std::string
     double epsilon;
     double gGrav;
     int type;
+    bool isWall;
     int num_particles = 0;
 
     std::ifstream input_file(filename);
@@ -67,8 +68,9 @@ void ParticlesFileReader::readFile(std::vector<Particle> &particles, std::string
             datastream >> epsilon;
             datastream >> gGrav;
             datastream >> type;
+            datastream >> isWall;
 
-            particles.emplace_back(x, v, f, old_f, m, gGrav, sigma, epsilon, type);
+            particles.emplace_back(x, v, f, old_f, m, gGrav, sigma, epsilon, type, isWall);
 
             getline(input_file, tmp_string);
         }

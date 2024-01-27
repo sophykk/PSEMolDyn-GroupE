@@ -749,6 +749,20 @@ class cuboidType: public ::xml_schema::type
   void
   type (const type_type& x);
 
+  // isWall
+  //
+  typedef ::xml_schema::boolean isWall_type;
+  typedef ::xsd::cxx::tree::traits< isWall_type, char > isWall_traits;
+
+  const isWall_type&
+  isWall () const;
+
+  isWall_type&
+  isWall ();
+
+  void
+  isWall (const isWall_type& x);
+
   // Constructors.
   //
   cuboidType (const position_type&,
@@ -759,7 +773,8 @@ class cuboidType: public ::xml_schema::type
               const sigma_type&,
               const epsilon_type&,
               const gravitationalAcceleration_type&,
-              const type_type&);
+              const type_type&,
+              const isWall_type&);
 
   cuboidType (::std::auto_ptr< position_type >,
               ::std::auto_ptr< velocity_type >,
@@ -769,7 +784,8 @@ class cuboidType: public ::xml_schema::type
               const sigma_type&,
               const epsilon_type&,
               const gravitationalAcceleration_type&,
-              const type_type&);
+              const type_type&,
+              const isWall_type&);
 
   cuboidType (const ::xercesc::DOMElement& e,
               ::xml_schema::flags f = 0,
@@ -806,6 +822,7 @@ class cuboidType: public ::xml_schema::type
   ::xsd::cxx::tree::one< epsilon_type > epsilon_;
   ::xsd::cxx::tree::one< gravitationalAcceleration_type > gravitationalAcceleration_;
   ::xsd::cxx::tree::one< type_type > type_;
+  ::xsd::cxx::tree::one< isWall_type > isWall_;
 };
 
 class thermostatType: public ::xml_schema::type
@@ -1047,6 +1064,20 @@ class sphereType: public ::xml_schema::type
   void
   type (const type_type& x);
 
+  // isWall
+  //
+  typedef ::xml_schema::boolean isWall_type;
+  typedef ::xsd::cxx::tree::traits< isWall_type, char > isWall_traits;
+
+  const isWall_type&
+  isWall () const;
+
+  isWall_type&
+  isWall ();
+
+  void
+  isWall (const isWall_type& x);
+
   // Constructors.
   //
   sphereType (const position_type&,
@@ -1057,7 +1088,8 @@ class sphereType: public ::xml_schema::type
               const sigma_type&,
               const epsilon_type&,
               const gravitationalAcceleration_type&,
-              const type_type&);
+              const type_type&,
+              const isWall_type&);
 
   sphereType (::std::auto_ptr< position_type >,
               ::std::auto_ptr< velocity_type >,
@@ -1067,7 +1099,8 @@ class sphereType: public ::xml_schema::type
               const sigma_type&,
               const epsilon_type&,
               const gravitationalAcceleration_type&,
-              const type_type&);
+              const type_type&,
+              const isWall_type&);
 
   sphereType (const ::xercesc::DOMElement& e,
               ::xml_schema::flags f = 0,
@@ -1104,6 +1137,7 @@ class sphereType: public ::xml_schema::type
   ::xsd::cxx::tree::one< epsilon_type > epsilon_;
   ::xsd::cxx::tree::one< gravitationalAcceleration_type > gravitationalAcceleration_;
   ::xsd::cxx::tree::one< type_type > type_;
+  ::xsd::cxx::tree::one< isWall_type > isWall_;
 };
 
 class positionType: public ::xml_schema::type
