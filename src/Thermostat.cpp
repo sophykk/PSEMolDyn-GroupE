@@ -7,6 +7,7 @@
 
 Thermostat::Thermostat(ParticleContainerBase &pc, double init, int n, bool useBM) : initT(init), nThermostat(n) {
     targetT = initT;
+    type = 2;
     deltaT = INFINITY;
     numDimensions = pc.getDimension();
     if (useBM) {
@@ -16,6 +17,13 @@ Thermostat::Thermostat(ParticleContainerBase &pc, double init, int n, bool useBM
 
 Thermostat::Thermostat(ParticleContainerBase &pc, double init, double target, double delta, int n, bool useBM) :
         initT(init), targetT(target), deltaT(delta), nThermostat(n) {
+    if (initT < targetT) {
+        type = 0;
+    } else if (initT > targetT) {
+        type = 1;
+    } else {
+        type = 2;
+    }
     numDimensions = pc.getDimension();
     if (useBM) {
         initializeWithBrownianMotion(pc);
@@ -40,7 +48,7 @@ double Thermostat::calculateNewTemperature(ParticleContainerBase &particleContai
 }
 
 void Thermostat::applyThermostat(ParticleContainerBase &particleContainer) {
-    if (initT != targetT) {
+    if (type != 2 && ((type == 0 && initT < targetT) || (type == 1 && initT > targetT))) {
         auto tNew = calculateNewTemperature(particleContainer);
 
         auto scaling = sqrt(tNew / initT);
@@ -63,22 +71,45 @@ void Thermostat::applyThermostat(ParticleContainerBase &particleContainer) {
     }
 }
 
-/*
-/** Apply the thermostat to a LinkedCellContainer
-void Thermostat::applyThermostat(ParticleContainerBase &particleContainer, int currentStep) {
+void Thermostat::applyThermostatExtension(ParticleContainerBase &particleContainer) {
+    if (type != 2 && ((type == 0 && initT < targetT) || (type == 1 && initT > targetT))) {
+        // 1. determine avg velocity
+        std::array<double, 3> avgV = {0.0, 0.0, 0.0};
+        for (auto &p1: particleContainer.getParticles()) {
+            avgV = {avgV[0] + p1.getV()[0], avgV[1] + p1.getV()[1], avgV[2] + p1.getV()[2]};
+        }
+        auto x = 1 / particleContainer.getParticles().size();
+        avgV = {avgV[0] * x, avgV[1] * x, avgV[2] * x};
 
-    /** Systems that have no initial velocities need to be initialized
-     * with Brownian Motion to have a non-zero temperature.
+        // 2. difference btw p's velocity and avg velocity
+        for (auto &p1: particleContainer.getParticles()) {
+            p1.setV({p1.getV()[0] - avgV[0], p1.getV()[1] - avgV[1], p1.getV()[2] * avgV[2]});
+        }
 
+        // 3. only use difference for calculating temperature
+        auto tNew = calculateNewTemperature(particleContainer);
 
-    double currentT = calculateCurrentTemperature(particleContainer);
-    double scalingFactor = std::sqrt(targetT / currentT);
-    // Ensuring the temperature change does not exceed deltaT
-    scalingFactor = std::min(scalingFactor, std::sqrt((currentT + deltaT) / currentT));
-    scaleVelocities(particleContainer, scalingFactor);
-    //std::cout << "Tcurrent: " << Tcurrent << std::endl;
+        auto scaling = sqrt(tNew / initT);
+        if (deltaT != INFINITY) {
+            if (std::abs(tNew - initT) > deltaT) {
+                if (initT < targetT) {
+                    scaling = sqrt((initT + deltaT) / initT);
+                    tNew = initT + deltaT;
+                } else {
+                    scaling = sqrt((initT - deltaT) / initT);
+                    tNew = initT - deltaT;
+                }
+            }
+        }
+
+        // 4. apply scaling to difference and add to avg velocity
+        for (auto &p1: particleContainer.getParticles()) {
+            p1.setV({(p1.getV()[0] * scaling) + avgV[0], (p1.getV()[1] * scaling) + avgV[1],
+                     (p1.getV()[2] * scaling) + avgV[2]});
+        }
+        initT = tNew;
+    }
 }
-*/
 
 
 

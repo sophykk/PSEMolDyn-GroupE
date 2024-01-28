@@ -20,7 +20,7 @@ private:
     double targetT;        // Target temperature
     double deltaT;         // Max temperature change per application
     int nThermostat;       // Number of time steps for periodic application
-
+    int type;              // 0 = heating, 1 = cooling, 2 = stable
     /** useBrownianMotion = True if initial Velocities == 0, False otherwise
      * initialize Thermostat with this flag*/
     //bool useBrownianMotion;// Flag for initializing with Brownian Motion
@@ -38,6 +38,8 @@ public:
 
     /** Function to apply the thermostat to a LinkedCell particle container*/
     void applyThermostat(ParticleContainerBase &particleContainer);
+
+    void applyThermostatExtension(ParticleContainerBase &particleContainer);
 
     /** Helper method to calculate the current temperature of the system */
     double calculateNewTemperature(ParticleContainerBase &particleContainer);

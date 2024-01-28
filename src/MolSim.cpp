@@ -104,14 +104,14 @@ int main(int argc, char *argsv[]) {
     double initialTemperature;
     int thermostatInterval;
 
-    //if not the membrane simulation is ran, the thermostat should be initialized
+    //if not the membrane simulation is run, the thermostat should be initialized
     if(!isMembrane){
         // Read thermostat parameters out of the file
         xmlReader.readThermostatParams(argsv[1], initialTemperature, thermostatInterval);
     }
 
-    double targetTemperature = initialTemperature;
-    double maxTempChange = std::numeric_limits<double>::infinity();
+    //double targetTemperature = initialTemperature;
+    //double maxTempChange = std::numeric_limits<double>::infinity();
     bool useBrownianMotion = true;
 
     Thermostat thermostat(*particleContainer, initialTemperature, thermostatInterval, useBrownianMotion);
@@ -166,7 +166,7 @@ int main(int argc, char *argsv[]) {
         // apply the thermostat
         if((!checkpointing || current_time < 15) && !isMembrane){
             if (iteration % thermostatInterval == 0) {
-                //thermostat.applyThermostat(*particleContainer);
+                thermostat.applyThermostatExtension(*particleContainer);
             }
         }
 
