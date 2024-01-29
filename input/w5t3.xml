@@ -2,11 +2,11 @@
 <simulation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="../src/xsd/Simulation.xsd">
     <simulationParams>
-        <endTime>100</endTime>
-        <deltaT> 0.0005</deltaT>
+        <endTime>1</endTime>
+        <deltaT> 0.05</deltaT>
         <modelType>lennardJones</modelType>
         <containerType>linkedCells</containerType>
-        <plotInterval>10</plotInterval>
+        <plotInterval>1</plotInterval>
         <objectType>cuboid</objectType>
         <checkpointing>false</checkpointing>
     </simulationParams>

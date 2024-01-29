@@ -17,7 +17,7 @@ void BasicParticleContainer::addParticle(Particle &particle) {
 }
 
 int BasicParticleContainer::getDimension() const{
-    return 2;
+    return 3;
 }
 
 std::size_t BasicParticleContainer::size() const {

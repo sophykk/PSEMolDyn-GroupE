@@ -4,11 +4,16 @@
 #include "Thermostat.h"
 #include <cmath>
 #include "utils/MaxwellBoltzmannDistribution.h"
+#include <iostream>
 
 Thermostat::Thermostat(ParticleContainerBase &pc, double init, int n, bool useBM) : initT(init), nThermostat(n) {
     targetT = initT;
     deltaT = INFINITY;
     numDimensions = pc.getDimension();
+
+    std::cout << "Hello from Thermostat!" << std::endl;
+    std::cout << "numDimensions " << numDimensions << std::endl;
+
     if (useBM) {
         initializeWithBrownianMotion(pc);
     }
@@ -17,6 +22,8 @@ Thermostat::Thermostat(ParticleContainerBase &pc, double init, int n, bool useBM
 Thermostat::Thermostat(ParticleContainerBase &pc, double init, double target, double delta, int n, bool useBM) :
         initT(init), targetT(target), deltaT(delta), nThermostat(n) {
     numDimensions = pc.getDimension();
+    std::cout << "Hello from Thermostat!" << std::endl;
+    std::cout << "numDimensions " << numDimensions << std::endl;
     if (useBM) {
         initializeWithBrownianMotion(pc);
     }

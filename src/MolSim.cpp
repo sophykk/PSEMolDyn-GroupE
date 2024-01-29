@@ -15,6 +15,11 @@
 
 #include "utils/MaxwellBoltzmannDistribution.h"
 
+bool isWithinCuboid(const std::array<double, 3>& position, const std::array<double, 3>& corner, const std::array<double, 3>& dimensions) {
+    return position[0] >= corner[0] && position[0] < corner[0] + dimensions[0] &&
+           position[1] >= corner[1] && position[1] < corner[1] + dimensions[1] &&
+           position[2] >= corner[2] && position[2] < corner[2] + dimensions[2];
+}
 
 int main(int argc, char *argsv[]) {
 
@@ -42,6 +47,8 @@ int main(int argc, char *argsv[]) {
 
     spdlog::set_level(log_level);
 
+    //std::cout << "XML Parameters " << end_time << delta_t << modelType << containerType << objectType << plotInterval << checkpointing << std::endl;
+
     spdlog::info("Application started");
     spdlog::info("Hello from MolSim for PSE!");
 
@@ -63,6 +70,9 @@ int main(int argc, char *argsv[]) {
         particleContainer = std::make_unique<BasicParticleContainer>(*forceModel);
     } else if (containerType == "linkedCells") {
         // Read the parameters for the LinkedCell Container from the file
+
+        //what are those parameters?
+
         std::vector<double> d;
         double c;
         std::array<char, 6> b;
@@ -70,12 +80,35 @@ int main(int argc, char *argsv[]) {
         int k;
         double r0;
         double pullUpF;
+
+        std::cout << "d:";
+        for (const auto& value : d) {
+            std::cout << value << " ";
+        }
+        std::cout << ", c:" << c << ", b:";
+        for (const char& elem : b) {
+            std::cout << elem;
+        }
+        std::cout << ", g:" << g << ", k:" << k
+                  << ", r0:" << r0 << ", pullUpF:" << pullUpF << std::endl;
+
+
+
         xmlReader.readLinkedCellParams(argsv[1], d, c, b, g, isMembrane);
         if(isMembrane){
+
+
             xmlReader.readMembraneParams(argsv[1], k, r0, pullUpF);
             particleContainer = std::make_unique<LinkedCellContainer>(*forceModel, d, c, b, g, isMembrane, k, r0, pullUpF);
+
         } else {
+
+           /** here */
             particleContainer = std::make_unique<LinkedCellContainer>(*forceModel, d, c, b, g, isMembrane);
+
+            std::cout << "Particles size in the beginning: " << particleContainer->getParticles().size() << ", "
+                      << std::endl;
+            //particleContainer->getParticles().size()
         }
     } else {
         spdlog::error("Unknown container type selected: {}", containerType);
@@ -84,21 +117,77 @@ int main(int argc, char *argsv[]) {
 
     if(objectType == "sphere"){
         // Read Spheres from the file
+
         auto generators = xmlReader.readSpheres(argsv[1]);
 
         // Loop over all generators and let them create particles in the container
         for (auto &gen: generators) {
             gen.generateParticles(*particleContainer);
+
         }
     }
     else{
+
         // Read Cuboids from the file
+        /** here */
+
         auto generators = xmlReader.readCuboids(argsv[1]);
 
+        std::cout << "Number of generators:" << generators.size() << std::endl;
+
         // Loop over all generators and let them create particles in the container
+        int i = 1;
         for (auto &gen: generators) {
             gen.generateParticles(*particleContainer);
+            std::cout << "particleContainer->size() for generator:"<< i << std::endl;
+            std::cout << particleContainer->size() << std::endl;
+            i++;
         }
+
+        int j = 0;
+
+
+
+        for (const auto& particle : particleContainer->getParticles()) {
+
+            /** Printing all particles position, force, velocity  -> terminal_dumb file
+             * Output written down in the text file, you can check out the data for 100k particles - good luck! :)
+             * DEBUGGING IS FUN
+             *
+            auto position = particle.getX();
+            auto force = particle.getF();
+            auto velocity = particle.getV();
+            std::cout << "Particle " << j << std::endl;
+            // Printing position, force, and velocity
+            std::cout << "Particle position: (" << position[0] << ", " << position[1] << ", " << position[2] << ")\n";
+            std::cout << "Particle force: (" << force[0] << ", " << force[1] << ", " << force[2] << ")\n";
+            std::cout << "Particle velocity: (" << velocity[0] << ", " << velocity[1] << ", " << velocity[2] << ")\n";
+            std::cout << "----------------------------------------\n";
+            j++; */
+        }
+
+        std::array<double, 3> firstCuboidCorner = {0.6, 0.6, 0.6};
+        std::array<double, 3> secondCuboidCorner = {0.6, 24.6, 0.6};
+        std::array<double, 3> cuboidDimensions = {(50 * 1.2), (20 * 1.2), (50 * 1.2)}; // Width, Height, Depth
+
+        int firstCuboidCount = 0, secondCuboidCount = 0, outsideCount = 0;
+
+        for (const auto& particle : particleContainer->getParticles()) {
+            auto position = particle.getX();
+
+            if (isWithinCuboid(position, firstCuboidCorner, cuboidDimensions)) {
+                firstCuboidCount++;
+            } else if (isWithinCuboid(position, secondCuboidCorner, cuboidDimensions)) {
+                secondCuboidCount++;
+            } else {
+                outsideCount++;
+            }
+        }
+
+        std::cout << "First Cuboid Particle Count: " << firstCuboidCount << "\n";
+        std::cout << "Second Cuboid Particle Count: " << secondCuboidCount << "\n";
+        std::cout << "Particles Outside Cuboids: " << outsideCount << "\n";
+
     }
 
 
@@ -110,6 +199,7 @@ int main(int argc, char *argsv[]) {
     if(!isMembrane){
         // Read thermostat parameters out of the file
         xmlReader.readThermostatParams(argsv[1], initialTemperature, thermostatInterval);
+        std::cout << "Thermostat Parameters: " << initialTemperature << ", " << thermostatInterval << std::endl;
     }
 
     double targetTemperature = initialTemperature;
@@ -118,13 +208,19 @@ int main(int argc, char *argsv[]) {
 
     Thermostat thermostat(*particleContainer, initialTemperature, thermostatInterval, useBrownianMotion);
 
+    std::cout << "Particles size after allocating Thermostat: " << particleContainer->getParticles().size() << std::endl;
+
     // Velocity is 0 initially for all simulations, so we useBrownianMotion
     if(useBrownianMotion && !isMembrane){
+        std::cout << "useBrownianMotion && !isMembrane" << std::endl;
         thermostat.initializeWithBrownianMotion(*particleContainer);
     }
 
     // Calculate initial forces
-    particleContainer->calculateF();
+
+    std::cout << "Particles size before calculateF(): " << particleContainer->getParticles().size() << std::endl;
+    //particleContainer->calculateF();
+    std::cout << "Particles size after calculateF(): " << particleContainer->getParticles().size()  << std::endl;
 
     int iteration = 0;
     double current_time = 0;

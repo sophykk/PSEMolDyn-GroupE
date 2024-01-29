@@ -2,13 +2,8 @@
 <simulation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="../src/xsd/Simulation.xsd">
     <simulationParams>
-<<<<<<< Updated upstream
-        <endTime>15</endTime>
-        <deltaT> 0.0005</deltaT>
-=======
         <endTime>5</endTime>
         <deltaT> 0.05</deltaT>
->>>>>>> Stashed changes
         <modelType>lennardJones</modelType>
         <containerType>linkedCells</containerType>
         <plotInterval>100</plotInterval>
