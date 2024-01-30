@@ -1080,6 +1080,10 @@ std::array<double, 3> LinkedCellContainer::applyNeighbouringForce(Particle &p1, 
     return std::array<double, 3>();
 }
 
+std::vector<double> LinkedCellContainer::getDomainSize() {
+    return domainSize;
+}
+
 /**
  * @brief if cutOffRadius is not cellSize, check distance then
  * @code

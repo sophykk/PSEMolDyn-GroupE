@@ -57,6 +57,8 @@ public:
 
     int getDimension() const;
 
+    std::vector<double> getDomainSize();
+
     std::size_t size() const;
 
     void resetF();

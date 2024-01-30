@@ -52,6 +52,11 @@ public:
     virtual int getDimension() const = 0;
 
     /**
+     * @return the size of the domain
+     */
+    virtual std::vector<double> getDomainSize() = 0;
+
+    /**
      * @return Number of particles in the container.
      */
     virtual std::size_t size() const = 0;

@@ -20,6 +20,8 @@ int BasicParticleContainer::getDimension() const{
     return 2;
 }
 
+std::vector<double> BasicParticleContainer::getDomainSize() {}
+
 std::size_t BasicParticleContainer::size() const {
     return particleList.size();
 }
