@@ -15,19 +15,30 @@
  */
 
 CuboidParticleGenerator::CuboidParticleGenerator(std::array<int, 3> N1, double h1, double m1, std::array<double, 3> v1,
-                                                 std::array<double, 3> x1, double sigma1, double epsilon1, double gGrav1, int type1)
-        : N(N1), h(h1), m(m1), v(v1), x(x1), sigma(sigma1), epsilon(epsilon1), gGrav(gGrav1), type(type1) {
+                                                 std::array<double, 3> x1, double sigma1, double epsilon1,
+                                                 double gGrav1, int type1, bool isMembrane1, bool isWall1)
+        : N(N1), h(h1), m(m1), v(v1), x(x1), sigma(sigma1), epsilon(epsilon1), gGrav(gGrav1), type(type1), isMembrane(isMembrane1), isWall(isWall1) {
 }
 
 /**
  * @brief create a N1xN2xN3 grid of particles with mass m, initial velocity v, left corner coordinate (x,y,z)
  * */
-void CuboidParticleGenerator::generateParticles(ParticleContainerBase& particleContainer) {
+void CuboidParticleGenerator::generateParticles(ParticleContainerBase &particleContainer) {
 
-    for (int i = 0; i < N[0]; ++i) {
-        for (int j = 0; j < N[1]; ++j) {
-            for (int k = 0; k < N[2]; ++k) {
-                Particle particle({x[0] + i * h, x[1] + j * h, x[2] + k * h}, v, m, gGrav, sigma, epsilon, type);
+    for (int xIndex = 0; xIndex < N[0]; ++xIndex) {
+        for (int yIndex = 0; yIndex < N[1]; ++yIndex) {
+            for (int zIndex = 0; zIndex < N[2]; ++zIndex) {
+
+                Particle particle({x[0] + xIndex * h, x[1] + yIndex * h, x[2] + zIndex * h}, v, m, gGrav, sigma,
+                                  epsilon, type, xIndex, yIndex, isWall);
+                if(isMembrane){
+                    if ((xIndex == 17 && yIndex == 24) ||
+                        (xIndex == 17 && yIndex == 25) ||
+                        (xIndex == 18 && yIndex == 24) ||
+                        (xIndex == 18 && yIndex == 25)) {
+                        particle.setType(2);
+                    }
+                }
                 Formulas::addMB(particle);
                 particleContainer.addParticle(particle);
             }

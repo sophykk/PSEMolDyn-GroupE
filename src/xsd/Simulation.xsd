@@ -6,6 +6,7 @@
                 <xs:element name="simulationParams" type="simulationParamsType"/>
                 <xs:element name="parallelizationStrategyParam" type="parallelizationStrategyType" minOccurs="0"/>
                 <xs:element name="linkedCellParams" type="linkedCellParamsType" minOccurs="0"/>
+                <xs:element name="membraneParams" type="membraneParamsType" minOccurs="0"/>
                 <xs:element name="thermostat" type="thermostatType" minOccurs="0"/>
                 <xs:element name="cuboid" type="cuboidType" minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element name="sphere" type="sphereType" minOccurs="0" maxOccurs="unbounded"/>
@@ -38,6 +39,15 @@
             <xs:element name="cutoffRadius" type="xs:double"/>
             <xs:element name="boundaryConditions" type="boundaryConditionsType"/>
             <xs:element name="gravitationalAcceleration" type="xs:double"/>
+            <xs:element name="isMembrane" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="membraneParamsType">
+        <xs:sequence>
+            <xs:element name="stiffness" type="xs:int"/>
+            <xs:element name="averageBond" type="xs:double"/>
+            <xs:element name="pullUpForce" type="xs:double"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -52,6 +62,7 @@
             <xs:element name="epsilon" type="xs:double"/>
             <xs:element name="gravitationalAcceleration" type="xs:double"/>
             <xs:element name="type" type="xs:int"/>
+            <xs:element name="isWall" type="xs:boolean"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -75,6 +86,7 @@
             <xs:element name="epsilon" type="xs:double"/>
             <xs:element name="gravitationalAcceleration" type="xs:double"/>
             <xs:element name="type" type="xs:int"/>
+            <xs:element name="isWall" type="xs:boolean"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -116,6 +128,8 @@
             <xs:element name="up" type="xs:string"/>
             <xs:element name="right" type="xs:string"/>
             <xs:element name="down" type="xs:string"/>
+            <xs:element name="front" type="xs:string"/>
+            <xs:element name="back" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>
 

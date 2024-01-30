@@ -10,13 +10,12 @@
 #include <spdlog/spdlog.h>
 #include <iostream>
 #include <chrono>
-#include <omp.h>
 
 #include "Thermostat.h"
 
 #include "utils/MaxwellBoltzmannDistribution.h"
 
-//
+
 int main(int argc, char *argsv[]) {
 
 
@@ -29,8 +28,7 @@ int main(int argc, char *argsv[]) {
     spdlog::level::level_enum log_level = spdlog::level::debug;
     bool calcRunTime = false;
     bool checkpointing;
-    bool useParallelization;
-    std::string parallelizationStrategy;
+    bool isMembrane = false;
     outputWriter::TXTWriter checkpointingWriter;
     ParticlesFileReader checkpointingReader;
     std::string checkpointingFile = "checkpointing";
@@ -40,12 +38,7 @@ int main(int argc, char *argsv[]) {
     XMLFileReader xmlReader;
 
     // Read Simulation parameters from the file
-    xmlReader.readSimulationParams(argsv[1], end_time, delta_t, modelType, containerType, objectType, plotInterval, checkpointing, useParallelization);
-
-    // Read the parallelization strategy if the useParallelization Variable is set
-    if(useParallelization){
-        xmlReader.readParallelizationStrategy(argsv[1], parallelizationStrategy);
-    }
+    xmlReader.readSimulationParams(argsv[1], end_time, delta_t, modelType, containerType, objectType, plotInterval, checkpointing);
 
     spdlog::set_level(log_level);
 
@@ -72,11 +65,18 @@ int main(int argc, char *argsv[]) {
         // Read the parameters for the LinkedCell Container from the file
         std::vector<double> d;
         double c;
-        std::array<char, 4> b;
+        std::array<char, 6> b;
         double g;
-        xmlReader.readLinkedCellParams(argsv[1], d, c, b, g);
-
-        particleContainer = std::make_unique<LinkedCellContainer>(*forceModel, d, c, b, g);
+        int k;
+        double r0;
+        double pullUpF;
+        xmlReader.readLinkedCellParams(argsv[1], d, c, b, g, isMembrane);
+        if(isMembrane){
+            xmlReader.readMembraneParams(argsv[1], k, r0, pullUpF);
+            particleContainer = std::make_unique<LinkedCellContainer>(*forceModel, d, c, b, g, isMembrane, k, r0, pullUpF);
+        } else {
+            particleContainer = std::make_unique<LinkedCellContainer>(*forceModel, d, c, b, g, isMembrane);
+        }
     } else {
         spdlog::error("Unknown container type selected: {}", containerType);
         exit(-1);
@@ -93,45 +93,36 @@ int main(int argc, char *argsv[]) {
     }
     else{
         // Read Cuboids from the file
-        auto generators = xmlReader.readCuboids(argsv[1]);
+        auto generators = xmlReader.readCuboids(argsv[1], isMembrane);
 
         // Loop over all generators and let them create particles in the container
         for (auto &gen: generators) {
             gen.generateParticles(*particleContainer);
         }
     }
-
     // Thermostat setup
     double initialTemperature;
     int thermostatInterval;
 
-    // Read thermostat parameters out of the file
-    xmlReader.readThermostatParams(argsv[1], initialTemperature, thermostatInterval);
+    //if not the membrane simulation is run, the thermostat should be initialized
+    if(!isMembrane){
+        // Read thermostat parameters out of the file
+        xmlReader.readThermostatParams(argsv[1], initialTemperature, thermostatInterval);
+    }
 
-    double targetTemperature = initialTemperature;
-    double maxTempChange = std::numeric_limits<double>::infinity();
+    //double targetTemperature = initialTemperature;
+    //double maxTempChange = std::numeric_limits<double>::infinity();
     bool useBrownianMotion = true;
 
-    Thermostat thermostat(initialTemperature, targetTemperature, maxTempChange, thermostatInterval, useBrownianMotion);
+    Thermostat thermostat(*particleContainer, initialTemperature, thermostatInterval, useBrownianMotion);
 
     // Velocity is 0 initially for all simulations, so we useBrownianMotion
-    if(useBrownianMotion){
+    if(useBrownianMotion && !isMembrane){
         thermostat.initializeWithBrownianMotion(*particleContainer);
     }
 
-        #ifdef _OPENMP
-            std::cout << "OpenMP is enabled. Number of threads: " << omp_get_max_threads() << std::endl;
-        #else
-            std::cout << "OpenMP is not enabled." << std::endl;
-        #endif
-
-    omp_set_num_threads(4);
-
-    // Record start time
-    start = std::chrono::high_resolution_clock::now();
-
     // Calculate initial forces
-    particleContainer->calculateF();
+    //particleContainer->calculateF();
 
     int iteration = 0;
     double current_time = 0;
@@ -156,42 +147,54 @@ int main(int argc, char *argsv[]) {
             checkpointingReader.readFile(particleContainer->getParticles(), checkpointingFile);
         }
 
+        if(calcRunTime){
+            start = std::chrono::high_resolution_clock::now();
+        }
+
         // calculate new x
+        //spdlog::info("this is calcX in MolSim");
         particleContainer->calculateX(delta_t);
 
         // reset forces
+        //spdlog::info("this is resetF in MolSim");
         particleContainer->resetF();
 
         // calculate new f
+        //spdlog::info("this is calcF in MolSim");
         particleContainer->calculateF();
 
         // apply the thermostat
-        if(!checkpointing || current_time < 15){
+        if((!checkpointing || current_time < 15) && !isMembrane){
             if (iteration % thermostatInterval == 0) {
-                thermostat.applyThermostat(*particleContainer, iteration);
+                thermostat.applyThermostatExtension(*particleContainer);
             }
         }
 
         // calculate new v
+        //spdlog::info("this is calcV in MolSim");
         particleContainer->calculateV(delta_t);
 
+        if(calcRunTime){
+            // Record end time
+            end = std::chrono::high_resolution_clock::now();
+
+            // Calculate duration
+            auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+
+            // Print the duration in microseconds
+            std::cout << "Runtime: " << duration.count() << " microseconds\n";
+        }
+
         iteration++;
-        if (iteration % plotInterval == 0) {
+        if (iteration % plotInterval == 1) {
             particleContainer->plotParticles(iteration);
         }
-        //spdlog::info("Iteration {} finished.", iteration);
+        spdlog::info("Iteration {} finished.", iteration);
 
         current_time += delta_t;
     }
 
-    // Record end time
-    end = std::chrono::high_resolution_clock::now();
-
-    // Calculate and print execution time
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-    std::cout << "Threads: 4" << ", Execution Time: " << duration.count() << " ms\n";
-
-    //spdlog::info("output written. Terminating...");
+    spdlog::info("output written. Terminating...");
 
     return 0;
 }

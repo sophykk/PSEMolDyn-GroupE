@@ -52,6 +52,7 @@
         <spacing>1.2</spacing>
         <sigma>1.2</sigma>
         <epsilon>1.0</epsilon>
+        <isMembrane>true</isMembrane>
         <gravitationalAcceleration>-12.44</gravitationalAcceleration>
         <type>1</type>
     </cuboid>

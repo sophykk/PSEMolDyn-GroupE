@@ -3,87 +3,114 @@
 //
 #include "Thermostat.h"
 #include <cmath>
-#include <array>
 #include "utils/MaxwellBoltzmannDistribution.h"
-#include <iostream>
 
-// Constructor
-Thermostat::Thermostat(double Tinit, double Ttarget, double deltaT, int nthermostat, bool useBrownianMotion)
-        : Tinit(Tinit), Ttarget(Ttarget == 0 ? Tinit : Ttarget), deltaT(deltaT), nthermostat(nthermostat),
-          useBrownianMotion(useBrownianMotion) {}
-
-/** Apply the thermostat to a LinkedCellContainer2 */
-void Thermostat::applyThermostat(ParticleContainerBase &particleContainer, int currentStep) {
-
-    /** Systems that have no initial velocities need to be initialized
-     * with Brownian Motion to have a non-zero temperature. */
-
-
-    double Tcurrent = calculateCurrentTemperature(particleContainer);
-    double scalingFactor = std::sqrt(Ttarget / Tcurrent);
-    // Ensuring the temperature change does not exceed deltaT
-    //todo delta?
-    scalingFactor = std::min(scalingFactor, std::sqrt((Tcurrent + deltaT) / Tcurrent));
-    scaleVelocities(particleContainer, scalingFactor);
-    //std::cout << "Tcurrent: " << Tcurrent << std::endl;
-
-}
-
-/** Helper function
- * Calculate the current temperature of the system */
-double Thermostat::calculateCurrentTemperature(ParticleContainerBase &particleContainer) const {
-    double Ekin = 0.0;
-    // apply formula (2) from the worksheet to calculate the Kinetic Energy of the particles
-    auto &particles = particleContainer.getParticles();
-//   std::cout << "Particles size before loop: " << particles.size() << ", "
-//   << std::endl;
-    for (auto &particle: particles) {
-        double vSquared = 0.0;
-        //for (auto velocity : particle.getV()) {
-        vSquared += particle.getV()[0] * particle.getV()[0];
-        vSquared += particle.getV()[1] * particle.getV()[1];
-        //vSquared += velocity[] * velocity[];
-        //}
-
-        Ekin += particle.getM() * vSquared / 2.0;
+Thermostat::Thermostat(ParticleContainerBase &pc, double init, int n, bool useBM) : initT(init), nThermostat(n) {
+    targetT = initT;
+    type = 2;
+    deltaT = INFINITY;
+    numDimensions = pc.getDimension();
+    if (useBM) {
+        initializeWithBrownianMotion(pc);
     }
-    //apply formula (1) from the worksheet to calculate T
-    /*std::cout << "Ekin: " << Ekin << ", "
-              << "numDimensions: " << numDimensions << ", "
-              << "kBoltzmann: " << kBoltzmann << ", "
-              << "Particles size: " << particles.size() << ", "
-              << std::endl;*/
-    return (2 * Ekin) / (numDimensions * kBoltzmann * particles.size());
 }
 
+Thermostat::Thermostat(ParticleContainerBase &pc, double init, double target, double delta, int n, bool useBM) :
+        initT(init), targetT(target), deltaT(delta), nThermostat(n) {
+    if (initT < targetT) {
+        type = 0;
+    } else if (initT > targetT) {
+        type = 1;
+    } else {
+        type = 2;
+    }
+    numDimensions = pc.getDimension();
+    if (useBM) {
+        initializeWithBrownianMotion(pc);
+    }
+}
 
-/** Helper function
- * Initialize particles' velocities with Brownian motion */
 void Thermostat::initializeWithBrownianMotion(ParticleContainerBase &particleContainer) {
-    auto &particles = particleContainer.getParticles();
-    for (auto &particle: particles) {
-        auto bmVelocity = maxwellBoltzmannDistributedVelocity(std::sqrt(Tinit / particle.getM()), 3);
-        particle.setV(bmVelocity);
+    for (auto &p1: particleContainer.getParticles()) {
+        p1.setV(maxwellBoltzmannDistributedVelocity(sqrt(initT / p1.getM()), numDimensions));
     }
+}
 
+
+double Thermostat::calculateNewTemperature(ParticleContainerBase &particleContainer) {
+    auto eKin = 0.0;
+    for (auto &p1: particleContainer.getParticles()) {
+        eKin += (p1.getM() *
+                 (p1.getV()[0] * p1.getV()[0] + p1.getV()[1] * p1.getV()[1] + p1.getV()[2] * p1.getV()[2])) / 2;
+    }
+    auto divisor = ((numDimensions * particleContainer.getParticles().size()) / 2) * kBoltzmann;
+    return eKin / divisor;
+}
+
+void Thermostat::applyThermostat(ParticleContainerBase &particleContainer) {
+    if (type != 2 && ((type == 0 && initT < targetT) || (type == 1 && initT > targetT))) {
+        auto tNew = calculateNewTemperature(particleContainer);
+
+        auto scaling = sqrt(tNew / initT);
+        if (deltaT != INFINITY) {
+            if (std::abs(tNew - initT) > deltaT) {
+                if (initT < targetT) {
+                    scaling = sqrt((initT + deltaT) / initT);
+                    tNew = initT + deltaT;
+                } else {
+                    scaling = sqrt((initT - deltaT) / initT);
+                    tNew = initT - deltaT;
+                }
+            }
+        }
+        for (auto &p1: particleContainer.getParticles()) {
+            p1.setV({p1.getV()[0] * scaling, p1.getV()[1] * scaling, p1.getV()[2] * scaling});
+        }
+
+        initT = tNew;
+    }
+}
+
+void Thermostat::applyThermostatExtension(ParticleContainerBase &particleContainer) {
+    if (type != 2 && ((type == 0 && initT < targetT) || (type == 1 && initT > targetT))) {
+        // 1. determine avg velocity
+        std::array<double, 3> avgV = {0.0, 0.0, 0.0};
+        for (auto &p1: particleContainer.getParticles()) {
+            avgV = {avgV[0] + p1.getV()[0], avgV[1] + p1.getV()[1], avgV[2] + p1.getV()[2]};
+        }
+        auto x = 1 / particleContainer.getParticles().size();
+        avgV = {avgV[0] * x, avgV[1] * x, avgV[2] * x};
+
+        // 2. difference btw p's velocity and avg velocity
+        for (auto &p1: particleContainer.getParticles()) {
+            p1.setV({p1.getV()[0] - avgV[0], p1.getV()[1] - avgV[1], p1.getV()[2] * avgV[2]});
+        }
+
+        // 3. only use difference for calculating temperature
+        auto tNew = calculateNewTemperature(particleContainer);
+
+        auto scaling = sqrt(tNew / initT);
+        if (deltaT != INFINITY) {
+            if (std::abs(tNew - initT) > deltaT) {
+                if (initT < targetT) {
+                    scaling = sqrt((initT + deltaT) / initT);
+                    tNew = initT + deltaT;
+                } else {
+                    scaling = sqrt((initT - deltaT) / initT);
+                    tNew = initT - deltaT;
+                }
+            }
+        }
+
+        // 4. apply scaling to difference and add to avg velocity
+        for (auto &p1: particleContainer.getParticles()) {
+            p1.setV({(p1.getV()[0] * scaling) + avgV[0], (p1.getV()[1] * scaling) + avgV[1],
+                     (p1.getV()[2] * scaling) + avgV[2]});
+        }
+        initT = tNew;
+    }
 }
 
 
-/** Helper function
- * Scale the velocities of the particles */
-void Thermostat::scaleVelocities(ParticleContainerBase &particleContainer, double scalingFactor) {
-    auto &particles = particleContainer.getParticles();
-    for (auto &particle: particles) {
-        const auto &currentVelocity = particle.getV();
-        std::array<double, 3> scaledVelocity;
-
-        //for (size_t i = 0; i < currentVelocity.size(); ++i) {
-        scaledVelocity[0] = currentVelocity[0] * scalingFactor;
-        scaledVelocity[1] = currentVelocity[1] * scalingFactor;
-        //}
-
-        particle.setV(scaledVelocity);
-    }
-}
 
 

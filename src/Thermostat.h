@@ -14,32 +14,39 @@
 
 class Thermostat {
 private:
-    static constexpr int numDimensions = 2;
+    int numDimensions;
     static constexpr double kBoltzmann = 1.0;
-    double Tinit;          // Initial temperature
-    double Ttarget;        // Target temperature
+    double initT;          // Initial temperature
+    double targetT;        // Target temperature
     double deltaT;         // Max temperature change per application
-    int nthermostat;       // Number of time steps for periodic application
-
+    int nThermostat;       // Number of time steps for periodic application
+    int type;              // 0 = heating, 1 = cooling, 2 = stable
     /** useBrownianMotion = True if initial Velocities == 0, False otherwise
      * initialize Thermostat with this flag*/
-    bool useBrownianMotion;// Flag for initializing with Brownian Motion
+    //bool useBrownianMotion;// Flag for initializing with Brownian Motion
 
 public:
-    /** Constructor with initial temperature, target temperature, deltaT, and nthermostat */
-    Thermostat(double Tinit, double Ttarget = 0, double deltaT = std::numeric_limits<double>::infinity(), int nthermostat = 1, bool useBrownianMotion = false);
 
-    /** Function to apply the thermostat to a LinkedCell particle container */
-    void applyThermostat(ParticleContainerBase& particleContainer, int currentStep);
+    Thermostat(ParticleContainerBase &pc, double init, double target, double delta, int n, bool useBM);
+
+    Thermostat(ParticleContainerBase &pc, double init, int n, bool useBM);
+
+    /*
+    /** Constructor with initial temperature, target temperature, deltaT, and nthermostat
+    Thermostat(double initT, double targetT = 0, double deltaT = std::numeric_limits<double>::infinity(),
+               int nthermostat = 1, bool useBrownianMotion = false);
+
+    /** Function to apply the thermostat to a LinkedCell particle container*/
+    void applyThermostat(ParticleContainerBase &particleContainer);
+
+    void applyThermostatExtension(ParticleContainerBase &particleContainer);
 
     /** Helper method to calculate the current temperature of the system */
-    double calculateCurrentTemperature(ParticleContainerBase& particleContainer) const;
+    double calculateNewTemperature(ParticleContainerBase &particleContainer);
 
     /** Function to initialize particles' velocities with Brownian motion */
-    void initializeWithBrownianMotion(ParticleContainerBase& particleContainer);
+    void initializeWithBrownianMotion(ParticleContainerBase &particleContainer);
 
-    /** Function to scale the velocities of the particles */
-    void scaleVelocities(ParticleContainerBase& particleContainer, double scalingFactor);
 };
 
 

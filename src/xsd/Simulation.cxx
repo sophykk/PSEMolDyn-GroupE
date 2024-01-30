@@ -321,6 +321,82 @@ gravitationalAcceleration (const gravitationalAcceleration_type& x)
   this->gravitationalAcceleration_.set (x);
 }
 
+const linkedCellParamsType::isMembrane_type& linkedCellParamsType::
+isMembrane () const
+{
+  return this->isMembrane_.get ();
+}
+
+linkedCellParamsType::isMembrane_type& linkedCellParamsType::
+isMembrane ()
+{
+  return this->isMembrane_.get ();
+}
+
+void linkedCellParamsType::
+isMembrane (const isMembrane_type& x)
+{
+  this->isMembrane_.set (x);
+}
+
+
+// membraneParamsType
+// 
+
+const membraneParamsType::stiffness_type& membraneParamsType::
+stiffness () const
+{
+  return this->stiffness_.get ();
+}
+
+membraneParamsType::stiffness_type& membraneParamsType::
+stiffness ()
+{
+  return this->stiffness_.get ();
+}
+
+void membraneParamsType::
+stiffness (const stiffness_type& x)
+{
+  this->stiffness_.set (x);
+}
+
+const membraneParamsType::averageBond_type& membraneParamsType::
+averageBond () const
+{
+  return this->averageBond_.get ();
+}
+
+membraneParamsType::averageBond_type& membraneParamsType::
+averageBond ()
+{
+  return this->averageBond_.get ();
+}
+
+void membraneParamsType::
+averageBond (const averageBond_type& x)
+{
+  this->averageBond_.set (x);
+}
+
+const membraneParamsType::pullUpForce_type& membraneParamsType::
+pullUpForce () const
+{
+  return this->pullUpForce_.get ();
+}
+
+membraneParamsType::pullUpForce_type& membraneParamsType::
+pullUpForce ()
+{
+  return this->pullUpForce_.get ();
+}
+
+void membraneParamsType::
+pullUpForce (const pullUpForce_type& x)
+{
+  this->pullUpForce_.set (x);
+}
+
 
 // cuboidType
 // 
@@ -503,6 +579,24 @@ void cuboidType::
 type (const type_type& x)
 {
   this->type_.set (x);
+}
+
+const cuboidType::isWall_type& cuboidType::
+isWall () const
+{
+  return this->isWall_.get ();
+}
+
+cuboidType::isWall_type& cuboidType::
+isWall ()
+{
+  return this->isWall_.get ();
+}
+
+void cuboidType::
+isWall (const isWall_type& x)
+{
+  this->isWall_.set (x);
 }
 
 
@@ -769,6 +863,24 @@ void sphereType::
 type (const type_type& x)
 {
   this->type_.set (x);
+}
+
+const sphereType::isWall_type& sphereType::
+isWall () const
+{
+  return this->isWall_.get ();
+}
+
+sphereType::isWall_type& sphereType::
+isWall ()
+{
+  return this->isWall_.get ();
+}
+
+void sphereType::
+isWall (const isWall_type& x)
+{
+  this->isWall_.set (x);
 }
 
 
@@ -1103,6 +1215,54 @@ down (::std::auto_ptr< down_type > x)
   this->down_.set (x);
 }
 
+const boundaryConditionsType::front_type& boundaryConditionsType::
+front () const
+{
+  return this->front_.get ();
+}
+
+boundaryConditionsType::front_type& boundaryConditionsType::
+front ()
+{
+  return this->front_.get ();
+}
+
+void boundaryConditionsType::
+front (const front_type& x)
+{
+  this->front_.set (x);
+}
+
+void boundaryConditionsType::
+front (::std::auto_ptr< front_type > x)
+{
+  this->front_.set (x);
+}
+
+const boundaryConditionsType::back_type& boundaryConditionsType::
+back () const
+{
+  return this->back_.get ();
+}
+
+boundaryConditionsType::back_type& boundaryConditionsType::
+back ()
+{
+  return this->back_.get ();
+}
+
+void boundaryConditionsType::
+back (const back_type& x)
+{
+  this->back_.set (x);
+}
+
+void boundaryConditionsType::
+back (::std::auto_ptr< back_type > x)
+{
+  this->back_.set (x);
+}
+
 
 // simulation
 // 
@@ -1189,6 +1349,36 @@ void simulation::
 linkedCellParams (::std::auto_ptr< linkedCellParams_type > x)
 {
   this->linkedCellParams_.set (x);
+}
+
+const simulation::membraneParams_optional& simulation::
+membraneParams () const
+{
+  return this->membraneParams_;
+}
+
+simulation::membraneParams_optional& simulation::
+membraneParams ()
+{
+  return this->membraneParams_;
+}
+
+void simulation::
+membraneParams (const membraneParams_type& x)
+{
+  this->membraneParams_.set (x);
+}
+
+void simulation::
+membraneParams (const membraneParams_optional& x)
+{
+  this->membraneParams_ = x;
+}
+
+void simulation::
+membraneParams (::std::auto_ptr< membraneParams_type > x)
+{
+  this->membraneParams_.set (x);
 }
 
 const simulation::thermostat_optional& simulation::
@@ -1618,12 +1808,14 @@ linkedCellParamsType::
 linkedCellParamsType (const domainSize_type& domainSize,
                       const cutoffRadius_type& cutoffRadius,
                       const boundaryConditions_type& boundaryConditions,
-                      const gravitationalAcceleration_type& gravitationalAcceleration)
+                      const gravitationalAcceleration_type& gravitationalAcceleration,
+                      const isMembrane_type& isMembrane)
 : ::xml_schema::type (),
   domainSize_ (domainSize, this),
   cutoffRadius_ (cutoffRadius, this),
   boundaryConditions_ (boundaryConditions, this),
-  gravitationalAcceleration_ (gravitationalAcceleration, this)
+  gravitationalAcceleration_ (gravitationalAcceleration, this),
+  isMembrane_ (isMembrane, this)
 {
 }
 
@@ -1631,12 +1823,14 @@ linkedCellParamsType::
 linkedCellParamsType (::std::auto_ptr< domainSize_type > domainSize,
                       const cutoffRadius_type& cutoffRadius,
                       ::std::auto_ptr< boundaryConditions_type > boundaryConditions,
-                      const gravitationalAcceleration_type& gravitationalAcceleration)
+                      const gravitationalAcceleration_type& gravitationalAcceleration,
+                      const isMembrane_type& isMembrane)
 : ::xml_schema::type (),
   domainSize_ (domainSize, this),
   cutoffRadius_ (cutoffRadius, this),
   boundaryConditions_ (boundaryConditions, this),
-  gravitationalAcceleration_ (gravitationalAcceleration, this)
+  gravitationalAcceleration_ (gravitationalAcceleration, this),
+  isMembrane_ (isMembrane, this)
 {
 }
 
@@ -1648,7 +1842,8 @@ linkedCellParamsType (const linkedCellParamsType& x,
   domainSize_ (x.domainSize_, f, this),
   cutoffRadius_ (x.cutoffRadius_, f, this),
   boundaryConditions_ (x.boundaryConditions_, f, this),
-  gravitationalAcceleration_ (x.gravitationalAcceleration_, f, this)
+  gravitationalAcceleration_ (x.gravitationalAcceleration_, f, this),
+  isMembrane_ (x.isMembrane_, f, this)
 {
 }
 
@@ -1660,7 +1855,8 @@ linkedCellParamsType (const ::xercesc::DOMElement& e,
   domainSize_ (this),
   cutoffRadius_ (this),
   boundaryConditions_ (this),
-  gravitationalAcceleration_ (this)
+  gravitationalAcceleration_ (this),
+  isMembrane_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -1729,6 +1925,17 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
+    // isMembrane
+    //
+    if (n.name () == "isMembrane" && n.namespace_ ().empty ())
+    {
+      if (!isMembrane_.present ())
+      {
+        this->isMembrane_.set (isMembrane_traits::create (i, f, this));
+        continue;
+      }
+    }
+
     break;
   }
 
@@ -1759,6 +1966,13 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       "gravitationalAcceleration",
       "");
   }
+
+  if (!isMembrane_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "isMembrane",
+      "");
+  }
 }
 
 linkedCellParamsType* linkedCellParamsType::
@@ -1778,6 +1992,7 @@ operator= (const linkedCellParamsType& x)
     this->cutoffRadius_ = x.cutoffRadius_;
     this->boundaryConditions_ = x.boundaryConditions_;
     this->gravitationalAcceleration_ = x.gravitationalAcceleration_;
+    this->isMembrane_ = x.isMembrane_;
   }
 
   return *this;
@@ -1785,6 +2000,141 @@ operator= (const linkedCellParamsType& x)
 
 linkedCellParamsType::
 ~linkedCellParamsType ()
+{
+}
+
+// membraneParamsType
+//
+
+membraneParamsType::
+membraneParamsType (const stiffness_type& stiffness,
+                    const averageBond_type& averageBond,
+                    const pullUpForce_type& pullUpForce)
+: ::xml_schema::type (),
+  stiffness_ (stiffness, this),
+  averageBond_ (averageBond, this),
+  pullUpForce_ (pullUpForce, this)
+{
+}
+
+membraneParamsType::
+membraneParamsType (const membraneParamsType& x,
+                    ::xml_schema::flags f,
+                    ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  stiffness_ (x.stiffness_, f, this),
+  averageBond_ (x.averageBond_, f, this),
+  pullUpForce_ (x.pullUpForce_, f, this)
+{
+}
+
+membraneParamsType::
+membraneParamsType (const ::xercesc::DOMElement& e,
+                    ::xml_schema::flags f,
+                    ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  stiffness_ (this),
+  averageBond_ (this),
+  pullUpForce_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
+}
+
+void membraneParamsType::
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
+
+    // stiffness
+    //
+    if (n.name () == "stiffness" && n.namespace_ ().empty ())
+    {
+      if (!stiffness_.present ())
+      {
+        this->stiffness_.set (stiffness_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // averageBond
+    //
+    if (n.name () == "averageBond" && n.namespace_ ().empty ())
+    {
+      if (!averageBond_.present ())
+      {
+        this->averageBond_.set (averageBond_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // pullUpForce
+    //
+    if (n.name () == "pullUpForce" && n.namespace_ ().empty ())
+    {
+      if (!pullUpForce_.present ())
+      {
+        this->pullUpForce_.set (pullUpForce_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    break;
+  }
+
+  if (!stiffness_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "stiffness",
+      "");
+  }
+
+  if (!averageBond_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "averageBond",
+      "");
+  }
+
+  if (!pullUpForce_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "pullUpForce",
+      "");
+  }
+}
+
+membraneParamsType* membraneParamsType::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class membraneParamsType (*this, f, c);
+}
+
+membraneParamsType& membraneParamsType::
+operator= (const membraneParamsType& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->stiffness_ = x.stiffness_;
+    this->averageBond_ = x.averageBond_;
+    this->pullUpForce_ = x.pullUpForce_;
+  }
+
+  return *this;
+}
+
+membraneParamsType::
+~membraneParamsType ()
 {
 }
 
@@ -1800,7 +2150,8 @@ cuboidType (const position_type& position,
             const sigma_type& sigma,
             const epsilon_type& epsilon,
             const gravitationalAcceleration_type& gravitationalAcceleration,
-            const type_type& type)
+            const type_type& type,
+            const isWall_type& isWall)
 : ::xml_schema::type (),
   position_ (position, this),
   velocity_ (velocity, this),
@@ -1810,7 +2161,8 @@ cuboidType (const position_type& position,
   sigma_ (sigma, this),
   epsilon_ (epsilon, this),
   gravitationalAcceleration_ (gravitationalAcceleration, this),
-  type_ (type, this)
+  type_ (type, this),
+  isWall_ (isWall, this)
 {
 }
 
@@ -1823,7 +2175,8 @@ cuboidType (::std::auto_ptr< position_type > position,
             const sigma_type& sigma,
             const epsilon_type& epsilon,
             const gravitationalAcceleration_type& gravitationalAcceleration,
-            const type_type& type)
+            const type_type& type,
+            const isWall_type& isWall)
 : ::xml_schema::type (),
   position_ (position, this),
   velocity_ (velocity, this),
@@ -1833,7 +2186,8 @@ cuboidType (::std::auto_ptr< position_type > position,
   sigma_ (sigma, this),
   epsilon_ (epsilon, this),
   gravitationalAcceleration_ (gravitationalAcceleration, this),
-  type_ (type, this)
+  type_ (type, this),
+  isWall_ (isWall, this)
 {
 }
 
@@ -1850,7 +2204,8 @@ cuboidType (const cuboidType& x,
   sigma_ (x.sigma_, f, this),
   epsilon_ (x.epsilon_, f, this),
   gravitationalAcceleration_ (x.gravitationalAcceleration_, f, this),
-  type_ (x.type_, f, this)
+  type_ (x.type_, f, this),
+  isWall_ (x.isWall_, f, this)
 {
 }
 
@@ -1867,7 +2222,8 @@ cuboidType (const ::xercesc::DOMElement& e,
   sigma_ (this),
   epsilon_ (this),
   gravitationalAcceleration_ (this),
-  type_ (this)
+  type_ (this),
+  isWall_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -1994,6 +2350,17 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
+    // isWall
+    //
+    if (n.name () == "isWall" && n.namespace_ ().empty ())
+    {
+      if (!isWall_.present ())
+      {
+        this->isWall_.set (isWall_traits::create (i, f, this));
+        continue;
+      }
+    }
+
     break;
   }
 
@@ -2059,6 +2426,13 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       "type",
       "");
   }
+
+  if (!isWall_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "isWall",
+      "");
+  }
 }
 
 cuboidType* cuboidType::
@@ -2083,6 +2457,7 @@ operator= (const cuboidType& x)
     this->epsilon_ = x.epsilon_;
     this->gravitationalAcceleration_ = x.gravitationalAcceleration_;
     this->type_ = x.type_;
+    this->isWall_ = x.isWall_;
   }
 
   return *this;
@@ -2247,7 +2622,8 @@ sphereType (const position_type& position,
             const sigma_type& sigma,
             const epsilon_type& epsilon,
             const gravitationalAcceleration_type& gravitationalAcceleration,
-            const type_type& type)
+            const type_type& type,
+            const isWall_type& isWall)
 : ::xml_schema::type (),
   position_ (position, this),
   velocity_ (velocity, this),
@@ -2257,7 +2633,8 @@ sphereType (const position_type& position,
   sigma_ (sigma, this),
   epsilon_ (epsilon, this),
   gravitationalAcceleration_ (gravitationalAcceleration, this),
-  type_ (type, this)
+  type_ (type, this),
+  isWall_ (isWall, this)
 {
 }
 
@@ -2270,7 +2647,8 @@ sphereType (::std::auto_ptr< position_type > position,
             const sigma_type& sigma,
             const epsilon_type& epsilon,
             const gravitationalAcceleration_type& gravitationalAcceleration,
-            const type_type& type)
+            const type_type& type,
+            const isWall_type& isWall)
 : ::xml_schema::type (),
   position_ (position, this),
   velocity_ (velocity, this),
@@ -2280,7 +2658,8 @@ sphereType (::std::auto_ptr< position_type > position,
   sigma_ (sigma, this),
   epsilon_ (epsilon, this),
   gravitationalAcceleration_ (gravitationalAcceleration, this),
-  type_ (type, this)
+  type_ (type, this),
+  isWall_ (isWall, this)
 {
 }
 
@@ -2297,7 +2676,8 @@ sphereType (const sphereType& x,
   sigma_ (x.sigma_, f, this),
   epsilon_ (x.epsilon_, f, this),
   gravitationalAcceleration_ (x.gravitationalAcceleration_, f, this),
-  type_ (x.type_, f, this)
+  type_ (x.type_, f, this),
+  isWall_ (x.isWall_, f, this)
 {
 }
 
@@ -2314,7 +2694,8 @@ sphereType (const ::xercesc::DOMElement& e,
   sigma_ (this),
   epsilon_ (this),
   gravitationalAcceleration_ (this),
-  type_ (this)
+  type_ (this),
+  isWall_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -2438,6 +2819,17 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
+    // isWall
+    //
+    if (n.name () == "isWall" && n.namespace_ ().empty ())
+    {
+      if (!isWall_.present ())
+      {
+        this->isWall_.set (isWall_traits::create (i, f, this));
+        continue;
+      }
+    }
+
     break;
   }
 
@@ -2503,6 +2895,13 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       "type",
       "");
   }
+
+  if (!isWall_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "isWall",
+      "");
+  }
 }
 
 sphereType* sphereType::
@@ -2527,6 +2926,7 @@ operator= (const sphereType& x)
     this->epsilon_ = x.epsilon_;
     this->gravitationalAcceleration_ = x.gravitationalAcceleration_;
     this->type_ = x.type_;
+    this->isWall_ = x.isWall_;
   }
 
   return *this;
@@ -3084,12 +3484,16 @@ boundaryConditionsType::
 boundaryConditionsType (const left_type& left,
                         const up_type& up,
                         const right_type& right,
-                        const down_type& down)
+                        const down_type& down,
+                        const front_type& front,
+                        const back_type& back)
 : ::xml_schema::type (),
   left_ (left, this),
   up_ (up, this),
   right_ (right, this),
-  down_ (down, this)
+  down_ (down, this),
+  front_ (front, this),
+  back_ (back, this)
 {
 }
 
@@ -3101,7 +3505,9 @@ boundaryConditionsType (const boundaryConditionsType& x,
   left_ (x.left_, f, this),
   up_ (x.up_, f, this),
   right_ (x.right_, f, this),
-  down_ (x.down_, f, this)
+  down_ (x.down_, f, this),
+  front_ (x.front_, f, this),
+  back_ (x.back_, f, this)
 {
 }
 
@@ -3113,7 +3519,9 @@ boundaryConditionsType (const ::xercesc::DOMElement& e,
   left_ (this),
   up_ (this),
   right_ (this),
-  down_ (this)
+  down_ (this),
+  front_ (this),
+  back_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -3188,6 +3596,34 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
+    // front
+    //
+    if (n.name () == "front" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< front_type > r (
+        front_traits::create (i, f, this));
+
+      if (!front_.present ())
+      {
+        this->front_.set (r);
+        continue;
+      }
+    }
+
+    // back
+    //
+    if (n.name () == "back" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< back_type > r (
+        back_traits::create (i, f, this));
+
+      if (!back_.present ())
+      {
+        this->back_.set (r);
+        continue;
+      }
+    }
+
     break;
   }
 
@@ -3218,6 +3654,20 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       "down",
       "");
   }
+
+  if (!front_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "front",
+      "");
+  }
+
+  if (!back_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "back",
+      "");
+  }
 }
 
 boundaryConditionsType* boundaryConditionsType::
@@ -3237,6 +3687,8 @@ operator= (const boundaryConditionsType& x)
     this->up_ = x.up_;
     this->right_ = x.right_;
     this->down_ = x.down_;
+    this->front_ = x.front_;
+    this->back_ = x.back_;
   }
 
   return *this;
@@ -3256,6 +3708,7 @@ simulation (const simulationParams_type& simulationParams)
   simulationParams_ (simulationParams, this),
   parallelizationStrategyParam_ (this),
   linkedCellParams_ (this),
+  membraneParams_ (this),
   thermostat_ (this),
   cuboid_ (this),
   sphere_ (this)
@@ -3268,6 +3721,7 @@ simulation (::std::auto_ptr< simulationParams_type > simulationParams)
   simulationParams_ (simulationParams, this),
   parallelizationStrategyParam_ (this),
   linkedCellParams_ (this),
+  membraneParams_ (this),
   thermostat_ (this),
   cuboid_ (this),
   sphere_ (this)
@@ -3282,6 +3736,7 @@ simulation (const simulation& x,
   simulationParams_ (x.simulationParams_, f, this),
   parallelizationStrategyParam_ (x.parallelizationStrategyParam_, f, this),
   linkedCellParams_ (x.linkedCellParams_, f, this),
+  membraneParams_ (x.membraneParams_, f, this),
   thermostat_ (x.thermostat_, f, this),
   cuboid_ (x.cuboid_, f, this),
   sphere_ (x.sphere_, f, this)
@@ -3296,6 +3751,7 @@ simulation (const ::xercesc::DOMElement& e,
   simulationParams_ (this),
   parallelizationStrategyParam_ (this),
   linkedCellParams_ (this),
+  membraneParams_ (this),
   thermostat_ (this),
   cuboid_ (this),
   sphere_ (this)
@@ -3355,6 +3811,20 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       if (!this->linkedCellParams_)
       {
         this->linkedCellParams_.set (r);
+        continue;
+      }
+    }
+
+    // membraneParams
+    //
+    if (n.name () == "membraneParams" && n.namespace_ ().empty ())
+    {
+      ::std::auto_ptr< membraneParams_type > r (
+        membraneParams_traits::create (i, f, this));
+
+      if (!this->membraneParams_)
+      {
+        this->membraneParams_.set (r);
         continue;
       }
     }
@@ -3422,6 +3892,7 @@ operator= (const simulation& x)
     this->simulationParams_ = x.simulationParams_;
     this->parallelizationStrategyParam_ = x.parallelizationStrategyParam_;
     this->linkedCellParams_ = x.linkedCellParams_;
+    this->membraneParams_ = x.membraneParams_;
     this->thermostat_ = x.thermostat_;
     this->cuboid_ = x.cuboid_;
     this->sphere_ = x.sphere_;
