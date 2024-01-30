@@ -28,6 +28,7 @@ int main(int argc, char *argsv[]) {
     spdlog::level::level_enum log_level = spdlog::level::debug;
     bool calcRunTime = false;
     bool checkpointing;
+    bool useParallelization;
     bool isMembrane = false;
     outputWriter::TXTWriter checkpointingWriter;
     ParticlesFileReader checkpointingReader;
@@ -38,7 +39,7 @@ int main(int argc, char *argsv[]) {
     XMLFileReader xmlReader;
 
     // Read Simulation parameters from the file
-    xmlReader.readSimulationParams(argsv[1], end_time, delta_t, modelType, containerType, objectType, plotInterval, checkpointing);
+    xmlReader.readSimulationParams(argsv[1], end_time, delta_t, modelType, containerType, objectType, plotInterval, checkpointing, useParallelization);
 
     spdlog::set_level(log_level);
 
@@ -73,9 +74,9 @@ int main(int argc, char *argsv[]) {
         xmlReader.readLinkedCellParams(argsv[1], d, c, b, g, isMembrane);
         if(isMembrane){
             xmlReader.readMembraneParams(argsv[1], k, r0, pullUpF);
-            particleContainer = std::make_unique<LinkedCellContainer>(*forceModel, d, c, b, g, isMembrane, k, r0, pullUpF);
+            particleContainer = std::make_unique<LinkedCellContainer>(*forceModel, d, c, b, g, useParallelization, isMembrane, k, r0, pullUpF);
         } else {
-            particleContainer = std::make_unique<LinkedCellContainer>(*forceModel, d, c, b, g, isMembrane);
+            particleContainer = std::make_unique<LinkedCellContainer>(*forceModel, d, c, b, g, useParallelization, isMembrane);
         }
     } else {
         spdlog::error("Unknown container type selected: {}", containerType);
@@ -128,28 +129,9 @@ int main(int argc, char *argsv[]) {
     double current_time = 0;
 
     //Main simulation loop
-    while (current_time < end_time) {
-
-        if(checkpointing && current_time == 15){
-
-            // Read Sphere from the file
-            auto generators = xmlReader.readSpheres(argsv[1]);
-
-            // Loop over all generators and let them create particles in the container
-            for (auto &gen: generators) {
-                gen.generateParticles(*particleContainer);
-            }
-
-            //write particles to a file
-            checkpointingWriter.plotParticles(particleContainer->getParticles(), checkpointingFile);
-
-            // Read the liquid and the drop out from the file
-            checkpointingReader.readFile(particleContainer->getParticles(), checkpointingFile);
-        }
-
-        if(calcRunTime){
-            start = std::chrono::high_resolution_clock::now();
-        }
+    //while (current_time < end_time) {
+    start = std::chrono::high_resolution_clock::now();
+    while(iteration <= 200){
 
         // calculate new x
         //spdlog::info("this is calcX in MolSim");
@@ -164,7 +146,7 @@ int main(int argc, char *argsv[]) {
         particleContainer->calculateF();
 
         // apply the thermostat
-        if((!checkpointing || current_time < 15) && !isMembrane){
+        if(!isMembrane) {
             if (iteration % thermostatInterval == 0) {
                 thermostat.applyThermostatExtension(*particleContainer);
             }
@@ -173,17 +155,6 @@ int main(int argc, char *argsv[]) {
         // calculate new v
         //spdlog::info("this is calcV in MolSim");
         particleContainer->calculateV(delta_t);
-
-        if(calcRunTime){
-            // Record end time
-            end = std::chrono::high_resolution_clock::now();
-
-            // Calculate duration
-            auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-
-            // Print the duration in microseconds
-            std::cout << "Runtime: " << duration.count() << " microseconds\n";
-        }
 
         iteration++;
         if (iteration % plotInterval == 1) {
@@ -195,6 +166,14 @@ int main(int argc, char *argsv[]) {
     }
 
     spdlog::info("output written. Terminating...");
+    // Record end time
+    end = std::chrono::high_resolution_clock::now();
+
+    // Calculate duration
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+
+    // Print the duration in microseconds
+    std::cout << "Runtime: " << duration.count() << " microseconds\n";
 
     return 0;
 }

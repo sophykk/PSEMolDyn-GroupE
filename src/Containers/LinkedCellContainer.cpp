@@ -14,9 +14,9 @@
 
 //check
 LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<double> &dSize, double &cRadius,
-                                         std::array<char, 6> bCon, double &gGrav, bool &isMembrane) :
+                                         std::array<char, 6> bCon, double &gGrav, bool &useParallelization, bool &isMembrane) :
         ParticleContainerBase(model), domainSize(dSize), cutoffRadius(cRadius), boundaryCon(bCon), gGrav(gGrav),
-        isMembrane(isMembrane) {
+        useParallelization(useParallelization), isMembrane(isMembrane) {
     int cellDimensionX;
     int cellDimensionY;
     int cellDimensionZ;
@@ -38,9 +38,9 @@ LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<double> &
 
 //check, maybe if z grid = 1 => 2D
 LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<Particle> &particles, std::vector<double> &dSize,
-                                         double &cRadius, std::array<char, 6> bCon, double &gGrav, bool &isMembrane) :
+                                         double &cRadius, std::array<char, 6> bCon, double &gGrav, bool &useParallelization, bool &isMembrane) :
         ParticleContainerBase(model), particleList(particles), domainSize(dSize), cutoffRadius(cRadius),
-        boundaryCon(bCon), gGrav(gGrav), isMembrane(isMembrane) {
+        boundaryCon(bCon), gGrav(gGrav), useParallelization(useParallelization), isMembrane(isMembrane) {
     int cellDimensionX;
     int cellDimensionY;
     int cellDimensionZ;
@@ -61,10 +61,10 @@ LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<Particle>
 }
 
 LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<double> &dSize, double &cRadius,
-                                         std::array<char, 6> bCon, double &gGrav, bool &isMembrane, int &k, double &r0,
-                                         double &pullUpF) :
+                                         std::array<char, 6> bCon, double &gGrav, bool &useParallelization, bool &isMembrane,
+                                         int &k, double &r0, double &pullUpF) :
         ParticleContainerBase(model), domainSize(dSize), cutoffRadius(cRadius), boundaryCon(bCon), gGrav(gGrav),
-        isMembrane(isMembrane), k(k), r0(r0), pullUpF(pullUpF) {
+        useParallelization(useParallelization), isMembrane(isMembrane), k(k), r0(r0), pullUpF(pullUpF) {
     int cellDimensionX;
     int cellDimensionY;
     int cellDimensionZ;
@@ -155,6 +155,7 @@ void LinkedCellContainer::initGrid() {
     //spdlog::info("this is initGrid");
 
     //periodic con
+
     for (auto &p: particleList) {
         //left
         if (boundaryCon[0] == 'p' && p.getX()[0] < 0.0) {
@@ -184,22 +185,38 @@ void LinkedCellContainer::initGrid() {
     }
 
     double minDouble = std::numeric_limits<double>::min();
-    double lowerZ = 0.0;
-    double upperZ = cutoffRadius;
+    /*double lowerZ = 0.0;
+    double upperZ = cutoffRadius;*/
+
+    double lowerZ, upperZ;
+    int zLimit = std::ceil(domainSize[2] / cutoffRadius);
+
     //x0,y --> 0,0 --> 0,1
-    for (int z = 0; z < std::ceil(domainSize[2] / cutoffRadius); ++z) {
-        double lowerY = 0.0;
-        double upperY = cutoffRadius;
-        for (int y = 0; y < std::ceil(domainSize[1] / cutoffRadius); ++y) {
-            double lowerX = 0.0;
-            double upperX = cutoffRadius;
-            //x,y0 --> 0,0 --> 1,0 --> 2,0 --> 3,0 then at the end x,y,0 -> x,y,1
-            for (int x = 0; x < std::ceil(domainSize[0] / cutoffRadius); ++x) {
+    #pragma omp parallel for shared(grid) private(lowerZ, upperZ)
+    for (int z = 0; z < zLimit; ++z) {
+        lowerZ = z * cutoffRadius;
+        upperZ = (z + 1) * cutoffRadius;
+
+        double lowerY, upperY;
+        int yLimit = std::ceil(domainSize[1] / cutoffRadius);
+        #pragma omp parallel for shared(grid) private(lowerY, upperY)
+        for (int y = 0; y < yLimit; ++y) {
+            lowerY = y * cutoffRadius;
+            upperY = (y + 1) * cutoffRadius;
+
+            double lowerX, upperX;
+            int xLimit = std::ceil(domainSize[0] / cutoffRadius);
+            #pragma omp parallel for shared(grid) private(lowerX, upperX)
+            for (int x = 0; x < xLimit; ++x) {
+                lowerX = x * cutoffRadius;
+                upperX = (x + 1) * cutoffRadius;
                 grid[x][y][z].clear();
+                //#pragma omp parallel for //shared(grid) schedule(static)
                 for (auto &p1: getParticles()) {
                     if (p1.getX()[0] <= upperX && p1.getX()[0] >= lowerX &&
                         p1.getX()[1] <= upperY && p1.getX()[1] >= lowerY &&
                         p1.getX()[2] <= upperZ && p1.getX()[2] >= lowerZ) {
+                        //#pragma omp critical
                         grid[x][y][z].push_back(p1);
                     }
                 }

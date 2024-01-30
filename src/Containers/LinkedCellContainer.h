@@ -27,6 +27,7 @@ private:
     std::array<char, 6> boundaryCon;
     //std::vector<Particle> haloList;
     double gGrav;
+    bool useParallelization;
     bool isMembrane;
     int k = 300;
     double r0 = 2.2;
@@ -35,13 +36,13 @@ private:
 
 public:
 
-    LinkedCellContainer(ForceBase &model, std::vector<double> &dSize, double &cRadius, std::array<char, 6> bCon, double &gGrav, bool &isMembrane);
+    LinkedCellContainer(ForceBase &model, std::vector<double> &dSize, double &cRadius, std::array<char, 6> bCon, double &gGrav, bool &useParallelization, bool &isMembrane);
 
     LinkedCellContainer(ForceBase &model, std::vector<Particle> &particles, std::vector<double> &dSize,
-                        double &cRadius, std::array<char, 6> bCon, double &gGrav, bool &isMembrane);
+                        double &cRadius, std::array<char, 6> bCon, double &gGrav, bool &useParallelization, bool &isMembrane);
 
-    LinkedCellContainer(ForceBase &model, std::vector<double> &dSize, double &cRadius, std::array<char, 6> bCon, double &gGrav, bool &isMembrane,
-                        int &k, double &r0, double &pullUpF);
+    LinkedCellContainer(ForceBase &model, std::vector<double> &dSize, double &cRadius, std::array<char, 6> bCon, double &gGrav, bool &useParallelization,
+                        bool &isMembrane, int &k, double &r0, double &pullUpF);
 
     char &getBoundaryCon(int index);
 
