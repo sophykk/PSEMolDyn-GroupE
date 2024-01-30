@@ -10,9 +10,9 @@ Thermostat::Thermostat(ParticleContainerBase &pc, double init, int n, bool useBM
     type = 2;
     deltaT = INFINITY;
     numDimensions = pc.getDimension();
-    if (useBM) {
-        initializeWithBrownianMotion(pc);
-    }
+    //if (useBM) {
+    //    initializeWithBrownianMotion(pc);
+    //}
 }
 
 Thermostat::Thermostat(ParticleContainerBase &pc, double init, double target, double delta, int n, bool useBM) :
@@ -25,9 +25,9 @@ Thermostat::Thermostat(ParticleContainerBase &pc, double init, double target, do
         type = 2;
     }
     numDimensions = pc.getDimension();
-    if (useBM) {
-        initializeWithBrownianMotion(pc);
-    }
+    //if (useBM) {
+    //    initializeWithBrownianMotion(pc);
+    //}
 }
 
 void Thermostat::initializeWithBrownianMotion(ParticleContainerBase &particleContainer) {

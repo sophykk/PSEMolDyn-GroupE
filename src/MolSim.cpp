@@ -122,7 +122,7 @@ int main(int argc, char *argsv[]) {
     }
 
     // Calculate initial forces
-    //particleContainer->calculateF();
+    particleContainer->calculateF();
 
     int iteration = 0;
     double current_time = 0;
@@ -164,9 +164,10 @@ int main(int argc, char *argsv[]) {
         particleContainer->calculateF();
 
         // apply the thermostat
-        if((!checkpointing || current_time < 15) && !isMembrane){
+        if ((!checkpointing || current_time < 15) && !isMembrane) {
             if (iteration % thermostatInterval == 0) {
-                thermostat.applyThermostatExtension(*particleContainer);
+                thermostat.applyThermostat(*particleContainer);
+                //for w5t4.xml  -> thermostat.applyThermostatExtension(*particleContainer);
             }
         }
 

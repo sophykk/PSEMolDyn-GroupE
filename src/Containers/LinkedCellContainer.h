@@ -27,10 +27,12 @@ private:
     std::array<char, 6> boundaryCon;
     //std::vector<Particle> haloList;
     double gGrav;
+    // 1 for gGrav along y-axis, 2 for z-axis, 0 for x-axis
+    int gGravPos = 2;
     bool isMembrane;
     int k = 300;
     double r0 = 2.2;
-    double pullUpF;
+    double pullUpF = -0.8;
 
 
 public:
