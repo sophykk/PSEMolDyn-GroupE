@@ -35,6 +35,10 @@ private:
 
 public:
 
+    bool isWithinCuboid(const std::array<double, 3>& position, const std::array<double, 3>& corner, const std::array<double, 3>& dimensions);
+
+    bool isWithinCuboidAll();
+
     LinkedCellContainer(ForceBase &model, std::vector<double> &dSize, double &cRadius, std::array<char, 6> bCon, double &gGrav, bool &isMembrane);
 
     LinkedCellContainer(ForceBase &model, std::vector<Particle> &particles, std::vector<double> &dSize,

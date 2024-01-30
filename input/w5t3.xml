@@ -3,7 +3,7 @@
             xsi:noNamespaceSchemaLocation="../src/xsd/Simulation.xsd">
     <simulationParams>
         <endTime>1</endTime>
-        <deltaT> 0.05</deltaT>
+        <deltaT> 1.0 </deltaT>
         <modelType>lennardJones</modelType>
         <containerType>linkedCells</containerType>
         <plotInterval>1</plotInterval>

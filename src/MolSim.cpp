@@ -217,10 +217,12 @@ int main(int argc, char *argsv[]) {
     }
 
     // Calculate initial forces
+    particleContainer->plotParticles(0);  // works
+
 
     std::cout << "Particles size before calculateF(): " << particleContainer->getParticles().size() << std::endl;
-    //particleContainer->calculateF();
-    std::cout << "Particles size after calculateF(): " << particleContainer->getParticles().size()  << std::endl;
+    particleContainer->calculateF();
+    std::cout << "Particles size after calculateF111(): " << particleContainer->getParticles().size()  << std::endl;
 
     int iteration = 0;
     double current_time = 0;
@@ -251,17 +253,16 @@ int main(int argc, char *argsv[]) {
 
         // calculate new x
         //spdlog::info("this is calcX in MolSim");
-        particleContainer->calculateX(delta_t);
+        //particleContainer->calculateX(delta_t);
 
         // reset forces
         //spdlog::info("this is resetF in MolSim");
-        particleContainer->resetF();
+        particleContainer->resetF(); // resets forces on all particles but saves them as old_f
 
         // calculate new f
         //spdlog::info("this is calcF in MolSim");
         particleContainer->calculateF();
 
-        // apply the thermostat
         if((!checkpointing || current_time < 15) && !isMembrane){
             if (iteration % thermostatInterval == 0) {
                 thermostat.applyThermostat(*particleContainer);
@@ -271,6 +272,9 @@ int main(int argc, char *argsv[]) {
         // calculate new v
         //spdlog::info("this is calcV in MolSim");
         particleContainer->calculateV(delta_t);
+        particleContainer->calculateX(delta_t);
+        // apply the thermostat
+
 
         if(calcRunTime){
             // Record end time
@@ -284,8 +288,10 @@ int main(int argc, char *argsv[]) {
         }
 
         iteration++;
+        particleContainer->plotParticles(1);
+
         if (iteration % plotInterval == 0) {
-            particleContainer->plotParticles(iteration);
+           // particleContainer->plotParticles(iteration);
         }
         spdlog::info("Iteration {} finished.", iteration);
 

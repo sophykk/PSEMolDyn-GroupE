@@ -11,6 +11,41 @@
 #include <limits>
 #include <cstdlib>
 #include <spdlog/spdlog.h>
+#include <iostream>
+
+
+bool LinkedCellContainer::isWithinCuboid(const std::array<double, 3>& position, const std::array<double, 3>& corner, const std::array<double, 3>& dimensions) {
+    return position[0] >= corner[0] && position[0] < corner[0] + dimensions[0] &&
+           position[1] >= corner[1] && position[1] < corner[1] + dimensions[1] &&
+           position[2] >= corner[2] && position[2] < corner[2] + dimensions[2];
+}
+
+
+/*bool LinkedCellContainer::isWithinCuboidAll() {
+    for (auto &x: getGrid()) {
+        for (auto &y: x) {
+            for (auto &z: y) {
+                for (auto &p: z) {
+                    if (!isWithinCuboid(p.getX(), {0.0,0.0,0.0},{60.0,60.0,60.0})) {
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+    return true;
+}
+*/
+
+bool LinkedCellContainer::isWithinCuboidAll() {
+    for (auto &p : particleList) {
+        if (!isWithinCuboid(p.getX(), {0.0, 0.0, 0.0}, {60.0, 60.0, 60.0})) {
+            return false;
+        }
+    }
+    return true;
+}
+
 
 //check
 LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<double> &dSize, double &cRadius,
@@ -155,6 +190,24 @@ void LinkedCellContainer::initGrid() {
     //spdlog::info("this is initGrid");
 
     //periodic con
+
+    std::cout << "hello, form initGrid " << std::endl;
+
+    int size = 0;
+    for (auto &x: getGrid()) {
+        for (auto &y: x) {
+            for (auto &z: y) {
+                for (auto &p: z) {
+                    size += 1;
+                    //nParticleList.push_back(p);
+                }
+            }
+        }
+    }
+    std::cout << "size " << size <<std::endl;
+
+    std::cout << "size of  particleList(1)" <<   particleList.size() <<std::endl;
+
     for (auto &p: particleList) {
         //left
         if (boundaryCon[0] == 'p' && p.getX()[0] < 0.0) {
@@ -183,11 +236,54 @@ void LinkedCellContainer::initGrid() {
         }
     }
 
+    std::cout << "size of  particleList(2)" <<   particleList.size() <<std::endl;
+    int number_of_pushes = 0;
     double minDouble = std::numeric_limits<double>::min();
+
+    std::cout << "mindouble  " <<  minDouble << std::endl;
+
+
+
+
+
+
+    for (int z = 0; z < std::ceil(domainSize[2] / cutoffRadius); ++z) {
+        for (int y = 0; y < std::ceil(domainSize[1] / cutoffRadius); ++y) {
+            for (int x = 0; x < std::ceil(domainSize[0] / cutoffRadius); ++x) {
+                grid[x][y][z].clear();
+            }
+        }
+    }
+
+    std::cout << "ggg" <<std::endl;
+    int dim1 = grid.size();
+    int dim2 = grid[0].size();
+    int dim3 = grid[0][0].size();
+    for (auto &p1: getParticles()) {
+
+        if (p1.getX()[0] > domainSize[0] || p1.getX()[1] > domainSize[1] || p1.getX()[2] > domainSize[2] || p1.getX()[0]  < 0 || p1.getX()[1] < 0 || p1.getX()[2] < 0) {
+            std::cout << "The particle is not in the bounds!" << std::endl;
+        }
+        if (std::floor(p1.getX()[0] / cutoffRadius) >= dim1 || std::floor(p1.getX()[1] / cutoffRadius) >= dim2 || std::floor(p1.getX()[2] / cutoffRadius) >= dim3) {
+            std::cout << "The particle is not in the bounds!" << std::endl;
+        }
+        grid[std::floor(p1.getX()[0] / cutoffRadius)][std::floor(p1.getX()[1] / cutoffRadius)][std::floor(p1.getX()[2] / cutoffRadius)].push_back(p1);
+        number_of_pushes++;
+    }
+    std::cout << "ggg1" <<std::endl;
+
+
+
+
+
+    /**
     double lowerZ = 0.0;
     double upperZ = cutoffRadius;
     //x0,y --> 0,0 --> 0,1
     for (int z = 0; z < std::ceil(domainSize[2] / cutoffRadius); ++z) {
+        std::cout << "z is : " <<  z <<std::endl;
+        std::cout << "z lower  is : " <<  lowerZ <<std::endl;
+        std::cout << "z upper  is : " <<  upperZ <<std::endl;
         double lowerY = 0.0;
         double upperY = cutoffRadius;
         for (int y = 0; y < std::ceil(domainSize[1] / cutoffRadius); ++y) {
@@ -201,29 +297,51 @@ void LinkedCellContainer::initGrid() {
                         p1.getX()[1] <= upperY && p1.getX()[1] >= lowerY &&
                         p1.getX()[2] <= upperZ && p1.getX()[2] >= lowerZ) {
                         grid[x][y][z].push_back(p1);
+                        number_of_pushes++;
                     }
                 }
                 lowerX = upperX + minDouble;
                 if (upperX + cutoffRadius > domainSize[0]) {
-                    upperX += std::fmod(domainSize[0], cutoffRadius);
+                    //upperX += std::fmod(domainSize[0], cutoffRadius);
+                    upperX = domainSize[0];
                 } else {
                     upperX += cutoffRadius;
                 }
             }
             lowerY = upperY + minDouble;
             if (upperY + cutoffRadius > domainSize[1]) {
-                upperY += std::fmod(domainSize[1], cutoffRadius);
+                //upperY += std::fmod(domainSize[1], cutoffRadius);
+                upperY = domainSize[1];
             } else {
                 upperY += cutoffRadius;
             }
         }
-        lowerZ = upperY + minDouble;
+        lowerZ = upperZ + minDouble; //here?
         if (upperZ + cutoffRadius > domainSize[2]) {
-            upperZ += std::fmod(domainSize[2], cutoffRadius);
+            //upperZ += std::fmod(domainSize[2], cutoffRadius);
+            upperZ = domainSize[2];
         } else {
             upperZ += cutoffRadius;
         }
+    }**/
+
+
+    std::cout << "size of  particleList(3)" <<   particleList.size() <<std::endl;
+    std::cout << "number_of_pushes " << number_of_pushes <<std::endl;
+    int size2 = 0;
+    for (auto &x: getGrid()) {
+        for (auto &y: x) {
+            for (auto &z: y) {
+                for (auto &p: z) {
+                    size2 += 1;
+                    //nParticleList.push_back(p);
+                }
+            }
+        }
     }
+    std::cout << "size2 " << size2 <<std::endl;
+
+
 }
 
 void LinkedCellContainer::resetF() {
@@ -237,8 +355,10 @@ void LinkedCellContainer::resetF() {
 
 void LinkedCellContainer::calculateF() {
     if (isMembrane) {
+        std::cout << "calcNF" << std::endl;
         calcNF();
     } else {
+        std::cout << "calcF" << std::endl;
         calcF();
     }
 }
@@ -256,17 +376,53 @@ void LinkedCellContainer::calculateF() {
 //check done something wrong here maybe fixed now?
 void LinkedCellContainer::calcF() {
 
-    //spdlog::info("this is calcF");
+    spdlog::info("this is calcF");
+
+
+
+
+
+
+
+
+   // std::cout << "Particles size in calcF (1): " << particleList.size() << std::endl;
     std::vector<Particle> nParticleList;
+  //  std::cout << "Particles size in calcF (2): " << particleList.size() << std::endl;
     initGrid();
+
+
+    std::cout << "From calcF after initGrid if all inside " << isWithinCuboidAll() << std::endl;
+
+
+
+
+
+    int j = 0;
+    for (auto &x: getGrid()) {
+        for (auto &y: x) {
+            for (auto &z: y) {
+                for (auto &p: z) {
+                    j += 1;
+                    //nParticleList.push_back(p);
+                }
+            }
+        }
+    }
+    std::cout << "grid size j before: " << j << std::endl;
+   // std::cout << "Particles size in calcF (3): " << particleList.size() << std::endl;
     //down to up
     //fixed here rather than getGrid[0].size to getGrid[0][0].size -> runs now at least
     for (int z = 0; z < getGrid()[0][0].size(); ++z) {
+     //   std::cout << "Particles size in calcF (4): " << particleList.size() << std::endl;
         for (int y = 0; y < getGrid()[0].size(); ++y) {
+        //    std::cout << "Particles size in calcF (5): " << particleList.size() << std::endl;
             //left to right
             for (int x = 0; x < getGrid().size(); ++x) {
+              //  std::cout << "Particles size in calcF (6): " << particleList.size() << std::endl;
                 for (auto p1 = grid[x][y][z].begin(); p1 < grid[x][y][z].end(); p1++) {
+                  //  std::cout << "Particles size in calcF (7): " << particleList.size() << std::endl;
                     for (auto p2 = p1 + 1; p2 < grid[x][y][z].end(); p2++) {
+                     //   std::cout << "Particles size in calcF (8): " << particleList.size() << std::endl;
                         auto force = forceModel.calculateForce(*p1, *p2);
                         /*        spdlog::info("this is calcX ps position {}, {}, {}", p1->getX()[0], p1->getX()[1],
                                              p1->getX()[2]);
@@ -400,16 +556,29 @@ void LinkedCellContainer::calcF() {
             }
         }
     }
+    int i = 0;
     for (auto &x: getGrid()) {
         for (auto &y: x) {
             for (auto &z: y) {
                 for (auto &p: z) {
+                    i += 1;
                     nParticleList.push_back(p);
                 }
             }
         }
     }
+
+
+
+    std::cout << "END of CalcF From calcF after initGrid if all inside " << isWithinCuboidAll() << std::endl;
+    std::cout << "i: " << i << std::endl;
+    std::cout << "Grid size " << getGrid().size() << std::endl;
+    std::cout << "Grid size.size " << getGrid().at(0).size() << std::endl;
+    std::cout << "Grid size.size.size " << getGrid().at(0).at(0).size() << std::endl;
+    std::cout << "Grid size.size.size.size " << getGrid().at(0).at(0).at(0).size() << std::endl;
+    std::cout << "Particles size in calcF (9): " << particleList.size() << std::endl;
     particleList = nParticleList;
+    std::cout << "Particles size in calcF (10): " << particleList.size() << std::endl;
 }
 
 //if membrane -> neighboring forces
@@ -455,42 +624,66 @@ void LinkedCellContainer::calcNF() {
  */
 //check done, +front and back periodic
 void LinkedCellContainer::calculateX(double delta_t) {
+    std::cout <<"Hello from calculateX " << std::endl;
+    std::cout << "START of CALCULATE X WIthin Cuboid? " << isWithinCuboidAll() << std::endl;
+
     // spdlog::info("this is calcX");
 
     for (auto &p: getParticles()) {
-        auto xi_tn1 = Formulas::verletXStep(p.getX(), p.getV(), p.getF(), p.getM(), delta_t);
+        auto newX = Formulas::verletXStep(p.getX(), p.getV(), p.getF(), p.getM(), delta_t);
         //xi_tn1[2] = 0.0;
         //this is another periodic boundary same as in initGrid
-        if (boundaryCon[0] == 'p' && p.getX()[0] < 0.0) {
-            xi_tn1[0] = p.getX()[0] + domainSize[0];
+        if (boundaryCon[0] == 'p' && newX[0] < 0.0) {
+            newX[0] = newX[0] + domainSize[0];
         }
         // upper
-        if (boundaryCon[1] == 'p' && p.getX()[1] > domainSize[1]) {
-            xi_tn1[1] = p.getX()[1] - domainSize[1];
+        if (boundaryCon[1] == 'p' && newX[1] > domainSize[1]) {
+            newX[1] = newX[1] - domainSize[1];
         }
         // right
-        if (boundaryCon[2] == 'p' && p.getX()[0] > domainSize[0]) {
-            xi_tn1[0] = p.getX()[0] - domainSize[0];
+        if (boundaryCon[2] == 'p' && newX[0] > domainSize[0]) {
+            newX[0] = newX[0] - domainSize[0];
         }
         // floor
-        if (boundaryCon[3] == 'p' && p.getX()[1] < 0.0) {
-            xi_tn1[1] = p.getX()[1] + domainSize[1];
+        if (boundaryCon[3] == 'p' && newX[1] < 0.0) {
+            newX[1] = newX[1] + domainSize[1];
             //spdlog::info("this is p[2] in initGrid periodic con floor {}", p.getX()[2]);
         }
         // front
-        if (boundaryCon[4] == 'p' && p.getX()[2] < 0.0) {
-            xi_tn1[2] = p.getX()[2] + domainSize[2];
+        if (boundaryCon[4] == 'p' && newX[2] < 0.0) {
+            newX[2] = newX[2] + domainSize[2];
         }
         // back
-        if (boundaryCon[5] == 'p' && p.getX()[2] > domainSize[0]) {
-            xi_tn1[2] = p.getX()[2] - domainSize[2];
+        if (boundaryCon[5] == 'p' && newX[2] > domainSize[2]) {
+            newX[2] = newX[2] - domainSize[2];
         }
-        p.setX(xi_tn1);  // Update the position
+
+        //if (boundaryCon[0] == 'r' && checkDistance(p, "left")) { //if left (x) is reflecting and x is close enough do something
+        //    applyReflecting(Particle &p)
+        //}
+
+
+
+
+
+        p.setX(newX);  // Update the position
+
+        if (p.getX()[0] < 0){
+            p.setX({0.0, p.getX()[1], p.getX()[2]});
+        }
+        if (p.getX()[1] < 0){
+            p.setX({p.getX()[0], 0.0, p.getX()[2]});
+        }
+        if (p.getX()[2] < 0){
+            p.setX({p.getX()[0], p.getX()[1], 0.0});
+        }
         /*    spdlog::info("this is calcX ps position {}, {}, {}", p.getX()[0], p.getX()[1], p.getX()[2]);
             spdlog::info("this is calcX ps force {}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
             spdlog::info("this is calcX ps velocity{}, {}, {}", p.getV()[0], p.getV()[1], p.getV()[2]);*/
 
     }
+
+    std::cout << "END of CALCULATE X WIthin Cuboid? " << isWithinCuboidAll() << std::endl;
     //initGrid();
 }
 
@@ -527,6 +720,7 @@ void LinkedCellContainer::plotParticles(int iteration) {
 }
 
 //check done
+//Is close enough?
 bool LinkedCellContainer::checkDistance(Particle &p, std::string border) {
     //divided by 2.0 because of border p____|____p
     auto disCheck = std::pow(2, (1 / 6)) * p.getSigma() / 2.0;
@@ -577,17 +771,10 @@ void LinkedCellContainer::applyReflecting(Particle &p) {
     Particle halo(p);
     //near left border
     if (boundaryCon[0] == 'r') {
-        if (checkDistance(p, "left")) {
-            //   spdlog::info("this is appReflect, left");
+        if (checkDistance(p, "left")) {  // if close enough to the border
             halo.setX({(-1) * p.getX()[0], p.getX()[1], p.getX()[2]});
-            // spdlog::info("this is appReflect left ps pos {}, {}, {}", p.getX()[0], p.getX()[1], p.getX()[2]);
-            // spdlog::info("this is appReflect left halos pos {}, {}, {}", halo.getX()[0], halo.getX()[1],
-            //            halo.getX()[2]);
-            // spdlog::info("this is appReflect left ps force before {}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
             auto force = forceModel.calculateForce(p, halo);
-            //   spdlog::info("this is appReflect left force {}, {}, {}", force[0], force[1], force[2]);
             p.addF({force[0], force[1], force[2] + (p.getM() * gGrav)});
-            // spdlog::info("this is appReflect left ps force after {}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
         }
     }
     //near upper border
