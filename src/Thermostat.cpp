@@ -40,8 +40,10 @@ void Thermostat::initializeWithBrownianMotion(ParticleContainerBase &particleCon
 double Thermostat::calculateNewTemperature(ParticleContainerBase &particleContainer) {
     auto eKin = 0.0;
     for (auto &p1: particleContainer.getParticles()) {
-        eKin += (p1.getM() *
-                 (p1.getV()[0] * p1.getV()[0] + p1.getV()[1] * p1.getV()[1] + p1.getV()[2] * p1.getV()[2])) / 2;
+        if (!p1.getIsWall()) {
+            eKin += (p1.getM() *
+                     (p1.getV()[0] * p1.getV()[0] + p1.getV()[1] * p1.getV()[1] + p1.getV()[2] * p1.getV()[2])) / 2;
+        }
     }
     auto divisor = ((numDimensions * particleContainer.getParticles().size()) / 2) * kBoltzmann;
     return eKin / divisor;
@@ -75,15 +77,21 @@ void Thermostat::applyThermostatExtension(ParticleContainerBase &particleContain
     if (type != 2 && ((type == 0 && initT < targetT) || (type == 1 && initT > targetT))) {
         // 1. determine avg velocity
         std::array<double, 3> avgV = {0.0, 0.0, 0.0};
+        int n = 0;
         for (auto &p1: particleContainer.getParticles()) {
-            avgV = {avgV[0] + p1.getV()[0], avgV[1] + p1.getV()[1], avgV[2] + p1.getV()[2]};
+            if (!p1.getIsWall()) {
+                avgV = {avgV[0] + p1.getV()[0], avgV[1] + p1.getV()[1], avgV[2] + p1.getV()[2]};
+                n++;
+            }
         }
-        auto x = 1 / particleContainer.getParticles().size();
+        auto x = 1 / n;
         avgV = {avgV[0] * x, avgV[1] * x, avgV[2] * x};
 
         // 2. difference btw p's velocity and avg velocity
         for (auto &p1: particleContainer.getParticles()) {
-            p1.setV({p1.getV()[0] - avgV[0], p1.getV()[1] - avgV[1], p1.getV()[2] * avgV[2]});
+            if (!p1.getIsWall()) {
+                p1.setV({p1.getV()[0] - avgV[0], p1.getV()[1] - avgV[1], p1.getV()[2] * avgV[2]});
+            }
         }
 
         // 3. only use difference for calculating temperature
@@ -104,8 +112,10 @@ void Thermostat::applyThermostatExtension(ParticleContainerBase &particleContain
 
         // 4. apply scaling to difference and add to avg velocity
         for (auto &p1: particleContainer.getParticles()) {
-            p1.setV({(p1.getV()[0] * scaling) + avgV[0], (p1.getV()[1] * scaling) + avgV[1],
-                     (p1.getV()[2] * scaling) + avgV[2]});
+            if (!p1.getIsWall()) {
+                p1.setV({(p1.getV()[0] * scaling) + avgV[0], (p1.getV()[1] * scaling) + avgV[1],
+                         (p1.getV()[2] * scaling) + avgV[2]});
+            }
         }
         initT = tNew;
     }
