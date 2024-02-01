@@ -10,7 +10,7 @@ Members:
 * Link:     https://github.com/sophykk/PSEMolDyn-GroupE.git
 * Branch:   master
 * Compiler: g++ 11.4.0
-* Commit ID: 66e67ca
+* Commit ID: last commit on the master branch 
 * Build and execute instructions:
  ```
  mkdir build
@@ -19,9 +19,9 @@ Members:
  make
  ./MolSim ../input/<file_name>
 
-Files: -w4t2test.xml (Task 2, the test simulation)
-       -w4t2.xml (Task 2, the big simulation)
-       -w4t3.xml (Task 3)
+Files: -w5t1.xml (Task 1)
+       -w5t3.xml (Task 3)
+       -w5t4.xml (Task 4)
  
  Doxygen documentation: 
  make doc_doxygen
@@ -46,18 +46,34 @@ ctest
 
 ## Task 2 ##
 
-- changed boundaryCon to array so walls can have different boundary conditions
-- modified calculateF so it applies different boundary conditions
-- when adding the force, the y value of the force is also modified by the additional gravitational force multiplied with the mass of the particle
-- initGrid also checks whether particles are out of bounds to insert them to the other side
-- added new function "applyPeriodic" for periodic boundary, this creates halo particles at the opposite boundaries and adds a force to particles near them
-- particles also have 2 new variables - sigma and epsilon
-- in LJForce the type is then compared to determine the sigma and epsilon of the system
-- all the new values were also modified accordingly in the XMLReder
+- task2 can be seen on the parallelization branch
+- added the "-pg" flag to the compiler flags
+- after the programm finishes executing, the most time consuming parts of the code can be seen in the analysis.txt file, by executing the following command in the terminal: gprof MolSim gmon.out > analysis.txt
+- extended the xsd schema, so the parallelization strategy and number of threads can be read from the xml file
+- if no strategy is given in the xml file, the code will be executed without using one of the parallelization strategies
+- implemented a runtime logic in the main function, which outputs the total time in microseconds of executing the programm, used for creating the plot of the speed up
+- strategy 1:
+   - allowed a shared acces of the grid to all threads in the initGrid() function of the LinkedCellContainer 
+   - each thread receives its own copies of the loop indexes
+- strategy 2:
+   - collapsed 3 loops into a single one for parallelization in the calculateF() function of the LinkedCellContainer
+- unfortunately, after trying out different parallelization strategies, we couldnt find a suitable parallelization strategy to speedup our simulation
+- for both strategies, the runtime was slower than executing it without a parallelization strategy
+    
   
 ## Task 3 ##
 
 - implemented a new output writer TXTWriter, which writes on the first line of a txt file the number of the particles and then starting with the new line, the values for every particle on its own line; the values of the particles are separated by a space and written in this order: position, velocity, force, old force, mass, sigma, epsilon, gravitational acceleration and type
 - implemented a new file reader ParticlesFileReader, which reads out of a file, given as a parameter, the number of the particles and then reads every line one by one and initializes a particle with the corresponding values; the particle is then added to the vector given as a parameter
 - updated the main function to execute the simulation until timestamp 15; after that, the drop is generated, the values are saved in a file, then the simulation continues with all particles read from the saved file; for the part after the drop is added to the simulation, the thermostat is switched off
-- conducted the experiment of a falling drop by using periodic boundaries on the left and right sides and refleting boundaries for the up and down sides 
+- conducted the experiment of a falling drop by using periodic boundaries on the left and right sides and refleting boundaries for the up and down sides
+
+## Task 4 ##
+
+- extended the thermostat class with a new method, that ...
+- added a new variable to the cuboid generator, which allocates to each particle if it is a wall or not
+- if a particle is a wall, no force is applied to it and its position shouldn't change
+- created an csv file exporter, which creates 50 bins of equal size and adds the particles, based on the x-axis, to the corresponding files
+- then for every 10.000 iterations, a csv file is created, which outputs on each line the bin index, the density and the average velocity of the bin 
+
+
