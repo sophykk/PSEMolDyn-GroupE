@@ -206,31 +206,43 @@ useParallelization (const useParallelization_type& x)
 }
 
 
-// parallelizationStrategyType
+// parallelizationType
 // 
 
-const parallelizationStrategyType::parallelizationStrategy_type& parallelizationStrategyType::
+const parallelizationType::parallelizationStrategy_type& parallelizationType::
 parallelizationStrategy () const
 {
   return this->parallelizationStrategy_.get ();
 }
 
-parallelizationStrategyType::parallelizationStrategy_type& parallelizationStrategyType::
+parallelizationType::parallelizationStrategy_type& parallelizationType::
 parallelizationStrategy ()
 {
   return this->parallelizationStrategy_.get ();
 }
 
-void parallelizationStrategyType::
+void parallelizationType::
 parallelizationStrategy (const parallelizationStrategy_type& x)
 {
   this->parallelizationStrategy_.set (x);
 }
 
-void parallelizationStrategyType::
-parallelizationStrategy (::std::auto_ptr< parallelizationStrategy_type > x)
+const parallelizationType::threadsNumber_type& parallelizationType::
+threadsNumber () const
 {
-  this->parallelizationStrategy_.set (x);
+  return this->threadsNumber_.get ();
+}
+
+parallelizationType::threadsNumber_type& parallelizationType::
+threadsNumber ()
+{
+  return this->threadsNumber_.get ();
+}
+
+void parallelizationType::
+threadsNumber (const threadsNumber_type& x)
+{
+  this->threadsNumber_.set (x);
 }
 
 
@@ -1291,34 +1303,34 @@ simulationParams (::std::auto_ptr< simulationParams_type > x)
   this->simulationParams_.set (x);
 }
 
-const simulation::parallelizationStrategyParam_optional& simulation::
-parallelizationStrategyParam () const
+const simulation::parallelizationParams_optional& simulation::
+parallelizationParams () const
 {
-  return this->parallelizationStrategyParam_;
+  return this->parallelizationParams_;
 }
 
-simulation::parallelizationStrategyParam_optional& simulation::
-parallelizationStrategyParam ()
+simulation::parallelizationParams_optional& simulation::
+parallelizationParams ()
 {
-  return this->parallelizationStrategyParam_;
-}
-
-void simulation::
-parallelizationStrategyParam (const parallelizationStrategyParam_type& x)
-{
-  this->parallelizationStrategyParam_.set (x);
+  return this->parallelizationParams_;
 }
 
 void simulation::
-parallelizationStrategyParam (const parallelizationStrategyParam_optional& x)
+parallelizationParams (const parallelizationParams_type& x)
 {
-  this->parallelizationStrategyParam_ = x;
+  this->parallelizationParams_.set (x);
 }
 
 void simulation::
-parallelizationStrategyParam (::std::auto_ptr< parallelizationStrategyParam_type > x)
+parallelizationParams (const parallelizationParams_optional& x)
 {
-  this->parallelizationStrategyParam_.set (x);
+  this->parallelizationParams_ = x;
+}
+
+void simulation::
+parallelizationParams (::std::auto_ptr< parallelizationParams_type > x)
+{
+  this->parallelizationParams_.set (x);
 }
 
 const simulation::linkedCellParams_optional& simulation::
@@ -1709,31 +1721,35 @@ simulationParamsType::
 {
 }
 
-// parallelizationStrategyType
+// parallelizationType
 //
 
-parallelizationStrategyType::
-parallelizationStrategyType (const parallelizationStrategy_type& parallelizationStrategy)
+parallelizationType::
+parallelizationType (const parallelizationStrategy_type& parallelizationStrategy,
+                     const threadsNumber_type& threadsNumber)
 : ::xml_schema::type (),
-  parallelizationStrategy_ (parallelizationStrategy, this)
+  parallelizationStrategy_ (parallelizationStrategy, this),
+  threadsNumber_ (threadsNumber, this)
 {
 }
 
-parallelizationStrategyType::
-parallelizationStrategyType (const parallelizationStrategyType& x,
-                             ::xml_schema::flags f,
-                             ::xml_schema::container* c)
+parallelizationType::
+parallelizationType (const parallelizationType& x,
+                     ::xml_schema::flags f,
+                     ::xml_schema::container* c)
 : ::xml_schema::type (x, f, c),
-  parallelizationStrategy_ (x.parallelizationStrategy_, f, this)
+  parallelizationStrategy_ (x.parallelizationStrategy_, f, this),
+  threadsNumber_ (x.threadsNumber_, f, this)
 {
 }
 
-parallelizationStrategyType::
-parallelizationStrategyType (const ::xercesc::DOMElement& e,
-                             ::xml_schema::flags f,
-                             ::xml_schema::container* c)
+parallelizationType::
+parallelizationType (const ::xercesc::DOMElement& e,
+                     ::xml_schema::flags f,
+                     ::xml_schema::container* c)
 : ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
-  parallelizationStrategy_ (this)
+  parallelizationStrategy_ (this),
+  threadsNumber_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -1742,7 +1758,7 @@ parallelizationStrategyType (const ::xercesc::DOMElement& e,
   }
 }
 
-void parallelizationStrategyType::
+void parallelizationType::
 parse (::xsd::cxx::xml::dom::parser< char >& p,
        ::xml_schema::flags f)
 {
@@ -1756,12 +1772,20 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
     //
     if (n.name () == "parallelizationStrategy" && n.namespace_ ().empty ())
     {
-      ::std::auto_ptr< parallelizationStrategy_type > r (
-        parallelizationStrategy_traits::create (i, f, this));
-
       if (!parallelizationStrategy_.present ())
       {
-        this->parallelizationStrategy_.set (r);
+        this->parallelizationStrategy_.set (parallelizationStrategy_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // threadsNumber
+    //
+    if (n.name () == "threadsNumber" && n.namespace_ ().empty ())
+    {
+      if (!threadsNumber_.present ())
+      {
+        this->threadsNumber_.set (threadsNumber_traits::create (i, f, this));
         continue;
       }
     }
@@ -1775,29 +1799,37 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       "parallelizationStrategy",
       "");
   }
+
+  if (!threadsNumber_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "threadsNumber",
+      "");
+  }
 }
 
-parallelizationStrategyType* parallelizationStrategyType::
+parallelizationType* parallelizationType::
 _clone (::xml_schema::flags f,
         ::xml_schema::container* c) const
 {
-  return new class parallelizationStrategyType (*this, f, c);
+  return new class parallelizationType (*this, f, c);
 }
 
-parallelizationStrategyType& parallelizationStrategyType::
-operator= (const parallelizationStrategyType& x)
+parallelizationType& parallelizationType::
+operator= (const parallelizationType& x)
 {
   if (this != &x)
   {
     static_cast< ::xml_schema::type& > (*this) = x;
     this->parallelizationStrategy_ = x.parallelizationStrategy_;
+    this->threadsNumber_ = x.threadsNumber_;
   }
 
   return *this;
 }
 
-parallelizationStrategyType::
-~parallelizationStrategyType ()
+parallelizationType::
+~parallelizationType ()
 {
 }
 
@@ -3706,7 +3738,7 @@ simulation::
 simulation (const simulationParams_type& simulationParams)
 : ::xml_schema::type (),
   simulationParams_ (simulationParams, this),
-  parallelizationStrategyParam_ (this),
+  parallelizationParams_ (this),
   linkedCellParams_ (this),
   membraneParams_ (this),
   thermostat_ (this),
@@ -3719,7 +3751,7 @@ simulation::
 simulation (::std::auto_ptr< simulationParams_type > simulationParams)
 : ::xml_schema::type (),
   simulationParams_ (simulationParams, this),
-  parallelizationStrategyParam_ (this),
+  parallelizationParams_ (this),
   linkedCellParams_ (this),
   membraneParams_ (this),
   thermostat_ (this),
@@ -3734,7 +3766,7 @@ simulation (const simulation& x,
             ::xml_schema::container* c)
 : ::xml_schema::type (x, f, c),
   simulationParams_ (x.simulationParams_, f, this),
-  parallelizationStrategyParam_ (x.parallelizationStrategyParam_, f, this),
+  parallelizationParams_ (x.parallelizationParams_, f, this),
   linkedCellParams_ (x.linkedCellParams_, f, this),
   membraneParams_ (x.membraneParams_, f, this),
   thermostat_ (x.thermostat_, f, this),
@@ -3749,7 +3781,7 @@ simulation (const ::xercesc::DOMElement& e,
             ::xml_schema::container* c)
 : ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
   simulationParams_ (this),
-  parallelizationStrategyParam_ (this),
+  parallelizationParams_ (this),
   linkedCellParams_ (this),
   membraneParams_ (this),
   thermostat_ (this),
@@ -3787,16 +3819,16 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
-    // parallelizationStrategyParam
+    // parallelizationParams
     //
-    if (n.name () == "parallelizationStrategyParam" && n.namespace_ ().empty ())
+    if (n.name () == "parallelizationParams" && n.namespace_ ().empty ())
     {
-      ::std::auto_ptr< parallelizationStrategyParam_type > r (
-        parallelizationStrategyParam_traits::create (i, f, this));
+      ::std::auto_ptr< parallelizationParams_type > r (
+        parallelizationParams_traits::create (i, f, this));
 
-      if (!this->parallelizationStrategyParam_)
+      if (!this->parallelizationParams_)
       {
-        this->parallelizationStrategyParam_.set (r);
+        this->parallelizationParams_.set (r);
         continue;
       }
     }
@@ -3890,7 +3922,7 @@ operator= (const simulation& x)
   {
     static_cast< ::xml_schema::type& > (*this) = x;
     this->simulationParams_ = x.simulationParams_;
-    this->parallelizationStrategyParam_ = x.parallelizationStrategyParam_;
+    this->parallelizationParams_ = x.parallelizationParams_;
     this->linkedCellParams_ = x.linkedCellParams_;
     this->membraneParams_ = x.membraneParams_;
     this->thermostat_ = x.thermostat_;

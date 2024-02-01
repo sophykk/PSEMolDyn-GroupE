@@ -45,6 +45,14 @@ void XMLFileReader::readLinkedCellParams(const char *filename, std::vector<doubl
     isMembrane = parameters->linkedCellParams()->isMembrane();
 }
 
+void XMLFileReader::readParallelizationParams(const char *filename, int &strategy, int &threads) {
+
+    std::unique_ptr<simulation> parameters = simulation_(filename);
+
+    strategy = parameters->parallelizationParams()->parallelizationStrategy();
+    threads = parameters->parallelizationParams()->threadsNumber();
+}
+
 void XMLFileReader::readMembraneParams(const char *filename, int &k, double &r0, double &pullUpF) {
 
     std::unique_ptr<simulation> parameters = simulation_(filename);

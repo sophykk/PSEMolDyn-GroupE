@@ -10,6 +10,7 @@
 #include <spdlog/spdlog.h>
 #include <iostream>
 #include <chrono>
+#include <omp.h>
 
 #include "Thermostat.h"
 
@@ -29,6 +30,7 @@ int main(int argc, char *argsv[]) {
     bool calcRunTime = false;
     bool checkpointing;
     bool useParallelization;
+    int parallelizationStrategy = 0;
     bool isMembrane = false;
     outputWriter::TXTWriter checkpointingWriter;
     ParticlesFileReader checkpointingReader;
@@ -40,6 +42,15 @@ int main(int argc, char *argsv[]) {
 
     // Read Simulation parameters from the file
     xmlReader.readSimulationParams(argsv[1], end_time, delta_t, modelType, containerType, objectType, plotInterval, checkpointing, useParallelization);
+
+    // Read parallelization parameters from the file
+    if(useParallelization){
+        int threads;
+        xmlReader.readParallelizationParams(argsv[1], parallelizationStrategy, threads);
+
+        // Set the number of threads
+        omp_set_num_threads(threads);
+    }
 
     spdlog::set_level(log_level);
 
@@ -74,9 +85,9 @@ int main(int argc, char *argsv[]) {
         xmlReader.readLinkedCellParams(argsv[1], d, c, b, g, isMembrane);
         if(isMembrane){
             xmlReader.readMembraneParams(argsv[1], k, r0, pullUpF);
-            particleContainer = std::make_unique<LinkedCellContainer>(*forceModel, d, c, b, g, useParallelization, isMembrane, k, r0, pullUpF);
+            particleContainer = std::make_unique<LinkedCellContainer>(*forceModel, d, c, b, g, parallelizationStrategy, isMembrane, k, r0, pullUpF);
         } else {
-            particleContainer = std::make_unique<LinkedCellContainer>(*forceModel, d, c, b, g, useParallelization, isMembrane);
+            particleContainer = std::make_unique<LinkedCellContainer>(*forceModel, d, c, b, g, parallelizationStrategy, isMembrane);
         }
     } else {
         spdlog::error("Unknown container type selected: {}", containerType);
@@ -123,15 +134,14 @@ int main(int argc, char *argsv[]) {
     }
 
     // Calculate initial forces
-    //particleContainer->calculateF();
+    particleContainer->calculateF();
 
     int iteration = 0;
     double current_time = 0;
+    start = std::chrono::high_resolution_clock::now();
 
     //Main simulation loop
-    //while (current_time < end_time) {
-    start = std::chrono::high_resolution_clock::now();
-    while(iteration <= 200){
+    while (current_time < end_time) {
 
         // calculate new x
         //spdlog::info("this is calcX in MolSim");
@@ -166,7 +176,6 @@ int main(int argc, char *argsv[]) {
     }
 
     spdlog::info("output written. Terminating...");
-    // Record end time
     end = std::chrono::high_resolution_clock::now();
 
     // Calculate duration

@@ -26,6 +26,8 @@ public:
     void readLinkedCellParams(const char *filename, std::vector<double> &x, double &cutOffR, std::array<char, 6> &boundaryC,
                          double &gGrav, bool &isMembrane);
 
+    void readParallelizationParams(const char *filename, int &strategy, int &threads);
+
     void readMembraneParams(const char *filename, int &k, double &r0, double &pullUpF);
 
     void readThermostatParams(const char *filename, double &initT, int &thermostatInterval);

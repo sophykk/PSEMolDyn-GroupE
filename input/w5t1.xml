@@ -9,6 +9,7 @@
         <plotInterval>100</plotInterval>
         <objectType>cuboid</objectType>
         <checkpointing>false</checkpointing>
+        <useParallelization>false</useParallelization>
     </simulationParams>
 
     <linkedCellParams>

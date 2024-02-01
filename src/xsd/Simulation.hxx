@@ -223,7 +223,7 @@ namespace xml_schema
 // Forward declarations.
 //
 class simulationParamsType;
-class parallelizationStrategyType;
+class parallelizationType;
 class linkedCellParamsType;
 class membraneParamsType;
 class cuboidType;
@@ -420,12 +420,12 @@ class simulationParamsType: public ::xml_schema::type
   ::xsd::cxx::tree::one< useParallelization_type > useParallelization_;
 };
 
-class parallelizationStrategyType: public ::xml_schema::type
+class parallelizationType: public ::xml_schema::type
 {
   public:
   // parallelizationStrategy
   //
-  typedef ::xml_schema::string parallelizationStrategy_type;
+  typedef ::xml_schema::integer parallelizationStrategy_type;
   typedef ::xsd::cxx::tree::traits< parallelizationStrategy_type, char > parallelizationStrategy_traits;
 
   const parallelizationStrategy_type&
@@ -437,30 +437,42 @@ class parallelizationStrategyType: public ::xml_schema::type
   void
   parallelizationStrategy (const parallelizationStrategy_type& x);
 
+  // threadsNumber
+  //
+  typedef ::xml_schema::integer threadsNumber_type;
+  typedef ::xsd::cxx::tree::traits< threadsNumber_type, char > threadsNumber_traits;
+
+  const threadsNumber_type&
+  threadsNumber () const;
+
+  threadsNumber_type&
+  threadsNumber ();
+
   void
-  parallelizationStrategy (::std::auto_ptr< parallelizationStrategy_type > p);
+  threadsNumber (const threadsNumber_type& x);
 
   // Constructors.
   //
-  parallelizationStrategyType (const parallelizationStrategy_type&);
+  parallelizationType (const parallelizationStrategy_type&,
+                       const threadsNumber_type&);
 
-  parallelizationStrategyType (const ::xercesc::DOMElement& e,
-                               ::xml_schema::flags f = 0,
-                               ::xml_schema::container* c = 0);
+  parallelizationType (const ::xercesc::DOMElement& e,
+                       ::xml_schema::flags f = 0,
+                       ::xml_schema::container* c = 0);
 
-  parallelizationStrategyType (const parallelizationStrategyType& x,
-                               ::xml_schema::flags f = 0,
-                               ::xml_schema::container* c = 0);
+  parallelizationType (const parallelizationType& x,
+                       ::xml_schema::flags f = 0,
+                       ::xml_schema::container* c = 0);
 
-  virtual parallelizationStrategyType*
+  virtual parallelizationType*
   _clone (::xml_schema::flags f = 0,
           ::xml_schema::container* c = 0) const;
 
-  parallelizationStrategyType&
-  operator= (const parallelizationStrategyType& x);
+  parallelizationType&
+  operator= (const parallelizationType& x);
 
   virtual 
-  ~parallelizationStrategyType ();
+  ~parallelizationType ();
 
   // Implementation.
   //
@@ -471,6 +483,7 @@ class parallelizationStrategyType: public ::xml_schema::type
 
   protected:
   ::xsd::cxx::tree::one< parallelizationStrategy_type > parallelizationStrategy_;
+  ::xsd::cxx::tree::one< threadsNumber_type > threadsNumber_;
 };
 
 class linkedCellParamsType: public ::xml_schema::type
@@ -1706,26 +1719,26 @@ class simulation: public ::xml_schema::type
   void
   simulationParams (::std::auto_ptr< simulationParams_type > p);
 
-  // parallelizationStrategyParam
+  // parallelizationParams
   //
-  typedef ::parallelizationStrategyType parallelizationStrategyParam_type;
-  typedef ::xsd::cxx::tree::optional< parallelizationStrategyParam_type > parallelizationStrategyParam_optional;
-  typedef ::xsd::cxx::tree::traits< parallelizationStrategyParam_type, char > parallelizationStrategyParam_traits;
+  typedef ::parallelizationType parallelizationParams_type;
+  typedef ::xsd::cxx::tree::optional< parallelizationParams_type > parallelizationParams_optional;
+  typedef ::xsd::cxx::tree::traits< parallelizationParams_type, char > parallelizationParams_traits;
 
-  const parallelizationStrategyParam_optional&
-  parallelizationStrategyParam () const;
+  const parallelizationParams_optional&
+  parallelizationParams () const;
 
-  parallelizationStrategyParam_optional&
-  parallelizationStrategyParam ();
-
-  void
-  parallelizationStrategyParam (const parallelizationStrategyParam_type& x);
+  parallelizationParams_optional&
+  parallelizationParams ();
 
   void
-  parallelizationStrategyParam (const parallelizationStrategyParam_optional& x);
+  parallelizationParams (const parallelizationParams_type& x);
 
   void
-  parallelizationStrategyParam (::std::auto_ptr< parallelizationStrategyParam_type > p);
+  parallelizationParams (const parallelizationParams_optional& x);
+
+  void
+  parallelizationParams (::std::auto_ptr< parallelizationParams_type > p);
 
   // linkedCellParams
   //
@@ -1857,7 +1870,7 @@ class simulation: public ::xml_schema::type
 
   protected:
   ::xsd::cxx::tree::one< simulationParams_type > simulationParams_;
-  parallelizationStrategyParam_optional parallelizationStrategyParam_;
+  parallelizationParams_optional parallelizationParams_;
   linkedCellParams_optional linkedCellParams_;
   membraneParams_optional membraneParams_;
   thermostat_optional thermostat_;

@@ -12,6 +12,11 @@
         <useParallelization>true</useParallelization>
     </simulationParams>
 
+    <parallelizationParams>
+        <parallelizationStrategy>56</parallelizationStrategy>
+        <threadsNumber>2</threadsNumber>
+    </parallelizationParams>
+    
     <linkedCellParams>
         <domainSize>
             <Lx>60</Lx>
