@@ -14,12 +14,17 @@
 
 //check
 LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<double> &dSize, double &cRadius,
-                                         std::array<char, 6> bCon, double &gGrav, bool &isMembrane) :
+                                         std::array<char, 6> bCon, double &gGrav, int &task, bool &isMembrane) :
         ParticleContainerBase(model), domainSize(dSize), cutoffRadius(cRadius), boundaryCon(bCon), gGrav(gGrav),
-        isMembrane(isMembrane) {
+        task(task), isMembrane(isMembrane) {
     int cellDimensionX;
     int cellDimensionY;
     int cellDimensionZ;
+    if(task == 1){
+        gGravPos = 2;
+    } else {
+        gGravPos = 1;
+    }
     std::fmod(domainSize[0], cutoffRadius) == 0 ? cellDimensionX = domainSize[0] / cutoffRadius
                                                 : cellDimensionX = std::ceil(domainSize[0] / cutoffRadius);
     std::fmod(domainSize[1], cutoffRadius) == 0 ? cellDimensionY = domainSize[1] / cutoffRadius
@@ -36,12 +41,17 @@ LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<double> &
 
 //check, if z grid = 1 => 2D
 LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<Particle> &particles, std::vector<double> &dSize,
-                                         double &cRadius, std::array<char, 6> bCon, double &gGrav, bool &isMembrane) :
+                                         double &cRadius, std::array<char, 6> bCon, double &gGrav, int &task, bool &isMembrane) :
         ParticleContainerBase(model), particleList(particles), domainSize(dSize), cutoffRadius(cRadius),
-        boundaryCon(bCon), gGrav(gGrav), isMembrane(isMembrane) {
+        boundaryCon(bCon), gGrav(gGrav), task(task), isMembrane(isMembrane) {
     int cellDimensionX;
     int cellDimensionY;
     int cellDimensionZ;
+    if(task == 1){
+        gGravPos = 2;
+    } else {
+        gGravPos = 1;
+    }
     std::fmod(domainSize[0], cutoffRadius) == 0 ? cellDimensionX = domainSize[0] / cutoffRadius
                                                 : cellDimensionX = std::ceil(domainSize[0] / cutoffRadius);
     std::fmod(domainSize[1], cutoffRadius) == 0 ? cellDimensionY = domainSize[1] / cutoffRadius
@@ -57,13 +67,18 @@ LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<Particle>
 }
 
 LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<double> &dSize, double &cRadius,
-                                         std::array<char, 6> bCon, double &gGrav, bool &isMembrane, int &k, double &r0,
-                                         double &pullUpF) :
-        ParticleContainerBase(model), domainSize(dSize), cutoffRadius(cRadius), boundaryCon(bCon), gGrav(gGrav),
+                                         std::array<char, 6> bCon, double &gGrav, int &task, bool &isMembrane, int &k,
+                                         double &r0, double &pullUpF) :
+        ParticleContainerBase(model), domainSize(dSize), cutoffRadius(cRadius), boundaryCon(bCon), gGrav(gGrav), task(task),
         isMembrane(isMembrane), k(k), r0(r0), pullUpF(pullUpF) {
     int cellDimensionX;
     int cellDimensionY;
     int cellDimensionZ;
+    if(task == 1){
+        gGravPos = 2;
+    } else {
+        gGravPos = 1;
+    }
     std::fmod(domainSize[0], cutoffRadius) == 0 ? cellDimensionX = domainSize[0] / cutoffRadius
                                                 : cellDimensionX = std::ceil(domainSize[0] / cutoffRadius);
     std::fmod(domainSize[1], cutoffRadius) == 0 ? cellDimensionY = domainSize[1] / cutoffRadius
@@ -349,13 +364,6 @@ void LinkedCellContainer::calcF() {
                 for (auto p1 = grid[x][y][z].begin(); p1 < grid[x][y][z].end(); p1++) {
                     for (auto p2 = p1 + 1; p2 < grid[x][y][z].end(); p2++) {
                         auto force = forceModel.calculateForce(*p1, *p2);
-                        /*      spdlog::info("this is calcX ps position {}, {}, {}", p1->getX()[0], p1->getX()[1],
-                                             p1->getX()[2]);
-                                spdlog::info("this is calcX ps velocity{}, {}, {}", p1->getV()[0], p1->getV()[1],
-                                             p1->getV()[2]);
-                                spdlog::info("in calcF this is force of p1 before {}, {}, {}", p1->getF()[0], p1->getF()[1],
-                                             p1->getF()[2]);
-                                spdlog::info("in calcF this is calculated force {}, {}, {}", force[0], force[1], force[2]);*/
                         if (!p1->getIsWall()) {
                             force[gGravPos] += (p1->getM() * gGrav);
                             //capping

@@ -12,6 +12,7 @@
 #include <chrono>
 
 #include "Thermostat.h"
+#include "inputOutput/outputWriter/CSVFileExporter.h"
 
 #include "utils/MaxwellBoltzmannDistribution.h"
 
@@ -28,6 +29,7 @@ int main(int argc, char *argsv[]) {
     spdlog::level::level_enum log_level = spdlog::level::debug;
     bool calcRunTime = false;
     bool checkpointing;
+    int task;
     bool isMembrane = false;
     outputWriter::TXTWriter checkpointingWriter;
     ParticlesFileReader checkpointingReader;
@@ -38,7 +40,7 @@ int main(int argc, char *argsv[]) {
     XMLFileReader xmlReader;
 
     // Read Simulation parameters from the file
-    xmlReader.readSimulationParams(argsv[1], end_time, delta_t, modelType, containerType, objectType, plotInterval, checkpointing);
+    xmlReader.readSimulationParams(argsv[1], end_time, delta_t, modelType, containerType, objectType, plotInterval, checkpointing, task);
 
     spdlog::set_level(log_level);
 
@@ -73,9 +75,9 @@ int main(int argc, char *argsv[]) {
         xmlReader.readLinkedCellParams(argsv[1], d, c, b, g, isMembrane);
         if(isMembrane){
             xmlReader.readMembraneParams(argsv[1], k, r0, pullUpF);
-            particleContainer = std::make_unique<LinkedCellContainer>(*forceModel, d, c, b, g, isMembrane, k, r0, pullUpF);
+            particleContainer = std::make_unique<LinkedCellContainer>(*forceModel, d, c, b, g, task, isMembrane, k, r0, pullUpF);
         } else {
-            particleContainer = std::make_unique<LinkedCellContainer>(*forceModel, d, c, b, g, isMembrane);
+            particleContainer = std::make_unique<LinkedCellContainer>(*forceModel, d, c, b, g, task, isMembrane);
         }
     } else {
         spdlog::error("Unknown container type selected: {}", containerType);
@@ -103,6 +105,9 @@ int main(int argc, char *argsv[]) {
     // Thermostat setup
     double initialTemperature;
     int thermostatInterval;
+
+    // initialize CSVFileExporter for task 4
+    CSVFileExporter csvFileExporter(*particleContainer);
 
     //if not the membrane simulation is run, the thermostat should be initialized
     if(!isMembrane){
@@ -175,6 +180,11 @@ int main(int argc, char *argsv[]) {
         // calculate new v
         //spdlog::info("this is calcV in MolSim");
         particleContainer->calculateV(delta_t);
+
+        // generate the CSV files with the density and average velocity for each bin
+        if(task == 4 && iteration == 10.000){
+            csvFileExporter.updateAndWriteStatistics(*particleContainer);
+        }
 
         if(calcRunTime){
             // Record end time

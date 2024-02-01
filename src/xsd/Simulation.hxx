@@ -358,6 +358,20 @@ class simulationParamsType: public ::xml_schema::type
   void
   checkpointing (const checkpointing_type& x);
 
+  // task
+  //
+  typedef ::xml_schema::integer task_type;
+  typedef ::xsd::cxx::tree::traits< task_type, char > task_traits;
+
+  const task_type&
+  task () const;
+
+  task_type&
+  task ();
+
+  void
+  task (const task_type& x);
+
   // Constructors.
   //
   simulationParamsType (const endTime_type&,
@@ -366,7 +380,8 @@ class simulationParamsType: public ::xml_schema::type
                         const containerType_type&,
                         const plotInterval_type&,
                         const objectType_type&,
-                        const checkpointing_type&);
+                        const checkpointing_type&,
+                        const task_type&);
 
   simulationParamsType (const ::xercesc::DOMElement& e,
                         ::xml_schema::flags f = 0,
@@ -401,6 +416,7 @@ class simulationParamsType: public ::xml_schema::type
   ::xsd::cxx::tree::one< plotInterval_type > plotInterval_;
   ::xsd::cxx::tree::one< objectType_type > objectType_;
   ::xsd::cxx::tree::one< checkpointing_type > checkpointing_;
+  ::xsd::cxx::tree::one< task_type > task_;
 };
 
 class linkedCellParamsType: public ::xml_schema::type

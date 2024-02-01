@@ -29,7 +29,8 @@ private:
     double gGrav;
     //0 for gGrav along x-axis, 1 for y-axis, 2 for z-axis
     //i.e 1 for w5t3.xml & w5t4.xml and 2 for w5t1.xml
-    int gGravPos = 1;
+    int task;
+    int gGravPos;
     bool isMembrane;
     int k = 300;
     double r0 = 2.2;
@@ -38,12 +39,12 @@ private:
 
 public:
 
-    LinkedCellContainer(ForceBase &model, std::vector<double> &dSize, double &cRadius, std::array<char, 6> bCon, double &gGrav, bool &isMembrane);
+    LinkedCellContainer(ForceBase &model, std::vector<double> &dSize, double &cRadius, std::array<char, 6> bCon, double &gGrav, int &task, bool &isMembrane);
 
     LinkedCellContainer(ForceBase &model, std::vector<Particle> &particles, std::vector<double> &dSize,
-                        double &cRadius, std::array<char, 6> bCon, double &gGrav, bool &isMembrane);
+                        double &cRadius, std::array<char, 6> bCon, double &gGrav, int &task, bool &isMembrane);
 
-    LinkedCellContainer(ForceBase &model, std::vector<double> &dSize, double &cRadius, std::array<char, 6> bCon, double &gGrav, bool &isMembrane,
+    LinkedCellContainer(ForceBase &model, std::vector<double> &dSize, double &cRadius, std::array<char, 6> bCon, double &gGrav, int &task, bool &isMembrane,
                         int &k, double &r0, double &pullUpF);
 
     char &getBoundaryCon(int index);

@@ -22,6 +22,7 @@
             <xs:element name="plotInterval" type="xs:int"/>
             <xs:element name="objectType" type="xs:string"/>
             <xs:element name="checkpointing" type="xs:boolean"/>
+            <xs:element name="task" type="xs:integer"/>
         </xs:sequence>
     </xs:complexType>
 

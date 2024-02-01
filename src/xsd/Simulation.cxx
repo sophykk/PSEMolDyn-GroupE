@@ -187,6 +187,24 @@ checkpointing (const checkpointing_type& x)
   this->checkpointing_.set (x);
 }
 
+const simulationParamsType::task_type& simulationParamsType::
+task () const
+{
+  return this->task_.get ();
+}
+
+simulationParamsType::task_type& simulationParamsType::
+task ()
+{
+  return this->task_.get ();
+}
+
+void simulationParamsType::
+task (const task_type& x)
+{
+  this->task_.set (x);
+}
+
 
 // linkedCellParamsType
 // 
@@ -1384,7 +1402,8 @@ simulationParamsType (const endTime_type& endTime,
                       const containerType_type& containerType,
                       const plotInterval_type& plotInterval,
                       const objectType_type& objectType,
-                      const checkpointing_type& checkpointing)
+                      const checkpointing_type& checkpointing,
+                      const task_type& task)
 : ::xml_schema::type (),
   endTime_ (endTime, this),
   deltaT_ (deltaT, this),
@@ -1392,7 +1411,8 @@ simulationParamsType (const endTime_type& endTime,
   containerType_ (containerType, this),
   plotInterval_ (plotInterval, this),
   objectType_ (objectType, this),
-  checkpointing_ (checkpointing, this)
+  checkpointing_ (checkpointing, this),
+  task_ (task, this)
 {
 }
 
@@ -1407,7 +1427,8 @@ simulationParamsType (const simulationParamsType& x,
   containerType_ (x.containerType_, f, this),
   plotInterval_ (x.plotInterval_, f, this),
   objectType_ (x.objectType_, f, this),
-  checkpointing_ (x.checkpointing_, f, this)
+  checkpointing_ (x.checkpointing_, f, this),
+  task_ (x.task_, f, this)
 {
 }
 
@@ -1422,7 +1443,8 @@ simulationParamsType (const ::xercesc::DOMElement& e,
   containerType_ (this),
   plotInterval_ (this),
   objectType_ (this),
-  checkpointing_ (this)
+  checkpointing_ (this),
+  task_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -1527,6 +1549,17 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
+    // task
+    //
+    if (n.name () == "task" && n.namespace_ ().empty ())
+    {
+      if (!task_.present ())
+      {
+        this->task_.set (task_traits::create (i, f, this));
+        continue;
+      }
+    }
+
     break;
   }
 
@@ -1578,6 +1611,13 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       "checkpointing",
       "");
   }
+
+  if (!task_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "task",
+      "");
+  }
 }
 
 simulationParamsType* simulationParamsType::
@@ -1600,6 +1640,7 @@ operator= (const simulationParamsType& x)
     this->plotInterval_ = x.plotInterval_;
     this->objectType_ = x.objectType_;
     this->checkpointing_ = x.checkpointing_;
+    this->task_ = x.task_;
   }
 
   return *this;
