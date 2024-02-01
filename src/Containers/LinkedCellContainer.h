@@ -27,8 +27,9 @@ private:
     std::array<char, 6> boundaryCon;
     //std::vector<Particle> haloList;
     double gGrav;
-    // 1 for gGrav along y-axis, 2 for z-axis, 0 for x-axis
-    int gGravPos = 2;
+    //0 for gGrav along x-axis, 1 for y-axis, 2 for z-axis
+    //i.e 1 for w5t3.xml & w5t4.xml and 2 for w5t1.xml
+    int gGravPos = 1;
     bool isMembrane;
     int k = 300;
     double r0 = 2.2;
@@ -46,8 +47,6 @@ public:
                         int &k, double &r0, double &pullUpF);
 
     char &getBoundaryCon(int index);
-
-    void setBoundaryCon(std::array<char, 6> &boundary);
 
     bool checkBoundary(char b);
 

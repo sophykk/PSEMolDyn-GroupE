@@ -26,8 +26,6 @@ LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<double> &
                                                 : cellDimensionY = std::ceil(domainSize[1] / cutoffRadius);
     std::fmod(domainSize[2], cutoffRadius) == 0 ? cellDimensionZ = domainSize[2] / cutoffRadius
                                                 : cellDimensionZ = std::ceil(domainSize[2] / cutoffRadius);
-    //domainSize[2] == 1 ? cellDimensionZ = 1 : (std::fmod(domainSize[2], cutoffRadius) == 0 ?
-    //        cellDimensionZ = domainSize[2] / cutoffRadius : cellDimensionZ = std::ceil(domainSize[2] / cutoffRadius));
     grid.resize(cellDimensionX,
                 std::vector<std::vector<std::vector<Particle>>>(
                         cellDimensionY,
@@ -36,7 +34,7 @@ LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<double> &
     initGrid();
 }
 
-//check, maybe if z grid = 1 => 2D
+//check, if z grid = 1 => 2D
 LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<Particle> &particles, std::vector<double> &dSize,
                                          double &cRadius, std::array<char, 6> bCon, double &gGrav, bool &isMembrane) :
         ParticleContainerBase(model), particleList(particles), domainSize(dSize), cutoffRadius(cRadius),
@@ -50,8 +48,6 @@ LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<Particle>
                                                 : cellDimensionY = std::ceil(domainSize[1] / cutoffRadius);
     std::fmod(domainSize[2], cutoffRadius) == 0 ? cellDimensionZ = domainSize[2] / cutoffRadius
                                                 : cellDimensionZ = std::ceil(domainSize[2] / cutoffRadius);
-    //domainSize[2] == 1 ? cellDimensionZ = 1 : (std::fmod(domainSize[2], cutoffRadius) == 0 ?
-    //        cellDimensionZ = domainSize[2] / cutoffRadius : cellDimensionZ = std::ceil(domainSize[2] / cutoffRadius));
     grid.resize(cellDimensionX,
                 std::vector<std::vector<std::vector<Particle>>>(
                         cellDimensionY,
@@ -74,8 +70,6 @@ LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<double> &
                                                 : cellDimensionY = std::ceil(domainSize[1] / cutoffRadius);
     std::fmod(domainSize[2], cutoffRadius) == 0 ? cellDimensionZ = domainSize[2] / cutoffRadius
                                                 : cellDimensionZ = std::ceil(domainSize[2] / cutoffRadius);
-    //domainSize[2] == 1 ? cellDimensionZ = 1 : (std::fmod(domainSize[2], cutoffRadius) == 0 ?
-    //        cellDimensionZ = domainSize[2] / cutoffRadius : cellDimensionZ = std::ceil(domainSize[2] / cutoffRadius));
     grid.resize(cellDimensionX,
                 std::vector<std::vector<std::vector<Particle>>>(
                         cellDimensionY,
@@ -84,22 +78,18 @@ LinkedCellContainer::LinkedCellContainer(ForceBase &model, std::vector<double> &
     initGrid();
 }
 
-//check done
 std::vector<Particle> &LinkedCellContainer::getParticles() {
     return particleList;
 }
 
-//check done
 std::vector<std::vector<std::vector<std::vector<Particle>>>> &LinkedCellContainer::getGrid() {
     return grid;
 }
 
-//check done
 char &LinkedCellContainer::getBoundaryCon(int index) {
     return boundaryCon[index];
 }
 
-//check done
 /**
  * if the z-Dimension vector is more than 1 it is 3D otherwise 2D
  * @return how many dimensions we are working with (2D/3D)
@@ -108,23 +98,6 @@ int LinkedCellContainer::getDimension() const {
     return grid[0][0].size() == 1 ? 2 : 3;
 }
 
-//check done
-/**
- * @brief Sets the boundary to outflow / reflecting / periodic
- * @param boundary a char, should be 'o' or 'r' or 'p'
- * @throws error message invalid_argument if boundary is not 'o' or 'r' or 'p'.
- */
-void LinkedCellContainer::setBoundaryCon(std::array<char, 6> &nBoundary) {
-    for (int i = 0; i < nBoundary.size(); i++) {
-        if (nBoundary[i] == 'o' || nBoundary[i] == 'p' || nBoundary[i] == 'r') {
-            boundaryCon[i] = nBoundary[i];
-        } else {
-            spdlog::error("Index {} is not a valid boundary condition!", i);
-        }
-    }
-}
-
-//check done
 bool LinkedCellContainer::checkBoundary(char b) {
     for (int i = 0; i < boundaryCon.size(); ++i) {
         if (getBoundaryCon(i) == b) {
@@ -134,25 +107,134 @@ bool LinkedCellContainer::checkBoundary(char b) {
     return false;
 }
 
-//check done
 void LinkedCellContainer::addParticle(Particle &particle) {
     particleList.push_back(particle);
 }
 
-//check done
 std::size_t LinkedCellContainer::size() const {
     return particleList.size();
 }
 
+void LinkedCellContainer::resetF() {
 
-//check done
+    for (auto &p: getParticles()) {
+        p.resetF();
+    }
+}
+
+void LinkedCellContainer::plotParticles(int iteration) {
+
+    std::string out_name("MD_vtk");
+
+    outputWriter::VTKWriter writer;
+    writer.initializeOutput(size());
+    for (auto &p: getParticles()) {
+        writer.plotParticle(p);
+    }
+    writer.writeFile(out_name, iteration);
+}
+
+bool LinkedCellContainer::checkDistance(Particle &p, std::string border) {
+    //divided by 2.0 because of border p____|____p
+    auto disCheck = std::pow(2, (1 / 6)) * p.getSigma() / 2.0;
+
+    if (border == "left") {
+        if (p.getX()[0] < disCheck && p.getX()[0] >= 0.0) {
+            return true;
+        }
+    }
+    if (border == "right") {
+        if (domainSize[0] - p.getX()[0] < disCheck && p.getX()[0] <= domainSize[0]) {
+            return true;
+        }
+    }
+    if (border == "floor") {
+        if (p.getX()[1] < disCheck && p.getX()[1] >= 0.0) {
+            return true;
+        }
+    }
+    if (border == "upper") {
+        if (domainSize[1] - p.getX()[1] < disCheck && p.getX()[1] <= domainSize[1]) {
+            return true;
+        }
+    }
+    if (border == "front") {
+        if (p.getX()[2] < disCheck && p.getX()[2] >= 0.0) {
+            return true;
+        }
+    }
+    if (border == "back") {
+        if (domainSize[2] - p.getX()[2] < disCheck && p.getX()[2] <= domainSize[2]) {
+            return true;
+        }
+    }
+    return false;
+}
+
+std::vector<double> LinkedCellContainer::getDomainSize() {
+    return domainSize;
+}
+
+/**
+ * @brief Calculate xi(tn+1)
+ * formula: xi(tn+1) = xi(tn) + ∆t · vi(tn) + (∆t)^2 * (Fi(tn)/2mi)
+ */
+
+void LinkedCellContainer::calculateX(double delta_t) {
+
+    for (auto &p: getParticles()) {
+        auto xi_tn1 = Formulas::verletXStep(p.getX(), p.getV(), p.getF(), p.getM(), delta_t);
+        //this is another periodic boundary same as in initGrid
+        if (checkBoundary('p')) {
+            if (boundaryCon[0] == 'p' && p.getX()[0] < 0.0) {
+                xi_tn1[0] = p.getX()[0] + domainSize[0];
+            }
+            // upper
+            if (boundaryCon[1] == 'p' && p.getX()[1] > domainSize[1]) {
+                xi_tn1[1] = p.getX()[1] - domainSize[1];
+            }
+            // right
+            if (boundaryCon[2] == 'p' && p.getX()[0] > domainSize[0]) {
+                xi_tn1[0] = p.getX()[0] - domainSize[0];
+            }
+            // floor
+            if (boundaryCon[3] == 'p' && p.getX()[1] < 0.0) {
+                xi_tn1[1] = p.getX()[1] + domainSize[1];
+            }
+            // front
+            if (boundaryCon[4] == 'p' && p.getX()[2] < 0.0) {
+                xi_tn1[2] = p.getX()[2] + domainSize[2];
+            }
+            // back
+            if (boundaryCon[5] == 'p' && p.getX()[2] > domainSize[0]) {
+                xi_tn1[2] = p.getX()[2] - domainSize[2];
+            }
+        }
+        if (!p.getIsWall()) {
+            p.setX(xi_tn1); // Update the position
+        }
+
+    }
+}
+
+/**
+ * @brief Calculate the velocity at time tn+1
+ * formula: vi(tn+1) = vi(tn) + ∆t * ((Fi(tn) + Fi(tn+1))/ 2mi)
+ */
+void LinkedCellContainer::calculateV(double delta_t) {
+
+    for (auto &p: getParticles()) {
+        auto vi_tn1 = Formulas::verletVStep(p.getV(), p.getOldF(), p.getF(), p.getM(), delta_t);
+        p.setV(vi_tn1);
+    }
+}
+
 /**
  * @brief This methods puts all the particles in a cell in the grid according to their positions
  * if cutoffRadius = 10, and dSize = {180, 90, 1}
  * then first cell from 0-10, next 11-20,
  */
 void LinkedCellContainer::initGrid() {
-    //spdlog::info("this is initGrid");
 
     //periodic con
     if (checkBoundary('p')) {
@@ -197,13 +279,20 @@ void LinkedCellContainer::initGrid() {
             //x,y0 --> 0,0 --> 1,0 --> 2,0 --> 3,0 then at the end x,y,0 -> x,y,1
             for (int x = 0; x < std::ceil(domainSize[0] / cutoffRadius); ++x) {
                 grid[x][y][z].clear();
-                for (auto &p1: getParticles()) {
+                for (auto p = getParticles().begin(); p < getParticles().end(); p++) {
+                    if (p->getX()[0] <= upperX && p->getX()[0] >= lowerX &&
+                        p->getX()[1] <= upperY && p->getX()[1] >= lowerY &&
+                        p->getX()[2] <= upperZ && p->getX()[2] >= lowerZ) {
+                        grid[x][y][z].push_back(*p);
+                    }
+                }
+                /* before without pointers
+                 * for (auto &p1: getParticles()) {
                     if (p1.getX()[0] <= upperX && p1.getX()[0] >= lowerX &&
                         p1.getX()[1] <= upperY && p1.getX()[1] >= lowerY &&
                         p1.getX()[2] <= upperZ && p1.getX()[2] >= lowerZ) {
                         grid[x][y][z].push_back(p1);
-                    }
-                }
+                }*/
                 lowerX = upperX + minDouble;
                 if (upperX + cutoffRadius > domainSize[0]) {
                     upperX += std::fmod(domainSize[0], cutoffRadius);
@@ -225,14 +314,8 @@ void LinkedCellContainer::initGrid() {
             upperZ += cutoffRadius;
         }
     }
-}
+    //spdlog::info("particleListSize in initGrid after {}", particleList.size());
 
-void LinkedCellContainer::resetF() {
-    for (auto &p: getParticles()) {
-        // spdlog::info("in resetF this is force of p1 before {}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
-        p.resetF();
-        // spdlog::info("in resetF this is force of p1 after {}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
-    }
 }
 
 
@@ -254,15 +337,11 @@ void LinkedCellContainer::calculateF() {
  * now just calc for above, right and right diagonal and left diagonal if exists
  * and same for one dimension behind if exists
  */
-//check done something wrong here maybe fixed now?
 //if not membrane, then use
 void LinkedCellContainer::calcF() {
-
-    //spdlog::info("this is calcF");
     std::vector<Particle> nParticleList;
     initGrid();
     //down to up
-    //fixed here rather than getGrid[0].size to getGrid[0][0].size -> runs now at least
     for (int z = 0; z < getGrid()[0][0].size(); ++z) {
         for (int y = 0; y < getGrid()[0].size(); ++y) {
             //left to right
@@ -279,26 +358,58 @@ void LinkedCellContainer::calcF() {
                                 spdlog::info("in calcF this is calculated force {}, {}, {}", force[0], force[1], force[2]);*/
                         if (!p1->getIsWall()) {
                             force[gGravPos] += (p1->getM() * gGrav);
+                            //capping
+                            if (force[0] > 100) {
+                                force[0] = 100;
+                            }
+                            if (force[0] < -100) {
+                                force[0] = -100;
+                            }
+                            if (force[1] > 100) {
+                                force[1] = 100;
+                            }
+                            if (force[1] < -100) {
+                                force[1] = -100;
+                            }
+                            if (force[2] > 100) {
+                                force[2] = 100;
+                            }
+                            if (force[2] < -100) {
+                                force[2] = -100;
+                            }
                             p1->addF(force);
                         }
                         if (!p2->getIsWall()) {
                             force[gGravPos] += (p2->getM() * gGrav);
+                            //capping
+                            if (force[0] > 100) {
+                                force[0] = 100;
+                            }
+                            if (force[0] < -100) {
+                                force[0] = -100;
+                            }
+                            if (force[1] > 100) {
+                                force[1] = 100;
+                            }
+                            if (force[1] < -100) {
+                                force[1] = -100;
+                            }
+                            if (force[2] > 100) {
+                                force[2] = 100;
+                            }
+                            if (force[2] < -100) {
+                                force[2] = -100;
+                            }
                             p2->addF({-1.0 * force[0], -1.0 * force[1], -1.0 * force[2]});
                         }
-                        //     spdlog::info("in calcF this is force of p1 after {}, {}, {}", p1->getF()[0], p1->getF()[1],
-                        //                 p1->getF()[2]);
                     }
                     // check done
                     if (checkBoundary('r')) {
                         applyReflecting(*p1);
-                        //    spdlog::info("in calcF reflect this is force of p1 {}, {}, {}", p1->getF()[0], p1->getF()[1],
-                        //                p1->getF()[2]);
                     }
                     // check done
                     if (checkBoundary('p')) {
                         applyPeriodic(*p1, x, y, z);
-                        //    spdlog::info("in calcF periodic this is force of p1 {}, {}, {}", p1->getF()[0], p1->getF()[1],
-                        //               p1->getF()[2]);
                     }
                 }
                 //if above neighbour exists (y+1)
@@ -306,14 +417,51 @@ void LinkedCellContainer::calcF() {
                     //calculate force between this and above cell for all particles
                     for (auto &p1: getGrid()[x][y][z]) {
                         for (auto &p2: getGrid()[x][y + 1][z]) {
-                            // spdlog::info("calcF, above");
                             auto force = forceModel.calculateForce(p1, p2);
                             if (!p1.getIsWall()) {
                                 force[gGravPos] += (p1.getM() * gGrav);
+                                //capping
+                                if (force[0] > 100) {
+                                    force[0] = 100;
+                                }
+                                if (force[0] < -100) {
+                                    force[0] = -100;
+                                }
+                                if (force[1] > 100) {
+                                    force[1] = 100;
+                                }
+                                if (force[1] < -100) {
+                                    force[1] = -100;
+                                }
+                                if (force[2] > 100) {
+                                    force[2] = 100;
+                                }
+                                if (force[2] < -100) {
+                                    force[2] = -100;
+                                }
                                 p1.addF(force);
                             }
                             if (!p2.getIsWall()) {
                                 force[gGravPos] += (p2.getM() * gGrav);
+                                //capping
+                                if (force[0] > 100) {
+                                    force[0] = 100;
+                                }
+                                if (force[0] < -100) {
+                                    force[0] = -100;
+                                }
+                                if (force[1] > 100) {
+                                    force[1] = 100;
+                                }
+                                if (force[1] < -100) {
+                                    force[1] = -100;
+                                }
+                                if (force[2] > 100) {
+                                    force[2] = 100;
+                                }
+                                if (force[2] < -100) {
+                                    force[2] = -100;
+                                }
                                 p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * force[2]});
                             }
                         }
@@ -324,14 +472,51 @@ void LinkedCellContainer::calcF() {
                     //calculate force between this and above back cell for all particles
                     for (auto &p1: getGrid()[x][y][z]) {
                         for (auto &p2: getGrid()[x][y + 1][z + 1]) {
-                            //  spdlog::info("calcF, above back");
                             auto force = forceModel.calculateForce(p1, p2);
                             if (!p1.getIsWall()) {
                                 force[gGravPos] += (p1.getM() * gGrav);
+                                //capping
+                                if (force[0] > 100) {
+                                    force[0] = 100;
+                                }
+                                if (force[0] < -100) {
+                                    force[0] = -100;
+                                }
+                                if (force[1] > 100) {
+                                    force[1] = 100;
+                                }
+                                if (force[1] < -100) {
+                                    force[1] = -100;
+                                }
+                                if (force[2] > 100) {
+                                    force[2] = 100;
+                                }
+                                if (force[2] < -100) {
+                                    force[2] = -100;
+                                }
                                 p1.addF(force);
                             }
                             if (!p2.getIsWall()) {
                                 force[gGravPos] += (p2.getM() * gGrav);
+                                //capping
+                                if (force[0] > 100) {
+                                    force[0] = 100;
+                                }
+                                if (force[0] < -100) {
+                                    force[0] = -100;
+                                }
+                                if (force[1] > 100) {
+                                    force[1] = 100;
+                                }
+                                if (force[1] < -100) {
+                                    force[1] = -100;
+                                }
+                                if (force[2] > 100) {
+                                    force[2] = 100;
+                                }
+                                if (force[2] < -100) {
+                                    force[2] = -100;
+                                }
                                 p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * force[2]});
                             }
                         }
@@ -341,14 +526,51 @@ void LinkedCellContainer::calcF() {
                 if (x + 1 > 0 && x + 1 < getGrid().size()) {
                     for (auto &p1: getGrid()[x][y][z]) {
                         for (auto &p2: getGrid()[x + 1][y][z]) {
-                            //   spdlog::info("calcF, right");
                             auto force = forceModel.calculateForce(p1, p2);
                             if (!p1.getIsWall()) {
                                 force[gGravPos] += (p1.getM() * gGrav);
+                                //capping
+                                if (force[0] > 100) {
+                                    force[0] = 100;
+                                }
+                                if (force[0] < -100) {
+                                    force[0] = -100;
+                                }
+                                if (force[1] > 100) {
+                                    force[1] = 100;
+                                }
+                                if (force[1] < -100) {
+                                    force[1] = -100;
+                                }
+                                if (force[2] > 100) {
+                                    force[2] = 100;
+                                }
+                                if (force[2] < -100) {
+                                    force[2] = -100;
+                                }
                                 p1.addF(force);
                             }
                             if (!p2.getIsWall()) {
                                 force[gGravPos] += (p2.getM() * gGrav);
+                                //capping
+                                if (force[0] > 100) {
+                                    force[0] = 100;
+                                }
+                                if (force[0] < -100) {
+                                    force[0] = -100;
+                                }
+                                if (force[1] > 100) {
+                                    force[1] = 100;
+                                }
+                                if (force[1] < -100) {
+                                    force[1] = -100;
+                                }
+                                if (force[2] > 100) {
+                                    force[2] = 100;
+                                }
+                                if (force[2] < -100) {
+                                    force[2] = -100;
+                                }
                                 p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * force[2]});
                             }
                         }
@@ -356,17 +578,54 @@ void LinkedCellContainer::calcF() {
                 }
                 //if right back neighbour exists (x+1 & z+1)
                 if (x + 1 > 0 && x + 1 < getGrid().size() && z + 1 > 0 && z + 1 < getGrid()[x][y].size()) {
-                    //calculate force between this and above back cell for all particles
+                    //calculate force between this and right back cell for all particles
                     for (auto &p1: getGrid()[x][y][z]) {
                         for (auto &p2: getGrid()[x + 1][y][z + 1]) {
-                            //   spdlog::info("calcF, right back");
                             auto force = forceModel.calculateForce(p1, p2);
                             if (!p1.getIsWall()) {
                                 force[gGravPos] += (p1.getM() * gGrav);
+                                //capping
+                                if (force[0] > 100) {
+                                    force[0] = 100;
+                                }
+                                if (force[0] < -100) {
+                                    force[0] = -100;
+                                }
+                                if (force[1] > 100) {
+                                    force[1] = 100;
+                                }
+                                if (force[1] < -100) {
+                                    force[1] = -100;
+                                }
+                                if (force[2] > 100) {
+                                    force[2] = 100;
+                                }
+                                if (force[2] < -100) {
+                                    force[2] = -100;
+                                }
                                 p1.addF(force);
                             }
                             if (!p2.getIsWall()) {
                                 force[gGravPos] += (p2.getM() * gGrav);
+                                //capping
+                                if (force[0] > 100) {
+                                    force[0] = 100;
+                                }
+                                if (force[0] < -100) {
+                                    force[0] = -100;
+                                }
+                                if (force[1] > 100) {
+                                    force[1] = 100;
+                                }
+                                if (force[1] < -100) {
+                                    force[1] = -100;
+                                }
+                                if (force[2] > 100) {
+                                    force[2] = 100;
+                                }
+                                if (force[2] < -100) {
+                                    force[2] = -100;
+                                }
                                 p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * force[2]});
                             }
                         }
@@ -376,14 +635,51 @@ void LinkedCellContainer::calcF() {
                 if (x + 1 > 0 && x + 1 < getGrid().size() && y + 1 > 0 && y + 1 < getGrid()[x].size()) {
                     for (auto &p1: getGrid()[x][y][z]) {
                         for (auto &p2: getGrid()[x + 1][y + 1][z]) {
-                            //spdlog::info("calcF, upper right");
                             auto force = forceModel.calculateForce(p1, p2);
                             if (!p1.getIsWall()) {
                                 force[gGravPos] += (p1.getM() * gGrav);
+                                //capping
+                                if (force[0] > 100) {
+                                    force[0] = 100;
+                                }
+                                if (force[0] < -100) {
+                                    force[0] = -100;
+                                }
+                                if (force[1] > 100) {
+                                    force[1] = 100;
+                                }
+                                if (force[1] < -100) {
+                                    force[1] = -100;
+                                }
+                                if (force[2] > 100) {
+                                    force[2] = 100;
+                                }
+                                if (force[2] < -100) {
+                                    force[2] = -100;
+                                }
                                 p1.addF(force);
                             }
                             if (!p2.getIsWall()) {
                                 force[gGravPos] += (p2.getM() * gGrav);
+                                //capping
+                                if (force[0] > 100) {
+                                    force[0] = 100;
+                                }
+                                if (force[0] < -100) {
+                                    force[0] = -100;
+                                }
+                                if (force[1] > 100) {
+                                    force[1] = 100;
+                                }
+                                if (force[1] < -100) {
+                                    force[1] = -100;
+                                }
+                                if (force[2] > 100) {
+                                    force[2] = 100;
+                                }
+                                if (force[2] < -100) {
+                                    force[2] = -100;
+                                }
                                 p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * force[2]});
                             }
                         }
@@ -394,14 +690,51 @@ void LinkedCellContainer::calcF() {
                     && z + 1 > 0 && z + 1 < getGrid()[x][y].size()) {
                     for (auto &p1: getGrid()[x][y][z]) {
                         for (auto &p2: getGrid()[x + 1][y + 1][z + 1]) {
-                            //   spdlog::info("calcF, upper right diagonal back");
                             auto force = forceModel.calculateForce(p1, p2);
                             if (!p1.getIsWall()) {
                                 force[gGravPos] += (p1.getM() * gGrav);
+                                //capping
+                                if (force[0] > 100) {
+                                    force[0] = 100;
+                                }
+                                if (force[0] < -100) {
+                                    force[0] = -100;
+                                }
+                                if (force[1] > 100) {
+                                    force[1] = 100;
+                                }
+                                if (force[1] < -100) {
+                                    force[1] = -100;
+                                }
+                                if (force[2] > 100) {
+                                    force[2] = 100;
+                                }
+                                if (force[2] < -100) {
+                                    force[2] = -100;
+                                }
                                 p1.addF(force);
                             }
                             if (!p2.getIsWall()) {
                                 force[gGravPos] += (p2.getM() * gGrav);
+                                //capping
+                                if (force[0] > 100) {
+                                    force[0] = 100;
+                                }
+                                if (force[0] < -100) {
+                                    force[0] = -100;
+                                }
+                                if (force[1] > 100) {
+                                    force[1] = 100;
+                                }
+                                if (force[1] < -100) {
+                                    force[1] = -100;
+                                }
+                                if (force[2] > 100) {
+                                    force[2] = 100;
+                                }
+                                if (force[2] < -100) {
+                                    force[2] = -100;
+                                }
                                 p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * force[2]});
                             }
                         }
@@ -411,14 +744,51 @@ void LinkedCellContainer::calcF() {
                 if (x - 1 >= 0 && x - 1 < getGrid().size() && y + 1 > 0 && y + 1 < getGrid()[x].size()) {
                     for (auto &p1: getGrid()[x][y][z]) {
                         for (auto &p2: getGrid()[x - 1][y + 1][z]) {
-                            //   spdlog::info("calcF, upper left diagonal");
                             auto force = forceModel.calculateForce(p1, p2);
                             if (!p1.getIsWall()) {
                                 force[gGravPos] += (p1.getM() * gGrav);
+                                //capping
+                                if (force[0] > 100) {
+                                    force[0] = 100;
+                                }
+                                if (force[0] < -100) {
+                                    force[0] = -100;
+                                }
+                                if (force[1] > 100) {
+                                    force[1] = 100;
+                                }
+                                if (force[1] < -100) {
+                                    force[1] = -100;
+                                }
+                                if (force[2] > 100) {
+                                    force[2] = 100;
+                                }
+                                if (force[2] < -100) {
+                                    force[2] = -100;
+                                }
                                 p1.addF(force);
                             }
                             if (!p2.getIsWall()) {
                                 force[gGravPos] += (p2.getM() * gGrav);
+                                //capping
+                                if (force[0] > 100) {
+                                    force[0] = 100;
+                                }
+                                if (force[0] < -100) {
+                                    force[0] = -100;
+                                }
+                                if (force[1] > 100) {
+                                    force[1] = 100;
+                                }
+                                if (force[1] < -100) {
+                                    force[1] = -100;
+                                }
+                                if (force[2] > 100) {
+                                    force[2] = 100;
+                                }
+                                if (force[2] < -100) {
+                                    force[2] = -100;
+                                }
                                 p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * force[2]});
                             }
                         }
@@ -429,14 +799,51 @@ void LinkedCellContainer::calcF() {
                     z + 1 < getGrid()[x][y].size()) {
                     for (auto &p1: getGrid()[x][y][z]) {
                         for (auto &p2: getGrid()[x - 1][y + 1][z + 1]) {
-                            //  spdlog::info("calcF, upper left diagonal back");
                             auto force = forceModel.calculateForce(p1, p2);
                             if (!p1.getIsWall()) {
                                 force[gGravPos] += (p1.getM() * gGrav);
+                                //capping
+                                if (force[0] > 100) {
+                                    force[0] = 100;
+                                }
+                                if (force[0] < -100) {
+                                    force[0] = -100;
+                                }
+                                if (force[1] > 100) {
+                                    force[1] = 100;
+                                }
+                                if (force[1] < -100) {
+                                    force[1] = -100;
+                                }
+                                if (force[2] > 100) {
+                                    force[2] = 100;
+                                }
+                                if (force[2] < -100) {
+                                    force[2] = -100;
+                                }
                                 p1.addF(force);
                             }
                             if (!p2.getIsWall()) {
                                 force[gGravPos] += (p2.getM() * gGrav);
+                                //capping
+                                if (force[0] > 100) {
+                                    force[0] = 100;
+                                }
+                                if (force[0] < -100) {
+                                    force[0] = -100;
+                                }
+                                if (force[1] > 100) {
+                                    force[1] = 100;
+                                }
+                                if (force[1] < -100) {
+                                    force[1] = -100;
+                                }
+                                if (force[2] > 100) {
+                                    force[2] = 100;
+                                }
+                                if (force[2] < -100) {
+                                    force[2] = -100;
+                                }
                                 p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * force[2]});
                             }
                         }
@@ -446,14 +853,51 @@ void LinkedCellContainer::calcF() {
                 if (z + 1 > 0 && z + 1 < getGrid()[x][y].size()) {
                     for (auto &p1: getGrid()[x][y][z]) {
                         for (auto &p2: getGrid()[x][y][z + 1]) {
-                            //   spdlog::info("calcF, back");
                             auto force = forceModel.calculateForce(p1, p2);
                             if (!p1.getIsWall()) {
                                 force[gGravPos] += (p1.getM() * gGrav);
-                                p1.addF({force[0], force[1], force[2] + (p1.getM() * gGrav)});
+                                //capping
+                                if (force[0] > 100) {
+                                    force[0] = 100;
+                                }
+                                if (force[0] < -100) {
+                                    force[0] = -100;
+                                }
+                                if (force[1] > 100) {
+                                    force[1] = 100;
+                                }
+                                if (force[1] < -100) {
+                                    force[1] = -100;
+                                }
+                                if (force[2] > 100) {
+                                    force[2] = 100;
+                                }
+                                if (force[2] < -100) {
+                                    force[2] = -100;
+                                }
+                                p1.addF(force);
                             }
                             if (!p2.getIsWall()) {
                                 force[gGravPos] += (p2.getM() * gGrav);
+                                //capping
+                                if (force[0] > 100) {
+                                    force[0] = 100;
+                                }
+                                if (force[0] < -100) {
+                                    force[0] = -100;
+                                }
+                                if (force[1] > 100) {
+                                    force[1] = 100;
+                                }
+                                if (force[1] < -100) {
+                                    force[1] = -100;
+                                }
+                                if (force[2] > 100) {
+                                    force[2] = 100;
+                                }
+                                if (force[2] < -100) {
+                                    force[2] = -100;
+                                }
                                 p2.addF({-1.0 * force[0], -1.0 * force[1], -1.0 * force[2]});
                             }
                         }
@@ -472,24 +916,26 @@ void LinkedCellContainer::calcF() {
         }
     }
     particleList = nParticleList;
+
 }
 
-//if membrane -> neighboring forces
+//if membrane -> use neighboring forces
 void LinkedCellContainer::calcNF() {
+    initGrid();
+
     for (auto p1 = particleList.begin(); p1 < particleList.end(); p1++) {
+        if (checkBoundary('r')) {
+            applyReflecting(*p1);
+        }
+        //check done
+        if (checkBoundary('p')) {
+            applyPeriodic(*p1, ceil(p1->getX()[0] / cutoffRadius), ceil(p1->getX()[1] / cutoffRadius),
+                          ceil(p1->getX()[2] / cutoffRadius));
+        }
+    }
+
+    for (auto p1 = particleList.begin(); p1 < particleList.end() - 1; p1++) {
         for (auto p2 = p1 + 1; p2 < particleList.end(); p2++) {
-            //if (checkBoundary('r')) {
-            //    applyReflecting(*p1);
-            //    spdlog::info("in calcNF reflect this is force of p1 {}, {}, {}", p1->getF()[0], p1->getF()[1],
-            //                p1->getF()[2]);
-            //}
-            // check done
-            //if (checkBoundary('p')) {
-            //    applyPeriodic(*p1, ceil(p1->getX()[0] / cutoffRadius), ceil(p1->getX()[1] / cutoffRadius),
-            //                  ceil(p1->getX()[2] / cutoffRadius));
-            //    spdlog::info("in calcNF periodic this is force of p1 {}, {}, {}", p1->getF()[0], p1->getF()[1],
-            //               p1->getF()[2]);
-            // }
             double sigma;
             if (p1->getType() != p2->getType()) {
                 sigma = (p1->getSigma() + p2->getSigma()) / 2;
@@ -498,11 +944,14 @@ void LinkedCellContainer::calcNF() {
             }
             auto dis = std::pow(2, (1 / 6)) * sigma;
             std::array<double, 3> force{0.0, 0.0, 0.0};
+
             if ((p1->getXIndex() == p2->getXIndex() && abs(p2->getYIndex() - p1->getYIndex()) == 1)
                 || (p1->getYIndex() == p2->getYIndex() && abs(p2->getXIndex() - p1->getXIndex()) == 1)) {
                 force = applyNeighbouringForce(*p1, *p2, "direct");
+
             } else if (abs(p2->getXIndex() - p1->getXIndex()) == 1 && abs(p2->getYIndex() - p1->getYIndex()) == 1) {
                 force = applyNeighbouringForce(*p1, *p2, "diagonal");
+
             } else if (abs(p1->getX()[0] - p2->getX()[0]) < dis &&
                        abs(p1->getX()[1] - p2->getX()[1]) < dis &&
                        abs(p1->getX()[2] - p2->getX()[2]) < dis) {
@@ -510,142 +959,72 @@ void LinkedCellContainer::calcNF() {
             }
             //The particles with x/y-indices (17/24), (17/25), (18/24) and (18/25) are pulled
             //by a constant force FZ-UP “upwards“ along the z-axis:
-            if ((p1->getXIndex() == 17 && p1->getXIndex() == 24) ||
+            /*if ((p1->getXIndex() == 17 && p1->getXIndex() == 24) ||
                 (p1->getXIndex() == 17 && p1->getXIndex() == 25) ||
                 (p1->getXIndex() == 18 && p1->getXIndex() == 24) ||
-                (p1->getXIndex() == 18 && p1->getXIndex() == 25)) {
-            //if (p1->getType() == 2) {
+                (p1->getXIndex() == 18 && p1->getXIndex() == 25)) {*/
+            if (p1->getType() == 5) {
                 force[2] += pullUpF;
             }
             if (!p1->getIsWall()) {
                 force[gGravPos] += (p1->getM() * gGrav);
+                //capping
+                if (force[0] > 100) {
+                    force[0] = 100;
+                }
+                if (force[0] < -100) {
+                    force[0] = -100;
+                }
+                if (force[1] > 100) {
+                    force[1] = 100;
+                }
+                if (force[1] < -100) {
+                    force[1] = -100;
+                }
+                if (force[2] > 100) {
+                    force[2] = 100;
+                }
+                if (force[2] < -100) {
+                    force[2] = -100;
+                }
                 p1->addF(force);
             }
             if (!p2->getIsWall()) {
                 force[gGravPos] += (p2->getM() * gGrav);
+                //capping
+                if (force[0] > 100) {
+                    force[0] = 100;
+                }
+                if (force[0] < -100) {
+                    force[0] = -100;
+                }
+                if (force[1] > 100) {
+                    force[1] = 100;
+                }
+                if (force[1] < -100) {
+                    force[1] = -100;
+                }
+                if (force[2] > 100) {
+                    force[2] = 100;
+                }
+                if (force[2] < -100) {
+                    force[2] = -100;
+                }
                 p2->addF({-1.0 * force[0], -1.0 * force[1], -1.0 * force[2]});
             }
         }
     }
-}
 
-/**
- * @brief Calculate xi(tn+1)
- * formula: xi(tn+1) = xi(tn) + ∆t · vi(tn) + (∆t)^2 * (Fi(tn)/2mi)
- */
-//check done, +front and back periodic
-void LinkedCellContainer::calculateX(double delta_t) {
-    // spdlog::info("this is calcX");
-
-    for (auto &p: getParticles()) {
-        auto xi_tn1 = Formulas::verletXStep(p.getX(), p.getV(), p.getF(), p.getM(), delta_t);
-        //xi_tn1[2] = 0.0;
-        //this is another periodic boundary same as in initGrid
-        if (checkBoundary('p')) {
-            if (boundaryCon[0] == 'p' && p.getX()[0] < 0.0) {
-                xi_tn1[0] = p.getX()[0] + domainSize[0];
-            }
-            // upper
-            if (boundaryCon[1] == 'p' && p.getX()[1] > domainSize[1]) {
-                xi_tn1[1] = p.getX()[1] - domainSize[1];
-            }
-            // right
-            if (boundaryCon[2] == 'p' && p.getX()[0] > domainSize[0]) {
-                xi_tn1[0] = p.getX()[0] - domainSize[0];
-            }
-            // floor
-            if (boundaryCon[3] == 'p' && p.getX()[1] < 0.0) {
-                xi_tn1[1] = p.getX()[1] + domainSize[1];
-                //spdlog::info("this is p[2] in initGrid periodic con floor {}", p.getX()[2]);
-            }
-            // front
-            if (boundaryCon[4] == 'p' && p.getX()[2] < 0.0) {
-                xi_tn1[2] = p.getX()[2] + domainSize[2];
-            }
-            // back
-            if (boundaryCon[5] == 'p' && p.getX()[2] > domainSize[0]) {
-                xi_tn1[2] = p.getX()[2] - domainSize[2];
+    /*for (auto &x: getGrid()) {
+        for (auto &y: x) {
+            for (auto &z: y) {
+                for (auto &p: z) {
+                    nParticleList.push_back(p);
+                }
             }
         }
-        if (!p.getIsWall()) {
-            p.setX(xi_tn1);  // Update the position
-        }
-        /*    spdlog::info("this is calcX ps position {}, {}, {}", p.getX()[0], p.getX()[1], p.getX()[2]);
-            spdlog::info("this is calcX ps force {}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
-            spdlog::info("this is calcX ps velocity{}, {}, {}", p.getV()[0], p.getV()[1], p.getV()[2]);*/
-
     }
-    //initGrid();
-}
-
-/**
- * @brief Calculate the velocity at time tn+1
- * formula: vi(tn+1) = vi(tn) + ∆t * ((Fi(tn) + Fi(tn+1))/ 2mi)
- */
-//check done
-void LinkedCellContainer::calculateV(double delta_t) {
-    // spdlog::info("this is calcV");
-
-    for (auto &p: getParticles()) {
-        auto vi_tn1 = Formulas::verletVStep(p.getV(), p.getOldF(), p.getF(), p.getM(), delta_t);
-        //vi_tn1[2] = 0.0;
-        p.setV(vi_tn1);
-        /*     spdlog::info("this is calcX ps position {}, {}, {}", p.getX()[0], p.getX()[1], p.getX()[2]);
-             spdlog::info("this is calcX ps force {}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
-             spdlog::info("this is calcX ps velocity{}, {}, {}", p.getV()[0], p.getV()[1], p.getV()[2]);*/
-        // spdlog::info("in calcV this is velocity of p1 {}, {}, {}", p.getV()[0], p.getV()[1], p.getV()[2]);
-    }
-}
-
-//check done
-void LinkedCellContainer::plotParticles(int iteration) {
-
-    std::string out_name("MD_vtk");
-
-    outputWriter::VTKWriter writer;
-    writer.initializeOutput(size());
-    for (auto &p: getParticles()) {
-        writer.plotParticle(p);
-    }
-    writer.writeFile(out_name, iteration);
-}
-
-//check done
-bool LinkedCellContainer::checkDistance(Particle &p, std::string border) {
-    //divided by 2.0 because of border p____|____p
-    auto disCheck = std::pow(2, (1 / 6)) * p.getSigma() / 2.0;
-
-    if (border == "left") {
-        if (p.getX()[0] < disCheck && p.getX()[0] >= 0.0) {
-            return true;
-        }
-    }
-    if (border == "right") {
-        if (domainSize[0] - p.getX()[0] < disCheck && p.getX()[0] <= domainSize[0]) {
-            return true;
-        }
-    }
-    if (border == "floor") {
-        if (p.getX()[1] < disCheck && p.getX()[1] >= 0.0) {
-            return true;
-        }
-    }
-    if (border == "upper") {
-        if (domainSize[1] - p.getX()[1] < disCheck && p.getX()[1] <= domainSize[1]) {
-            return true;
-        }
-    }
-    if (border == "front") {
-        if (p.getX()[2] < disCheck && p.getX()[2] >= 0.0) {
-            return true;
-        }
-    }
-    if (border == "back") {
-        if (domainSize[2] - p.getX()[2] < disCheck && p.getX()[2] <= domainSize[2]) {
-            return true;
-        }
-    }
-    return false;
+    particleList = nParticleList;*/
 }
 
 /**
@@ -654,7 +1033,6 @@ bool LinkedCellContainer::checkDistance(Particle &p, std::string border) {
  * bounces back borderline particle from border through
  * creating new halo particle which applies force on it
  */
-//check done
 void LinkedCellContainer::applyReflecting(Particle &p) {
     auto dis = std::pow(2, (1 / 6)) * p.getSigma();
 
@@ -662,105 +1040,182 @@ void LinkedCellContainer::applyReflecting(Particle &p) {
     //near left border
     if (boundaryCon[0] == 'r') {
         if (checkDistance(p, "left")) {
-            //   spdlog::info("this is appReflect, left");
             halo.setX({(-1) * p.getX()[0], p.getX()[1], p.getX()[2]});
-            // spdlog::info("this is appReflect left ps pos {}, {}, {}", p.getX()[0], p.getX()[1], p.getX()[2]);
-            // spdlog::info("this is appReflect left halos pos {}, {}, {}", halo.getX()[0], halo.getX()[1],
-            //            halo.getX()[2]);
-            // spdlog::info("this is appReflect left ps force before {}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
             auto force = forceModel.calculateForce(p, halo);
-            //   spdlog::info("this is appReflect left force {}, {}, {}", force[0], force[1], force[2]);
-            force[gGravPos] += (p.getM() * gGrav);
-            p.addF(force);
-            // spdlog::info("this is appReflect left ps force after {}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
+            if (!p.getIsWall()) {
+                force[gGravPos] += (p.getM() * gGrav);
+                //capping
+                if (force[0] > 100) {
+                    force[0] = 100;
+                }
+                if (force[0] < -100) {
+                    force[0] = -100;
+                }
+                if (force[1] > 100) {
+                    force[1] = 100;
+                }
+                if (force[1] < -100) {
+                    force[1] = -100;
+                }
+                if (force[2] > 100) {
+                    force[2] = 100;
+                }
+                if (force[2] < -100) {
+                    force[2] = -100;
+                }
+                p.addF(force);
+            }
         }
     }
     //near upper border
     if (boundaryCon[1] == 'r') {
         if (checkDistance(p, "upper")) {
-            //  spdlog::info("this is appReflect, upper");
             halo.setX({p.getX()[0], domainSize[1] + (domainSize[1] - p.getX()[1]), p.getX()[2]});
-            //  spdlog::info("this is appReflect upper ps pos {}, {}, {}", p.getX()[0], p.getX()[1], p.getX()[2]);
-            //  spdlog::info("this is appReflect upper halos pos {}, {}, {}", halo.getX()[0], halo.getX()[1],
-            //      halo.getX()[2]);
-            //          spdlog::info("this is appReflect upper ps force before {}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
             auto force = forceModel.calculateForce(p, halo);
-            //        spdlog::info("this is appReflect upper force {}, {}, {}", force[0], force[1], force[2]);
-            force[gGravPos] += (p.getM() * gGrav);
-            p.addF(force);
-            //      spdlog::info("this is appReflect upper ps force after {}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
+            if (!p.getIsWall()) {
+                force[gGravPos] += (p.getM() * gGrav);
+                //capping
+                if (force[0] > 100) {
+                    force[0] = 100;
+                }
+                if (force[0] < -100) {
+                    force[0] = -100;
+                }
+                if (force[1] > 100) {
+                    force[1] = 100;
+                }
+                if (force[1] < -100) {
+                    force[1] = -100;
+                }
+                if (force[2] > 100) {
+                    force[2] = 100;
+                }
+                if (force[2] < -100) {
+                    force[2] = -100;
+                }
+                p.addF(force);
+            }
         }
     }
     //near right border
     if (boundaryCon[2] == 'r') {
         if (checkDistance(p, "right")) {
-            //       spdlog::info("this is appReflect, right");
             halo.setX({domainSize[0] + (domainSize[0] - p.getX()[0]), p.getX()[1], p.getX()[2]});
-            //     spdlog::info("this is appReflect right ps pos {}, {}, {}", p.getX()[0], p.getX()[1], p.getX()[2]);
-            //   spdlog::info("this is appReflect right halos pos {}, {}, {}", halo.getX()[0], halo.getX()[1],
-            //            halo.getX()[2]);
-            // spdlog::info("this is appReflect right ps force before{}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
             auto force = forceModel.calculateForce(p, halo);
-            //      spdlog::info("this is appReflect right force {}, {}, {}", force[0], force[1], force[2]);
-            force[gGravPos] += (p.getM() * gGrav);
-            p.addF(force);
-            //    spdlog::info("this is appReflect right ps force after {}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
+            if (!p.getIsWall()) {
+                force[gGravPos] += (p.getM() * gGrav);
+                //capping
+                if (force[0] > 100) {
+                    force[0] = 100;
+                }
+                if (force[0] < -100) {
+                    force[0] = -100;
+                }
+                if (force[1] > 100) {
+                    force[1] = 100;
+                }
+                if (force[1] < -100) {
+                    force[1] = -100;
+                }
+                if (force[2] > 100) {
+                    force[2] = 100;
+                }
+                if (force[2] < -100) {
+                    force[2] = -100;
+                }
+                p.addF(force);
+            }
         }
     }
     //near floor border
     if (boundaryCon[3] == 'r') {
         if (checkDistance(p, "floor")) {
-            //       spdlog::info("this is appReflect, floor");
             halo.setX({p.getX()[0], (-1) * p.getX()[1], p.getX()[2]});
-            //     spdlog::info("this is appReflect floor ps pos {}, {}, {}", p.getX()[0], p.getX()[1], p.getX()[2]);
-            //   spdlog::info("this is appReflect floor halos pos {}, {}, {}", halo.getX()[0], halo.getX()[1],
-            //            halo.getX()[2]);
-            // spdlog::info("this is appReflect floor ps force before {}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
             auto force = forceModel.calculateForce(p, halo);
-            //      spdlog::info("this is appReflect floor force {}, {}, {}", force[0], force[1], force[2]);
-            force[gGravPos] += (p.getM() * gGrav);
-            p.addF(force);
-            //    spdlog::info("this is appReflect floor ps force after {}, {}, {}", p.getF()[0], p.getF()[1], p.getF()[2]);
+            if (!p.getIsWall()) {
+                //capping
+                force[gGravPos] += (p.getM() * gGrav);
+                if (force[0] > 100) {
+                    force[0] = 100;
+                }
+                if (force[0] < -100) {
+                    force[0] = -100;
+                }
+                if (force[1] > 100) {
+                    force[1] = 100;
+                }
+                if (force[1] < -100) {
+                    force[1] = -100;
+                }
+                if (force[2] > 100) {
+                    force[2] = 100;
+                }
+                if (force[2] < -100) {
+                    force[2] = -100;
+                }
+                p.addF(force);
+            }
         }
     }
     if (getDimension() != 2) {
         //near front border
         if (boundaryCon[4] == 'r') {
             if (checkDistance(p, "front")) {
-                //    spdlog::info("this is appReflect, front");
-                //halo.setX({p.getX()[0], p.getX()[1], (-1) * p.getX()[2]});
                 halo.setX({p.getX()[0], p.getX()[1], p.getX()[2] - dis});
-                //  spdlog::info("this is appReflect front ps pos {}, {}, {}", p.getX()[0], p.getX()[1], p.getX()[2]);
-                //  spdlog::info("this is appReflect front halos pos {}, {}, {}", halo.getX()[0], halo.getX()[1],
-                //             halo.getX()[2]);
-                //      spdlog::info("this is appReflect front ps force before {}, {}, {}", p.getF()[0], p.getF()[1],
-                //                 p.getF()[2]);
                 auto force = forceModel.calculateForce(p, halo);
-                //  spdlog::info("this is appReflect front force {}, {}, {}", force[0], force[1], force[2]);
-                force[gGravPos] += (p.getM() * gGrav);
-                p.addF(force);
-                //spdlog::info("this is appReflect front ps force after {}, {}, {}", p.getF()[0], p.getF()[1],
-                //       p.getF()[2]);
+                if (!p.getIsWall()) {
+                    force[gGravPos] += (p.getM() * gGrav);
+                    //capping
+                    if (force[0] > 100) {
+                        force[0] = 100;
+                    }
+                    if (force[0] < -100) {
+                        force[0] = -100;
+                    }
+                    if (force[1] > 100) {
+                        force[1] = 100;
+                    }
+                    if (force[1] < -100) {
+                        force[1] = -100;
+                    }
+                    if (force[2] > 100) {
+                        force[2] = 100;
+                    }
+                    if (force[2] < -100) {
+                        force[2] = -100;
+                    }
+                    p.addF(force);
+                }
             }
         }
         //near back border
         if (boundaryCon[5] == 'r') {
             if (checkDistance(p, "back")) {
-                //   spdlog::info("this is appReflect, back");
-                //changed from p.getX()[2] + (domainSize[2] - p.getX()[2]) -> domainSize[2] + (domainSize[2] - p.getX()[2])
-                //halo.setX({p.getX()[0], p.getX()[1], domainSize[2] + (domainSize[2] - p.getX()[2])});
                 halo.setX({p.getX()[0], p.getX()[1], p.getX()[2] + dis});
-                // spdlog::info("this is appReflect left ps pos {}, {}, {}", p.getX()[0], p.getX()[1], p.getX()[2]);
-                //              spdlog::info("this is appReflect left halos pos {}, {}, {}", halo.getX()[0], halo.getX()[1],
-                //                         halo.getX()[2]);
-                //          spdlog::info("this is appReflect back ps force before {}, {}, {}", p.getF()[0], p.getF()[1],
-                //                     p.getF()[2]);
                 auto force = forceModel.calculateForce(p, halo);
-                //      spdlog::info("this is appReflect back force {}, {}, {}", force[0], force[1], force[2]);
-                force[gGravPos] += (p.getM() * gGrav);
-                p.addF(force);
-                //    spdlog::info("this is appReflect back ps force after {}, {}, {}", p.getF()[0], p.getF()[1],
-                //               p.getF()[2]);
+                if (!p.getIsWall()) {
+                    force[gGravPos] += (p.getM() * gGrav);
+                    //capping
+                    if (force[0] > 100) {
+                        force[0] = 100;
+                    }
+                    if (force[0] < -100) {
+                        force[0] = -100;
+                    }
+                    if (force[1] > 100) {
+                        force[1] = 100;
+                    }
+                    if (force[1] < -100) {
+                        force[1] = -100;
+                    }
+                    if (force[2] > 100) {
+                        force[2] = 100;
+                    }
+                    if (force[2] < -100) {
+                        force[2] = -100;
+                    }
+                    p.addF(force);
+                }
             }
         }
     }
@@ -775,7 +1230,6 @@ void LinkedCellContainer::applyReflecting(Particle &p) {
  */
 //check done
 void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
-    //spdlog::info("this is appPeriod");
     Particle halo(p);
 
     // left
@@ -787,6 +1241,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                 if (abs(p1.getX()[0] - halo.getX()[0]) <= cutoffRadius) {
                     auto force = forceModel.calculateForce(p1, halo);
                     force[gGravPos] += (p1.getM() * gGrav);
+                    //capping
+                    if (force[0] > 100) {
+                        force[0] = 100;
+                    }
+                    if (force[0] < -100) {
+                        force[0] = -100;
+                    }
+                    if (force[1] > 100) {
+                        force[1] = 100;
+                    }
+                    if (force[1] < -100) {
+                        force[1] = -100;
+                    }
+                    if (force[2] > 100) {
+                        force[2] = 100;
+                    }
                     p1.addF(force);
                 }
             }
@@ -799,6 +1269,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                         abs(p1.getX()[2] - halo.getX()[2]) <= cutoffRadius) {
                         auto force = forceModel.calculateForce(p1, halo);
                         force[gGravPos] += (p1.getM() * gGrav);
+                        //capping
+                    if (force[0] > 100) {
+                        force[0] = 100;
+                    }
+                    if (force[0] < -100) {
+                        force[0] = -100;
+                    }
+                    if (force[1] > 100) {
+                        force[1] = 100;
+                    }
+                    if (force[1] < -100) {
+                        force[1] = -100;
+                    }
+                    if (force[2] > 100) {
+                        force[2] = 100;
+                    }
                         p1.addF(force);
                     }
                 }
@@ -812,6 +1298,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                         abs(p1.getX()[2] - halo.getX()[2]) <= cutoffRadius) {
                         auto force = forceModel.calculateForce(p1, halo);
                         force[gGravPos] += (p1.getM() * gGrav);
+                        //capping
+                    if (force[0] > 100) {
+                        force[0] = 100;
+                    }
+                    if (force[0] < -100) {
+                        force[0] = -100;
+                    }
+                    if (force[1] > 100) {
+                        force[1] = 100;
+                    }
+                    if (force[1] < -100) {
+                        force[1] = -100;
+                    }
+                    if (force[2] > 100) {
+                        force[2] = 100;
+                    }
                         p1.addF(force);
                     }
                 }
@@ -828,6 +1330,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                 if (abs(p1.getX()[0] - halo.getX()[0]) <= cutoffRadius) {
                     auto force = forceModel.calculateForce(p1, halo);
                     force[gGravPos] += (p1.getM() * gGrav);
+                    //capping
+                    if (force[0] > 100) {
+                        force[0] = 100;
+                    }
+                    if (force[0] < -100) {
+                        force[0] = -100;
+                    }
+                    if (force[1] > 100) {
+                        force[1] = 100;
+                    }
+                    if (force[1] < -100) {
+                        force[1] = -100;
+                    }
+                    if (force[2] > 100) {
+                        force[2] = 100;
+                    }
                     p1.addF(force);
                 }
             }
@@ -840,6 +1358,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                         abs(p1.getX()[2] - halo.getX()[2]) <= cutoffRadius) {
                         auto force = forceModel.calculateForce(p1, halo);
                         force[gGravPos] += (p1.getM() * gGrav);
+                        //capping
+                    if (force[0] > 100) {
+                        force[0] = 100;
+                    }
+                    if (force[0] < -100) {
+                        force[0] = -100;
+                    }
+                    if (force[1] > 100) {
+                        force[1] = 100;
+                    }
+                    if (force[1] < -100) {
+                        force[1] = -100;
+                    }
+                    if (force[2] > 100) {
+                        force[2] = 100;
+                    }
                         p1.addF(force);
                     }
                 }
@@ -853,6 +1387,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                         abs(p1.getX()[2] - halo.getX()[2]) <= cutoffRadius) {
                         auto force = forceModel.calculateForce(p1, halo);
                         force[gGravPos] += (p1.getM() * gGrav);
+                        //capping
+                    if (force[0] > 100) {
+                        force[0] = 100;
+                    }
+                    if (force[0] < -100) {
+                        force[0] = -100;
+                    }
+                    if (force[1] > 100) {
+                        force[1] = 100;
+                    }
+                    if (force[1] < -100) {
+                        force[1] = -100;
+                    }
+                    if (force[2] > 100) {
+                        force[2] = 100;
+                    }
                         p1.addF(force);
                     }
                 }
@@ -869,6 +1419,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                 if (abs(p1.getX()[1] - halo.getX()[1]) <= cutoffRadius) {
                     auto force = forceModel.calculateForce(p1, halo);
                     force[gGravPos] += (p1.getM() * gGrav);
+                    //capping
+                    if (force[0] > 100) {
+                        force[0] = 100;
+                    }
+                    if (force[0] < -100) {
+                        force[0] = -100;
+                    }
+                    if (force[1] > 100) {
+                        force[1] = 100;
+                    }
+                    if (force[1] < -100) {
+                        force[1] = -100;
+                    }
+                    if (force[2] > 100) {
+                        force[2] = 100;
+                    }
                     p1.addF(force);
                 }
             }
@@ -881,6 +1447,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                         abs(p1.getX()[1] - halo.getX()[1]) <= cutoffRadius) {
                         auto force = forceModel.calculateForce(p1, halo);
                         force[gGravPos] += (p1.getM() * gGrav);
+                        //capping
+                        if (force[0] > 100) {
+                            force[0] = 100;
+                        }
+                        if (force[0] < -100) {
+                            force[0] = -100;
+                        }
+                        if (force[1] > 100) {
+                            force[1] = 100;
+                        }
+                        if (force[1] < -100) {
+                            force[1] = -100;
+                        }
+                        if (force[2] > 100) {
+                            force[2] = 100;
+                        }
                         p1.addF(force);
                     }
                 }
@@ -894,6 +1476,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                             abs(p1.getX()[2] - halo.getX()[2]) <= cutoffRadius) {
                             auto force = forceModel.calculateForce(p1, halo);
                             force[gGravPos] += (p1.getM() * gGrav);
+                            //capping
+                            if (force[0] > 100) {
+                                force[0] = 100;
+                            }
+                            if (force[0] < -100) {
+                                force[0] = -100;
+                            }
+                            if (force[1] > 100) {
+                                force[1] = 100;
+                            }
+                            if (force[1] < -100) {
+                                force[1] = -100;
+                            }
+                            if (force[2] > 100) {
+                                force[2] = 100;
+                            }
                             p1.addF(force);
                         }
                     }
@@ -908,6 +1506,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                             abs(p1.getX()[2] - halo.getX()[2]) <= cutoffRadius) {
                             auto force = forceModel.calculateForce(p1, halo);
                             force[gGravPos] += (p1.getM() * gGrav);
+                            //capping
+                            if (force[0] > 100) {
+                                force[0] = 100;
+                            }
+                            if (force[0] < -100) {
+                                force[0] = -100;
+                            }
+                            if (force[1] > 100) {
+                                force[1] = 100;
+                            }
+                            if (force[1] < -100) {
+                                force[1] = -100;
+                            }
+                            if (force[2] > 100) {
+                                force[2] = 100;
+                            }
                             p1.addF(force);
                         }
                     }
@@ -922,6 +1536,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                         abs(p1.getX()[1] - halo.getX()[1]) <= cutoffRadius) {
                         auto force = forceModel.calculateForce(p1, halo);
                         force[gGravPos] += (p1.getM() * gGrav);
+                        //capping
+                        if (force[0] > 100) {
+                            force[0] = 100;
+                        }
+                        if (force[0] < -100) {
+                            force[0] = -100;
+                        }
+                        if (force[1] > 100) {
+                            force[1] = 100;
+                        }
+                        if (force[1] < -100) {
+                            force[1] = -100;
+                        }
+                        if (force[2] > 100) {
+                            force[2] = 100;
+                        }
                         p1.addF(force);
                     }
                 }
@@ -935,6 +1565,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                             abs(p1.getX()[2] - halo.getX()[2]) <= cutoffRadius) {
                             auto force = forceModel.calculateForce(p1, halo);
                             force[gGravPos] += (p1.getM() * gGrav);
+                            //capping
+                            if (force[0] > 100) {
+                                force[0] = 100;
+                            }
+                            if (force[0] < -100) {
+                                force[0] = -100;
+                            }
+                            if (force[1] > 100) {
+                                force[1] = 100;
+                            }
+                            if (force[1] < -100) {
+                                force[1] = -100;
+                            }
+                            if (force[2] > 100) {
+                                force[2] = 100;
+                            }
                             p1.addF(force);
                         }
                     }
@@ -949,6 +1595,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                             abs(p1.getX()[2] - halo.getX()[2]) <= cutoffRadius) {
                             auto force = forceModel.calculateForce(p1, halo);
                             force[gGravPos] += (p1.getM() * gGrav);
+                            //capping
+                            if (force[0] > 100) {
+                                force[0] = 100;
+                            }
+                            if (force[0] < -100) {
+                                force[0] = -100;
+                            }
+                            if (force[1] > 100) {
+                                force[1] = 100;
+                            }
+                            if (force[1] < -100) {
+                                force[1] = -100;
+                            }
+                            if (force[2] > 100) {
+                                force[2] = 100;
+                            }
                             p1.addF(force);
                         }
                     }
@@ -963,6 +1625,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                         abs(p1.getX()[2] - halo.getX()[2]) <= cutoffRadius) {
                         auto force = forceModel.calculateForce(p1, halo);
                         force[gGravPos] += (p1.getM() * gGrav);
+                        //capping
+                        if (force[0] > 100) {
+                            force[0] = 100;
+                        }
+                        if (force[0] < -100) {
+                            force[0] = -100;
+                        }
+                        if (force[1] > 100) {
+                            force[1] = 100;
+                        }
+                        if (force[1] < -100) {
+                            force[1] = -100;
+                        }
+                        if (force[2] > 100) {
+                            force[2] = 100;
+                        }
                         p1.addF(force);
                     }
                 }
@@ -976,6 +1654,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                         abs(p1.getX()[2] - halo.getX()[2]) <= cutoffRadius) {
                         auto force = forceModel.calculateForce(p1, halo);
                         force[gGravPos] += (p1.getM() * gGrav);
+                        //capping
+                        if (force[0] > 100) {
+                            force[0] = 100;
+                        }
+                        if (force[0] < -100) {
+                            force[0] = -100;
+                        }
+                        if (force[1] > 100) {
+                            force[1] = 100;
+                        }
+                        if (force[1] < -100) {
+                            force[1] = -100;
+                        }
+                        if (force[2] > 100) {
+                            force[2] = 100;
+                        }
                         p1.addF(force);
                     }
                 }
@@ -992,6 +1686,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                 if (abs(p1.getX()[1] - halo.getX()[1]) <= cutoffRadius) {
                     auto force = forceModel.calculateForce(p1, halo);
                     force[gGravPos] += (p1.getM() * gGrav);
+                    //capping
+                    if (force[0] > 100) {
+                        force[0] = 100;
+                    }
+                    if (force[0] < -100) {
+                        force[0] = -100;
+                    }
+                    if (force[1] > 100) {
+                        force[1] = 100;
+                    }
+                    if (force[1] < -100) {
+                        force[1] = -100;
+                    }
+                    if (force[2] > 100) {
+                        force[2] = 100;
+                    }
                     p1.addF(force);
                 }
             }
@@ -1004,6 +1714,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                         abs(p1.getX()[1] - halo.getX()[1]) <= cutoffRadius) {
                         auto force = forceModel.calculateForce(p1, halo);
                         force[gGravPos] += (p1.getM() * gGrav);
+                        //capping
+                        if (force[0] > 100) {
+                            force[0] = 100;
+                        }
+                        if (force[0] < -100) {
+                            force[0] = -100;
+                        }
+                        if (force[1] > 100) {
+                            force[1] = 100;
+                        }
+                        if (force[1] < -100) {
+                            force[1] = -100;
+                        }
+                        if (force[2] > 100) {
+                            force[2] = 100;
+                        }
                         p1.addF(force);
                     }
                 }
@@ -1018,6 +1744,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                             abs(p1.getX()[2] - halo.getX()[2]) <= cutoffRadius) {
                             auto force = forceModel.calculateForce(p1, halo);
                             force[gGravPos] += (p1.getM() * gGrav);
+                            //capping
+                            if (force[0] > 100) {
+                                force[0] = 100;
+                            }
+                            if (force[0] < -100) {
+                                force[0] = -100;
+                            }
+                            if (force[1] > 100) {
+                                force[1] = 100;
+                            }
+                            if (force[1] < -100) {
+                                force[1] = -100;
+                            }
+                            if (force[2] > 100) {
+                                force[2] = 100;
+                            }
                             p1.addF(force);
                         }
                     }
@@ -1032,6 +1774,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                             abs(p1.getX()[2] - halo.getX()[2]) <= cutoffRadius) {
                             auto force = forceModel.calculateForce(p1, halo);
                             force[gGravPos] += (p1.getM() * gGrav);
+                            //capping
+                            if (force[0] > 100) {
+                                force[0] = 100;
+                            }
+                            if (force[0] < -100) {
+                                force[0] = -100;
+                            }
+                            if (force[1] > 100) {
+                                force[1] = 100;
+                            }
+                            if (force[1] < -100) {
+                                force[1] = -100;
+                            }
+                            if (force[2] > 100) {
+                                force[2] = 100;
+                            }
                             p1.addF(force);
                         }
                     }
@@ -1046,6 +1804,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                         abs(p1.getX()[1] - halo.getX()[1]) <= cutoffRadius) {
                         auto force = forceModel.calculateForce(p1, halo);
                         force[gGravPos] += (p1.getM() * gGrav);
+                        //capping
+                        if (force[0] > 100) {
+                            force[0] = 100;
+                        }
+                        if (force[0] < -100) {
+                            force[0] = -100;
+                        }
+                        if (force[1] > 100) {
+                            force[1] = 100;
+                        }
+                        if (force[1] < -100) {
+                            force[1] = -100;
+                        }
+                        if (force[2] > 100) {
+                            force[2] = 100;
+                        }
                         p1.addF(force);
                     }
                 }
@@ -1059,6 +1833,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                             abs(p1.getX()[2] - halo.getX()[2]) <= cutoffRadius) {
                             auto force = forceModel.calculateForce(p1, halo);
                             force[gGravPos] += (p1.getM() * gGrav);
+                            //capping
+                            if (force[0] > 100) {
+                                force[0] = 100;
+                            }
+                            if (force[0] < -100) {
+                                force[0] = -100;
+                            }
+                            if (force[1] > 100) {
+                                force[1] = 100;
+                            }
+                            if (force[1] < -100) {
+                                force[1] = -100;
+                            }
+                            if (force[2] > 100) {
+                                force[2] = 100;
+                            }
                             p1.addF(force);
                         }
                     }
@@ -1073,6 +1863,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                             abs(p1.getX()[2] - halo.getX()[2]) <= cutoffRadius) {
                             auto force = forceModel.calculateForce(p1, halo);
                             force[gGravPos] += (p1.getM() * gGrav);
+                            //capping
+                            if (force[0] > 100) {
+                                force[0] = 100;
+                            }
+                            if (force[0] < -100) {
+                                force[0] = -100;
+                            }
+                            if (force[1] > 100) {
+                                force[1] = 100;
+                            }
+                            if (force[1] < -100) {
+                                force[1] = -100;
+                            }
+                            if (force[2] > 100) {
+                                force[2] = 100;
+                            }
                             p1.addF(force);
                         }
                     }
@@ -1087,6 +1893,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                         abs(p1.getX()[2] - halo.getX()[2]) <= cutoffRadius) {
                         auto force = forceModel.calculateForce(p1, halo);
                         force[gGravPos] += (p1.getM() * gGrav);
+                        //capping
+                        if (force[0] > 100) {
+                            force[0] = 100;
+                        }
+                        if (force[0] < -100) {
+                            force[0] = -100;
+                        }
+                        if (force[1] > 100) {
+                            force[1] = 100;
+                        }
+                        if (force[1] < -100) {
+                            force[1] = -100;
+                        }
+                        if (force[2] > 100) {
+                            force[2] = 100;
+                        }
                         p1.addF(force);
                     }
                 }
@@ -1100,6 +1922,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                         abs(p1.getX()[2] - halo.getX()[2]) <= cutoffRadius) {
                         auto force = forceModel.calculateForce(p1, halo);
                         force[gGravPos] += (p1.getM() * gGrav);
+                        //capping
+                        if (force[0] > 100) {
+                            force[0] = 100;
+                        }
+                        if (force[0] < -100) {
+                            force[0] = -100;
+                        }
+                        if (force[1] > 100) {
+                            force[1] = 100;
+                        }
+                        if (force[1] < -100) {
+                            force[1] = -100;
+                        }
+                        if (force[2] > 100) {
+                            force[2] = 100;
+                        }
                         p1.addF(force);
                     }
                 }
@@ -1116,6 +1954,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                 if (abs(p1.getX()[2] - halo.getX()[2]) <= cutoffRadius) {
                     auto force = forceModel.calculateForce(p1, halo);
                     force[gGravPos] += (p1.getM() * gGrav);
+                    //capping
+                    if (force[0] > 100) {
+                        force[0] = 100;
+                    }
+                    if (force[0] < -100) {
+                        force[0] = -100;
+                    }
+                    if (force[1] > 100) {
+                        force[1] = 100;
+                    }
+                    if (force[1] < -100) {
+                        force[1] = -100;
+                    }
+                    if (force[2] > 100) {
+                        force[2] = 100;
+                    }
                     p1.addF(force);
                 }
             }
@@ -1131,6 +1985,22 @@ void LinkedCellContainer::applyPeriodic(Particle &p, int x, int y, int z) {
                 if (abs(p1.getX()[2] - halo.getX()[2]) <= cutoffRadius) {
                     auto force = forceModel.calculateForce(p1, halo);
                     force[gGravPos] += (p1.getM() * gGrav);
+                    //capping
+                    if (force[0] > 100) {
+                        force[0] = 100;
+                    }
+                    if (force[0] < -100) {
+                        force[0] = -100;
+                    }
+                    if (force[1] > 100) {
+                        force[1] = 100;
+                    }
+                    if (force[1] < -100) {
+                        force[1] = -100;
+                    }
+                    if (force[2] > 100) {
+                        force[2] = 100;
+                    }
                     p1.addF(force);
                 }
             }
@@ -1153,10 +2023,6 @@ std::array<double, 3> LinkedCellContainer::applyNeighbouringForce(Particle &p1, 
         return k * (Formulas::secondNorm(p1.getX() - p2.getX()) - sqrt(2 * r0)) * x;
     }
     return std::array<double, 3>();
-}
-
-std::vector<double> LinkedCellContainer::getDomainSize() {
-    return domainSize;
 }
 
 /**

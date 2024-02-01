@@ -32,7 +32,26 @@ namespace Formulas {
 
     std::array<double, 3> verletVStep(const std::array<double, 3> &v, const std::array<double, 3> &f_old,
                                       const std::array<double, 3> &f, const double m, const double delta_t) {
-        return v + delta_t / (2 * m) * (f_old + f);
+        auto vNew = v + delta_t / (2 * m) * (f_old + f);
+        if (vNew[0] > 100) {
+            vNew[0] = 100;
+        }
+        if (vNew[0] < -100) {
+            vNew[0] = -100;
+        }
+        if (vNew[1] > 100) {
+            vNew[1] = 100;
+        }
+        if (vNew[1] < -100) {
+            vNew[1] = -100;
+        }
+        if (vNew[2] > 100) {
+            vNew[2] = 100;
+        }
+        if (vNew[2] < -100) {
+            vNew[2] = -100;
+        }
+        return vNew;
     }
 
 }

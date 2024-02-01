@@ -37,7 +37,7 @@ void CuboidParticleGenerator::generateParticles(ParticleContainerBase &particleC
                         (xIndex == 17 && yIndex == 25) ||
                         (xIndex == 18 && yIndex == 24) ||
                         (xIndex == 18 && yIndex == 25)) {
-                        particle.setType(2);
+                        particle.setType(5);
                     }
                 } else {
                     Formulas::addMB(particle);

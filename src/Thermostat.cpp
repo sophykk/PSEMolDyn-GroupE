@@ -10,9 +10,6 @@ Thermostat::Thermostat(ParticleContainerBase &pc, double init, int n, bool useBM
     type = 2;
     deltaT = INFINITY;
     numDimensions = pc.getDimension();
-    //if (useBM) {
-    //    initializeWithBrownianMotion(pc);
-    //}
 }
 
 Thermostat::Thermostat(ParticleContainerBase &pc, double init, double target, double delta, int n, bool useBM) :
@@ -25,9 +22,6 @@ Thermostat::Thermostat(ParticleContainerBase &pc, double init, double target, do
         type = 2;
     }
     numDimensions = pc.getDimension();
-    //if (useBM) {
-    //    initializeWithBrownianMotion(pc);
-    //}
 }
 
 void Thermostat::initializeWithBrownianMotion(ParticleContainerBase &particleContainer) {
@@ -50,6 +44,7 @@ double Thermostat::calculateNewTemperature(ParticleContainerBase &particleContai
 }
 
 void Thermostat::applyThermostat(ParticleContainerBase &particleContainer) {
+    //if either heating or cooling
     if (type != 2 && ((type == 0 && initT < targetT) || (type == 1 && initT > targetT))) {
         auto tNew = calculateNewTemperature(particleContainer);
 

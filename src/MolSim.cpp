@@ -167,7 +167,8 @@ int main(int argc, char *argsv[]) {
         if ((!checkpointing || current_time < 15) && !isMembrane) {
             if (iteration % thermostatInterval == 0) {
                 thermostat.applyThermostat(*particleContainer);
-                //for w5t4.xml  -> thermostat.applyThermostatExtension(*particleContainer);
+                //for w5t4.xml  ->
+                //thermostat.applyThermostatExtension(*particleContainer);
             }
         }
 
