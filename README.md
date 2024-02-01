@@ -63,10 +63,11 @@ ctest
   
 ## Task 3 ##
 
-- implemented a new output writer TXTWriter, which writes on the first line of a txt file the number of the particles and then starting with the new line, the values for every particle on its own line; the values of the particles are separated by a space and written in this order: position, velocity, force, old force, mass, sigma, epsilon, gravitational acceleration and type
-- implemented a new file reader ParticlesFileReader, which reads out of a file, given as a parameter, the number of the particles and then reads every line one by one and initializes a particle with the corresponding values; the particle is then added to the vector given as a parameter
-- updated the main function to execute the simulation until timestamp 15; after that, the drop is generated, the values are saved in a file, then the simulation continues with all particles read from the saved file; for the part after the drop is added to the simulation, the thermostat is switched off
-- conducted the experiment of a falling drop by using periodic boundaries on the left and right sides and refleting boundaries for the up and down sides
+- extended the Rayleigh-Taylor Instability to 3D
+- Cuboid Generator generates the cuboids correctly in the beginning of the simualtion.
+- we had some problems with disappearing particles. Particle container became smaller at every iteration. Found a problematic place in calcF function in LinkedCell Container. Some particles were having negative X position after initGrid() function.
+- Solved problem with disappearing particles, but simulation was not running correctly. Particles do not move after some iteration.
+- Rendering takes too much time, could not run the whole simulation.
 
 ## Task 4 ##
 
