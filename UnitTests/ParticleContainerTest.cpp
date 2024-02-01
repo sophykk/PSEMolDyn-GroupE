@@ -45,8 +45,9 @@ TEST(ParticleContainerTest, LinkedCellContainerDefaultConstructor) {
     double gGrav = 12;
     LennardJonesForce force;
     bool membrane = false;
+    int task = 1;
 
-    LinkedCellContainer container(force, domainSize, cutoffRadius, boundaryCon, gGrav, membrane);
+    LinkedCellContainer container(force, domainSize, cutoffRadius, boundaryCon, gGrav, task, membrane);
 
     EXPECT_EQ(container.size(), 0);
     EXPECT_EQ(container.getBoundaryCon(1), boundaryCon[1]);
@@ -60,10 +61,11 @@ TEST(ParticleContainerTest, LinkedCellContainer2ConstructorWithParticles) {
     std::array<char, 6> boundaryCon{'r', 'r', 'r', 'r', 'r', 'r'}; // Reflecting
     double gGrav = 12;
     bool membrane = false;
+    int task = 1;
     LennardJonesForce force;
     std::vector<Particle> particlesList = {Particle(), Particle()};
 
-    LinkedCellContainer container(force, particlesList, domainSize, cutoffRadius, boundaryCon, gGrav, membrane);
+    LinkedCellContainer container(force, particlesList, domainSize, cutoffRadius, boundaryCon, gGrav, task, membrane);
 
     EXPECT_EQ(container.size(), particlesList.size());
 }
@@ -75,10 +77,11 @@ TEST(ParticleContainerTest, LinkedCellContainer2AddParticle) {
     std::array<char, 6> boundaryCon{'r', 'r', 'r', 'r', 'r', 'r'}; // Reflecting
     double gGrav = 12;
     bool membrane = false;
+    int task = 1;
 
     LennardJonesForce force;
 
-    LinkedCellContainer container(force, domainSize, cutoffRadius, boundaryCon, gGrav, membrane);
+    LinkedCellContainer container(force, domainSize, cutoffRadius, boundaryCon, gGrav, task, membrane);
 
     Particle particle;
     container.addParticle(particle);
@@ -98,8 +101,9 @@ TEST(ParticleContainerTest, LinkedCellContainer2InitGrid) {
     };
     double gGrav = 12.0;
     bool membrane = false;
+    int task = 1;
 
-    LinkedCellContainer container(force, particlesList, domainSize, cutoffRadius, boundaryCon, gGrav, membrane);
+    LinkedCellContainer container(force, particlesList, domainSize, cutoffRadius, boundaryCon, gGrav, task, membrane);
     container.initGrid();
 
     auto grid = container.getGrid();
@@ -152,8 +156,9 @@ TEST(ParticleContainerTest, LinkedCellContainer2ResetForces) {
     std::vector<Particle> particlesList = {/* Initialize some particles */};
     double gGrav = 12.0;
     bool membrane = false;
+    int task = 1;
 
-    LinkedCellContainer container(force, particlesList, domainSize, cutoffRadius, boundaryCon, gGrav, membrane);
+    LinkedCellContainer container(force, particlesList, domainSize, cutoffRadius, boundaryCon, gGrav, task, membrane);
 
     // Simulate a step to ensure some forces are calculated
     container.calculateF();
@@ -177,11 +182,12 @@ TEST(ParticleContainerTest, LinkedCellContainer2BoundaryConditions) {
     std::array<char, 6> openBoundaryCon{'o', 'o', 'o', 'o', 'o', 'o'}; // Outflow
     double gGrav;
     bool membrane = false;
+    int task = 1;
 
-    LinkedCellContainer reflectingContainer(force, domainSize, cutoffRadius, reflectingBoundaryCon, gGrav, membrane);
+    LinkedCellContainer reflectingContainer(force, domainSize, cutoffRadius, reflectingBoundaryCon, gGrav, task, membrane);
     EXPECT_EQ(reflectingContainer.getBoundaryCon(0), reflectingBoundaryCon[0]);
 
-    LinkedCellContainer openContainer(force, domainSize, cutoffRadius, openBoundaryCon, gGrav, membrane);
+    LinkedCellContainer openContainer(force, domainSize, cutoffRadius, openBoundaryCon, gGrav, task, membrane);
     EXPECT_EQ(openContainer.getBoundaryCon(2), openBoundaryCon[2]);
 
 }
