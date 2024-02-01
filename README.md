@@ -36,13 +36,9 @@ ctest
 # Report #
 ## Task 1 ##
 
-- implemented Thermostat for controlling the temperature in the system
-- current temperature of the system is calculated with the Kinetic Energy of the particles
-- velocity scaling factor is calculated for the particles to achieve the target temperature
-- systems that have no initial velocities are initialized with Brownian Motion
-- delta T is applied, so the temperature change at each application of Thermostat does not exceed the chosen threshold
-- MolSim is adapted accordinly, Thermostat is applied periodically at the given interval. Thermostat is applied before Velocity calculation, since it influences the velocity scaling
-- XML input is adapted to read the Thermostat parameters
+- implemented Membrane
+- implemented the harmonic potential to calculate the forces between the membrane particles
+- implemented the pull-up Force and ran the simulation
 
 ## Task 2 ##
 
